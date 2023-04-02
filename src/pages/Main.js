@@ -4,31 +4,37 @@ function Main(){
         {
             id: 1,
             lesson: 'HTML',
+            percent: '70'
         },
         {
             id: 2,
             lesson: 'CSS',
+            percent: '60'
         },
         {
             id: 3,
             lesson: 'JavaScript',
-            slug: 'js',
+            percent: '20'
         },
         {
             id: 3,
             lesson: 'React',
+            percent: '20'
         },
         {
             id: 5,
             lesson: 'Adobe Photoshop',
+            percent: '70'
         },
         {
             id: 6,
             lesson: 'Adobe Illustrator',
+            percent: '70'
         },
         {
             id: 7,
             lesson: 'Corel Draw',
+            percent: '50'
         }
     ]
     return(
@@ -51,7 +57,7 @@ function Main(){
                     Öğrendiğim ve kendimi geliştirmeye devam ettiğim yazılım dillerini ve grafik programlarını aşağıdaki gibi hemen hemen yakın olan değerler ile yüzdelendirdim. Yakın zamanda bu sayfaya öğrendiğim diğer dilleri de ekleyerek daha geniş bir portföy oluşturacağım.
                 </p>
                 {skills.map(item =>
-                    <span>{item.lesson}</span>
+                    <span>{item.percent + '%' + ' ' + item.lesson }</span>
                 )}
 
             </div>

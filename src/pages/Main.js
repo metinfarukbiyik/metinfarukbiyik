@@ -45,7 +45,7 @@ function Main(){
                     <div className="biyo">
                         <h4>Hakkımda / <b>About</b> 👨🏻‍💻</h4> 
                         <p>
-                        Merhaba! 22 Nisan Trabzon doğumluyum. 24 Yaşındayım. ATA AÖF Bilgi Yönetimi öğrencisiyim. Front-End Developer olma yolunda kendimi geliştirmek üzere adımlar atıyorum. HTML/CSS ve JS dersleri ile bilgimin üzerine yeni bilgiler katarak, kişisel web sayfamda uyguluyorum. Her gün farklı şeyler öğrenerek hem kendimi hem de bu sayfayı güncellemiş oluyorum.
+                        Merhaba! 1999 Nisan Trabzon doğumluyum. ATA AÖF Bilgi Yönetimi öğrencisiyim. Front-End Developer olma yolunda kendimi geliştirmek üzere adımlar atıyorum. HTML/CSS ve JS dersleri ile bilgimin üzerine yeni bilgiler katarak, kişisel web sayfamda uyguluyorum. Her gün farklı şeyler öğrenerek hem kendimi hem de bu sayfayı güncellemiş oluyorum.
                         </p>
                     
                 </div>

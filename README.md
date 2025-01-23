@@ -6,59 +6,23 @@
   <img src="public/preview.png" alt="CV Web Sitesi Önizleme" width="100%" />
 </div>
 
-## 🚀 Özellikler
+# Metin Faruk Bıyık - Geliştirici
 
-- ✨ Modern ve minimalist tasarım
-- 🎨 Özelleştirilmiş arka plan efektleri
-- 🌓 Yumuşak geçişli glassmorphism efektleri
-- 📱 Tam responsive tasarım
-- ⚡️ Hızlı yükleme performansı
-- 🎯 SEO optimizasyonu
+### 🌐 Sosyal Medya & İletişim
 
-## 🛠️ Kullanılan Teknolojiler
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/metinbiyik)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/_metinbiyik)
+[![X (Twitter)](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/_metinbiyik)
+[![Website](https://img.shields.io/badge/Website-1a1a1a?style=for-the-badge&logo=google-chrome&logoColor=white)](https://biyik.dev)
+[![Mail](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mb.metinbiyik@gmail.com)
 
-- [Next.js 14](https://nextjs.org/) - React framework
-- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
-- [TypeScript](https://www.typescriptlang.org/) - Tip güvenli JavaScript
-- [Lucide Icons](https://lucide.dev/) - Modern ikonlar
-- [Vercel](https://vercel.com/) - Hosting platformu
+### 🇹🇷 Hakkımda
 
-## 🚀 Başlangıç
+Web teknolojileri ve modern uygulama geliştirme alanında kendini sürekli geliştiren, öğrenmeye ve paylaşmaya tutkulu bir geliştirici.
 
-Bu projeyi yerel ortamınızda çalıştırmak için:
+### 🇬🇧 About Me
 
-```bash
-# Repoyu klonlayın
-git clone https://github.com/metinfarukbiyik/metinfarukbiyik.git
-
-# Proje dizinine gidin
-cd metinfarukbiyik
-
-# Bağımlılıkları yükleyin
-npm install
-
-# Geliştirme sunucusunu başlatın
-npm run dev
-```
-
-Tarayıcınızda [http://localhost:3000](http://localhost:3000) adresini açarak projeyi görüntüleyebilirsiniz.
-
-## 📝 Özelleştirme
-
-CV verilerinizi `src/data/cv.ts` dosyasında düzenleyebilirsiniz. Dosya içerisinde:
-
-- 👤 Kişisel bilgiler
-- 📞 İletişim bilgileri
-- 🎯 Yetenekler
-- 🎓 Eğitim geçmişi
-- 💼 İş deneyimi
-- 🏆 Sertifikalar
-
-bölümlerini bulabilirsiniz.
-
-## 🌐 Demo
-
-[https://biyik.dev](https://biyik.dev) adresinden canlı demoyu inceleyebilirsiniz.
+A passionate developer who continuously improves himself in web technologies and modern application development, dedicated to learning and sharing knowledge. # metinfarukbiyik
 
 ## 📄 Lisans
 
@@ -68,8 +32,3 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICE
 
 Metin Faruk Bıyık tarafından ❤️ ile geliştirilmiştir.
 
-- Website: [biyik.dev](https://biyik.dev)
-- GitHub: [@metinfarukbiyik](https://github.com/metinfarukbiyik)
-- LinkedIn: [@metinbiyik](https://linkedin.com/in/metinbiyik)
-# metinfarukbiyik
-# homepage

@@ -1,11 +1,3 @@
-# metinfarukbiyik
-
-# 🌟 Kişisel CV Web Sitesi
-
-<div align="center">
-  <img src="public/preview.png" alt="CV Web Sitesi Önizleme" width="100%" />
-</div>
-
 # Metin Faruk Bıyık - Geliştirici
 
 ### 🌐 Sosyal Medya & İletişim
@@ -27,9 +19,3 @@ A passionate developer who continuously improves himself in web technologies and
 ## 📄 Lisans
 
 Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakabilirsiniz.
-
-## 👨‍💻 Geliştirici
-
-Metin Faruk Bıyık tarafından ❤️ ile geliştirilmiştir.
-
-# metinfarukbiyik

@@ -32,3 +32,4 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICE
 
 Metin Faruk Bıyık tarafından ❤️ ile geliştirilmiştir.
 
+# metinfarukbiyik

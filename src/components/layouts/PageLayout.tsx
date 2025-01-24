@@ -23,7 +23,7 @@ export default function PageLayout({ children, pageTitle }: PageLayoutProps) {
       <BackgroundDots />
 
       {/* Container */}
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex-1">
         {/* Profil Fotoğrafı - Navigation ile aynı hizada */}
         {!isHome && (
           <motion.div
@@ -69,7 +69,7 @@ export default function PageLayout({ children, pageTitle }: PageLayoutProps) {
         )}
 
         <main className="flex-1">
-          <div className="pb-16">
+          <div className="min-h-[calc(100vh-theme(spacing.16))] pb-24">
             {pageTitle && (
               <PageTitle
                 title={pageTitle.title}

@@ -73,7 +73,7 @@ export default function PageTitle({ title, description, children, variant = "pag
                   {/* Developer Rozeti */}
                   <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary/5 to-primary/10 px-4 py-1.5 text-sm font-medium text-primary ring-1 ring-primary/20 backdrop-blur-xl transition-all duration-300 hover:bg-primary/10 hover:ring-primary/30">
                     <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17 7L7 17M7 7L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M8 6L3 12L8 18M16 6L21 12L16 18M14 4L10 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                     Developer
                   </div>

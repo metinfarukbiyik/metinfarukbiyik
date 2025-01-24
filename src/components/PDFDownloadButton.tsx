@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { FileDown } from "lucide-react";
 
 export default function PDFDownloadButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,15 +25,45 @@ export default function PDFDownloadButton() {
     <button
       onClick={handleDownload}
       disabled={isLoading}
-      className="group flex items-center gap-2 rounded-full bg-white/[0.075] px-3 py-1.5 text-xs text-black/80 ring-1 ring-black/5 backdrop-blur-xl transition-all duration-300 hover:bg-white/[0.1] hover:text-black dark:bg-white/10 dark:text-white/80 dark:ring-white/10 dark:hover:bg-white/20"
+      className="group relative flex items-center gap-2.5 rounded-full bg-gradient-to-r from-primary/30 via-primary/20 to-primary/30 px-5 py-2.5 text-sm font-medium text-primary ring-1 ring-primary/20 backdrop-blur-xl transition-all duration-500 hover:shadow-[0_0_2rem_-0.5rem] hover:shadow-primary/30 hover:ring-primary/40 active:scale-95 disabled:pointer-events-none disabled:opacity-50 dark:from-primary/20 dark:via-primary/15 dark:to-primary/20 dark:text-primary/90 dark:ring-primary/10 dark:hover:shadow-primary/20 dark:hover:ring-primary/30"
     >
-      <FileDown
-        className="h-4 w-4 transition-transform group-hover:translate-y-0.5 group-active:translate-y-1"
-        aria-hidden="true"
-      />
-      <span>
-        {isLoading ? "İndiriliyor..." : "CV'mi İndir"}
+      <svg
+        viewBox="0 0 24 24"
+        className="h-5 w-5 transition-all duration-300 group-hover:scale-110 group-active:scale-95"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10"
+          className="stroke-primary"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <path
+          d="M12 12V16M12 16L14 14M12 16L10 14"
+          className="stroke-primary"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M8 20H16C17.1046 20 18 19.1046 18 18V14C18 12.8954 17.1046 12 16 12H8C6.89543 12 6 12.8954 6 14V18C6 19.1046 6.89543 20 8 20Z"
+          className="stroke-primary"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+      <span className="relative">
+        {isLoading ? (
+          <>
+            <span className="animate-pulse">İndiriliyor</span>
+            <span className="animate-[bounce_1s_infinite]">...</span>
+          </>
+        ) : (
+          "CV Görüntüle"
+        )}
       </span>
+      <div className="absolute inset-0 -z-10 rounded-full bg-primary/5 blur-xl transition-all duration-500 group-hover:blur-2xl" />
     </button>
   );
 }

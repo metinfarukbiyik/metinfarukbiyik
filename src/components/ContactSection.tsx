@@ -24,14 +24,14 @@ export default function ContactSection({ contact }: ContactSectionProps) {
         {/* Email */}
         <a
           href={`mailto:${contact.email}`}
-          className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 hover:bg-card/50 transition-colors"
+          className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
             <Mail className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
             <span className="text-xs text-muted-foreground">E-posta</span>
-            <span className="text-sm text-card-foreground/80 group-hover:text-card-foreground transition-colors">
+            <span className="text-sm text-card-foreground/80 transition-colors duration-300 group-hover:text-card-foreground">
               {contact.email}
             </span>
           </div>
@@ -40,27 +40,27 @@ export default function ContactSection({ contact }: ContactSectionProps) {
         {/* Telefon */}
         <a
           href={`tel:${contact.phone}`}
-          className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 hover:bg-card/50 transition-colors"
+          className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
             <Phone className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
             <span className="text-xs text-muted-foreground">Telefon</span>
-            <span className="text-sm text-card-foreground/80 group-hover:text-card-foreground transition-colors">
+            <span className="text-sm text-card-foreground/80 transition-colors duration-300 group-hover:text-card-foreground">
               {contact.phone}
             </span>
           </div>
         </a>
 
         {/* Konum */}
-        <div className="group flex items-center gap-3 rounded-lg bg-card/30 p-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <div className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
             <MapPin className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
             <span className="text-xs text-muted-foreground">Konum</span>
-            <span className="text-sm text-card-foreground/80">
+            <span className="text-sm text-card-foreground/80 transition-colors duration-300 group-hover:text-card-foreground">
               {contact.location}
             </span>
           </div>
@@ -71,14 +71,14 @@ export default function ContactSection({ contact }: ContactSectionProps) {
           href={contact.website}
           target="_blank"
           rel="noopener noreferrer"
-          className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 hover:bg-card/50 transition-colors"
+          className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
             <Globe className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
             <span className="text-xs text-muted-foreground">Website</span>
-            <span className="text-sm text-card-foreground/80 group-hover:text-card-foreground transition-colors">
+            <span className="text-sm text-card-foreground/80 transition-colors duration-300 group-hover:text-card-foreground">
               {contact.website}
             </span>
           </div>
@@ -96,10 +96,10 @@ export default function ContactSection({ contact }: ContactSectionProps) {
             href={`https://linkedin.com/in/${contact.social.linkedin}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 hover:bg-card/50 transition-colors"
+            className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
             title="LinkedIn"
           >
-            <div className="text-primary group-hover:text-primary/80 transition-colors">
+            <div className="text-primary transition-all duration-300 group-hover:scale-110">
               <Linkedin className="h-5 w-5" />
             </div>
           </a>
@@ -109,10 +109,10 @@ export default function ContactSection({ contact }: ContactSectionProps) {
             href={`https://github.com/${contact.social.github}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 hover:bg-card/50 transition-colors"
+            className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
             title="GitHub"
           >
-            <div className="text-primary group-hover:text-primary/80 transition-colors">
+            <div className="text-primary transition-all duration-300 group-hover:scale-110">
               <Github className="h-5 w-5" />
             </div>
           </a>
@@ -122,10 +122,10 @@ export default function ContactSection({ contact }: ContactSectionProps) {
             href={`https://x.com/${contact.social.twitter}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 hover:bg-card/50 transition-colors"
+            className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
             title="X (Twitter)"
           >
-            <div className="text-primary group-hover:text-primary/80 transition-colors">
+            <div className="text-primary transition-all duration-300 group-hover:scale-110">
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
@@ -141,10 +141,10 @@ export default function ContactSection({ contact }: ContactSectionProps) {
             href={`https://instagram.com/${contact.social.instagram}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 hover:bg-card/50 transition-colors"
+            className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
             title="Instagram"
           >
-            <div className="text-primary group-hover:text-primary/80 transition-colors">
+            <div className="text-primary transition-all duration-300 group-hover:scale-110">
               <Instagram className="h-5 w-5" />
             </div>
           </a>
@@ -161,12 +161,12 @@ export default function ContactSection({ contact }: ContactSectionProps) {
             {contact.additionalInfo.map((info, index) => (
               <div
                 key={index}
-                className="flex items-center gap-3 rounded-lg bg-card/30 p-3"
+                className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
               >
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
                   <Info className="h-4 w-4" />
                 </div>
-                <span className="text-sm text-card-foreground/80">
+                <span className="text-sm text-card-foreground/80 transition-colors duration-300 group-hover:text-card-foreground">
                   {info}
                 </span>
               </div>

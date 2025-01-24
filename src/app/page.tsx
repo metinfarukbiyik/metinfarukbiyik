@@ -19,26 +19,18 @@ export default function Home() {
       pageTitle={{
         title: cvData.name,
         description: cvData.title,
+        image: "/profile.jpg",
+        variant: "home",
         children: (
-          <>
-            {/* Çalışmaya Açık Rozeti */}
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500/5 to-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-500 ring-1 ring-emerald-500/20 backdrop-blur-xl transition-all duration-300 hover:bg-emerald-500/10 hover:ring-emerald-500/30">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              </span>
-              Çalışmaya Açık
-            </div>
-            <p 
-              className="mt-7 mx-auto max-w-2xl text-base text-muted-foreground/90 sm:text-lg md:leading-relaxed text-justify"
-              dangerouslySetInnerHTML={{ __html: cvData.summary }}
-            />
-          </>
+          <p 
+            className="mt-10 text-base text-muted-foreground/80 sm:text-lg leading-relaxed max-w-2xl"
+            dangerouslySetInnerHTML={{ __html: cvData.summary }}
+          />
         )
       }}
     >
       {/* Ana İçerik */}
-      <div className="mt-8 grid gap-8 md:grid-cols-3">
+      <div className="mt-6 grid gap-8 md:grid-cols-3">
         {/* Sol Sütun */}
         <div className="space-y-8 md:col-span-1">
           <section className="group relative rounded-2xl bg-gradient-to-br from-white/10 via-white/5 to-transparent p-6 backdrop-blur-2xl transition-all duration-500 hover:bg-white/15 hover:shadow-2xl hover:shadow-primary/5 dark:bg-black/20 dark:hover:bg-black/30 dark:backdrop-blur-none dark:from-transparent dark:via-transparent dark:to-transparent">

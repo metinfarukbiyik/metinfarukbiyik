@@ -44,7 +44,7 @@ interface CV {
 export const cvData: CV = {
   name: "Metin Faruk Bıyık",
   title: "Developer",
-  summary: "Şu anda Turkcell Global Bilgi'de çalışıyor ve bireysel müşterilerimizin ihtiyaçlarını en iyi şekilde karşılayarak memnuniyeti en üst seviyede tutmaya özen gösteriyorum. <strong>Çözüm odaklı hizmetler sunuyorum. Web uygulamaları alanında kendimi geliştiriyorum.</strong>",
+  summary: "Müşteri odaklı yaklaşımımla birlikte web teknolojileri alanında kendimi sürekli geliştirmeye odaklanıyorum. <strong>Çözüm odaklı hizmetler sunuyorum. Web uygulamaları alanında kendimi geliştiriyorum.</strong>",
   contact: {
     email: "mb.metinbiyik@gmail.com",
     phone: "+90 (540) 461 35 43",

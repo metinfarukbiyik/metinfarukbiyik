@@ -22,6 +22,8 @@ export default function PageLayout({ children, pageTitle }: PageLayoutProps) {
             <PageTitle
               title={pageTitle.title}
               description={pageTitle.description}
+              image={pageTitle.image}
+              variant={pageTitle.variant}
             >
               {pageTitle.children}
             </PageTitle>

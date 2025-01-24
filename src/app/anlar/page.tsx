@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { momentsData } from "@/data/moments";
-import { Calendar, MapPin, Instagram } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
 import ImageModal from "@/components/ImageModal";
 import PageLayout from "@/components/layouts/PageLayout";
 
@@ -51,18 +51,7 @@ export default function AnlarPage() {
     <PageLayout
       pageTitle={{
         title: "Anlar",
-        description: "Hayatımdan küçük kesitler, değer verdiğim anılar ve beni etkileyen deneyimlerin kısa hikayeleri. Bu bölüm, yaşadığım anlamlı anları ve bu anların üzerimde bıraktığı izleri yansıtıyor.",
-        children: (
-          <a
-            href="https://instagram.com/_metinbiyik"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 mt-6 px-6 py-3 rounded-full font-medium text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:from-[#9B4DCA] hover:via-[#FE3434] hover:to-[#FF8C4F] shadow-md"
-          >
-            <Instagram className="h-5 w-5" />
-            <span className="font-semibold">@_metinbiyik</span>
-          </a>
-        )
+        description: "Hayatımdan küçük kesitler, değer verdiğim anılar ve beni etkileyen deneyimlerin kısa hikayeleri. Bu bölüm, yaşadığım anlamlı anları ve bu anların üzerimde bıraktığı izleri yansıtıyor."
       }}
     >
       {/* Fotoğraf Grid */}

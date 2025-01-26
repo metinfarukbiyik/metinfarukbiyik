@@ -1,6 +1,16 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import { setupData } from "@/data/setup";
 import PageLayout from "@/components/layouts/PageLayout";
+
+export const metadata: Metadata = {
+  title: "Ekipmanlarım | Metin Faruk Bıyık",
+  description: "Günlük hayatımda ve geliştirme süreçlerimde kullandığım ekipmanlar, yazılımlar ve araçlar.",
+  openGraph: {
+    title: "Ekipmanlarım | Metin Faruk Bıyık",
+    description: "Günlük hayatımda ve geliştirme süreçlerimde kullandığım ekipmanlar, yazılımlar ve araçlar.",
+  },
+};
 
 export default function SetupPage() {
   return (

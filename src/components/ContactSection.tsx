@@ -24,6 +24,7 @@ export default function ContactSection({ contact }: ContactSectionProps) {
         {/* Email */}
         <a
           href={`mailto:${contact.email}`}
+          title="E-posta ile iletişime geçin"
           className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
         >
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
@@ -40,6 +41,7 @@ export default function ContactSection({ contact }: ContactSectionProps) {
         {/* Telefon */}
         <a
           href={`tel:${contact.phone}`}
+          title="Telefon ile iletişime geçin"
           className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
         >
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
@@ -69,6 +71,7 @@ export default function ContactSection({ contact }: ContactSectionProps) {
         {/* Website */}
         <a
           href={contact.website}
+          title="Kişisel web sitemi ziyaret edin"
           target="_blank"
           rel="noopener noreferrer"
           className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
@@ -94,10 +97,10 @@ export default function ContactSection({ contact }: ContactSectionProps) {
           {/* LinkedIn */}
           <a
             href={`https://linkedin.com/in/${contact.social.linkedin}`}
+            title="LinkedIn profilimi ziyaret edin"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
             className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
-            title="LinkedIn"
           >
             <div className="text-primary transition-all duration-300 group-hover:scale-110">
               <Linkedin className="h-5 w-5" />
@@ -107,10 +110,10 @@ export default function ContactSection({ contact }: ContactSectionProps) {
           {/* GitHub */}
           <a
             href={`https://github.com/${contact.social.github}`}
+            title="GitHub profilimi ziyaret edin"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
             className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
-            title="GitHub"
           >
             <div className="text-primary transition-all duration-300 group-hover:scale-110">
               <Github className="h-5 w-5" />
@@ -120,10 +123,10 @@ export default function ContactSection({ contact }: ContactSectionProps) {
           {/* X (Twitter) */}
           <a
             href={`https://x.com/${contact.social.twitter}`}
+            title="X profilimi takip edin"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
             className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
-            title="X (Twitter)"
           >
             <div className="text-primary transition-all duration-300 group-hover:scale-110">
               <svg
@@ -139,10 +142,10 @@ export default function ContactSection({ contact }: ContactSectionProps) {
           {/* Instagram */}
           <a
             href={`https://instagram.com/${contact.social.instagram}`}
+            title="Instagram profilimi takip edin"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
             className="group flex h-10 w-10 items-center justify-center rounded-lg bg-card/30 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
-            title="Instagram"
           >
             <div className="text-primary transition-all duration-300 group-hover:scale-110">
               <Instagram className="h-5 w-5" />

@@ -51,7 +51,7 @@ export default function AnlarPage() {
     <PageLayout
       pageTitle={{
         title: "Anlar",
-        description: "Hayatımdan küçük kesitler, değer verdiğim anılar ve beni etkileyen deneyimlerin kısa hikayeleri. Bu bölüm, yaşadığım anlamlı anları ve bu anların üzerimde bıraktığı izleri yansıtıyor."
+        description: "Hayatımdan özel anlar, fotoğraflar ve hatıralar. Her bir fotoğraf bir hikaye, her bir an bir deneyim.",
       }}
     >
       {/* Fotoğraf Grid */}

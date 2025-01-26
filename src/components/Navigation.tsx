@@ -3,15 +3,31 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/", label: "Ana Sayfa" },
-  { href: "/ekipmanlar", label: "Ekipmanlar" },
-  { href: "/anlar", label: "Anlar" },
-  { href: "/okuyorum", label: "Oku/Yorum" },
+  {
+    href: "/",
+    label: "Ana Sayfa",
+    title: "Ana Sayfa - Metin Faruk Bıyık'ın kişisel web sitesi",
+  },
+  {
+    href: "/ekipmanlar",
+    label: "Ekipmanlar",
+    title: "Ekipmanlar - Kullandığım teknolojiler ve araçlar",
+  },
+  {
+    href: "/anlar",
+    label: "Anlar",
+    title: "Anlar - Hayatımdan özel anlar ve fotoğraflar",
+  },
+  {
+    href: "/okuyorum",
+    label: "Oku/Yorum",
+    title: "Oku/Yorum - Okuduğum ve okumayı planladığım kitaplar",
+  },
 ];
 
 export default function Navigation() {
@@ -19,51 +35,48 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50" suppressHydrationWarning>
+    <>
       {/* Masaüstü Menü */}
-      <div className="hidden md:flex items-center justify-center w-full py-4">
-        <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 rounded-full bg-white/[0.075] px-3 sm:px-4 lg:px-6 py-2 text-[13px] sm:text-sm text-black/80 ring-1 ring-black/5 backdrop-blur-xl dark:bg-black/[0.075] dark:text-white/80 dark:ring-white/5">
+      <div className="fixed top-4 left-0 right-0 z-50 mx-auto w-fit hidden md:block">
+        <nav className="flex items-center gap-1 rounded-full bg-white/[0.075] p-1 backdrop-blur-xl dark:bg-black/[0.075] ring-1 ring-black/5 dark:ring-white/5">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
+              title={link.title}
               className={cn(
-                "relative px-2 sm:px-3 py-1.5 transition-colors hover:text-black dark:hover:text-white whitespace-nowrap",
-                {
-                  "text-black dark:text-white": pathname === link.href,
-                  "text-black/60 dark:text-white/60": pathname !== link.href,
-                }
+                "relative px-4 py-2 text-sm transition-colors rounded-full",
+                pathname === link.href
+                  ? "text-black dark:text-white font-medium"
+                  : "text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"
               )}
             >
               {pathname === link.href && (
                 <motion.div
                   layoutId="bubble"
-                  className="absolute inset-0 bg-white/[0.1] rounded-full dark:bg-white/[0.15]"
+                  className="absolute inset-0 bg-white dark:bg-black rounded-full mix-blend-difference"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <span className="relative">{link.label}</span>
+              <span className="relative mix-blend-normal">{link.label}</span>
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
 
       {/* Mobil Menü */}
-      <div className="md:hidden">
-        {/* Menü Butonu */}
+      <div className="fixed top-4 left-4 z-50 md:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="fixed top-4 left-4 flex items-center gap-2.5 rounded-full bg-white/[0.075] px-4 py-2.5 text-sm text-black/80 ring-1 ring-black/5 backdrop-blur-xl dark:bg-black/[0.075] dark:text-white/80 dark:ring-white/5 transition-all duration-300 hover:bg-white/[0.1] dark:hover:bg-white/[0.025] hover:ring-black/10 dark:hover:ring-white/10 active:scale-95"
+          className="flex items-center gap-2.5 rounded-full bg-white/[0.075] px-4 py-2.5 text-sm text-black/80 ring-1 ring-black/5 backdrop-blur-xl dark:bg-black/[0.075] dark:text-white/80 dark:ring-white/5 transition-all duration-300 hover:bg-white/[0.1] dark:hover:bg-white/[0.025] hover:ring-black/10 dark:hover:ring-white/10 active:scale-95"
         >
           {isOpen ? (
             <X className="h-4 w-4 transition-transform duration-200" />
           ) : (
             <Menu className="h-4 w-4 transition-transform duration-200" />
           )}
-      
         </button>
 
-        {/* Sol Kenar Menüsü */}
         <AnimatePresence>
           {isOpen && (
             <>
@@ -131,6 +144,6 @@ export default function Navigation() {
           )}
         </AnimatePresence>
       </div>
-    </nav>
+    </>
   );
 } 

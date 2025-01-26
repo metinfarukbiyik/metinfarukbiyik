@@ -68,7 +68,14 @@ export default function PageLayout({ children, pageTitle }: PageLayoutProps) {
           </motion.div>
         )}
 
-        <main className="flex-1">
+        <motion.main
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          key={pathname}
+          className="flex-1"
+        >
           <div className="min-h-[calc(100vh-theme(spacing.16))] pb-24">
             {pageTitle && (
               <PageTitle
@@ -81,7 +88,7 @@ export default function PageLayout({ children, pageTitle }: PageLayoutProps) {
             )}
             {children}
           </div>
-        </main>
+        </motion.main>
       </div>
 
       <Footer />

@@ -2,17 +2,23 @@ import PDFDownloadButton from "@/components/PDFDownloadButton";
 
 export default function Footer() {
   return (
-    <footer className="relative">
-      <div className="relative border-t border-black/5 dark:border-white/5">
-        <div className="relative bg-gradient-to-b from-white/5 via-white/[0.025] to-transparent backdrop-blur-xl dark:bg-black/20 dark:backdrop-blur-none dark:from-transparent dark:via-transparent dark:to-transparent">
-          <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground/80">
-              {/* Sol Taraf */}
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="group flex items-center gap-1.5 transition-colors duration-200 hover:text-white dark:hover:text-white/90">
-                  <span>Built with</span>
+    <footer className="mt-auto">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-black/5 dark:border-white/5 py-6">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <div className="flex flex-wrap justify-center gap-x-1 gap-y-3 sm:justify-start">
+              <div className="group flex items-center">
+                <span className="text-sm text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white">
+                  Built with
+                </span>
+                <a
+                  href="https://nextjs.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-1 flex items-center text-sm text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white"
+                >
                   <svg
-                    className="h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+                    className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -26,14 +32,24 @@ export default function Footer() {
                       className="fill-current"
                     />
                   </svg>
-                  <span>Next.js</span>
-                </div>
+                  <span className="ml-1">Next.js</span>
+                </a>
+              </div>
 
-                <div className="group flex items-center gap-1.5 transition-colors duration-200 hover:text-white dark:hover:text-white/90">
-                  <span>•</span>
-                  <span>Deployed on</span>
+              <span className="text-black/20 dark:text-white/20">&middot;</span>
+
+              <div className="group flex items-center">
+                <span className="text-sm text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white">
+                  Deployed on
+                </span>
+                <a
+                  href="https://vercel.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-1 flex items-center text-sm text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white"
+                >
                   <svg
-                    className="h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+                    className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -45,15 +61,12 @@ export default function Footer() {
                       className="fill-current"
                     />
                   </svg>
-                  <span>Vercel</span>
-                </div>
-              </div>
-
-              {/* Sağ Taraf */}
-              <div className="flex flex-wrap items-center gap-4">
-                <PDFDownloadButton />
+                  <span className="ml-1">Vercel</span>
+                </a>
               </div>
             </div>
+
+            <PDFDownloadButton />
           </div>
         </div>
       </div>

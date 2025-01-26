@@ -43,8 +43,8 @@ interface CV {
 
 export const cvData: CV = {
   name: "Metin Faruk Bıyık",
-  title: "Developer",
-  summary: "Müşteri odaklı yaklaşımımla birlikte web teknolojileri alanında kendimi sürekli geliştirmeye odaklanıyorum. <strong>Çözüm odaklı hizmetler sunuyorum. Web uygulamaları alanında kendimi geliştiriyorum.</strong>",
+  title: "Geliştirici",
+  summary: "Web teknolojileri ve modern uygulama geliştirme alanında kendini sürekli geliştiren, öğrenmeye ve ve paylaşmaya tutkulu bir geliştirici <strong>Çözüm odaklı hizmetler sunuyorum.</strong>",
   contact: {
     email: "mb.metinbiyik@gmail.com",
     phone: "+90 (540) 461 35 43",

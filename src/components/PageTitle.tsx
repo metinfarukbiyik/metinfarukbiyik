@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { cvData } from "@/data/cv";
 
 interface PageTitleProps {
   title: string;
@@ -75,7 +76,7 @@ export default function PageTitle({ title, description, children, variant = "pag
                     <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M8 6L3 12L8 18M16 6L21 12L16 18M14 4L10 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    Developer
+                    {cvData.title}
                   </div>
 
                   {/* Çalışmaya Açık Rozeti */}
@@ -87,7 +88,7 @@ export default function PageTitle({ title, description, children, variant = "pag
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                       <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
                     </span>
-                    Çalışmaya Açık
+                    {cvData.status}
                   </div>
                 </div>
               </div>

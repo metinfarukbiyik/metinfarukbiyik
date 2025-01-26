@@ -95,6 +95,8 @@ export interface PageTitleProps {
   children?: React.ReactNode;
   image?: string;
   variant?: "home" | "page";
+  badge?: string;
+  status?: string;
 }
 
 // Modal Props Tipleri

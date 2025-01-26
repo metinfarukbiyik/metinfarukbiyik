@@ -1,6 +1,7 @@
 interface CV {
   name: string;
   title: string;
+  status: string;
   summary: string;
   contact: {
     email: string;
@@ -44,6 +45,7 @@ interface CV {
 export const cvData: CV = {
   name: "Metin Faruk Bıyık",
   title: "Geliştirici",
+  status: "Çalışmaya Açık",
   summary: "Web teknolojileri ve modern uygulama geliştirme alanında kendini sürekli geliştiren, öğrenmeye ve ve paylaşmaya tutkulu bir geliştirici <strong>Çözüm odaklı hizmetler sunuyorum.</strong>",
   contact: {
     email: "mb.metinbiyik@gmail.com",

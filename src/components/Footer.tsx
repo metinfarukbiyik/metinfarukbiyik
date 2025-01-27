@@ -4,21 +4,16 @@ export default function Footer() {
   return (
     <footer className="mt-auto">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="border-t border-black/5 dark:border-white/5 py-6">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <div className="flex flex-wrap justify-center gap-x-1 gap-y-3 sm:justify-start">
+        <div className="border-t border-black/5 dark:border-white/5 py-4">
+          <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
+            <div className="flex flex-wrap justify-center gap-x-1 gap-y-2 sm:justify-start">
               <div className="group flex items-center">
-                <span className="text-sm text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white">
+                <span className="text-xs text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white">
                   Built with
                 </span>
-                <a
-                  href="https://nextjs.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-1 flex items-center text-sm text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white"
-                >
+                <div className="ml-1 flex items-center">
                   <svg
-                    className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+                    className="ml-1 h-3 w-3 text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -32,24 +27,19 @@ export default function Footer() {
                       className="fill-current"
                     />
                   </svg>
-                  <span className="ml-1">Next.js</span>
-                </a>
+                  <span className="ml-1 text-xs text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white">Next.js</span>
+                </div>
               </div>
 
               <span className="text-black/20 dark:text-white/20">&middot;</span>
 
               <div className="group flex items-center">
-                <span className="text-sm text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white">
+                <span className="text-xs text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white">
                   Deployed on
                 </span>
-                <a
-                  href="https://vercel.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-1 flex items-center text-sm text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white"
-                >
+                <div className="ml-1 flex items-center">
                   <svg
-                    className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:scale-110"
+                    className="ml-1 h-3 w-3 text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -61,12 +51,14 @@ export default function Footer() {
                       className="fill-current"
                     />
                   </svg>
-                  <span className="ml-1">Vercel</span>
-                </a>
+                  <span className="ml-1 text-xs text-black/60 dark:text-white/60 transition-colors group-hover:text-black dark:group-hover:text-white">Vercel</span>
+                </div>
               </div>
             </div>
 
-            <PDFDownloadButton />
+            <div className="scale-90">
+              <PDFDownloadButton />
+            </div>
           </div>
         </div>
       </div>

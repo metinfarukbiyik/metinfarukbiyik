@@ -4,7 +4,6 @@ import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { PageTitleProps } from "@/types";
 import PageTitle from "@/components/PageTitle";
 import Footer from "@/components/Footer";
 import BackgroundDots from "@/components/BackgroundDots";
@@ -16,6 +15,7 @@ interface PageLayoutProps {
     description?: string;
     variant?: "page" | "home";
     children?: React.ReactNode;
+    image?: string;
   };
 }
 

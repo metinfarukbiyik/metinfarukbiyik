@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
@@ -10,7 +11,12 @@ import BackgroundDots from "@/components/BackgroundDots";
 
 interface PageLayoutProps {
   children: React.ReactNode;
-  pageTitle?: PageTitleProps;
+  pageTitle?: {
+    title: string;
+    description?: string;
+    variant?: "page" | "home";
+    children?: React.ReactNode;
+  };
 }
 
 export default function PageLayout({ children, pageTitle }: PageLayoutProps) {

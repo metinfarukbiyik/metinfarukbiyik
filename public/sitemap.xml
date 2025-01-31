@@ -16,6 +16,14 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Çalışmalar -->
+  <url>
+    <loc>https://biyik.dev/calismalar</loc>
+    <lastmod>2024-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Anlar -->
   <url>
     <loc>https://biyik.dev/anlar</loc>

@@ -19,6 +19,11 @@ const links = [
     title: "Ekipmanlar - Kullandığım teknolojiler ve araçlar",
   },
   {
+    href: "/calismalar",
+    label: "Çalışmalar",
+    title: "Çalışmalar - Geliştirdiğim projeler ve kullandığım teknolojiler",
+  },
+  {
     href: "/anlar",
     label: "Anlar",
     title: "Anlar - Hayatımdan özel anlar ve fotoğraflar",

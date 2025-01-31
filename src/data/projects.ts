@@ -94,7 +94,7 @@ export const projects: Project[] = [
     title: "TurkceYaz.im - Doğru Türkçe Kullanım Rehberi",
     description: "Next.js ve Tailwind CSS kullanılarak geliştirilen modern ve minimalist kişisel web sitesi.",
     image: "/images/projects/portfolio.png",
-    technologies: ["Next.js", "Tailwind CSS"],
+    technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
     githubUrl: "https://github.com/metinfarukbiyik/turkceyaz-im",
     liveUrl: "https://turkceyaz.im",
     featured: true

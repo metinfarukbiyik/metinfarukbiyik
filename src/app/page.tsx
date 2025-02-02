@@ -5,17 +5,11 @@ import EducationSection from "@/components/EducationSection";
 import SkillsSection from "@/components/SkillsSection";
 import CertificationsSection from "@/components/CertificationsSection";
 import {
-  AtSign,
-  GraduationCap,
-  Briefcase,
   Code2,
-  Award,
   Building2,
   BookOpen,
   Medal,
-  Network,
-  Contact2,
-  Laptop2
+  Contact2
 } from "lucide-react";
 import PageLayout from "@/components/layouts/PageLayout";
 

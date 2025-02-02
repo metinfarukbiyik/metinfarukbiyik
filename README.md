@@ -21,17 +21,14 @@
   [![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mb.metinbiyik@gmail.com)
   
 </div>
-
- 
+<a href="https://biyik.dev"> 
 <div align="center">
-    <a href="https://biyik.dev">
-        <img align="center" width="990" src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-GitHub/assets/74038190/80728820-e06b-4f96-9c9e-9df46f0cc0a5" alt="coding">
-    </a>
-</div>
-
+  <img src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-GitHub/assets/74038190/80728820-e06b-4f96-9c9e-9df46f0cc0a5" alt="coding">
+</a>
 <!-- About Me -->
-
 # 👨‍💻 About Me
+
+
 
 ```typescript
 const metin = {

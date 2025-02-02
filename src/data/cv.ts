@@ -38,6 +38,7 @@ interface CV {
   certifications: {
     name: string;
     date: string;
+    institution: string;
   }[];
   languages: string[];
 }
@@ -129,19 +130,28 @@ export const cvData: CV = {
   certifications: [
     {
       name: "Turkcell Dijital Teknolojiler Sertifikası",
-      date: "Eylül 2023"
+      date: "Eylül 2023",
+      institution: "Turkcell Akademi"
     },
     {
       name: "Müşteri Deneyimi Sertifikası",
-      date: "Ekim 2023"
+      date: "Ekim 2023",
+      institution: "Turkcell Akademi"
     },
     {
       name: "Turkcell Satış 2.0 Sertifikası",
-      date: "Mayıs 2024"
+      date: "Mayıs 2024",
+      institution: "Turkcell Akademi"
     },
     {
       name: "Müşteri Deneyimi 2.0 Sertifikası",
-      date: "Temmuz 2024"
+      date: "Temmuz 2024",
+      institution: "Turkcell Akademi"
+    },
+    {
+      name: "Turkcell Robotik Süreç Otomasyonu (RPA)",
+      date: "Ocak 2025",
+      institution: "BTK Akademi"
     }
   ],
   languages: [

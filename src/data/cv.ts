@@ -152,7 +152,12 @@ export const cvData: CV = {
       name: "Turkcell Robotik Süreç Otomasyonu (RPA)",
       date: "Ocak 2025",
       institution: "BTK Akademi"
-    }
+    },
+    {
+      name: "Excel'de Dashboard ve İleri Fonksiyonlar",
+      date: "Şubat 2025",
+      institution: "BTK Akademi"
+    },
   ],
   languages: [
     "Türkçe (Anadil)",

@@ -83,7 +83,7 @@ export const projects: Project[] = [
     id: "1",
     title: "Metin Faruk Bıyık - Portfolio",
     description: "Next.js ve Tailwind CSS kullanılarak geliştirilen modern ve minimalist kişisel web sitesi.",
-    technologies: ["Next.js", "Tailwind CSS"],
+    technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
     githubUrl: "https://github.com/metinfarukbiyik/metinfarukbiyik",
     liveUrl: "https://biyik.dev",
     featured: true
@@ -91,7 +91,7 @@ export const projects: Project[] = [
   {
     id: "2",
     title: "TurkceYaz.im - Doğru Türkçe Kullanım Rehberi",
-    description: "Next.js ve Tailwind CSS kullanılarak geliştirilen modern ve minimalist kişisel web sitesi.",
+    description: "Türkçenin zenginliklerini keşfedin, dilinizi güçlendirin. TDK standartlarına uygun, doğru ve etkili Türkçe kullanımı için kapsamlı rehberiniz.",
     technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
     githubUrl: "https://github.com/metinfarukbiyik/turkceyaz-im",
     liveUrl: "https://turkceyaz.im",

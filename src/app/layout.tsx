@@ -5,7 +5,19 @@ import Navigation from "@/components/Navigation";
 import { outfit } from "./fonts";
 import Script from "next/script";
 import { AnimatePresence } from "framer-motion";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' }
+  ]
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://biyik.dev"),
@@ -49,6 +61,8 @@ export default function RootLayout({
   return (
     <html lang="tr" suppressHydrationWarning className={`${outfit.variable}`}>
       <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-RDVEGG0ZB5"
           strategy="afterInteractive"

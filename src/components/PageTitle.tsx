@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { cvData } from "@/data/cv";
 
@@ -11,11 +10,8 @@ interface PageTitleProps {
 }
 
 export default function PageTitle({ title, description, children, variant = "page" }: PageTitleProps) {
-  const pathname = usePathname();
-  const isHome = pathname === "/";
-
   return (
-    <div className="relative pt-16 pb-4 sm:pt-24 lg:pt-28">
+    <div className="relative pt-8 pb-4 sm:pt-16 lg:pt-28">
       {/* İçerik */}
       <div className="w-full">
         {variant === "home" ? (
@@ -53,8 +49,12 @@ export default function PageTitle({ title, description, children, variant = "pag
                     alt={title}
                     fill
                     className="object-cover"
-                    sizes={isHome ? "100px" : "40px"}
-                    priority
+                    sizes="(max-width: 768px) 100px, (max-width: 1200px) 100px, 100px"
+                    priority={true}
+                    loading="eager"
+                    quality={90}
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSEkLzYvLy02Mi85OEI2PTZFOT5ZXVlphZGZY2RtdHp6enp6enp6env/2wBDARUXFyAeIB4gHh4gIiAdIB0gHR0dHSAdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR3/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                   />
                   {/* Hafif Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/10" />

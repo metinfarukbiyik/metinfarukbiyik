@@ -61,7 +61,7 @@ export const cvData: CV = {
     },
     additionalInfo: [
       "Seyahat engelim bulunmamaktadır.",
-      "B, B1, M, F, D sınıfı ehliyet",
+      "B, B1, M, F, D sınıfı ehliyet.",
       "SRC-1 Belgesi.",
       "SRC-3 Belgesi."
     ]

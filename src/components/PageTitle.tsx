@@ -11,7 +11,7 @@ interface PageTitleProps {
 
 export default function PageTitle({ title, description, children, variant = "page" }: PageTitleProps) {
   return (
-    <div className="relative pt-8 pb-4 sm:pt-16 lg:pt-28">
+    <div className="relative pt-16 pb-4 sm:pt-24 lg:pt-24">
       {/* İçerik */}
       <div className="w-full">
         {variant === "home" ? (

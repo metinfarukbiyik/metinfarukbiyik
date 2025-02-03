@@ -15,7 +15,7 @@ export default function PageTitle({ title, description, children, variant = "pag
   const isHome = pathname === "/";
 
   return (
-    <div className="relative pt-16 pb-16 sm:pt-24 lg:pt-28">
+    <div className="relative pt-16 pb-4 sm:pt-24 lg:pt-28">
       {/* İçerik */}
       <div className="w-full">
         {variant === "home" ? (

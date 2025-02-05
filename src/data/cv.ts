@@ -97,7 +97,7 @@ export const cvData: CV = {
       school: "Atatürk Üniversitesi",
       degree: "Ön Lisans",
       field: "Bilgi Yönetimi",
-      date: "2016 - Güncel",
+      date: "2022 - Güncel",
     },
     {
       school: "Şehit Ünal Bıçakçı Mesleki ve Teknik Anadolu Lisesi",

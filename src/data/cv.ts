@@ -5,7 +5,6 @@ interface CV {
   summary: string;
   contact: {
     email: string;
-    phone: string;
     location: string;
     website: string;
     social: {
@@ -50,7 +49,6 @@ export const cvData: CV = {
   summary: "Web teknolojileri ve modern uygulama geliştirme alanında kendini sürekli geliştiren, öğrenmeye ve ve paylaşmaya tutkulu bir geliştirici. <strong>Çözüm odaklı hizmetler sunuyorum.</strong>",
   contact: {
     email: "mb.metinbiyik@gmail.com",
-    phone: "+90 (540) 461 35 43",
     location: "Trabzon, Türkiye",
     website: "https://biyik.dev",
     social: {

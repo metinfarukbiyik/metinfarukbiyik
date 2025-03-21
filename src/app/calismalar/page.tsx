@@ -82,7 +82,7 @@ export default function CalismalarPage() {
       {/* Projeler Bölümü */}
       <section className="relative">
         {/* Arkaplan Dekorasyonu */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/[0.01] to-transparent dark:from-white/[0.01] pointer-events-none" />
+        <div className="absolute inset-0 pointer-events-none" />
         
         <h2 className="text-2xl font-semibold mb-8 relative">Projeler</h2>
         <div className="space-y-8">

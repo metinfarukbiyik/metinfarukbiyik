@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
@@ -22,36 +22,6 @@ interface PageLayoutProps {
 export default function PageLayout({ children, pageTitle }: PageLayoutProps) {
   const pathname = usePathname();
   const isHome = pathname === "/";
-
-  // Görselleri önbelleğe almak için useEffect kullanıyoruz
-  useEffect(() => {
-    // Sayfadaki tüm görselleri önbelleğe alma
-    const preloadImages = async () => {
-      const images = document.querySelectorAll('img');
-      
-      // Her görselin yüklenmesini izle
-      images.forEach(img => {
-        if (img.complete) return;
-        
-        img.addEventListener('load', () => {
-          // Görsel yüklendi
-        }, { once: true });
-        
-        img.addEventListener('error', () => {
-          console.error('Görsel yüklenemedi:', img.src);
-        }, { once: true });
-      });
-    };
-    
-    // Sayfa yüklendikten sonra görselleri önbelleğe al
-    window.requestIdleCallback ? 
-      window.requestIdleCallback(preloadImages) : 
-      setTimeout(preloadImages, 200);
-    
-    return () => {
-      // Temizleme işlemi
-    };
-  }, []);
 
   return (
     <div className="relative min-h-screen flex flex-col bg-gradient-to-b from-background via-background/95 to-background/90 overflow-x-hidden">

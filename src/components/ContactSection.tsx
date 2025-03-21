@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Globe, Linkedin, Instagram, Info, Github } from "lucide-react";
+import { Mail, MapPin, Globe, Linkedin, Instagram, Info, Github } from "lucide-react";
 
 interface ContactSectionProps {
   contact: {

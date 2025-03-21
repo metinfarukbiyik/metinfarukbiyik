@@ -27,11 +27,6 @@ export const technologies: Technology[] = [
     color: "#38BDF8"
   },
   {
-    name: "JavaScript",
-    iconType: "JavaScript",
-    color: "#F0DB4F"
-  },
-  {
     name: "TypeScript",
     iconType: "TypeScript",
     color: "#3178C6"
@@ -42,24 +37,9 @@ export const technologies: Technology[] = [
     color: "#007ACC"
   },
   {
-    name: "DeepSeek",
-    iconType: "DeepSeek",
-    color: "#4D6BFE"
-  },
-  {
     name: "Supabase",
     iconType: "Supabase",
     color: "#3ECF8E"
-  },
-  {
-    name: "Firebase",
-    iconType: "Firebase",
-    color: "#FFA000"
-  },
-  {
-    name: "Claude AI",
-    iconType: "Claude",
-    color: "#D97757"
   },
   {
     name: "OpenAI",

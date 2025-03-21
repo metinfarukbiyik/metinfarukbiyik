@@ -3,7 +3,6 @@ import { Mail, Phone, MapPin, Globe, Linkedin, Instagram, Info, Github } from "l
 interface ContactSectionProps {
   contact: {
     email: string;
-    phone: string;
     location: string;
     website: string;
     social: {
@@ -38,22 +37,6 @@ export default function ContactSection({ contact }: ContactSectionProps) {
           </div>
         </a>
 
-        {/* Telefon */}
-        <a
-          href={`tel:${contact.phone}`}
-          title="Telefon ile iletişime geçin"
-          className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
-        >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
-            <Phone className="h-5 w-5" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xs text-muted-foreground">Telefon</span>
-            <span className="text-sm text-card-foreground/80 transition-colors duration-300 group-hover:text-card-foreground">
-              {contact.phone}
-            </span>
-          </div>
-        </a>
 
         {/* Konum */}
         <div className="group flex items-center gap-3 rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20">

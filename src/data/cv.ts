@@ -157,6 +157,16 @@ export const cvData: CV = {
       date: "Şubat 2025",
       institution: "BTK Akademi"
     },
+    {
+      name: "Yüksek İrtifa Liderlik Sertifikası",
+      date: "Mart 2025",
+      institution: "Turkcell Akademi"
+    },
+    {
+      name: "Yüksek İrtifa Teknoloji Sertifikası",
+      date: "Mart 2025",
+      institution: "Turkcell Akademi"
+    },
   ],
   languages: [
     "Türkçe (Anadil)",

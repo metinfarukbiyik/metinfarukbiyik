@@ -12,16 +12,6 @@ export const technologies: Technology[] = [
     color: "#000000"
   },
   {
-    name: "HTML5",
-    iconType: "HTML5",
-    color: "#E34F26"
-  },
-  {
-    name: "CSS3",
-    iconType: "CSS",
-    color: "#264DE4"
-  },
-  {
     name: "Tailwind CSS",
     iconType: "Tailwind",
     color: "#38BDF8"

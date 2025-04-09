@@ -40,5 +40,16 @@ export const momentsData: Moment[] = [
     date: "08.12.2024",
     location: "Trabzon, Türkiye",
     description: `Kız isteme merasiminden bir kare. 🙂`
+  },
+  {
+    id: "3",
+    images: [
+      { url: "/images/moments/nisantoreni.jpg", alt: "İsteme" },
+      { url: "/images/moments/nisantoreni2.jpg", alt: "İsteme" },
+    ],
+    title: "Elif & Metin Nişan Töreni",
+    date: "05.04.2025",
+    location: "Trabzon, Türkiye",
+    description: `Elif & Metin'in nişan töreninden bir kare. 🙂 05.04.2025 tarihinde yapıldı.`
   }
 ]; 

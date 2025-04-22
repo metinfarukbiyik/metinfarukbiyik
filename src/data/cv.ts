@@ -112,7 +112,7 @@ export const cvData: CV = {
     },
     {
       company: "NTM Elektrik Elektronik A.Ş.",
-      position: "RN Rework İş Emirleri & Saha Yönetimi",
+      position: "RN Rework İş Emirleri & Ekip Yönetimi",
       date: "2020 - 2023"
     },
     {

@@ -18,13 +18,15 @@ export function PDFModal({ isOpen, onClose, pdfUrl }: PDFModalProps) {
           <DialogTitle className="text-lg sm:text-2xl font-bold text-center w-full">Metin Faruk Bıyık - Sertifika</DialogTitle>
         </div>
         {/* PDF */}
-        <div className="flex-1 overflow-auto bg-gray-50 rounded-b-xl">
-          <iframe
-            src={pdfUrl}
-            className="w-full h-[60vh] sm:h-full min-h-[300px] border-0"
-            title="PDF Viewer"
-            style={{ minHeight: 300 }}
-          />
+        <div className="flex-1 flex justify-center items-center bg-gray-50 rounded-b-xl overflow-auto">
+          <div className="w-full h-full max-w-full max-h-full flex justify-center items-center">
+            <iframe
+              src={pdfUrl}
+              className="w-full h-[60vh] sm:h-[75vh] max-w-full max-h-[75vh] border-0 rounded-md bg-white shadow"
+              title="PDF Viewer"
+              style={{ minHeight: 300 }}
+            />
+          </div>
         </div>
       </DialogContent>
     </Dialog>

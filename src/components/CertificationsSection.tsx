@@ -26,7 +26,7 @@ export default function CertificationsSection({ certifications }: Certifications
           {certifications.map((cert, index) => (
             <div
               key={index}
-              className="relative bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col gap-3 min-h-[180px]"
+              className="relative bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-secondary/5 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 p-6 flex flex-col gap-3 min-h-[180px]"
             >
               <div className="absolute -top-5 left-5 bg-white dark:bg-zinc-900 rounded-full shadow p-2 border border-gray-100 dark:border-gray-700">
                 <Medal className="text-secondary dark:text-secondary w-7 h-7" />

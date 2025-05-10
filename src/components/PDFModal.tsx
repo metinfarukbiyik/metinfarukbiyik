@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, AlertCircle } from "lucide-react";
 
 interface PDFModalProps {
   isOpen: boolean;
@@ -30,6 +30,13 @@ export function PDFModal({ isOpen, onClose, pdfUrl, title }: PDFModalProps) {
             </a>
           </div>
         </div>
+
+        {/* Mobil uyarı - sadece mobilde göster */}
+        <div className="flex items-center justify-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-3 py-2 text-xs text-blue-600 dark:text-blue-300 sm:hidden">
+          <AlertCircle className="w-4 h-4" />
+          <span>PDF cihazınızda uyumsuz görünüyorsa yeni sekmede açabilirsiniz</span>
+        </div>
+
         {/* PDF */}
         <div className="flex-1 flex justify-center items-center bg-gray-50 dark:bg-zinc-800 rounded-b-xl overflow-x-auto overflow-y-auto">
           <div className="w-full h-full max-w-full max-h-full flex justify-center items-center">

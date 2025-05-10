@@ -36,16 +36,6 @@ export const technologies: Technology[] = [
     iconType: "OpenAI",
     color: "#000000"
   },
-  {
-    name: "Vercel",
-    iconType: "Vercel",
-    color: "#000000"
-  },
-  {
-    name: "v0",
-    iconType: "V0",
-    color: "#000000"
-  }
 ];
 
 export const projects: Project[] = [

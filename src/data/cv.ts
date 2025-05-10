@@ -79,7 +79,9 @@ export const cvData: CV = {
         "MS PowerPoint",
         "Adobe Photoshop",
         "Adobe Illustrator",
-        "Canva"
+        "Canva",
+        "Figma",
+        "MS Teams",
       ],
       webDevelopment: [
         "HTML",

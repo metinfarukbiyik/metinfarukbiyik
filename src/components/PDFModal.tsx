@@ -24,7 +24,8 @@ export function PDFModal({ isOpen, onClose, pdfUrl, title }: PDFModalProps) {
         {/* Başlık ve yeni sekmede aç butonu */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-8 pt-4 sm:pt-6 pb-2 border-b border-gray-100 dark:border-gray-700 relative gap-2">
           <DialogTitle className="text-lg sm:text-2xl font-bold text-center w-full text-gray-900 dark:text-white">{title}</DialogTitle>
-          <div className="flex justify-center sm:justify-end w-full sm:w-auto">
+          {/* Yeni Sekmede Aç butonu - sadece mobilde görünsün */}
+          <div className="flex justify-center sm:hidden w-full sm:w-auto">
             <a
               href={pdfUrl}
               target="_blank"
@@ -40,7 +41,7 @@ export function PDFModal({ isOpen, onClose, pdfUrl, title }: PDFModalProps) {
         {/* Mobil uyarı - sadece mobilde göster */}
         <div className="flex items-center justify-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-3 py-2 text-xs text-blue-600 dark:text-blue-300 sm:hidden">
           <AlertCircle className="w-4 h-4" />
-          <span>Bu pencereyi sağlıklı görüntüleyemiyorsanız &quot;Yeni Sekmede Aç&quot; butonu ile açarak görüntüleyebilirsiniz.</span>
+          <span>Bu pencereyi sağlıklı görüntüleyemiyorsanız 'Yeni Sekmede Aç' butonu ile açarak görüntüleyebilirsiniz.</span>
         </div>
 
         {/* PDF */}

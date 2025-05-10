@@ -17,10 +17,12 @@ interface CertificationsSectionProps {
 
 export default function CertificationsSection({ certifications }: CertificationsSectionProps) {
   const [selectedPDF, setSelectedPDF] = useState<string | null>(null);
+  const [selectedName, setSelectedName] = useState<string>("");
 
   return (
     <section className="py-8">
       <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-12">Sertifikalarım</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {certifications.map((cert, index) => (
             <div
@@ -36,7 +38,10 @@ export default function CertificationsSection({ certifications }: Certifications
                 <p className="text-gray-400 text-xs mb-3">{cert.date}</p>
                 {cert.pdfUrl && (
                   <button
-                    onClick={() => setSelectedPDF(cert.pdfUrl || null)}
+                    onClick={() => {
+                      setSelectedPDF(cert.pdfUrl || null);
+                      setSelectedName(cert.name);
+                    }}
                     className="flex items-center text-secondary hover:text-secondary/80 font-medium text-sm underline underline-offset-4 transition-colors pl-0 mt-2"
                   >
                     <Eye className="w-4 h-4 mr-2" />
@@ -53,6 +58,7 @@ export default function CertificationsSection({ certifications }: Certifications
           isOpen={!!selectedPDF}
           onClose={() => setSelectedPDF(null)}
           pdfUrl={selectedPDF}
+          title={selectedName}
         />
       )}
     </section>

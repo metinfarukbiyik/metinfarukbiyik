@@ -4,9 +4,10 @@ interface PDFModalProps {
   isOpen: boolean;
   onClose: () => void;
   pdfUrl: string;
+  title: string;
 }
 
-export function PDFModal({ isOpen, onClose, pdfUrl }: PDFModalProps) {
+export function PDFModal({ isOpen, onClose, pdfUrl, title }: PDFModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
@@ -15,7 +16,7 @@ export function PDFModal({ isOpen, onClose, pdfUrl }: PDFModalProps) {
       >
         {/* Başlık */}
         <div className="flex items-center justify-center px-4 sm:px-8 pt-4 sm:pt-6 pb-2 border-b border-gray-100 relative">
-          <DialogTitle className="text-lg sm:text-2xl font-bold text-center w-full">Metin Faruk Bıyık - Sertifika</DialogTitle>
+          <DialogTitle className="text-lg sm:text-2xl font-bold text-center w-full">{title}</DialogTitle>
         </div>
         {/* PDF */}
         <div className="flex-1 flex justify-center items-center bg-gray-50 rounded-b-xl overflow-auto">

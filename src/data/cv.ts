@@ -38,6 +38,7 @@ interface CV {
     name: string;
     date: string;
     institution: string;
+    pdfUrl: string;
   }[];
   languages: string[];
 }
@@ -128,44 +129,46 @@ export const cvData: CV = {
   ],
   certifications: [
     {
-      name: "Turkcell Dijital Teknolojiler Sertifikası",
-      date: "Eylül 2023",
-      institution: "Turkcell Akademi"
-    },
-    {
       name: "Müşteri Deneyimi Sertifikası",
       date: "Ekim 2023",
-      institution: "Turkcell Akademi"
+      institution: "Turkcell Akademi",
+      pdfUrl: "/certificates/metinfarukbiyik_musterideneyimi.pdf"
     },
     {
       name: "Turkcell Satış 2.0 Sertifikası",
       date: "Mayıs 2024",
-      institution: "Turkcell Akademi"
+      institution: "Turkcell Akademi",
+      pdfUrl: "/certificates/metinfarukbiyik_satis20.pdf"
     },
     {
       name: "Müşteri Deneyimi 2.0 Sertifikası",
       date: "Temmuz 2024",
-      institution: "Turkcell Akademi"
+      institution: "Turkcell Akademi",
+      pdfUrl: "/certificates/metinfarukbiyik_musterideneyimi20.pdf"
     },
     {
       name: "Turkcell Robotik Süreç Otomasyonu (RPA)",
       date: "Ocak 2025",
-      institution: "BTK Akademi"
+      institution: "BTK Akademi",
+      pdfUrl: "/certificates/metinfarukbiyik_robotiksurec.pdf"
     },
     {
       name: "Excel'de Dashboard ve İleri Fonksiyonlar",
       date: "Şubat 2025",
-      institution: "BTK Akademi"
+      institution: "BTK Akademi",
+      pdfUrl: "/certificates/metinfarukbiyik_exceldeilerifonksiyonlar.pdf"
     },
     {
       name: "Yüksek İrtifa Liderlik Sertifikası",
       date: "Mart 2025",
-      institution: "Turkcell Akademi"
+      institution: "Turkcell Akademi",
+      pdfUrl: "/certificates/metinfarukbiyik_yuksekirtifalider.pdf"
     },
     {
       name: "Yüksek İrtifa Teknoloji Sertifikası",
       date: "Mart 2025",
-      institution: "Turkcell Akademi"
+      institution: "Turkcell Akademi",
+      pdfUrl: "/certificates/metinfarukbiyik_yuksekirtifateknoloji.pdf"
     },
   ],
   languages: [

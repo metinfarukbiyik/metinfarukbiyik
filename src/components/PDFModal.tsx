@@ -41,7 +41,7 @@ export function PDFModal({ isOpen, onClose, pdfUrl, title }: PDFModalProps) {
         {/* Mobil uyarı - sadece mobilde göster */}
         <div className="flex items-center justify-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-3 py-2 text-xs text-blue-600 dark:text-blue-300 sm:hidden">
           <AlertCircle className="w-4 h-4" />
-          <span>Bu pencereyi sağlıklı görüntüleyemiyorsanız 'Yeni Sekmede Aç' butonu ile açarak görüntüleyebilirsiniz.</span>
+          <span>Bu pencereyi sağlıklı görüntüleyemiyorsanız yukarıdaki Yeni Sekmede Aç seçeneğini kullanabilirsiniz.</span>
         </div>
 
         {/* PDF */}

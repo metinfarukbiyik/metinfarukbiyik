@@ -12,8 +12,14 @@ export function PDFModal({ isOpen, onClose, pdfUrl, title }: PDFModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="w-[calc(100%-32px)] max-w-full sm:max-w-4xl md:max-w-5xl lg:max-w-6xl h-[90vh] max-h-[95vh] flex flex-col bg-white dark:bg-zinc-900 p-0 shadow-2xl border-none justify-start items-stretch rounded-xl sm:rounded-2xl mx-auto my-4"
-        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', position: 'fixed' }}
+        className="w-[90vw] max-w-4xl md:max-w-5xl lg:max-w-6xl h-[90vh] max-h-[95vh] flex flex-col bg-white dark:bg-zinc-900 p-0 shadow-2xl border-none justify-start items-stretch rounded-xl sm:rounded-2xl my-4 overflow-hidden"
+        style={{ 
+          top: '50%', 
+          left: '50%', 
+          transform: 'translate(-50%, -50%)', 
+          position: 'fixed',
+          margin: '0 auto'
+        }}
       >
         {/* Başlık ve yeni sekmede aç butonu */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-4 sm:px-8 pt-4 sm:pt-6 pb-2 border-b border-gray-100 dark:border-gray-700 relative gap-2">

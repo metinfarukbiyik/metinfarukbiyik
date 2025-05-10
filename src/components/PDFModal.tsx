@@ -12,7 +12,7 @@ export function PDFModal({ isOpen, onClose, pdfUrl, title }: PDFModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="w-[90vw] max-w-4xl md:max-w-5xl lg:max-w-6xl h-[90vh] max-h-[95vh] flex flex-col bg-white dark:bg-zinc-900 p-0 shadow-2xl border-none justify-start items-stretch rounded-xl sm:rounded-2xl my-4 overflow-hidden"
+        className="w-[90vw] max-w-4xl md:max-w-5xl lg:max-w-6xl h-[85vh] max-h-[90vh] flex flex-col bg-white dark:bg-zinc-900 p-0 shadow-2xl border-none justify-start items-stretch rounded-xl sm:rounded-2xl my-8 overflow-hidden"
         style={{ 
           top: '50%', 
           left: '50%', 

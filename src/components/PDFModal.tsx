@@ -12,7 +12,7 @@ export function PDFModal({ isOpen, onClose, pdfUrl, title }: PDFModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="w-full max-w-full sm:max-w-4xl md:max-w-5xl lg:max-w-6xl h-[90vh] max-h-[95vh] flex flex-col bg-white dark:bg-zinc-900 p-0 shadow-2xl border-none justify-start items-stretch rounded-xl sm:rounded-2xl mx-2 sm:mx-4 my-4"
+        className="w-[calc(100%-32px)] max-w-full sm:max-w-4xl md:max-w-5xl lg:max-w-6xl h-[90vh] max-h-[95vh] flex flex-col bg-white dark:bg-zinc-900 p-0 shadow-2xl border-none justify-start items-stretch rounded-xl sm:rounded-2xl mx-auto my-4"
         style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', position: 'fixed' }}
       >
         {/* Başlık ve yeni sekmede aç butonu */}
@@ -34,7 +34,7 @@ export function PDFModal({ isOpen, onClose, pdfUrl, title }: PDFModalProps) {
         {/* Mobil uyarı - sadece mobilde göster */}
         <div className="flex items-center justify-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-3 py-2 text-xs text-blue-600 dark:text-blue-300 sm:hidden">
           <AlertCircle className="w-4 h-4" />
-          <span>PDF cihazınızda uyumsuz görünüyorsa yeni sekmede açabilirsiniz</span>
+          <span>Bu pencereyi sağlıklı görüntüleyemiyorsanız "Yeni Sekmede Aç" butonu ile açarak görüntüleyebilirsiniz.</span>
         </div>
 
         {/* PDF */}

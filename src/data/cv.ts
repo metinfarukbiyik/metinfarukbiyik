@@ -96,7 +96,6 @@ export const cvData: CV = {
         "Next.js",
         "Tailwind CSS",
         "Bootstrap",
-        
       ]
     }
   },

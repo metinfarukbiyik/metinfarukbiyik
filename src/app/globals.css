@@ -130,13 +130,41 @@
   }
 
   .grid-bg {
-    background-image: 
-      linear-gradient(45deg, rgb(var(--primary) / 0.02) 1px, transparent 1px),
-      linear-gradient(-45deg, rgb(var(--primary) / 0.02) 1px, transparent 1px),
-      linear-gradient(to right, rgb(var(--primary) / 0.02) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--primary) / 0.02) 1px, transparent 1px);
+    background-image: none;
     background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
     background-position: 0 0, 0 0, -0.5px -0.5px, -0.5px -0.5px;
+  }
+
+  /* Yeni Arka Plan Stili */
+  .grid-bg-fancy {
+    background-image: 
+      linear-gradient(to right, rgba(226, 232, 240, 0.12) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(226, 232, 240, 0.12) 1px, transparent 1px);
+    background-size: 24px 24px;
+    position: relative;
+  }
+
+  .grid-bg-fancy::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(to right, rgba(226, 232, 240, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(226, 232, 240, 0.06) 1px, transparent 1px);
+    background-size: 8px 8px;
+    pointer-events: none;
+  }
+
+  .dark .grid-bg-fancy {
+    background-image: 
+      linear-gradient(to right, rgba(226, 232, 240, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(226, 232, 240, 0.03) 1px, transparent 1px);
+  }
+
+  .dark .grid-bg-fancy::after {
+    background-image: 
+      linear-gradient(to right, rgba(226, 232, 240, 0.015) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(226, 232, 240, 0.015) 1px, transparent 1px);
   }
 
   .pattern-bg {
@@ -186,6 +214,21 @@
                       radial-gradient(at 0% 100%, rgb(var(--secondary) / 0.06) 0px, transparent 50%),
                       radial-gradient(at 80% 100%, rgb(var(--accent) / 0.06) 0px, transparent 50%),
                       radial-gradient(at 0% 0%, rgb(var(--primary) / 0.06) 0px, transparent 50%);
+  }
+
+  /* Gelişmiş Gradient Arka Plan */
+  .bg-gradient-enhanced {
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgb(var(--primary) / 0.12) 0%, transparent 30%),
+      radial-gradient(circle at 85% 30%, rgb(var(--secondary) / 0.12) 0%, transparent 30%),
+      radial-gradient(circle at 50% 80%, rgb(var(--accent) / 0.12) 0%, transparent 30%);
+  }
+
+  .dark .bg-gradient-enhanced {
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgb(var(--primary) / 0.08) 0%, transparent 25%),
+      radial-gradient(circle at 85% 30%, rgb(var(--secondary) / 0.08) 0%, transparent 25%),
+      radial-gradient(circle at 50% 80%, rgb(var(--accent) / 0.08) 0%, transparent 25%);
   }
 
   /* Gelişmiş Hover Efektleri */
@@ -385,5 +428,41 @@
   .animate-gradient {
     animation: gradient 6s ease infinite;
     background-size: 200% auto;
+  }
+  
+  /* Gradient glow animasyonu */
+  @keyframes glow-pulse {
+    0%, 100% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+  
+  .animate-glow-pulse {
+    animation: glow-pulse 8s ease-in-out infinite;
+  }
+  
+  /* Yavaş hareket eden gradient animasyonu */
+  @keyframes float-gradient {
+    0%, 100% {
+      background-position: 0% 0%;
+    }
+    25% {
+      background-position: 50% 10%;
+    }
+    50% {
+      background-position: 100% 0%;
+    }
+    75% {
+      background-position: 50% -10%;
+    }
+  }
+  
+  .animate-float-gradient {
+    animation: float-gradient 20s ease-in-out infinite;
   }
 }

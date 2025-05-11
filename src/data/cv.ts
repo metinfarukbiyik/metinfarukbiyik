@@ -59,18 +59,21 @@ export const cvData: CV = {
       instagram: "_metinbiyik"
     },
     additionalInfo: [
-      "Seyahat engelim bulunmamaktadır.",
-      "B, B1, M, F, D sınıfı ehliyet.",
-      "SRC-1 Belgesi.",
-      "SRC-3 Belgesi."
+      "Ehliyet: B, B1, D, D1, F, M",
+      "Seyahat Engeli: Yok",
+      "Ek Belge: SRC-1, SRC-3 ve Psikoteknik Belgesi"
     ]
   },
   skills: {
     softSkills: [
       "Takım Çalışması",
+      "İleri Seviye Bilgisayar Kullanımı",
       "Çözüm Odaklı",
       "Analiz ve Problem Çözme",
-      "Güçlü İletişim"
+      "Güçlü İletişim",
+      "Hızlı Öğrenme",
+      "Kullanıcı Deneyimi",
+      "İş Planlama",
     ],
     technical: {
       programs: [
@@ -88,8 +91,12 @@ export const cvData: CV = {
         "CSS",
         "SCSS",
         "JavaScript",
+        "TypeScript",
         "React",
-        "Next.js"
+        "Next.js",
+        "Tailwind CSS",
+        "Bootstrap",
+        
       ]
     }
   },

@@ -24,8 +24,10 @@ export default function PageLayout({ children, pageTitle }: PageLayoutProps) {
   const isHome = pathname === "/";
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-gradient-to-b from-background via-background/95 to-background/90 overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col bg-gradient-to-b from-background via-background/98 to-background/95 overflow-x-hidden">
       {/* Dekoratif Arka Plan */}
+      <div className="absolute inset-0 grid-bg-fancy mix-blend-normal dark:mix-blend-soft-light opacity-100" />
+      <div className="absolute inset-0 bg-gradient-enhanced animate-float-gradient" />
       <BackgroundDots />
 
       {/* Container */}

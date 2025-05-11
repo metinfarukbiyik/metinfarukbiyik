@@ -34,14 +34,14 @@ export default function Home() {
         {/* Sol Sütun - İletişim ve Yetenekler */}
         <div className="space-y-6 md:col-span-4">
           {/* İletişim */}
-          <section className="relative rounded-xl bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur-2xl dark:bg-black/10">
+          <section className="relative rounded-xl bg-white/5 dark:bg-zinc-800/5 p-6 backdrop-blur-2xl">
             <div className="absolute inset-0 rounded-xl ring-1 ring-black/5 ring-inset dark:ring-white/5" />
             <div className="relative">
               <h2 className="mb-5 flex items-center gap-3 text-xl font-bold">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-transparent backdrop-blur-xl">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
                   <Contact2 className="h-[18px] w-[18px] text-primary" />
                 </div>
-                <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                <span className="text-primary">
                   İletişim
                 </span>
               </h2>
@@ -50,14 +50,14 @@ export default function Home() {
           </section>
 
           {/* Yetenekler */}
-          <section className="relative rounded-xl bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur-2xl dark:bg-black/10">
+          <section className="relative rounded-xl bg-white/5 dark:bg-zinc-800/5 p-6 backdrop-blur-2xl">
             <div className="absolute inset-0 rounded-xl ring-1 ring-black/5 ring-inset dark:ring-white/5" />
             <div className="relative">
               <h2 className="mb-5 flex items-center gap-3 text-xl font-bold">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-secondary/10 to-transparent backdrop-blur-xl">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary/10">
                   <Code2 className="h-[18px] w-[18px] text-secondary" />
                 </div>
-                <span className="bg-gradient-to-r from-secondary to-secondary/80 bg-clip-text text-transparent">
+                <span className="text-secondary">
                   Yetenekler
                 </span>
               </h2>
@@ -69,14 +69,14 @@ export default function Home() {
         {/* Sağ Sütun - Deneyim, Eğitim ve Sertifikalar */}
         <div className="space-y-6 md:col-span-8">
           {/* Deneyim */}
-          <section className="relative rounded-xl bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur-2xl dark:bg-black/10">
+          <section className="relative rounded-xl bg-white/5 dark:bg-zinc-800/5 p-6 backdrop-blur-2xl">
             <div className="absolute inset-0 rounded-xl ring-1 ring-black/5 ring-inset dark:ring-white/5" />
             <div className="relative">
               <h2 className="mb-5 flex items-center gap-3 text-2xl font-bold">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary/10 to-transparent backdrop-blur-xl">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
                   <Building2 className="h-[18px] w-[18px] text-primary" />
                 </div>
-                <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                <span className="text-primary">
                   Deneyim
                 </span>
               </h2>
@@ -85,14 +85,14 @@ export default function Home() {
           </section>
 
           {/* Eğitim */}
-          <section className="relative rounded-xl bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur-2xl dark:bg-black/10">
+          <section className="relative rounded-xl bg-white/5 dark:bg-zinc-800/5 p-6 backdrop-blur-2xl">
             <div className="absolute inset-0 rounded-xl ring-1 ring-black/5 ring-inset dark:ring-white/5" />
             <div className="relative">
               <h2 className="mb-5 flex items-center gap-3 text-2xl font-bold">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent/10 to-transparent backdrop-blur-xl">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10">
                   <BookOpen className="h-[18px] w-[18px] text-accent" />
                 </div>
-                <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
+                <span className="text-accent">
                   Eğitim
                 </span>
               </h2>
@@ -101,14 +101,14 @@ export default function Home() {
           </section>
 
           {/* Sertifikalar */}
-          <section className="relative rounded-xl bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur-2xl dark:bg-black/10">
+          <section className="relative rounded-xl bg-white/5 dark:bg-zinc-800/5 p-6 backdrop-blur-2xl">
             <div className="absolute inset-0 rounded-xl ring-1 ring-black/5 ring-inset dark:ring-white/5" />
             <div className="relative">
               <h2 className="mb-5 flex items-center gap-3 text-2xl font-bold">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-secondary/10 to-transparent backdrop-blur-xl">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary/10">
                   <Medal className="h-[18px] w-[18px] text-secondary" />
                 </div>
-                <span className="bg-gradient-to-r from-secondary to-secondary/80 bg-clip-text text-transparent">
+                <span className="text-secondary">
                   Sertifikalar
                 </span>
               </h2>

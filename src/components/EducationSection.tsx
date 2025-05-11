@@ -39,12 +39,12 @@ export default function EducationSection({ education }: EducationSectionProps) {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90 group-hover:text-accent transition-colors duration-300">
-                    {edu.school}
-                  </h3>
+                      {edu.school}
+                    </h3>
                   <p className="text-base text-gray-600 dark:text-white/70 group-hover:text-gray-800 dark:group-hover:text-white/90 transition-colors duration-300">
-                    {edu.degree}
-                    {edu.field && ` - ${edu.field}`}
-                  </p>
+                      {edu.degree}
+                      {edu.field && ` - ${edu.field}`}
+                    </p>
                 </div>
                 
                 {/* Tarih */}

@@ -39,11 +39,11 @@ export default function ExperienceSection({ experiences }: ExperienceSectionProp
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90 group-hover:text-primary transition-colors duration-300">
-                    {exp.company}
-                  </h3>
+                      {exp.company}
+                    </h3>
                   <p className="text-base text-gray-600 dark:text-white/70 group-hover:text-gray-800 dark:group-hover:text-white/90 transition-colors duration-300">
-                    {exp.position}
-                  </p>
+                      {exp.position}
+                    </p>
                 </div>
                 
                 {/* Tarih */}

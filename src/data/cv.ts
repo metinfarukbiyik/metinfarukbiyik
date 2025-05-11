@@ -66,10 +66,10 @@ export const cvData: CV = {
   },
   skills: {
     softSkills: [
-      "Takım Çalışması",
       "İleri Seviye Bilgisayar Kullanımı",
-      "Çözüm Odaklı",
       "Analiz ve Problem Çözme",
+      "Takım Çalışması",
+      "Çözüm Odaklı",
       "Güçlü İletişim",
       "Hızlı Öğrenme",
       "Kullanıcı Deneyimi",
@@ -83,16 +83,14 @@ export const cvData: CV = {
         "Adobe Photoshop",
         "Adobe Illustrator",
         "Canva",
-        "Figma",
-        "MS Teams",
       ],
       webDevelopment: [
         "HTML",
         "CSS",
-        "SCSS",
         "JavaScript",
         "TypeScript",
         "React",
+        "Next.js",
       ]
     }
   },

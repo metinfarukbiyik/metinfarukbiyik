@@ -162,11 +162,11 @@ export default function ContactSection({ contact }: ContactSectionProps) {
               }
               
               return (
-                <div
-                  key={index}
+              <div
+                key={index}
                   className="group flex items-center rounded-lg bg-card/30 p-3 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
+              >
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
                     {icon}
                   </div>
                   <div className="ml-3 flex flex-col">

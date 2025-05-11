@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PDFModal } from "./PDFModal";
-import { Medal, Eye } from "lucide-react";
+import { Medal, Eye, Calendar, Building } from "lucide-react";
 
 interface Certification {
   name: string;
@@ -20,30 +20,40 @@ export default function CertificationsSection({ certifications }: Certifications
   const [selectedName, setSelectedName] = useState<string>("");
 
   return (
-    <section className="py-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section className="py-6">
+      <div className="container mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {certifications.map((cert, index) => (
             <div
               key={index}
-              className="relative bg-white dark:bg-zinc-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-secondary/5 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 p-6 flex flex-col gap-3 min-h-[180px]"
+              className="relative bg-white dark:bg-zinc-800/80 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300 p-5 flex flex-col min-h-[180px] group hover:bg-gradient-to-br hover:from-white hover:to-gray-50 dark:hover:from-zinc-800 dark:hover:to-zinc-900/90 hover:border-secondary/20 dark:hover:border-secondary/20"
             >
-              <div className="absolute -top-5 left-5 bg-white dark:bg-zinc-900 rounded-full shadow p-2 border border-gray-100 dark:border-gray-700">
-                <Medal className="text-secondary dark:text-secondary w-7 h-7" />
+              <div className="absolute -top-3 left-4 bg-white dark:bg-zinc-800 rounded-full shadow p-1.5 border border-gray-200 dark:border-gray-700 group-hover:border-secondary/30 dark:group-hover:border-secondary/30 transition-all duration-300">
+                <Medal className="text-secondary dark:text-secondary w-5 h-5" />
               </div>
-              <div className="flex-1 flex flex-col justify-center">
-                <h3 className="text-lg font-semibold mb-1 mt-3 text-gray-900 dark:text-gray-100">{cert.name}</h3>
-                <p className="text-gray-700 dark:text-gray-300 text-sm mb-1">{cert.institution}</p>
-                <p className="text-gray-400 dark:text-gray-400 text-xs mb-3">{cert.date}</p>
+              
+              <div className="flex-1 flex flex-col pt-3">
+                <h3 className="text-base font-semibold mb-2 mt-2 text-gray-900 dark:text-gray-100">{cert.name}</h3>
+                
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <Building className="w-3 h-3 text-gray-500 dark:text-gray-400" />
+                  <p className="text-gray-700 dark:text-gray-300 text-sm">{cert.institution}</p>
+                </div>
+                
+                <div className="flex items-center gap-1.5 mb-3">
+                  <Calendar className="w-3 h-3 text-gray-500 dark:text-gray-400" />
+                  <p className="text-gray-600 dark:text-gray-400 text-xs">{cert.date}</p>
+                </div>
+                
                 {cert.pdfUrl && (
                   <button
                     onClick={() => {
                       setSelectedPDF(cert.pdfUrl || null);
                       setSelectedName(cert.name);
                     }}
-                    className="flex items-center text-secondary dark:text-secondary hover:text-secondary/80 dark:hover:text-secondary/80 font-medium text-sm underline underline-offset-4 transition-colors pl-0 mt-2"
+                    className="inline-flex items-center text-secondary dark:text-secondary hover:text-secondary/80 dark:hover:text-secondary/80 text-xs mt-auto"
                   >
-                    <Eye className="w-4 h-4 mr-2" />
+                    <Eye className="w-3 h-3 mr-1" />
                     Sertifikayı Görüntüle
                   </button>
                 )}

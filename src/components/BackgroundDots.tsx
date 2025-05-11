@@ -1,7 +1,3 @@
-interface BackgroundDotsProps {
-  // Kullanılmayan parametreler kaldırıldı
-}
-
 export default function BackgroundDots() {
   return (
     <div className="pointer-events-none fixed inset-0 overflow-hidden">

@@ -13,7 +13,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
     <div className="space-y-10">
       {/* Soft Skills */}
       <div className="space-y-5">
-        <h3 className="text-lg font-semibold text-card-foreground/90 relative inline-block">
+        <h3 className="text-sm font-medium text-muted-foreground">
           Kişisel Yetenekler
         </h3>
         <div className="grid grid-cols-2 gap-3">
@@ -36,7 +36,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
 
       {/* Technical Skills - Programs */}
       <div className="space-y-5">
-        <h3 className="text-lg font-semibold text-card-foreground/90 relative inline-block">
+        <h3 className="text-sm font-medium text-muted-foreground">
           Programlar
         </h3>
         <div className="grid grid-cols-3 gap-3">
@@ -59,7 +59,7 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
 
       {/* Technical Skills - Web Development */}
       <div className="space-y-5">
-        <h3 className="text-lg font-semibold text-card-foreground/90 relative inline-block">
+        <h3 className="text-sm font-medium text-muted-foreground">
           Web Geliştirme
         </h3>
         <div className="grid grid-cols-3 gap-3">

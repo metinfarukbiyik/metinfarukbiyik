@@ -93,9 +93,6 @@ export const cvData: CV = {
         "JavaScript",
         "TypeScript",
         "React",
-        "Next.js",
-        "Tailwind CSS",
-        "Bootstrap",
       ]
     }
   },

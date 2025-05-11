@@ -1,3 +1,8 @@
+"use client"
+
+import { useState } from "react";
+import { Star, Monitor, Code } from "lucide-react";
+
 interface SkillsSectionProps {
   skills: {
     softSkills: string[];
@@ -9,78 +14,109 @@ interface SkillsSectionProps {
 }
 
 export default function SkillsSection({ skills }: SkillsSectionProps) {
+  // Yıldız seviyelerini temsil etmek için bir fonksiyon (5 üzerinden)
+  function getSkillLevel(skill: string): number {
+    const highSkills = [
+      "Takım Çalışması", "İleri Seviye Bilgisayar Kullanımı", "Hızlı Öğrenme",
+      "MS Word", "HTML", "CSS", "İş Planlama", 
+    ];
+    
+    const mediumHighSkills = [
+      "Çözüm Odaklı", "Analiz ve Problem Çözme", "Güçlü İletişim",
+       "JavaScript", "MS Excel", "React",
+    ];
+    
+    if (highSkills.includes(skill)) return 5;
+    if (mediumHighSkills.includes(skill)) return 4;
+    return 3;
+  }
+
+  // Yıldızları render etmek için yardımcı fonksiyon
+  const renderStars = (skill: string, colorClass: string) => {
+    const level = getSkillLevel(skill);
+    // Sabit bir dizi oluştur - performans optimizasyonu için
+    const stars = [1, 2, 3, 4, 5,];
+    
+    return (
+      <div className="flex space-x-0.5">
+        {stars.map((starIndex) => (
+          <Star 
+            key={`${skill}-star-${starIndex}`}
+            className={`h-3 w-3 ${
+              starIndex <= level
+                ? `text-${colorClass}` 
+                : 'text-gray-300 dark:text-gray-600'
+            }`} 
+            fill={starIndex <= level ? "currentColor" : "none"}
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
-      {/* Soft Skills */}
-      <div className="space-y-3">
-        <h3 className="text-lg font-medium text-card-foreground/90">
-          Kişisel Yetenekler
+      {/* Kişisel Yetenekler */}
+      <div className="space-y-4">
+        <h3 className="text-base font-medium text-card-foreground/90 flex items-center gap-2 mb-3">
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+            <Star className="h-3 w-3" />
+          </div>
+          <span>Kişisel Yetenekler</span>
         </h3>
-        <div className="flex flex-wrap gap-2">
+        
+        <div className="grid grid-cols-2 gap-2">
           {skills.softSkills.map((skill, index) => (
-            <div
-              key={index}
-              className="group flex items-center gap-2 rounded-lg bg-card/30 px-3 py-2 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-primary/20 dark:hover:ring-primary/20"
+            <div 
+              key={`soft-skill-${index}`} 
+              className="flex items-center gap-2 rounded-lg bg-card/30 p-2 ring-1 ring-black/5 dark:ring-white/5 hover:bg-card/50 transition-all"
             >
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/20">
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor" />
-                </svg>
-              </div>
-              <span className="text-sm font-medium text-card-foreground/80 transition-colors duration-300 group-hover:text-card-foreground">
-                {skill}
-              </span>
+              <span className="text-sm text-card-foreground/90 flex-1">{skill}</span>
+              {renderStars(skill, "primary")}
             </div>
           ))}
         </div>
       </div>
-
-      {/* Technical Skills - Programs */}
-      <div className="space-y-3">
-        <h3 className="text-lg font-medium text-card-foreground/90">
-          Programlar
+      
+      {/* Programlar */}
+      <div className="space-y-4">
+        <h3 className="text-base font-medium text-card-foreground/90 flex items-center gap-2 mb-3">
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-secondary/10 text-secondary">
+            <Monitor className="h-3 w-3" />
+          </div>
+          <span>Programlar</span>
         </h3>
-        <div className="flex flex-wrap gap-2">
+        
+        <div className="grid grid-cols-2 gap-2">
           {skills.technical.programs.map((program, index) => (
-            <div
-              key={index}
-              className="group flex items-center gap-2 rounded-lg bg-card/30 px-3 py-2 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-secondary/20 dark:hover:ring-secondary/20"
+            <div 
+              key={`program-${index}`} 
+              className="flex items-center gap-2 rounded-lg bg-card/30 p-2 ring-1 ring-black/5 dark:ring-white/5 hover:bg-card/50 transition-all"
             >
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-secondary/10 text-secondary transition-all duration-300 group-hover:scale-105 group-hover:bg-secondary/20">
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 16V8.00002C21 6.34317 19.6569 5.00002 18 5.00002H6C4.34315 5.00002 3 6.34317 3 8.00002V16C3 17.6569 4.34315 19 6 19H18C19.6569 19 21 17.6569 21 16Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M3 9H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M7 14H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <span className="text-sm font-medium text-card-foreground/80 transition-colors duration-300 group-hover:text-card-foreground">
-                {program}
-              </span>
+              <span className="text-sm text-card-foreground/90 flex-1">{program}</span>
+              {renderStars(program, "secondary")}
             </div>
           ))}
         </div>
       </div>
-
-      {/* Technical Skills - Web Development */}
-      <div className="space-y-3">
-        <h3 className="text-lg font-medium text-card-foreground/90">
-          Web Geliştirme
+      
+      {/* Web Geliştirme */}
+      <div className="space-y-4">
+        <h3 className="text-base font-medium text-card-foreground/90 flex items-center gap-2 mb-3">
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-accent/10 text-accent">
+            <Code className="h-3 w-3" />
+          </div>
+          <span>Web Geliştirme</span>
         </h3>
-        <div className="flex flex-wrap gap-2">
+        
+        <div className="grid grid-cols-2 gap-2">
           {skills.technical.webDevelopment.map((tech, index) => (
-            <div
-              key={index}
-              className="group flex items-center gap-2 rounded-lg bg-card/30 px-3 py-2 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 hover:bg-card/50 hover:ring-accent/20 dark:hover:ring-accent/20"
+            <div 
+              key={`web-tech-${index}`}
+              className="flex items-center gap-2 rounded-lg bg-card/30 p-2 ring-1 ring-black/5 dark:ring-white/5 hover:bg-card/50 transition-all"
             >
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-accent/10 text-accent transition-all duration-300 group-hover:scale-105 group-hover:bg-accent/20">
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17 7L7 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M7 7H17V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <span className="text-sm font-medium text-card-foreground/80 transition-colors duration-300 group-hover:text-card-foreground">
-                {tech}
-              </span>
+              <span className="text-sm text-card-foreground/90 flex-1">{tech}</span>
+              {renderStars(tech, "accent")}
             </div>
           ))}
         </div>

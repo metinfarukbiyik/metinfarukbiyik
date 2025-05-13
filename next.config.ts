@@ -9,8 +9,18 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: '/anilar/',
+        destination: '/anilar',
+        permanent: true,
+      },
+      {
+        source: '/anlar',
+        destination: '/anilar',
+        permanent: true,
+      },
+      {
         source: '/anlar/',
-        destination: '/anlar',
+        destination: '/anilar',
         permanent: true,
       },
       {

@@ -4,10 +4,10 @@ import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import { setupData } from "@/data/setup";
 import PageLayout from "@/components/layouts/PageLayout";
-import { Monitor, Laptop, Smartphone, Keyboard, Mouse, Headphones, Speaker, Armchair } from "lucide-react";
+import { Monitor, Laptop, Smartphone, Keyboard, Mouse, Headphones, Speaker, Armchair, LucideIcon } from "lucide-react";
 
 // İkon eşleştirmeleri
-const itemIcons: { [key: string]: any } = {
+const itemIcons: Record<string, LucideIcon> = {
   "MacBook Air M2": Laptop,
   "DELL P3223QE 31,5\" 4K": Monitor,
   "iPhone 14 Pro Max": Smartphone,

@@ -10,23 +10,25 @@ interface SkillsSectionProps {
 
 export default function SkillsSection({ skills }: SkillsSectionProps) {
   return (
-    <div className="space-y-10">
-      {/* Soft Skills */}
-      <div className="space-y-5">
-        <h3 className="text-sm font-medium text-muted-foreground">
+    <div className="space-y-8">
+      {/* Kişisel Yetenekler */}
+      <div className="space-y-4">
+        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
           Kişisel Yetenekler
         </h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {skills.softSkills.map((skill, index) => (
             <div
               key={index}
-              className="group relative flex items-center gap-3 rounded-xl bg-gradient-to-br from-primary/5 to-transparent backdrop-blur-sm p-3 transition-all duration-300 hover:bg-primary/10 hover:shadow-md hover:-translate-y-0.5 border border-primary/10"
+              className="group flex items-center gap-3 rounded-lg bg-white/30 dark:bg-zinc-800/30 p-3 transition-all duration-300 hover:bg-white/50 dark:hover:bg-zinc-800/50 hover:shadow-md"
             >
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/5 to-primary/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/15 group-hover:shadow-sm">
-                {getSoftSkillIcon(skill)}
+              <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20" />
+                <div className="text-primary transition-all duration-300 group-hover:scale-110">
+                  {getSoftSkillIcon(skill)}
+                </div>
               </div>
-              <span className="text-sm font-medium text-card-foreground/90 transition-colors duration-300 group-hover:text-card-foreground">
+              <span className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300 group-hover:text-primary">
                 {skill}
               </span>
             </div>
@@ -34,22 +36,24 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
         </div>
       </div>
 
-      {/* Technical Skills - Programs */}
-      <div className="space-y-5">
-        <h3 className="text-sm font-medium text-muted-foreground">
+      {/* Programlar */}
+      <div className="space-y-4">
+        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
           Programlar
         </h3>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3">
           {skills.technical.programs.map((program, index) => (
             <div
               key={index}
-              className="group relative flex flex-col items-center justify-center rounded-xl bg-gradient-to-br from-secondary/5 to-transparent backdrop-blur-sm p-3 text-center transition-all duration-300 hover:bg-secondary/10 hover:shadow-md hover:-translate-y-0.5 border border-secondary/10"
+              className="group flex flex-col items-center justify-center gap-2 rounded-lg bg-white/20 dark:bg-zinc-800/20 p-3 transition-all duration-300 hover:bg-white/40 dark:hover:bg-zinc-800/40 hover:shadow-md text-center"
             >
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-secondary/5 to-secondary/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-              <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-secondary/10 text-secondary ring-1 ring-secondary/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-secondary/15 group-hover:shadow-sm">
-                {getProgramIcon(program)}
+              <div className="relative flex h-12 w-12 shrink-0 items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20" />
+                <div className="text-primary transition-all duration-300 group-hover:scale-110">
+                  {getProgramIcon(program)}
+                </div>
               </div>
-              <span className="text-xs font-medium text-card-foreground/90 transition-colors duration-300 group-hover:text-card-foreground">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300 group-hover:text-primary">
                 {program}
               </span>
             </div>
@@ -57,22 +61,24 @@ export default function SkillsSection({ skills }: SkillsSectionProps) {
         </div>
       </div>
 
-      {/* Technical Skills - Web Development */}
-      <div className="space-y-5">
-        <h3 className="text-sm font-medium text-muted-foreground">
+      {/* Web Geliştirme */}
+      <div className="space-y-4">
+        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
           Web Geliştirme
         </h3>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-3">
           {skills.technical.webDevelopment.map((tech, index) => (
             <div
               key={index}
-              className="group relative flex flex-col items-center justify-center rounded-xl bg-gradient-to-br from-accent/5 to-transparent backdrop-blur-sm p-3 text-center transition-all duration-300 hover:bg-accent/10 hover:shadow-md hover:-translate-y-0.5 border border-accent/10"
+              className="group flex flex-col items-center justify-center gap-2 rounded-lg bg-white/20 dark:bg-zinc-800/20 p-3 transition-all duration-300 hover:bg-white/40 dark:hover:bg-zinc-800/40 hover:shadow-md text-center"
             >
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-accent/5 to-accent/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-              <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 text-accent ring-1 ring-accent/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-accent/15 group-hover:shadow-sm">
-                {getTechIcon(tech)}
+              <div className="relative flex h-12 w-12 shrink-0 items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20" />
+                <div className="text-primary transition-all duration-300 group-hover:scale-110">
+                  {getTechIcon(tech)}
+                </div>
               </div>
-              <span className="text-xs font-medium text-card-foreground/90 transition-colors duration-300 group-hover:text-card-foreground">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300 group-hover:text-primary">
                 {tech}
               </span>
             </div>

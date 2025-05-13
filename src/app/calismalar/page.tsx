@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, ExternalLink, Github } from "lucide-react";
+import { Code2, ExternalLink, Github, Sparkles } from "lucide-react";
 import { useTheme } from "next-themes";
 import PageLayout from "@/components/layouts/PageLayout";
 import { projects, technologies } from "@/data/projects";
@@ -19,30 +19,40 @@ export default function CalismalarPage() {
       }}
     >
       {/* Teknolojiler Bölümü */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-semibold mb-8">Teknolojiler</h2>
+      <motion.section 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mb-16"
+      >
+        <div className="flex items-center gap-3 mb-8">
+          <motion.div
+            initial={{ rotate: 0 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          >
+            <Sparkles className="w-6 h-6 text-primary" />
+          </motion.div>
+          <h2 className="text-2xl font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Teknolojiler
+          </h2>
+        </div>
+
         <div className="flex flex-wrap gap-3">
-          {technologies.map((tech) => (
+          {technologies.map((tech, index) => (
             <motion.div
               key={tech.name}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="group relative flex flex-row items-center gap-2 px-3 py-2 rounded-lg bg-white/50 dark:bg-black/40 border border-black/[0.08] dark:border-white/[0.08] hover:border-black/[0.12] dark:hover:border-white/[0.12] transition-all duration-300"
-              style={{
-                background: `linear-gradient(135deg, ${tech.color}05 0%, ${tech.color}02 100%)`,
-              }}
-            >
-              {/* Dekoratif Arka Plan Efektleri */}
-              <div 
-                className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{
-                  background: `linear-gradient(135deg, ${tech.color}0A 0%, ${tech.color}05 100%)`,
-                }}
-              />
-              
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              className="group relative flex flex-row items-center gap-2 px-4 py-2.5 rounded-xl bg-white/50 dark:bg-black/40 hover:bg-white/60 dark:hover:bg-black/50 transition-colors duration-200"
+            >              
               {/* İkon */}
-              <div className="relative flex items-center justify-center w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">
+              <motion.div 
+                className="relative flex items-center justify-center w-5 h-5"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.2 }}
+              >
                 {(() => {
                   const Icon = TechnologyIcons[tech.iconType];
                   return (
@@ -63,70 +73,92 @@ export default function CalismalarPage() {
                     />
                   );
                 })()}
-              </div>
+              </motion.div>
 
               {/* İsim */}
               <p className="relative text-sm font-medium text-black/70 dark:text-white/70">
                 {tech.name}
               </p>
-
-              {/* Hover Efekti için Overlay */}
-              <div 
-                className="absolute inset-0 rounded-lg ring-1 ring-inset ring-black/[0.05] dark:ring-white/[0.05] group-hover:ring-black/[0.08] dark:group-hover:ring-white/[0.08] transition-all duration-300" 
-              />
             </motion.div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* Projeler Bölümü */}
-      <section className="relative">
-        {/* Arkaplan Dekorasyonu */}
-        <div className="absolute inset-0 pointer-events-none" />
-        
-        <h2 className="text-2xl font-semibold mb-8 relative">Projeler</h2>
-        <div className="space-y-8">
-          {projects.map((project) => (
+      <motion.section 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="relative"
+      >
+        <div className="flex items-center gap-3 mb-8">
+          <motion.div
+            initial={{ rotate: 0 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-xl opacity-50" />
+            <Code2 className="w-6 h-6 text-primary" />
+          </motion.div>
+          <h2 className="text-2xl font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Projeler
+          </h2>
+        </div>
+
+        <div className="space-y-6">
+          {projects.map((project, index) => (
             <motion.article
               key={project.id}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="group relative flex gap-6 p-6 rounded-xl bg-gradient-to-br from-white/70 to-white/50 dark:from-white/[0.08] dark:to-white/[0.05] hover:from-white/80 hover:to-white/60 dark:hover:from-white/[0.12] dark:hover:to-white/[0.08] border border-black/[0.05] dark:border-white/[0.05] transition-all duration-300"
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+              className="group relative flex gap-6 p-6 rounded-2xl bg-gradient-to-br from-white/70 to-white/50 dark:from-white/[0.08] dark:to-white/[0.05] hover:from-white/80 hover:to-white/60 dark:hover:from-white/[0.12] dark:hover:to-white/[0.08] border border-black/[0.05] dark:border-white/[0.05] transition-all duration-300"
             >
               {/* Sol taraf - İkon */}
               <div className="shrink-0">
-                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
-                  <Code2 className="w-8 h-8 text-primary" />
-                </div>
+                <motion.div 
+                  whileHover={{ scale: 1.05, rotate: -3 }}
+                  transition={{ duration: 0.2 }}
+                  className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <Code2 className="w-8 h-8 text-primary relative z-10" />
+                </motion.div>
               </div>
 
               {/* Sağ taraf - İçerik */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-4">
-                  <h3 className="text-xl font-semibold truncate text-black/90 dark:text-white/90">
+                  <h3 className="text-xl font-semibold truncate bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     {project.title}
                   </h3>
                   <div className="flex items-center gap-3 shrink-0">
                     {project.githubUrl && (
-                      <a
+                      <motion.a
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                        className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors relative group/link"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        <Github className="w-5 h-5 text-black/70 dark:text-white/70" />
-                      </a>
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-xl opacity-0 group-hover/link:opacity-100 transition-opacity duration-300" />
+                        <Github className="w-5 h-5 text-black/70 dark:text-white/70 relative z-10" />
+                      </motion.a>
                     )}
                     {project.liveUrl && (
-                      <a
+                      <motion.a
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                        className="p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-colors relative group/link"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        <ExternalLink className="w-5 h-5 text-black/70 dark:text-white/70" />
-                      </a>
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-xl opacity-0 group-hover/link:opacity-100 transition-opacity duration-300" />
+                        <ExternalLink className="w-5 h-5 text-black/70 dark:text-white/70 relative z-10" />
+                      </motion.a>
                     )}
                   </div>
                 </div>
@@ -137,19 +169,25 @@ export default function CalismalarPage() {
 
                 <div className="mt-4 flex flex-wrap gap-2">
                   {project.technologies.map((tech) => (
-                    <span
+                    <motion.span
                       key={tech}
-                      className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary/90"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
+                      className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary/90 ring-1 ring-primary/20 backdrop-blur-xl transition-all duration-300 hover:bg-primary/20 hover:ring-primary/30"
                     >
                       {tech}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
               </div>
+
+              {/* Dekoratif Kenar Efektleri */}
+              <div className="absolute inset-[-1px] bg-gradient-to-br from-primary/[0.1] via-secondary/[0.05] to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none" />
+              <div className="absolute inset-[-1px] bg-gradient-to-tl from-white/[0.05] to-transparent dark:from-white/[0.02] rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none" />
             </motion.article>
           ))}
         </div>
-      </section>
+      </motion.section>
     </PageLayout>
   );
 }

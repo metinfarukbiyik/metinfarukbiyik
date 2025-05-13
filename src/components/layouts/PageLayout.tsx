@@ -4,9 +4,9 @@ import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import PageTitle from "@/components/PageTitle";
-import Footer from "@/components/Footer";
-import BackgroundDots from "@/components/BackgroundDots";
+import PageTitle from "../PageTitle";
+import Footer from "../Footer";
+import BackgroundDots from "../BackgroundDots";
 
 interface PageLayoutProps {
   children: React.ReactNode;

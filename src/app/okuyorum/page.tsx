@@ -1,40 +1,21 @@
+"use client";
+
 import Image from "next/image";
 import { booksData } from "@/data/books";
 import { BookOpen, BookMarked } from "lucide-react";
 import PageLayout from "@/components/layouts/PageLayout";
 import { Book } from "@/types";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Okuyorum | Metin Faruk Bıyık",
-  description: "Okuduğum, okumakta olduğum ve okumayı planladığım kitaplar. Kendimi geliştirmek için sürekli yeni şeyler öğreniyorum.",
-  authors: [{ name: "Metin Faruk Bıyık", url: "https://biyik.dev" }],
-  publisher: "Metin Faruk Bıyık",
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    title: "Okuyorum | Metin Faruk Bıyık",
-    description: "Okuduğum, okumakta olduğum ve okumayı planladığım kitaplar. Kendimi geliştirmek için sürekli yeni şeyler öğreniyorum.",
-    images: [...booksData.read, ...booksData.toRead].map((book) => ({
-      url: book.image,
-      width: 1200,
-      height: 630,
-      alt: book.title,
-    })),
-  },
-};
+import { motion } from "framer-motion";
 
 function BookCard({ book, isRead = true }: { book: Book; isRead?: boolean }) {
   return (
-    <div
-      className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-white/[0.075] via-white/[0.035] to-transparent dark:from-black/[0.075] dark:via-black/[0.035] dark:to-transparent backdrop-blur-md shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-black/10 dark:border-white/10"
-    >
-      <div className={`absolute inset-0 bg-gradient-to-br ${
-        isRead ? 'from-primary/[0.02] to-secondary/[0.02]' : 'from-secondary/[0.02] to-primary/[0.02]'
-      } opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-      
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.3 }}
+      className="group relative overflow-hidden rounded-xl bg-white/[0.02] dark:bg-black/[0.02] shadow-sm hover:shadow-md transition-all duration-300 border border-black/5 dark:border-white/5"
+    >      
       {/* Kitap Görseli */}
       <div className="relative aspect-[2/3] w-full overflow-hidden">
         <Image
@@ -42,29 +23,36 @@ function BookCard({ book, isRead = true }: { book: Book; isRead?: boolean }) {
           alt={book.title}
           fill
           loading="lazy"
-          className={`object-cover transition-all duration-500 group-hover:scale-105 ${!isRead && 'grayscale'}`}
+          className={`object-cover transition-transform duration-300 group-hover:scale-[1.02] ${!isRead && 'grayscale hover:grayscale-0'}`}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       {/* Kitap Bilgileri */}
-      <div className="p-3">
-        <h3 className="font-medium text-sm text-card-foreground line-clamp-2">
+      <div className="p-4">
+        <h3 className="font-medium text-sm text-black/90 dark:text-white/90 line-clamp-2 group-hover:text-primary/90">
           {book.title}
         </h3>
-        <p className="text-xs text-muted-foreground/90 line-clamp-1 mt-0.5">
+        <p className="text-xs text-black/60 dark:text-white/60 line-clamp-1 mt-1">
           {book.author}
         </p>
       </div>
-
-      {/* Dekoratif Kenar Efekti */}
-      <div className="absolute inset-[-1px] bg-gradient-to-br from-black/[0.1] to-transparent dark:from-white/[0.05] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-    </div>
+    </motion.div>
   );
 }
 
 export default function OkuyorumPage() {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
   return (
     <PageLayout
       pageTitle={{
@@ -73,38 +61,66 @@ export default function OkuyorumPage() {
       }}
     >
       {/* Okuduklarım */}
-      <div className="mt-12">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 backdrop-blur-xl">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mt-12"
+      >
+        <div className="flex items-center gap-3 mb-8">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/5 dark:bg-primary/10"
+          >
             <BookOpen className="h-5 w-5 text-primary" />
-          </div>
-          <h2 className="text-2xl font-semibold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+          </motion.div>
+          <h2 className="text-2xl font-semibold text-primary">
             Okuduklarım
           </h2>
         </div>
-        <div className="grid gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+        >
           {booksData.read.map((book) => (
             <BookCard key={book.id} book={book} isRead={true} />
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Okuyacaklarım */}
-      <div className="mt-16">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/10 backdrop-blur-xl">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="mt-16"
+      >
+        <div className="flex items-center gap-3 mb-8">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/5 dark:bg-secondary/10"
+          >
             <BookMarked className="h-5 w-5 text-secondary" />
-          </div>
-          <h2 className="text-2xl font-semibold bg-gradient-to-r from-secondary to-secondary/80 bg-clip-text text-transparent">
+          </motion.div>
+          <h2 className="text-2xl font-semibold text-secondary">
             Okuyacaklarım
           </h2>
         </div>
-        <div className="grid gap-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+        >
           {booksData.toRead.map((book) => (
             <BookCard key={book.id} book={book} isRead={false} />
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </PageLayout>
   );
 } 

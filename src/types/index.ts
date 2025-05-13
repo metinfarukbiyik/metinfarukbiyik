@@ -77,6 +77,7 @@ export interface Moment {
 export interface Equipment {
   name: string;
   image: string;
+  description?: string;
 }
 
 export interface EquipmentCategory {

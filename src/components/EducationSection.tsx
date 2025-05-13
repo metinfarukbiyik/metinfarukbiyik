@@ -1,4 +1,4 @@
-import { GraduationCap, CalendarDays, MapPin, BookOpen } from "lucide-react";
+import { GraduationCap, CalendarDays, BookOpen } from "lucide-react";
 
 interface EducationSectionProps {
   education: {

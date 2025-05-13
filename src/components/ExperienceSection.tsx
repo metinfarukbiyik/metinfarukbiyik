@@ -1,76 +1,87 @@
-import { Briefcase, CalendarDays } from "lucide-react";
+import { Briefcase, CalendarDays, MapPin } from "lucide-react";
 
 interface ExperienceSectionProps {
   experiences: {
     company: string;
     position: string;
     date: string;
-    description?: string;
+    location?: string;
   }[];
 }
 
 export default function ExperienceSection({ experiences }: ExperienceSectionProps) {
   return (
-    <div className="relative space-y-6">
+    <div className="relative space-y-8">
       {/* Ana timeline çizgisi */}
-      <div className="absolute left-[13px] top-2 bottom-10 w-[1.5px] bg-gradient-to-b from-primary/40 via-primary/30 to-transparent" />
+      <div className="absolute left-[13px] top-2 bottom-10 w-[1px] bg-gradient-to-b from-primary/40 via-primary/30 to-transparent" />
 
       {experiences.map((exp, index) => (
         <div key={index} className="group relative pl-10">
-          {/* Timeline noktası (şirket ikonu ile) */}
-          <div className="absolute left-0 top-[calc(50%-18px)] z-10">
-            <div className="flex h-7 w-7 items-center justify-center">
-              {/* Dış halka */}
-              <div className="absolute h-7 w-7 rounded-full bg-white dark:bg-zinc-800 border-[1.5px] border-primary/40 shadow-sm group-hover:border-primary/60 transition-all duration-300"></div>
+          {/* Timeline noktası ve pulse efekti */}
+          <div className="absolute left-0 top-1/2 z-10 -translate-y-1/2">
+            <div className="relative flex h-[26px] w-[26px] items-center justify-center">
+              {/* Pulse efekti */}
+              <div className="absolute h-full w-full animate-ping rounded-full bg-primary/20 duration-1000 group-hover:bg-primary/30" />
+              {/* Glow efekti */}
+              <div className="absolute -inset-1 rounded-full bg-primary/20 blur-md transition-opacity duration-500 group-hover:opacity-100 opacity-0" />
+              {/* Gradient arka plan */}
+              <div className="absolute h-full w-full rounded-full bg-gradient-to-br from-white via-white/90 to-white/70 dark:from-zinc-800 dark:via-zinc-800/90 dark:to-zinc-800/70 shadow-[0_0_12px_-3px_rgba(0,0,0,0.2)] dark:shadow-[0_0_12px_-3px_rgba(255,255,255,0.2)] group-hover:shadow-[0_0_16px_-3px_rgba(var(--primary-rgb),0.4)] dark:group-hover:shadow-[0_0_16px_-3px_rgba(var(--primary-rgb),0.4)] transition-all duration-300" />
+              {/* Border */}
+              <div className="absolute h-full w-full rounded-full border border-primary/30 group-hover:border-primary/60 transition-colors duration-300" />
               {/* İkon */}
-              <Briefcase className="h-3.5 w-3.5 text-primary/80 group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
+              <Briefcase className="relative h-3.5 w-3.5 text-primary/70 group-hover:text-primary group-hover:scale-110 transition-all duration-300" />
             </div>
           </div>
-
-          {/* Bağlantı çizgisi */}
-          <div className="absolute left-[13px] top-[50%] h-[1.5px] w-6 bg-gradient-to-r from-primary/50 to-transparent group-hover:from-primary/80 transition-all duration-300" />
 
           {/* İçerik kartı */}
-          <div className="relative overflow-hidden rounded-xl bg-white/30 dark:bg-zinc-800/40 backdrop-blur-sm p-5 border border-white/20 dark:border-zinc-700/60 shadow-md hover:shadow-lg group-hover:bg-gradient-to-br group-hover:from-white/40 group-hover:to-white/30 dark:group-hover:from-zinc-800/60 dark:group-hover:to-zinc-800/40 group-hover:border-primary/20 transition-all duration-300">
-            <div className="absolute -top-4 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl opacity-30 group-hover:opacity-60 -translate-y-1/2 translate-x-1/2 transition-all duration-700"></div>
+          <div className="group/card relative overflow-hidden rounded-lg border border-white/10 dark:border-zinc-700/40 bg-gradient-to-br from-white/40 via-white/30 to-white/20 dark:from-zinc-800/40 dark:via-zinc-800/30 dark:to-zinc-800/20 p-5 backdrop-blur-sm transition-all duration-300 hover:shadow-lg group-hover:border-primary/20 group-hover:from-white/50 group-hover:via-white/40 group-hover:to-white/30 dark:group-hover:from-zinc-800/50 dark:group-hover:via-zinc-800/40 dark:group-hover:to-zinc-800/30">
+            {/* Arkaplan efektleri */}
+            <div className="pointer-events-none absolute -right-12 top-0 h-32 w-32 rounded-full bg-primary/5 blur-2xl transition-all duration-500 group-hover:bg-primary/10" />
+            <div className="pointer-events-none absolute -left-12 bottom-0 h-24 w-24 rounded-full bg-primary/5 blur-2xl transition-all duration-500 group-hover:bg-primary/10" />
             
             <div className="relative z-10">
-              {/* Firma ve pozisyon */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90 group-hover:text-primary transition-colors duration-300">
-                      {exp.company}
-                    </h3>
-                  <p className="text-base text-gray-600 dark:text-white/70 group-hover:text-gray-800 dark:group-hover:text-white/90 transition-colors duration-300">
-                      {exp.position}
-                    </p>
+              {/* Şirket ve Pozisyon */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-3">
+                  <h3 className="text-lg font-semibold bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 dark:from-white dark:via-white/90 dark:to-white bg-clip-text text-transparent group-hover:from-primary group-hover:via-primary/80 group-hover:to-primary transition-all duration-300">
+                    {exp.company}
+                  </h3>
+                  <div className="h-1.5 w-1.5 rounded-full bg-primary/30 group-hover:bg-primary/50 transition-colors duration-300" />
+                  <span className="text-base text-gray-600 dark:text-white/70 group-hover:text-gray-800 dark:group-hover:text-white/90 transition-colors duration-300">
+                    {exp.position}
+                  </span>
                 </div>
-                
-                {/* Tarih */}
-                <div className="mt-1 sm:mt-0">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 dark:bg-primary/15 border border-primary/15 dark:border-primary/20 group-hover:bg-primary/15 dark:group-hover:bg-primary/20 group-hover:border-primary/25 transition-all duration-300">
-                    <CalendarDays className="h-3 w-3 text-primary/80" />
-                    <span className="text-xs font-medium text-primary/90">
-                      {exp.date}
-                    </span>
+
+                {/* Alt bilgiler */}
+                <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center gap-1.5 group-hover:text-primary/80 transition-colors duration-300">
+                    <div className="p-1 rounded-md bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300">
+                      <CalendarDays className="h-3.5 w-3.5" />
+                    </div>
+                    <span className="group-hover:text-gray-900 dark:group-hover:text-white/90">{exp.date}</span>
                   </div>
+                  {exp.location && (
+                    <>
+                      <div className="h-1.5 w-1.5 rounded-full bg-primary/20 group-hover:bg-primary/40 transition-colors duration-300" />
+                      <div className="flex items-center gap-1.5 group-hover:text-primary/80 transition-colors duration-300">
+                        <div className="p-1 rounded-md bg-primary/5 group-hover:bg-primary/10 transition-colors duration-300">
+                          <MapPin className="h-3.5 w-3.5" />
+                        </div>
+                        <span className="group-hover:text-gray-900 dark:group-hover:text-white/90">{exp.location}</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
-              
-              {/* Açıklama */}
-              {exp.description && (
-                <div className="mt-4 border-t border-gray-100 dark:border-zinc-700/40 pt-3">
-                  <p className="text-gray-600 dark:text-white/60 text-sm leading-relaxed group-hover:text-gray-700 dark:group-hover:text-white/80 transition-colors duration-300">
-                    {exp.description}
-                  </p>
-                </div>
-              )}
             </div>
+
+            {/* Hover efekti için kenar parlaması */}
+            <div className="absolute inset-px rounded-lg bg-gradient-to-r from-transparent via-primary/10 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
           </div>
           
-          {/* Bakış açılarını bağlamak için bağlantı işaretçisi - Sadece son öğe değilse */}
+          {/* Timeline bağlantı çizgisi */}
           {index < experiences.length - 1 && (
-            <div className="absolute left-[13px] top-[calc(50%+7px)] h-[calc(100%-7px)] w-[1.5px] bg-gradient-to-b from-primary/30 to-primary/10"></div>
+            <div className="absolute left-[13px] top-[50%] h-[calc(100%+2rem)] w-[1px] bg-gradient-to-b from-primary/30 to-transparent" />
           )}
         </div>
       ))}

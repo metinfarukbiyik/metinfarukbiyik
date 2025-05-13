@@ -32,7 +32,10 @@ interface CV {
     company: string;
     position: string;
     date: string;
-    description?: string;
+    location?: string;
+    description?: string[];
+    achievements?: string[];
+    technologies?: string[];
   }[];
   certifications: {
     name: string;
@@ -96,7 +99,7 @@ export const cvData: CV = {
   },
   education: [
     {
-      school: "Atatürk Üniversitesi",
+      school: "Atatürk Üniversitesi Açık Öğretim Fakültesi",
       degree: "Ön Lisans",
       field: "Bilgi Yönetimi",
       date: "2022 - Güncel",
@@ -112,22 +115,26 @@ export const cvData: CV = {
     {
       company: "Turkcell Global Bilgi",
       position: "Müşteri Temsilcisi & Takım Koçu",
-      date: "2023 - Güncel"
+      date: "2023 - Güncel",
+      location: "Trabzon, Türkiye"
     },
     {
       company: "NTM Elektrik Elektronik A.Ş.",
       position: "RN Rework İş Emirleri & Ekip Yönetimi",
-      date: "2020 - 2023"
+      date: "2020 - 2023",
+      location: "Trabzon, Türkiye"
     },
     {
       company: "ALP Telekomünikasyon",
       position: "Baz İstasyonu Kurulum Teknisyeni",
-      date: "2018 - 2020"
+      date: "2018 - 2020",
+      location: "Trabzon, Türkiye"
     },
     {
       company: "Sosyal Güvenlik Kurumu",
       position: "Yazılım Geliştirme Stajı",
-      date: "2016 - 2017"
+      date: "2016 - 2017",
+      location: "Trabzon, Türkiye"
     }
   ],
   certifications: [

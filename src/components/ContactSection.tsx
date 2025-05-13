@@ -121,7 +121,7 @@ export default function ContactSection({ contact }: ContactSectionProps) {
               <Twitter className="h-4 w-4 text-primary transition-all duration-300 group-hover:scale-110" />
             </div>
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors duration-300 group-hover:text-primary">
-              Twitter
+              X
             </span>
           </a>
 

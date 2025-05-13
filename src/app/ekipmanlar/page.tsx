@@ -63,17 +63,26 @@ export default function SetupPage() {
               <div className="absolute -inset-2 rounded-2xl bg-gradient-to-r from-primary/20 via-secondary/5 to-primary/20 dark:from-primary/10 dark:via-secondary/5 dark:to-primary/10 blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700 animate-pulse" />
               
               {/* Ana Kart */}
-              <div className="relative flex flex-col bg-gradient-to-br from-white to-white/80 dark:from-black dark:to-black/95 rounded-2xl overflow-hidden border border-black/[0.08] dark:border-white/[0.08] backdrop-blur-xl">
+              <motion.div 
+                initial={false}
+                animate={{ scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+                className="relative flex flex-col bg-gradient-to-br from-white to-white/80 dark:from-black dark:to-black/95 rounded-2xl overflow-hidden border border-black/5 dark:border-white/5"
+              >
                 {/* Üst Kısım - Görsel */}
-                <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-black/[0.01] to-black/[0.08] dark:from-white/[0.01] dark:to-white/[0.05] p-8 overflow-hidden group-hover:from-black/[0.02] group-hover:to-black/[0.12] dark:group-hover:from-white/[0.02] dark:group-hover:to-white/[0.08] transition-colors duration-500">
+                <div className="relative aspect-[4/3] w-full bg-gradient-to-br from-black/[0.01] to-black/[0.02] dark:from-white/[0.01] dark:to-white/[0.02] p-8 overflow-hidden group-hover:from-black/[0.02] group-hover:to-black/[0.04] dark:group-hover:from-white/[0.02] dark:group-hover:to-white/[0.04] transition-colors duration-500">
                   {/* Dekoratif Çizgiler */}
-                  <div className="absolute inset-0 bg-grid-black/[0.015] dark:bg-grid-white/[0.015] bg-[size:16px_16px]" />
+                  <div className="absolute inset-0 bg-grid-black/[0.015] dark:bg-grid-white/[0.015] bg-[size:20px_20px] opacity-100 group-hover:opacity-0 transition-opacity duration-500" />
                   
                   <motion.div
-                    whileHover={{ scale: 1.05, rotate: -1 }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      rotate: 1
+                    }}
                     transition={{ 
-                      duration: 0.4, 
-                      ease: [0.23, 1, 0.32, 1] // Özel easing fonksiyonu
+                      duration: 0.4,
+                      ease: [0.23, 1, 0.32, 1]
                     }}
                     className="relative h-full flex items-center justify-center"
                   >
@@ -81,19 +90,19 @@ export default function SetupPage() {
                       src={item.image}
                       alt={item.name}
                       fill
-                      className="object-contain p-6 drop-shadow-xl"
+                      className="object-contain p-6 drop-shadow-xl transition-transform duration-500"
                     />
                   </motion.div>
                 </div>
 
                 {/* Alt Kısım - Bilgiler */}
-                <div className="relative p-6 bg-gradient-to-b from-white/50 to-white dark:from-black/50 dark:to-black">
+                <div className="relative p-6 bg-gradient-to-b from-white to-white/90 dark:from-black dark:to-black/90">
                   {/* İkon ve Başlık */}
                   <div className="flex items-start gap-4">
                     <motion.div 
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       transition={{ duration: 0.2 }}
-                      className="flex-shrink-0 p-3 rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10"
+                      className="flex-shrink-0 p-3 rounded-xl bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 dark:from-primary/20 dark:via-primary/10 dark:to-secondary/20"
                     >
                       <Icon className="w-5 h-5 text-primary" />
                     </motion.div>
@@ -109,8 +118,8 @@ export default function SetupPage() {
                 </div>
 
                 {/* Hover Efekti için Kenar Çizgisi */}
-                <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/[0.08] dark:ring-white/[0.08] group-hover:ring-black/[0.15] dark:group-hover:ring-white/[0.15] transition-all duration-300" />
-              </div>
+                <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/[0.075] dark:ring-white/[0.075] group-hover:ring-primary/20 dark:group-hover:ring-primary/20 transition-all duration-500" />
+              </motion.div>
             </motion.div>
           );
         })}

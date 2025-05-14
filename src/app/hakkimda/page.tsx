@@ -168,7 +168,7 @@ export default function HakkimdaPage() {
                   </p>
 
                   <p className="text-base text-muted-foreground leading-relaxed">
-                    2020 yılında, NTM Elektrik & Elektronik bünyesinde yeni bir kariyer adımı atarak Rework süreçlerinden ve ekip yönetiminden sorumlu personel olarak görev yaptım. 2023 yılına kadar bu rolde, üretim kalitesini artırmaya yönelik süreç iyileştirme çalışmaları yürüttüm ve ekip koordinasyonunda aktif roller üstlendim. Bu dönemde liderlik becerilerimi geliştirerek daha büyük sorumluluklar almaya hazır hale geldim.
+                    2020 yılında, NTM Elektrik &amp; Elektronik bünyesinde yeni bir kariyer adımı atarak Rework süreçlerinden ve ekip yönetiminden sorumlu personel olarak görev yaptım. 2023 yılına kadar bu rolde, üretim kalitesini artırmaya yönelik süreç iyileştirme çalışmaları yürüttüm ve ekip koordinasyonunda aktif roller üstlendim. Bu dönemde liderlik becerilerimi geliştirerek daha büyük sorumluluklar almaya hazır hale geldim.
                   </p>
 
                   <p className="text-base text-muted-foreground leading-relaxed">

@@ -38,7 +38,7 @@ export default function SetupPage() {
   return (
     <PageLayout
       pageTitle={{
-        title: "Ekipmanlarım",
+        title: "Ekipmanlar",
         description: "Günlük hayatımda projelerimi inşa etmek, üretkenliğimi artırmak ve yaşamımı düzenlemek için kullandığım teknolojiler, araçlar ve ürünler. Bu bölümde, hangi ekipmanları kullandığımı görebilirsiniz."
       }}
     >

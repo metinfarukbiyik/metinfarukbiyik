@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -21,10 +22,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AnilarLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <>{children}</>;
+interface LayoutProps {
+  children: ReactNode;
+}
+
+export default function Layout({ children }: LayoutProps) {
+  return (
+    <main className="relative min-h-screen">
+      {children}
+    </main>
+  );
 } 

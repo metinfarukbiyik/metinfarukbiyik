@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Script from "next/script";
 import PageLayout from "@/components/layouts/PageLayout";
 import { MapPin, Calendar, Briefcase } from "lucide-react";
-import Script from "next/script";
 
 export default function HakkimdaPage() {
   const container = {
@@ -139,7 +139,10 @@ export default function HakkimdaPage() {
               {quickInfo.map((info, index) => {
                 const Icon = info.icon;
                 return (
-                  <div key={index} className={`flex items-center gap-3 ${index > 0 ? 'pt-4 mt-4' : ''} group/info`}>
+                  <div 
+                    key={index} 
+                    className={"flex items-center gap-3 " + (index > 0 ? "pt-4 mt-4" : "") + " group/info"}
+                  >
                     <div className="p-2 rounded-lg bg-primary/10 group-hover/info:bg-primary/20 transition-colors duration-300">
                       <Icon className="w-4 h-4 text-primary group-hover/info:scale-110 transition-transform duration-300" />
                     </div>

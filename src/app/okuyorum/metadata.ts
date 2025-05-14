@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     url: "https://biyik.dev/okuyorum",
     type: "website",
     locale: "tr_TR",
-    images: booksData.map((book) => ({
+    images: booksData.read.map((book) => ({
       url: book.image,
       width: 800,
       height: 1200,
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: "Okuyorum | Metin Faruk Bıyık - Geliştirici",
     description: "Okuduğum kitaplar, kitap özetleri ve düşüncelerim.",
     creator: "@_metinbiyik",
-    images: [booksData[0].image]
+    images: [booksData.read[0].image]
   },
   category: "Blog",
   applicationName: "Metin Faruk Bıyık - Kişisel Web Sitesi"

@@ -1,6 +1,15 @@
-# Global rules
+# https://biyik.dev robots.txt
 User-agent: *
 Allow: /
+
+# Sitemap
+Sitemap: https://biyik.dev/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10
+
+# Global rules
+User-agent: *
 Allow: /hakkimda
 Allow: /calismalar
 Allow: /anilar
@@ -17,12 +26,6 @@ Disallow: /*.txt$
 
 # Allow access to sitemap
 Allow: /sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 10
-
-# Sitemaps
-Sitemap: https://biyik.dev/sitemap.xml
 
 # Host
 Host: https://biyik.dev 

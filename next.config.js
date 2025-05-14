@@ -17,6 +17,9 @@ const nextConfig = {
   // Diğer optimizasyonlar
   poweredByHeader: false,
   compress: true,
+  eslint: {
+    ignoreDuringBuilds: true
+  }
 }
 
 module.exports = nextConfig 

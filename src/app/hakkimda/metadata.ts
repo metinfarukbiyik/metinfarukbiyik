@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Hakkımda | Metin Faruk Bıyık - Geliştirici",
-  description: "Trabzon'da yaşayan, web teknolojileri ve modern uygulama geliştirme alanında çalışan Metin Faruk Bıyık'ın kişisel web sitesi. Turkcell Global Bilgi'de Takım Koçu olarak görev yapıyor.",
+  description: "Web teknolojileri ve modern uygulama geliştirme alanında kendini sürekli geliştiren, öğrenmeye ve paylaşmaya tutkulu bir geliştirici.",
   keywords: [
     "Metin Faruk Bıyık",
     "Metin Bıyık",
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     canonical: "https://biyik.dev/hakkimda"
   },
   openGraph: {
-    title: "Hakkımda | Metin Faruk Bıyık - Geliştirici",
-    description: "Trabzon'da yaşayan, web teknolojileri ve modern uygulama geliştirme alanında çalışan Metin Faruk Bıyık'ın kişisel web sitesi. Turkcell Global Bilgi'de Takım Koçu olarak görev yapıyor.",
+    title: "Hakkımda | Metin Faruk Bıyık",
+    description: "Web teknolojileri ve modern uygulama geliştirme uzmanı",
     url: "https://biyik.dev/hakkimda",
     type: "profile",
     firstName: "Metin Faruk",
@@ -34,14 +34,14 @@ export const metadata: Metadata = {
         url: "https://biyik.dev/profile.jpg",
         width: 800,
         height: 800,
-        alt: "Metin Faruk Bıyık - Geliştirici"
+        alt: "Metin Faruk Bıyık"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hakkımda | Metin Faruk Bıyık - Geliştirici",
-    description: "Trabzon'da yaşayan, web teknolojileri ve modern uygulama geliştirme alanında çalışan Metin Faruk Bıyık'ın kişisel web sitesi.",
+    title: "Hakkımda | Metin Faruk Bıyık",
+    description: "Web teknolojileri ve modern uygulama geliştirme uzmanı",
     creator: "@_metinbiyik",
     images: ["https://biyik.dev/profile.jpg"]
   },

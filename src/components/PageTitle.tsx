@@ -72,7 +72,7 @@ export default function PageTitle({ title, description, children, variant = "pag
                   transition={{ duration: 0.5, delay: 0.1 }}
                   className="relative text-center md:text-left"
                 >
-                  <span className="animate-gradient bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-transparent">
+                  <span className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-primary">
                     {title}
                   </span>
                   <div className="absolute -inset-x-6 -inset-y-4 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 blur-2xl opacity-20 -z-10" />
@@ -138,7 +138,7 @@ export default function PageTitle({ title, description, children, variant = "pag
               transition={{ duration: 0.5 }}
               className="relative"
             >
-              <span className="animate-gradient bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-6xl">
+              <span className="text-4xl font-bold tracking-tight text-primary sm:text-6xl">
                 {title}
               </span>
               <div className="absolute -inset-x-6 -inset-y-4 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 blur-2xl opacity-20 -z-10" />

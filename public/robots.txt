@@ -1,31 +1,9 @@
-# https://biyik.dev robots.txt
+# *
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://biyik.dev/sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 10
-
-# Global rules
-User-agent: *
-Allow: /hakkimda
-Allow: /calismalar
-Allow: /anilar
-Allow: /okuyorum
-Allow: /ekipmanlar
-
-# Block access to API routes
-Disallow: /api/
-
-# Block access to specific files
-Disallow: /*.json$
-Disallow: /*.xml$
-Disallow: /*.txt$
-
-# Allow access to sitemap
-Allow: /sitemap.xml
-
 # Host
-Host: https://biyik.dev 
+Host: https://biyik.dev
+
+# Sitemaps
+Sitemap: https://biyik.dev/sitemap.xml 

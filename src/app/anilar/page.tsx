@@ -84,8 +84,9 @@ export default function AnlarPage() {
                       >
                         <Image
                           src={image.url}
-                          alt={image.alt || moment.title}
+                          alt={image.alt || `${moment.title} - ${moment.description || ''} ${moment.location ? `(${moment.location})` : ''}`}
                           fill
+                          loading="lazy"
                           className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
                         />
@@ -101,8 +102,9 @@ export default function AnlarPage() {
                 >
                   <Image
                     src={moment.images[0].url}
-                    alt={moment.images[0].alt || moment.title}
+                    alt={moment.images[0].alt || `${moment.title} - ${moment.description || ''} ${moment.location ? `(${moment.location})` : ''}`}
                     fill
+                    loading="lazy"
                     className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />

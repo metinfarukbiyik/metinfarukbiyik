@@ -21,7 +21,7 @@ function BookCard({ book, isRead = true }: { book: Book; isRead?: boolean }) {
         <div className="absolute -inset-1 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 dark:from-primary/5 dark:to-secondary/5 opacity-0 group-hover:opacity-100 blur-2xl transition-all duration-700 z-0" />
         <Image
           src={book.image}
-          alt={book.title}
+          alt={`${book.title} - ${book.author} kitabının kapak görseli`}
           fill
           loading="lazy"
           className={`object-cover transition-all duration-500 group-hover:scale-[1.02] relative z-10 ${!isRead && 'grayscale hover:grayscale-0'}`}

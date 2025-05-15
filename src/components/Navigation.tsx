@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Home, Monitor, Code, Camera, Book, User } from "lucide-react";
+import { Menu, X, Home, Monitor, Code, Camera, Book } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -13,12 +13,6 @@ const links = [
     label: "Ana Sayfa",
     title: "Ana Sayfa - Metin Faruk Bıyık'ın kişisel web sitesi",
     icon: Home,
-  },
-  {
-    href: "/hakkimda",
-    label: "Hakkımda",
-    title: "Hakkımda - Metin Faruk Bıyık kimdir?",
-    icon: User,
   },
   {
     href: "/ekipmanlar",
@@ -41,7 +35,7 @@ const links = [
   {
     href: "/okuyorum",
     label: "Oku/Yorum",
-    title: "Okuyorum - Okuduğum ve okumayı planladığım kitaplar",
+    title: "Oku/Yorum - Okuduğum ve okumayı planladığım kitaplar",
     icon: Book,
   },
 ];

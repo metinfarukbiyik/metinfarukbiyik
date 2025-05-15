@@ -4,16 +4,8 @@
   <url>
     <loc>https://biyik.dev</loc>
     <lastmod>2024-03-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-
-  <!-- Hakkimda -->
-  <url>
-    <loc>https://biyik.dev/hakkimda</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
 
   <!-- Ekipmanlar -->
@@ -21,7 +13,7 @@
     <loc>https://biyik.dev/ekipmanlar</loc>
     <lastmod>2024-03-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
 
   <!-- Çalışmalar -->
@@ -36,21 +28,13 @@
   <url>
     <loc>https://biyik.dev/anilar</loc>
     <lastmod>2024-03-20</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Oku/Yorum -->
   <url>
     <loc>https://biyik.dev/okuyorum</loc>
-    <lastmod>2024-03-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- İletişim -->
-  <url>
-    <loc>https://biyik.dev/iletisim</loc>
     <lastmod>2024-03-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

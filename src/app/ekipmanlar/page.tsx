@@ -38,7 +38,7 @@ export default function SetupPage() {
   return (
     <PageLayout
       pageTitle={{
-        title: "Ekipmanlar",
+        title: "Ekipmanlarım",
         description: "Günlük hayatımda projelerimi inşa etmek, üretkenliğimi artırmak ve yaşamımı düzenlemek için kullandığım teknolojiler, araçlar ve ürünler. Bu bölümde, hangi ekipmanları kullandığımı görebilirsiniz."
       }}
     >
@@ -88,9 +88,11 @@ export default function SetupPage() {
                   >
                     <Image
                       src={item.image}
-                      alt={item.name}
+                      alt={`${item.name} - ${item.description}`}
                       fill
+                      loading="lazy"
                       className="object-contain p-6 drop-shadow-xl transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </motion.div>
                 </div>

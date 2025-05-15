@@ -28,11 +28,6 @@ const nextConfig: NextConfig = {
         destination: '/okuyorum',
         permanent: true,
       },
-      {
-        source: '/hakkimda/',
-        destination: '/hakkimda',
-        permanent: true,
-      },
     ];
   },
   /* config options here */

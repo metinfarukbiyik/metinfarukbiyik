@@ -43,7 +43,7 @@ export default function ExperienceSection({ experiences }: ExperienceSectionProp
               {/* Şirket ve Pozisyon */}
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-3">
-                  <h3 className="text-lg font-semibold bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 dark:from-white dark:via-white/90 dark:to-white bg-clip-text text-transparent group-hover:from-primary group-hover:via-primary/80 group-hover:to-primary transition-all duration-300">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white group-hover:text-primary transition-all duration-300">
                     {exp.company}
                   </h3>
                   <div className="h-1.5 w-1.5 rounded-full bg-primary/30 group-hover:bg-primary/50 transition-colors duration-300" />

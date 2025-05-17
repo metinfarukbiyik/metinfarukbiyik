@@ -99,7 +99,7 @@ export default function OkuyorumPage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-2xl font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent flex items-center gap-2"
+              className="text-2xl font-semibold text-primary flex items-center gap-2"
             >
               Okuduklarım
               <motion.div
@@ -155,7 +155,7 @@ export default function OkuyorumPage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-2xl font-semibold bg-gradient-to-r from-secondary to-secondary/70 bg-clip-text text-transparent flex items-center gap-2"
+              className="text-2xl font-semibold text-secondary flex items-center gap-2"
             >
               Okuyacaklarım
               <motion.div

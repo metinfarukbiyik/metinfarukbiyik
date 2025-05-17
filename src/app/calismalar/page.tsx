@@ -33,7 +33,7 @@ export default function CalismalarPage() {
           >
             <Sparkles className="w-6 h-6 text-primary" />
           </motion.div>
-          <h2 className="text-2xl font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <h2 className="text-2xl font-semibold text-primary">
             Teknolojiler
           </h2>
         </div>
@@ -101,7 +101,7 @@ export default function CalismalarPage() {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-xl opacity-50" />
             <Code2 className="w-6 h-6 text-primary" />
           </motion.div>
-          <h2 className="text-2xl font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <h2 className="text-2xl font-semibold text-primary">
             Projeler
           </h2>
         </div>
@@ -130,7 +130,7 @@ export default function CalismalarPage() {
               {/* Sağ taraf - İçerik */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-4">
-                  <h3 className="text-xl font-semibold truncate bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  <h3 className="text-xl font-semibold truncate text-primary">
                     {project.title}
                   </h3>
                   <div className="flex items-center gap-3 shrink-0">

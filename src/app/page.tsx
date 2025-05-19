@@ -23,7 +23,8 @@ export default function Home() {
         variant: "home",
         children: (
           <p 
-            className="mt-6 text-base md:text-lg text-muted-foreground/80 leading-relaxed text-center md:text-left w-full max-w-full"
+            className="mt-6 text-base md:text-lg text-muted-foreground/80 leading-relaxed text-justify w-full max-w-full"
+            style={{ textAlign: 'justify' }}
             dangerouslySetInnerHTML={{ __html: cvData.summary }}
           />
         )

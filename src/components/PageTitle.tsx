@@ -65,14 +65,14 @@ export default function PageTitle({ title, description, children, variant = "pag
               </motion.div>
 
               {/* İsim ve Rozetler */}
-              <div className="flex flex-col items-center md:items-start gap-6">
+              <div className="flex flex-col items-center md:items-start gap-4 md:gap-6 w-full">
                 <motion.h1 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="relative text-center md:text-left"
+                  className="relative text-center md:text-left w-full"
                 >
-                  <span className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-primary">
+                  <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-primary">
                     {title}
                   </span>
                   <div className="absolute -inset-x-6 -inset-y-4 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 blur-2xl opacity-20 -z-10" />

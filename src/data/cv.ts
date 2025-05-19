@@ -48,9 +48,9 @@ interface CV {
 
 export const cvData: CV = {
   name: "Metin Faruk Bıyık",
-  title: "Geliştirici",
+  title: "Satış Temsilcisi & Geliştirici",
   status: "Çalışmaya Açık",
-  summary: "Web teknolojileri ve modern uygulama geliştirme alanında kendini sürekli geliştiren, öğrenmeye ve ve paylaşmaya tutkulu bir geliştirici. <strong>Çözüm odaklı hizmetler sunuyorum.</strong>",
+  summary: "<strong>Satış temsilcisi</strong> olarak profesyonel kariyerimi sürdürürken, <strong>hobi olarak web geliştirme</strong> alanında kendimi geliştiriyorum. <strong>Müşteri deneyimi</strong> ve <strong>satış süreçleri</strong> konusunda deneyimliyim. Boş zamanlarımda modern web teknolojileri üzerine çalışıyor, <strong>kullanıcı deneyimi odaklı</strong> arayüzler tasarlıyor ve <strong>performans</strong> odaklı uygulamalar geliştiriyorum. Hem satış hem de yazılım geliştirme alanında edindiğim bilgileri harmanlayarak <strong>çözüm odaklı projeler</strong> üretmeyi seviyorum.",
   contact: {
     email: "mb.metinbiyik@gmail.com",
     location: "Trabzon, Türkiye",
@@ -179,6 +179,12 @@ export const cvData: CV = {
       date: "Mart 2025",
       institution: "Turkcell Akademi",
       pdfUrl: "/certificates/metinfarukbiyik_yuksekirtifateknoloji.pdf"
+    },
+    {
+      name: "Müşteriyi Tanımak Sertifikası",
+      date: "Mayıs 2025",
+      institution: "BTK Akademi",
+      pdfUrl: "/certificates/metinfarukbiyik_musteriyitanimak.pdf"
     },
   ],
   languages: [

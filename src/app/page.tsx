@@ -23,7 +23,7 @@ export default function Home() {
         variant: "home",
         children: (
           <p 
-            className="mt-6 text-base text-muted-foreground/80 sm:text-lg leading-relaxed max-w-2xl"
+            className="mt-6 text-base text-muted-foreground/80 sm:text-lg leading-relaxed"
             dangerouslySetInnerHTML={{ __html: cvData.summary }}
           />
         )

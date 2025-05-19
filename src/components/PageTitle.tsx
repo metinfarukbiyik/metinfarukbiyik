@@ -78,6 +78,14 @@ export default function PageTitle({ title, description, children, variant = "pag
                   <div className="absolute -inset-x-6 -inset-y-4 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 blur-2xl opacity-20 -z-10" />
                 </motion.h1>
 
+                {/* İnce minimalist çizgi */}
+                <motion.div
+                  initial={{ opacity: 0, scaleX: 0 }}
+                  animate={{ opacity: 1, scaleX: 1 }}
+                  transition={{ duration: 0.5, delay: 0.15 }}
+                  className="w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"
+                />
+
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}

@@ -186,6 +186,12 @@ export const cvData: CV = {
       institution: "BTK Akademi",
       pdfUrl: "/certificates/metinfarukbiyik_musteriyitanimak.pdf"
     },
+    {
+      name: "Satış Esasları Sertifikası",
+      date: "Mayıs 2025",
+      institution: "LinkedIn Learning",
+      pdfUrl: "/certificates/metinfarukbiyik_satisesaslari.pdf"
+    },
   ],
   languages: [
     "Türkçe (Anadil)",

@@ -20,8 +20,8 @@ export default function CertificationsSection({ certifications }: Certifications
   const [selectedName, setSelectedName] = useState<string>("");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {certifications.map((cert, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {certifications.map((cert, index) => (
         <div key={index} className="group relative">
           {/* İçerik kartı */}
           <div className="group/card relative overflow-hidden rounded-2xl border border-white/20 dark:border-zinc-700/40 bg-gradient-to-br from-white/70 via-white/60 to-white/50 dark:from-zinc-800/50 dark:via-zinc-800/40 dark:to-zinc-800/30 p-6 backdrop-blur-sm transition-all duration-300 hover:shadow-lg shadow-sm group-hover:border-secondary/20 group-hover:shadow-md flex flex-col min-h-[220px]">
@@ -51,7 +51,7 @@ export default function CertificationsSection({ certifications }: Certifications
                       <Building className="h-3.5 w-3.5 text-secondary/80" />
                     </div>
                     <span className="text-sm">{cert.institution}</span>
-                  </div>
+                </div>
                 
                   {/* Tarih bilgisi */}
                   <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 group-hover:text-secondary/80 transition-colors duration-300">
@@ -64,18 +64,18 @@ export default function CertificationsSection({ certifications }: Certifications
                 
                 {/* Sertifika görüntüleme butonu */}
                 <div className="w-full flex justify-center mt-4">
-                  {cert.pdfUrl && (
-                    <button
-                      onClick={() => {
-                        setSelectedPDF(cert.pdfUrl || null);
-                        setSelectedName(cert.name);
-                      }}
+                {cert.pdfUrl && (
+                  <button
+                    onClick={() => {
+                      setSelectedPDF(cert.pdfUrl || null);
+                      setSelectedName(cert.name);
+                    }}
                       className="text-xs text-secondary hover:text-secondary/90 transition-colors duration-300 flex items-center gap-1.5 border border-secondary/20 hover:border-secondary/40 rounded-lg py-1.5 px-3"
-                    >
+                  >
                       <Eye className="h-3.5 w-3.5" />
                       <span>Sertifikayı Görüntüle</span>
-                    </button>
-                  )}
+                  </button>
+                )}
                 </div>
               </div>
             </div>

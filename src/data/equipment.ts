@@ -3,7 +3,7 @@ import type { EquipmentItem } from '../types';
 export const equipmentData: EquipmentItem[] = [
   {
     id: 'macbook-air-m4',
-    name: 'MacBook Air M4 15"',
+    name: 'MacBook Air M4 1ss5"',
     description: 'M4 işlemci, 16GB RAM, 512GB SSD',
     image: '/setup/macbook.png',
     category: 'Bilgisayar'

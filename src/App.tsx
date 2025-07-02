@@ -1,0 +1,30 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+import { Navigation } from './components';
+import { HomePage, EquipmentPage, AboutPage, NotFoundPage } from './pages';
+import './styles/reset.css';
+import './styles/variables.css';
+import './styles/App.css';
+
+function App() {
+  return (
+    <HelmetProvider>
+      <Router>
+        <div className="app">
+          <Navigation />
+          
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/ekipmanlar" element={<EquipmentPage />} />
+              <Route path="/hakkimda" element={<AboutPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </HelmetProvider>
+  );
+}
+
+export default App;

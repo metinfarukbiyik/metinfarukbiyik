@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Ana sayfalar
+Allow: /
+Allow: /ekipmanlar
+Allow: /hakkimda
+
+# Sitemap
+Sitemap: https://biyik.dev/sitemap.xml
+
+# Tarama hızı
+Crawl-delay: 1 

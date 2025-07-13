@@ -4,10 +4,7 @@
   font-weight: 400;
   
   /* Color Palette */
-  --bg-color: #fafafa;
   --text-primary: #3f3f46;
-  --text-secondary: #9e9ea9;
-  --hover-color: #ff6900;
   
   color: var(--text-primary);
   background-color: var(--bg-color);

@@ -20,7 +20,7 @@
 }
 
 .nav-container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
@@ -131,7 +131,7 @@
 
 /* Main Content */
 .main-content {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 4rem 2rem;
 }
@@ -147,7 +147,7 @@
 }
 
 .hero h1 {
-  font-size: 2.7rem;
+  font-size: 3rem;
   margin-bottom: 0.25rem;
   font-weight: 600;
   color: var(--text-primary);
@@ -253,7 +253,7 @@
 }
 
 .hero .subtitle {
-  font-size: 2.1rem;
+  font-size: 1.25rem;
   color: var(--text-secondary);
   font-weight: 300;
   margin-bottom: 0;
@@ -280,7 +280,7 @@
 }
 
 .about p {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   margin-bottom: 1rem;
   text-align: justify;
   color: var(--text-primary);
@@ -290,35 +290,24 @@
 .social-links-bottom {
   display: flex;
   justify-content: flex-start;
-  gap: 1.5rem;
+  gap: 1rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
 }
 
 .social-links-bottom a {
   color: var(--text-secondary);
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 400;
-  text-decoration: underline;
-  text-decoration-color: var(--text-sec);
-  text-underline-offset: 2px;
-  transition: all 0.2s ease;
+  text-decoration: none;
+  transition: color 0.2s ease;
   position: relative;
 }
 
 .social-links-bottom a::after {
-  content: '↗';
-  font-size: 0.9rem;
+  content: ' ↗';
   opacity: 0;
   transition: opacity 0.2s ease;
-  color: var(--text-primary) !important;
-  position: absolute;
-  right: -15px;
-  top: 50%;
-  transform: translateY(-50%);
-  text-decoration: none !important;
-  background: white;
-  padding-left: 2px;
 }
 
 .social-links-bottom a:hover {
@@ -329,290 +318,451 @@
   opacity: 1;
 }
 
-/* Equipment Section */
-.equipment-section {
-  margin-bottom: 4rem;
+/* Equipment Page Styles */
+.equipment-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
-.section-header {
-  margin-bottom: 3rem;
+.equipment-hero {
   text-align: left;
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 3rem;
 }
 
-.section-header h2 {
+.equipment-hero h1 {
   font-size: 2.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  line-height: 1.1;
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
 }
 
-.section-description {
+.equipment-description {
   font-size: 1.1rem;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   line-height: 1.6;
-  max-width: 500px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.equipment-content {
+  padding-bottom: 3rem;
 }
 
 .equipment-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
 }
 
-/* Equipment Card */
-.equipment-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.5rem;
-  background-color: transparent;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+.equipment-item {
+  background: var(--card-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
 
-.equipment-card:hover {
-  border-color: var(--hover-color);
+.equipment-item:hover {
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-color: var(--hover-color);
 }
 
-.equipment-icon {
-  font-size: 2.5rem;
-  width: 4rem;
-  height: 4rem;
+.equipment-image-container {
+  width: 100%;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
-  border-radius: 8px;
-  background-color: #f8f9fa;
+  background: #f8f9fa;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .equipment-image {
-  width: 100%;
-  height: 100%;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
 }
 
-.equipment-card:hover .equipment-image {
+.equipment-item:hover .equipment-image {
   transform: scale(1.05);
 }
 
-.equipment-content {
-  flex: 1;
+.equipment-info {
+  padding: 1.2rem;
 }
 
-.equipment-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.25rem;
-  line-height: 1.3;
-  transition: color 0.2s ease;
-}
-
-.equipment-card:hover .equipment-name {
+.equipment-category {
+  display: inline-block;
+  font-size: 0.75rem;
   color: var(--hover-color);
-}
-
-.equipment-description {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-/* Son ekipman tek kalırsa 2 sütun kaplasın */
-.equipment-card:nth-child(odd):last-child {
-  grid-column: span 2;
-}
-
-/* About Page - Equipment Page Style */
-.about-section {
-  margin-bottom: 4rem;
-}
-
-.about-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
-
-/* 2 sütun kaplayan kartlar */
-.span-2 {
-  grid-column: span 2;
-}
-
-/* About Card - Equipment Card Style */
-.about-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.5rem;
-  background-color: transparent;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  transition: all 0.2s ease;
-}
-
-.about-card:hover {
-  border-color: var(--hover-color);
-  transform: translateY(-2px);
-}
-
-.card-icon {
-  font-size: 2.5rem;
-  width: 4rem;
-  height: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  border-radius: 8px;
-  background-color: #f8f9fa;
-}
-
-.card-content {
-  flex: 1;
-}
-
-.card-content h3 {
-  font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  line-height: 1.3;
-}
-
-/* Tech Skills Container */
-.tech-skills-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.tech-category h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-  line-height: 1.3;
-}
-
-.tech-category h5 {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   margin-bottom: 0.5rem;
+}
+
+.equipment-info h3 {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-bottom: 0.4rem;
+  font-weight: 600;
   line-height: 1.3;
 }
 
-/* Skills All Container - Yeni birleşik yapı */
-.skills-all-container {
+.equipment-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* About Page Styles */
+.about-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.about-hero {
+  text-align: left;
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 3rem;
+}
+
+.about-hero h1 {
+  font-size: 2.5rem;
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.about-description {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  padding-bottom: 4rem;
+}
+
+.about-section {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-.skills-category {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.skills-category h4 {
-  font-size: 1rem;
+.about-section h2 {
+  font-size: 1.8rem;
+  color: var(--text-color);
   font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0;
-  line-height: 1.3;
+  margin: 0;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--hover-color);
+  display: inline-block;
 }
 
-/* Contact Details Container */
-.contact-details-container {
+/* İletişim Bilgileri */
+.contact-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.contact-category h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.75rem;
-  line-height: 1.3;
-}
-
-.company-info h4,
-.school-info h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 0.25rem;
-  line-height: 1.3;
-}
-
-/* Certificate Grid */
-.certificate-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
-
-.certificate-column {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* Contact List */
-.contact-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
 .contact-item {
   display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.contact-icon {
+  font-size: 1.8rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.contact-info {
+  display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.3rem;
 }
 
 .contact-label {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  font-size: 0.9rem;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
 .contact-value {
-  font-size: 0.95rem;
-  color: var(--text-primary);
+  font-size: 1rem;
+  color: var(--text-color);
   text-decoration: none;
-  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .contact-value:hover {
   color: var(--hover-color);
 }
 
-/* Detail List */
-.detail-list {
+/* Yetenekler */
+.skills-container {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 2.5rem;
 }
 
-.detail-item {
+.skill-category h3 {
+  font-size: 1.3rem;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.skill-tag {
+  background: var(--skill-bg);
+  color: var(--text-color);
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.skill-tag:hover {
+  background: var(--hover-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* İş Deneyimi */
+.timeline {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 2rem;
 }
 
-.detail-label {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+.timeline-item {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  background: var(--hover-color);
+  border-radius: 50%;
+  border: 3px solid var(--card-bg);
+}
+
+.timeline-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 12px;
+  width: 2px;
+  height: calc(100% + 2rem);
+  background: var(--border-color);
+}
+
+.timeline-content {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  transform: translateX(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-content h3 {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.timeline-content .position {
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.timeline-content .duration {
+  color: var(--hover-color);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* Eğitim */
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.education-item {
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.education-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.education-content {
+  padding: 2rem;
+}
+
+.education-content h3 {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.education-detail {
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.education-degree {
+  color: var(--hover-color);
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-right: 1rem;
+}
+
+.education-duration {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* Sertifikalar */
+.certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.certificate-item {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.certificate-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.certificate-item h3 {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.certificate-issuer {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.certificate-date {
+  color: var(--hover-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Ek Bilgiler */
+.additional-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.info-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.info-icon {
+  font-size: 1.8rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.info-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 1rem;
+  color: var(--text-color);
   font-weight: 500;
 }
 
@@ -801,6 +951,24 @@
     gap: 1.5rem;
   }
   
+  .equipment-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  
+  .equipment-image-container {
+    height: 100px;
+  }
+  
+  .equipment-image {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .equipment-info {
+    padding: 1rem;
+  }
+  
   .tech-skills-container {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -966,6 +1134,8 @@
     line-height: 1.4;
     margin-top: 0.5rem;
   }
+
+
   
   /* About section responsive */
   .about {
@@ -983,41 +1153,33 @@
   .social-links-bottom {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 1.5rem;
     margin-top: 2rem;
     padding: 0;
-    background: none;
-    border-radius: 0;
-    border: none;
     justify-content: flex-start;
   }
   
   .social-links-bottom a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.6rem 1rem;
-    background: transparent;
-    border-radius: 6px;
-    border: 1px solid #e5e5e5;
-    transition: all 0.2s ease;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-decoration: none;
     color: var(--text-secondary);
-    box-shadow: none;
-  }
-  
-  .social-links-bottom a:hover {
-    border-color: var(--hover-color);
-    color: var(--hover-color);
-    background-color: #f8f9fa;
-    transform: none;
-    box-shadow: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    position: relative;
   }
   
   .social-links-bottom a::after {
-    display: none;
+    content: ' ↗';
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .social-links-bottom a:hover {
+    color: var(--hover-color);
+  }
+  
+  .social-links-bottom a:hover::after {
+    opacity: 1;
   }
   
   /* Grid layouts responsive */
@@ -1031,64 +1193,244 @@
     line-height: 1.6;
   }
   
-  .equipment-card {
+    /* Equipment Page Mobile */
+  .equipment-page {
+    padding: 0 1rem;
+  }
+  
+  .equipment-hero {
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+  }
+  
+  .equipment-hero h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .equipment-description {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .equipment-content {
+    padding-bottom: 2rem;
+  }
+  
+  .equipment-grid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  
+  .equipment-image-container {
+    height: 100px;
+  }
+  
+  .equipment-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .equipment-info {
     padding: 1rem;
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
   }
   
-  .equipment-icon {
-    width: 3rem;
-    height: 3rem;
-    margin: 0 auto;
+  .equipment-category {
+    font-size: 0.7rem;
+    margin-bottom: 0.3rem;
   }
   
-  .about-grid {
+  .equipment-info h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .equipment-desc {
+    font-size: 0.85rem;
+  }
+  
+  /* About Page Mobile */
+  .about-page {
+    padding: 0 1rem;
+  }
+  
+  .about-hero {
+    padding: 2.5rem 0;
+    margin-bottom: 2rem;
+  }
+  
+  .about-hero h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .about-description {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .about-content {
+    gap: 2.5rem;
+    padding-bottom: 2rem;
+  }
+  
+  .about-section {
+    gap: 1.5rem;
+  }
+  
+  .about-section h2 {
+    font-size: 1.5rem;
+    padding-bottom: 0.8rem;
+  }
+  
+  /* İletişim Bilgileri Mobile */
+  .contact-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
-  .span-2 {
-    grid-column: span 1;
-  }
-  
-  .about-card {
+  .contact-item {
     padding: 1rem;
+    gap: 0.8rem;
   }
   
-  .card-icon {
-    width: 3rem;
-    height: 3rem;
+  .contact-icon {
+    font-size: 1.5rem;
+    min-width: 35px;
   }
   
-  .tech-skills-container {
+  .contact-label {
+    font-size: 0.85rem;
+  }
+  
+  .contact-value {
+    font-size: 0.95rem;
+  }
+  
+  /* Yetenekler Mobile */
+  .skills-container {
+    gap: 2rem;
+  }
+  
+  .skill-category h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .skill-tags {
+    gap: 0.6rem;
+  }
+  
+  .skill-tag {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Timeline Mobile */
+  .timeline {
+    gap: 1.5rem;
+  }
+  
+  .timeline-item {
+    padding-left: 1.5rem;
+  }
+  
+  .timeline-item::before {
+    width: 10px;
+    height: 10px;
+    left: 0;
+  }
+  
+  .timeline-item:not(:last-child)::after {
+    left: 4px;
+    width: 2px;
+    height: calc(100% + 1.5rem);
+  }
+  
+  .timeline-content {
+    padding: 1.5rem;
+  }
+  
+  .timeline-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .timeline-content .position {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .timeline-content .duration {
+    font-size: 0.85rem;
+  }
+  
+  /* Eğitim Mobile */
+  .education-content {
+    padding: 1.5rem;
+  }
+  
+  .education-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .education-detail {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .education-degree {
+    font-size: 0.9rem;
+    margin-right: 0.8rem;
+  }
+  
+  .education-duration {
+    font-size: 0.85rem;
+  }
+  
+  /* Sertifikalar Mobile */
+  .certificates-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
-  .skills-all-container {
-    gap: 1rem;
+  .certificate-item {
+    padding: 1.2rem;
   }
   
-  .contact-details-container {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .certificate-item h3 {
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
   }
   
-  .experience-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .certificate-issuer {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
   }
   
-  .education-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .certificate-date {
+    font-size: 0.85rem;
   }
   
-  .certificate-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  /* Ek Bilgiler Mobile */
+  .info-item {
+    padding: 1rem;
+    gap: 0.8rem;
+  }
+  
+  .info-icon {
+    font-size: 1.5rem;
+    min-width: 35px;
+  }
+  
+  .info-label {
+    font-size: 0.85rem;
+  }
+  
+  .info-value {
+    font-size: 0.95rem;
   }
 }
 
@@ -1107,13 +1449,27 @@
   }
   
   .social-links-bottom {
-    gap: 0.5rem;
+    gap: 1rem;
     justify-content: center;
   }
   
   .social-links-bottom a {
-    padding: 0.5rem 0.8rem;
     font-size: 0.85rem;
+    position: relative;
+  }
+  
+  .social-links-bottom a::after {
+    content: ' ↗';
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .social-links-bottom a:hover {
+    color: var(--hover-color);
+  }
+  
+  .social-links-bottom a:hover::after {
+    opacity: 1;
   }
   
   .nav-links {

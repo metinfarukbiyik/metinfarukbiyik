@@ -26,21 +26,21 @@ export function AboutPage() {
           <section className="about-section">
             <h2>İletişim</h2>
             <div className="contact-grid">
-              {aboutData.contact.map((contact, index) => (
-                <div key={index} className="contact-item">
+                    {aboutData.contact.map((contact, index) => (
+                      <div key={index} className="contact-item">
                   <span className="contact-icon">{contact.label.split(' ')[0]}</span>
                   <div className="contact-info">
                     <span className="contact-label">{contact.label.split(' ').slice(1).join(' ')}</span>
-                    {contact.href ? (
+                        {contact.href ? (
                       <a href={contact.href} className="contact-value">{contact.value}</a>
-                    ) : (
-                      <span className="contact-value">{contact.value}</span>
-                    )}
+                        ) : (
+                          <span className="contact-value">{contact.value}</span>
+                        )}
                   </div>
-                </div>
-              ))}
-            </div>
-            
+                      </div>
+                    ))}
+          </div>
+
             {/* Ek Bilgiler */}
             <div className="additional-info">
               {aboutData.additionalInfo.map((info, index) => (
@@ -51,8 +51,8 @@ export function AboutPage() {
                     <span className="info-value">{info.value}</span>
                   </div>
                 </div>
-              ))}
-            </div>
+                        ))}
+                      </div>
           </section>
 
           {/* Yetenekler */}
@@ -64,10 +64,10 @@ export function AboutPage() {
                 <div className="skill-tags">
                   {aboutData.skills.personal.map((skill, index) => (
                     <span key={index} className="skill-tag">{skill}</span>
-                  ))}
-                </div>
-              </div>
-              
+                        ))}
+            </div>
+          </div>
+
               <div className="skill-category">
                 <h3>Programlar</h3>
                 <div className="skill-tags">
@@ -75,7 +75,7 @@ export function AboutPage() {
                     <span key={index} className="skill-tag">{skill}</span>
                   ))}
                 </div>
-              </div>
+                      </div>
               
               <div className="skill-category">
                 <h3>Web Geliştirme</h3>
@@ -97,11 +97,11 @@ export function AboutPage() {
                   <div className="timeline-content">
                     <h3>{exp.company}</h3>
                     <p className="position">{exp.position}</p>
-                    <span className="duration">{exp.duration}</span>
-                  </div>
+                        <span className="duration">{exp.duration}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
           </section>
 
           {/* Eğitim */}
@@ -115,10 +115,10 @@ export function AboutPage() {
                     <p className="education-detail">{edu.detail}</p>
                     <span className="education-degree">{edu.degree}</span>
                     <span className="education-duration">{edu.duration}</span>
-                  </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
           </section>
 
           {/* Sertifikalar */}
@@ -130,8 +130,8 @@ export function AboutPage() {
                   <h3>{cert.title}</h3>
                   <p className="certificate-issuer">{cert.issuer}</p>
                   <span className="certificate-date">{cert.date}</span>
-                </div>
-              ))}
+                    </div>
+                  ))}
             </div>
           </section>
 

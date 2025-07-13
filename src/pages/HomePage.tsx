@@ -1,4 +1,4 @@
-import { PageHeader, AboutSection, SEOHead } from '../components';
+import { PageHeader, AboutSection, SEOHead, RecentPosts } from '../components';
 import { generatePageSEO } from '../utils/seo';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -15,6 +15,7 @@ export function HomePage() {
         <PageHeader />
       </section>
       <AboutSection />
+      <RecentPosts />
     </>
   );
 } 

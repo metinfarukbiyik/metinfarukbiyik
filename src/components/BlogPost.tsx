@@ -65,8 +65,6 @@ export function BlogPost() {
     type: 'article'
   };
 
-  const pageUrl = `${window.location.origin}/blog/${slug}`;
-  const pageId = slug || 'unknown';
   const pageTitle = post.metadata.title;
 
   return (
@@ -127,8 +125,6 @@ export function BlogPost() {
             {/* Yorumlar */}
             <section className="blog-comments-section">
               <GiscusComments 
-                pageId={pageId}
-                pageUrl={pageUrl}
                 pageTitle={pageTitle}
               />
             </section>

@@ -2,12 +2,10 @@ import { useEffect, useState } from 'react';
 import Giscus from '@giscus/react';
 
 interface GiscusCommentsProps {
-  pageId: string;
-  pageUrl: string;
   pageTitle: string;
 }
 
-export function GiscusComments({ pageId, pageUrl, pageTitle }: GiscusCommentsProps) {
+export function GiscusComments({ pageTitle }: GiscusCommentsProps) {
   const [theme, setTheme] = useState<'light' | 'dark' | 'preferred_color_scheme'>('preferred_color_scheme');
 
   useEffect(() => {

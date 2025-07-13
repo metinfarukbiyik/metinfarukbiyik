@@ -6,7 +6,6 @@ export { Navigation } from './Navigation';
 export { PageHeader } from './PageHeader';
 export { SEOHead } from './SEOHead';
 export { BlogCard } from './BlogCard';
-export { RecentPosts } from './RecentPosts';
 export { BlogPost } from './BlogPost';
 export { BlogSidebar } from './BlogSidebar';
 export { GiscusComments } from './GiscusComments'; 

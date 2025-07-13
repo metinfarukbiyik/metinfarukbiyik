@@ -7,6 +7,7 @@ export function Navigation() {
 
   const navItems = [
     { path: '/', label: 'Ana Sayfa' },
+    { path: '/blog', label: 'Blog' },
     { path: '/hakkimda', label: 'Hakkımda' },
     { path: '/ekipmanlar', label: 'Ekipmanlar' }
   ];

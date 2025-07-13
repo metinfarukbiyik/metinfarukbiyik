@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Navigation } from './components';
-import { HomePage, EquipmentPage, AboutPage, NotFoundPage } from './pages';
+import { HomePage, EquipmentPage, AboutPage, NotFoundPage, BlogPage } from './pages';
 import './styles/reset.css';
 import './styles/variables.css';
 import './styles/App.css';
@@ -18,6 +18,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/ekipmanlar" element={<EquipmentPage />} />
               <Route path="/hakkimda" element={<AboutPage />} />
+              <Route path="/blog" element={<BlogPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>

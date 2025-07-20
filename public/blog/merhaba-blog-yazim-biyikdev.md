@@ -12,6 +12,8 @@ published: true
 
 1999 yılında Trabzon’da doğdum. Teknolojiye olan ilgim, öğrenmeye duyduğum merak ve kendimi geliştirme isteğim beni bugünkü Metin yaptı diyebilirim.
 
+![enter image description here](https://biyik.dev/blog/images/my.jpg)
+
 ### **🎓 Kısaca Ben Kimim?**
 
 📍 Şu anda **Baz İstasyonu Teknisyeni** olarak Ak İletişim’de çalışıyorum. Aynı zamanda **ATA AÖF Bilgi Yönetimi** bölümünde öğrenci olarak eğitimime devam ediyorum.

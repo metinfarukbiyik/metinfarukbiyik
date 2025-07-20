@@ -1,7 +1,7 @@
 ---
 title: "Merhaba Blog Yazım ve biyik.dev"
 description: "1999 Trabzon doğumlu bir yazılım geliştiricisinin hikayesi: kodlama serüveni, kişisel gelişim, spor disiplini ve biyik.dev ile hayallerini gerçekleştirme yolculuğu."
-category: "KİŞİSEL"
+category: "Kişisel"
 date: "13 Temmuz 2025"
 readTime: "5 dk okuma"
 slug: "merhaba-blog-yazim-biyikdev"

@@ -8,49 +8,59 @@ slug: "merhaba-blog-yazim-biyikdev"
 published: true
 ---
 
-# Merhaba, Ben Metin Faruk Bıyık! 👋
-**biyik.dev**'e hoş geldiniz! 1999 Trabzon doğumluyum ve bu benim dijital evim.
-## 🌟 Kısaca Ben
+**Selam! Ben Metin Faruk Bıyık. Hoş geldin! 🙌**
 
-**Bilgi Yönetimi** öğrencisiyim. Gündüz çalışıyorum, akşam spor yapıyorum, gece kod yazıyorum. Basit bir yaşam tarzım var.
+1999 yılında Trabzon’da doğdum. Teknolojiye olan ilgim, öğrenmeye duyduğum merak ve kendimi geliştirme isteğim beni bugünkü Metin yaptı diyebilirim.
 
-## 💻 Kodlama Yolculuğum
+### **🎓 Kısaca Ben Kimim?**
 
-HTML'den başladım, şimdi React ile projeler yapıyorum. Her yeni teknoloji öğrendiğimde kendimi oyunda level atlayan karakter gibi hissediyorum! 🎮
+📍 Şu anda **Baz İstasyonu Teknisyeni** olarak Ak İletişim’de çalışıyorum. Aynı zamanda **ATA AÖF Bilgi Yönetimi** bölümünde öğrenci olarak eğitimime devam ediyorum.
 
-**Teknoloji stack'im:**
+----------
 
-- HTML, CSS, JavaScript
-- TypeScript, React
-- TailwindCSS
-- Firebase, Supabase
+### **🚀 Kariyer Yolculuğum Nasıl Başladı?**
+Her şey 2018 yılında başladı.
 
+**ALP Telekomünikasyon**’da **Baz İstasyonu Kurulum Teknisyeni** olarak sahaya ilk adımımı attım. Direk tepesinde rüzgârla tanıştım diyebilirim. 😅
 
-## 🏋️‍♂️ Spor ve Disiplin
+Ardından **NTM Elektrik Elektronik A.Ş.**’de görev aldım. Burada iş sadece kurulumla kalmadı; **iş emirleriyle uğraşmak**, **ekip yönetmek** gibi daha sorumluluk isteyen rollerde buldum kendimi.
 
-**128,90 kg**'dan başlayan spor yolculuğum hayatımı değiştirdi. Sadece kilo vermek değil, **disiplin öğrenmek** asıl kazancım oldu.
+Sonrasında bir değişiklik yapıp biraz daha masa başına geçtim.
 
-### Spor Rutinüm:
--  **Kuvvet antrenmanları** (4 gün/hafta)
--  **Düzenli beslenme** takibi
--  **Motivasyon** = sürekli gelişim
-Spor bana kodlamada da yardımcı oluyor. **Güçlü vücut, güçlü kod!** 💪
+**Turkcell Global Bilgi**’de çalışmaya başladım. Hem **müşteri temsilciliği**, hem de kısa süreliğine **takım koçluğu** görevlerini üstlendim. Bu süreç bana “insanlarla iletişim kurmanın” ve “sabırlı olmanın” ne kadar önemli olduğunu gösterdi.
 
-## 🚀 biyik.dev Nedir?
-Bu site benim dijital kimliğim:
+Ama içimdeki saha tutkusu ağır bastı ve 2025 yılında yeniden direklere, sahaya, kulelere geri döndüm. Şu anda **Ak İletişim’de baz istasyonlarının kalbinde görev alıyorum.**
 
--  **Blog yazıları** - öğrendiklerimi paylaşıyorum
--  **Projeler** - yaptığımı gösteriyorum
--  **Deneyimler** - başarı ve başarısızlık hikayeleri
+----------
 
-## 🎯 Hedeflerim
+### **💻 Teknolojiye ve Kodlamaya Merakım**
 
-- Modern web teknolojilerinde uzmanlaşmak
-- Açık kaynak projelere katkı yapmak
-- Kendi ürünümü geliştirmek
+Bilgiyle aram her zaman iyiydi. Bilgisayar başında geçirdiğim zamanları sadece oyunla değil, üretimle de değerlendirdim.
 
-## 📚 Öğrenme Felsefem
+**HTML, CSS, JavaScript** derken şimdi **Next.js**, **TailwindCSS**, **Firebase**, **TypeScript** gibi teknolojilerle kendi projelerimi geliştiriyorum.  
 
-- Her gün yeni bir şey öğreniyorum
-- Öğrendiklerimi hemen uyguluyorum
-- Hatalarımdan ders çıkarıyorum
+Amaç: hem pratik işler üretmek hem de öğrenmeye devam etmek.
+
+----------
+### **🏋️‍♂️ Kendime Dair Bir Şey Daha…**
+
+Evet, bilgisayar başında çok zaman geçiriyorum ama aynı zamanda **sporla da iç içeyim**.
+
+Zamanla kilolarımı verip, kendimi daha iyi hissetmek istedim. Şu ana kadar 15 kilo verdim ve yolum devam ediyor.
+
+**Kas koruyarak yağ yakmak** en büyük hedefim. Destek olarak protein tozu, L-Carnitine gibi takviyeler de kullanıyorum.
+
+### **✨ Bu Blogda Neler Var?**
+
+Bu blogda sadece yazılım değil.
+
+Burada;
+-   Geliştirdiğim projeler,    
+-   Günlük hayatta öğrendiğim şeyler,
+-   Spor ve motivasyon üzerine deneyimlerim,
+-   Ve bazen içten sohbetler olacak.
+ 
+**İçten, gerçek ve paylaşmaya açık bir blog.**
+**Tanıştığımıza çok memnun oldum. Umarım burada okudukların sana ilham verir.**
+
+Yorum bırak, mail at, selam ver — yeter ki bağlantıda kalalım! 😄

@@ -10,7 +10,7 @@ export function AboutSection() {
       
       {/* Social Links */}
       <div className="social-links-bottom">
-        <a href="mailto:mb.metinbiyik@gmail.com" rel="noopener noreferrer">Mail</a>
+        <a href="mailto:metin@biyik.dev" rel="noopener noreferrer">Mail</a>
         <a href="https://github.com/metinfarukbiyik" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="https://instagram.com/_metinbiyik" target="_blank" rel="noopener noreferrer">Instagram</a>
         <a href="https://x.com/_metinbiyik" target="_blank" rel="noopener noreferrer">Twitter</a>

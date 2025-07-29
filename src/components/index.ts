@@ -8,4 +8,5 @@ export { SEOHead } from './SEOHead';
 export { BlogCard } from './BlogCard';
 export { BlogPost } from './BlogPost';
 export { BlogSidebar } from './BlogSidebar';
-export { GiscusComments } from './GiscusComments'; 
+export { GiscusComments } from './GiscusComments';
+export { default as Footer } from './Footer'; 

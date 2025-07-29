@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { Navigation, BlogPost } from './components';
+import { Navigation, BlogPost, Footer } from './components';
 import { HomePage, EquipmentPage, AboutPage, NotFoundPage, BlogPage } from './pages';
 import './styles/reset.css';
 import './styles/variables.css';
@@ -23,6 +23,7 @@ function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
+          <Footer />
         </div>
       </Router>
     </HelmetProvider>

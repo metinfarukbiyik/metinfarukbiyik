@@ -2,10 +2,35 @@ import { SEOHead } from '../components';
 import { generatePageSEO } from '../utils/seo';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { aboutData } from '../data/aboutData';
+import { HiMail, HiLocationMarker, HiGlobeAlt, HiBriefcase, HiAcademicCap, HiBadgeCheck, HiLightBulb, HiUser, HiPhone } from 'react-icons/hi';
 
 export function AboutPage() {
   const seo = generatePageSEO('about');
   usePageTitle(seo.title);
+
+  // Icon mapping function
+  const getContactIcon = (label: string) => {
+    if (label.includes('📧') || label.includes('Email')) return <HiMail className="contact-icon" />;
+    if (label.includes('📍') || label.includes('Konum')) return <HiLocationMarker className="contact-icon" />;
+    if (label.includes('🌐') || label.includes('Website')) return <HiGlobeAlt className="contact-icon" />;
+    return <HiUser className="contact-icon" />;
+  };
+
+  const getInfoIcon = (label: string) => {
+    if (label.includes('🎂') || label.includes('Yaş')) return <HiUser className="info-icon" />;
+    if (label.includes('💼') || label.includes('Durum')) return <HiBriefcase className="info-icon" />;
+    return <HiLightBulb className="info-icon" />;
+  };
+
+  const getSectionIcon = (sectionName: string) => {
+    switch (sectionName) {
+      case 'yetenekler': return <HiLightBulb className="section-icon" />;
+      case 'deneyim': return <HiBriefcase className="section-icon" />;
+      case 'egitim': return <HiAcademicCap className="section-icon" />;
+      case 'sertifikalar': return <HiBadgeCheck className="section-icon" />;
+      default: return <HiUser className="section-icon" />;
+    }
+  };
 
   return (
     <>
@@ -24,11 +49,11 @@ export function AboutPage() {
           
           {/* İletişim Bilgileri */}
           <section className="about-section">
-            <h2>İletişim</h2>
+            <h2><HiPhone className="section-icon" /> İletişim</h2>
             <div className="contact-grid">
                     {aboutData.contact.map((contact, index) => (
                       <div key={index} className="contact-item">
-                  <span className="contact-icon">{contact.label.split(' ')[0]}</span>
+                  {getContactIcon(contact.label)}
                   <div className="contact-info">
                     <span className="contact-label">{contact.label.split(' ').slice(1).join(' ')}</span>
                         {contact.href ? (
@@ -45,7 +70,7 @@ export function AboutPage() {
             <div className="additional-info">
               {aboutData.additionalInfo.map((info, index) => (
                 <div key={index} className="info-item">
-                  <span className="info-icon">{info.label.split(' ')[0]}</span>
+                  {getInfoIcon(info.label)}
                   <div className="info-content">
                     <span className="info-label">{info.label.split(' ').slice(1).join(' ')}</span>
                     <span className="info-value">{info.value}</span>
@@ -57,7 +82,7 @@ export function AboutPage() {
 
           {/* Yetenekler */}
           <section className="about-section">
-            <h2>Yetenekler</h2>
+            <h2>{getSectionIcon('yetenekler')} Yetenekler</h2>
             <div className="skills-container">
               <div className="skill-category">
                 <h3>Kişisel Yetenekler</h3>
@@ -90,7 +115,7 @@ export function AboutPage() {
 
           {/* İş Deneyimi */}
           <section className="about-section">
-            <h2>İş Deneyimi</h2>
+            <h2>{getSectionIcon('deneyim')} İş Deneyimi</h2>
             <div className="timeline">
               {aboutData.experience.map((exp, index) => (
                 <div key={index} className="timeline-item">
@@ -106,7 +131,7 @@ export function AboutPage() {
 
           {/* Eğitim */}
           <section className="about-section">
-            <h2>Eğitim</h2>
+            <h2>{getSectionIcon('egitim')} Eğitim</h2>
             <div className="education-list">
               {aboutData.education.map((edu, index) => (
                 <div key={index} className="education-item">
@@ -123,7 +148,7 @@ export function AboutPage() {
 
           {/* Sertifikalar */}
           <section className="about-section">
-            <h2>Sertifikalar</h2>
+            <h2>{getSectionIcon('sertifikalar')} Sertifikalar</h2>
             <div className="certificates-grid">
               {aboutData.certificates.map((cert, index) => (
                 <div key={index} className="certificate-item">

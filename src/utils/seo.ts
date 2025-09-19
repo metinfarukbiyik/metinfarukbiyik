@@ -39,15 +39,6 @@ export const seoConfig = {
     type: "profile",
     image: BASE_IMAGE,
     author: "Metin Faruk Bıyık"
-  },
-  blog: {
-    title: `Blog | ${BASE_TITLE}`,
-    description: "Metin Faruk Bıyık'ın teknoloji, yapay zeka, web geliştirme ve kişisel deneyimleri hakkında yazdığı blog yazıları. Telekomünikasyon sektöründen içgörüler ve öğrenme süreci.",
-    keywords: "Metin Faruk Bıyık blog, teknoloji yazıları, yapay zeka, web geliştirme, telekomünikasyon, kişisel deneyimler, öğrenme süreci, araçlar, teknolojiler, front-end",
-    url: `${BASE_URL}/blog`,
-    type: "website",
-    image: BASE_IMAGE,
-    author: "Metin Faruk Bıyık"
   }
 };
 

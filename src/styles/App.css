@@ -37,7 +37,7 @@ body {
 
 @media (max-width: 768px) {
   .container {
-    padding: 0 var(--space-4);
+    padding: 0 var(--space-6);
   }
 }
 
@@ -192,7 +192,7 @@ body {
 
 /* Hero Section - Minimal */
 .hero {
-  padding: var(--space-24) 0 var(--space-8);
+  padding: var(--space-24) var(--space-6) var(--space-8);
   text-align: center;
 }
 
@@ -243,7 +243,7 @@ body {
 
 @media (max-width: 768px) {
   .hero {
-    padding: var(--space-16) 0 var(--space-12);
+    padding: var(--space-16) var(--space-6) var(--space-12);
   }
 
   .hero-content h1 {
@@ -259,7 +259,7 @@ body {
 
 /* About Section - Enhanced */
 .about {
-  padding: var(--space-8) 0 var(--space-16);
+  padding: var(--space-8) var(--space-6) var(--space-16);
   max-width: 800px;
   margin: 0 auto;
 }
@@ -399,7 +399,7 @@ body {
 
 @media (max-width: 768px) {
   .about {
-    padding: 0 0 var(--space-12);
+    padding: 0 var(--space-6) var(--space-12);
   }
 
   .about-text {
@@ -425,7 +425,7 @@ body {
 /* Page Layouts - Modern Minimal */
 .about-page,
 .equipment-page {
-  padding: var(--space-12) 0;
+  padding: var(--space-12) var(--space-6) 0;
   max-width: var(--container-lg);
   margin: 0 auto;
 }
@@ -434,7 +434,7 @@ body {
 .equipment-hero {
   text-align: center;
   margin-bottom: var(--space-12);
-  padding: var(--space-8) 0;
+  padding: var(--space-8) var(--space-6);
   position: relative;
 }
 
@@ -787,6 +787,7 @@ body {
 .equipment-content {
   max-width: var(--container-lg);
   margin: 0 auto;
+  padding: 0 var(--space-6);
   animation: fadeInUp 0.8s ease-out;
 }
 
@@ -1037,11 +1038,16 @@ body {
 @media (max-width: 768px) {
   .about-page,
   .equipment-page {
-    padding: var(--space-8) 0;
+    padding: var(--space-8) var(--space-6) 0;
+  }
+
+  .about-hero,
+  .equipment-hero {
+    padding: var(--space-8) var(--space-6);
   }
 
   .about-content {
-    padding: 0 var(--space-3);
+    padding: 0 var(--space-6);
   }
 
   .about-hero h1,
@@ -1052,6 +1058,7 @@ body {
   .about-description,
   .equipment-description {
     font-size: var(--text-sm);
+    padding: 0 var(--space-2);
   }
 
   .about-section {
@@ -1080,6 +1087,10 @@ body {
     gap: var(--space-3);
   }
 
+  .equipment-content {
+    padding: 0 var(--space-6);
+  }
+
   .equipment-grid {
     grid-template-columns: 1fr;
     gap: var(--space-6);
@@ -1099,19 +1110,19 @@ body {
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 var(--space-3);
+    padding: 0 var(--space-4);
   }
 
   .nav-container {
-    padding: 0 var(--space-3);
+    padding: 0 var(--space-4);
   }
 
   .footer-container {
-    padding: var(--space-12) var(--space-3) var(--space-6);
+    padding: var(--space-12) var(--space-4) var(--space-6);
   }
 
   .hero {
-    padding: var(--space-12) 0 var(--space-8);
+    padding: var(--space-12) var(--space-4) var(--space-8);
   }
 
   .hero-content h1 {
@@ -1119,6 +1130,29 @@ body {
   }
 
   .about {
-    padding: 0 0 var(--space-8);
+    padding: 0 var(--space-4) var(--space-8);
+  }
+
+  .about-page,
+  .equipment-page {
+    padding: var(--space-8) var(--space-4) 0;
+  }
+
+  .about-hero,
+  .equipment-hero {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .about-description,
+  .equipment-description {
+    padding: 0 var(--space-1);
+  }
+
+  .about-content {
+    padding: 0 var(--space-4);
+  }
+
+  .equipment-content {
+    padding: 0 var(--space-4);
   }
 }

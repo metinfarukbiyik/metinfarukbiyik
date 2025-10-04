@@ -49,13 +49,13 @@ export interface AboutData {
 }
 
 export const aboutData: AboutData = {
-  description: "Baz İstasyonu Teknisyeni olarak çalışıyorum. Yapay zeka teknolojileri üzerine araştırma yapıyorum. Bu alandaki gelişmeleri takip ediyor, iş süreçlerimde kullanarak verimliliği artırmak için yenilikçi çözümler geliştiriyorum.",
+  description: "Detaylı bilgiler ve iletişim için aşağıdaki bölümleri inceleyebilirsiniz.",
   
   contact: [
     {
       label: "📧 E-posta",
-      value: "mb.metinbiyik@gmail.com",
-      href: "mailto:mb.metinbiyik@gmail.com",
+      value: "metin@biyik.dev",
+      href: "mailto:metin@biyik.dev",
       type: "email"
     },
     {
@@ -167,7 +167,7 @@ export const aboutData: AboutData = {
     {
       company: "Ak İletişim",
       position: "Baz İstasyonu Teknisyeni",
-      duration: "2025 - Güncel"
+      duration: "2025 - 2025"
     },
     {
       company: "Turkcell Global Bilgi",

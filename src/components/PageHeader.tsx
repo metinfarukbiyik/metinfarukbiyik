@@ -8,7 +8,7 @@ export function PageHeader() {
         </span>
       </h1>
       <p className="subtitle">
-        Base Station Technician & Developer
+        Geliştirici
       </p>
     </div>
   );

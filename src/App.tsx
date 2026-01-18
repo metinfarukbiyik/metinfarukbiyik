@@ -8,6 +8,7 @@ import EducationList from './components/EducationList';
 import AdditionalInfoSection from './components/AdditionalInfoSection';
 import EquipmentPage from './components/EquipmentPage';
 import CertificatesPage from './components/CertificatesPage';
+import NotFoundPage from './components/NotFoundPage';
 import Footer from './components/Footer';
 import { personalInfo } from './data/cvData';
 
@@ -59,6 +60,7 @@ const App: React.FC = () => {
             <Route path="/" element={<CVPage />} />
             <Route path="/ekipmanlar" element={<EquipmentPage />} />
             <Route path="/sertifikalar" element={<CertificatesPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
         <Footer />

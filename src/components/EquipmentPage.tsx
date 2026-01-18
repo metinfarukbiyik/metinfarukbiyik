@@ -10,7 +10,7 @@ const EquipmentPage: React.FC = () => {
           <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 transition-transform hover:scale-[1.02]">
             <div className="h-48 bg-gray-50 flex items-center justify-center p-4">
               <img 
-                src={`/src/assets/images/equipment/${item.image}`} 
+                src={`/images/equipment/${item.image}`} 
                 alt={item.name} 
                 className="max-w-full max-h-full object-contain"
               />

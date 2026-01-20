@@ -21,7 +21,7 @@ export interface AdditionalInfo {
 
 export const personalInfo = {
   name: "METİN FARUK BIYIK",
-  address: "Aydınlıkevler Mh. Kader Cd. Trio B Blok K1: D: AB3 Ortahisar/Trabzon",
+  address: "Aydınlıkevler, Ortahisar/TRABZON",
   phone: "+90 (540) 461 35 43",
   email: "metin@biyik.dev",
   web: "biyik.dev",

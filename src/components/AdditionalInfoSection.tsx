@@ -4,32 +4,32 @@ import { ChevronRight } from 'lucide-react';
 
 const AdditionalInfoSection: React.FC = () => {
   return (
-    <div className="space-y-1.5 text-sm text-gray-800">
-      <div className="flex gap-2 items-start">
+    <div className="space-y-2 text-sm text-gray-800">
+      <div className="flex items-start gap-2">
         <ChevronRight size={14} className="text-[#004A99] mt-1 shrink-0" />
-        <div className="flex gap-2">
-          <span className="font-bold whitespace-nowrap">İlgi Alanları & Hobiler:</span>
+        <div className="leading-normal">
+          <span className="font-bold">İlgi Alanları & Hobiler: </span>
           <span>{additionalInfo.hobbies}</span>
         </div>
       </div>
-      <div className="flex gap-2 items-start">
+      <div className="flex items-start gap-2">
         <ChevronRight size={14} className="text-[#004A99] mt-1 shrink-0" />
-        <div className="flex gap-2">
-          <span className="font-bold whitespace-nowrap">Kişisel Yetkinlikler:</span>
+        <div className="leading-normal">
+          <span className="font-bold">Kişisel Yetkinlikler: </span>
           <span>{additionalInfo.competencies}</span>
         </div>
       </div>
-      <div className="flex gap-2 items-start">
+      <div className="flex items-start gap-2">
         <ChevronRight size={14} className="text-[#004A99] mt-1 shrink-0" />
-        <div className="flex gap-2">
-          <span className="font-bold whitespace-nowrap">Yetenekler:</span>
+        <div className="leading-normal">
+          <span className="font-bold">Yetenekler: </span>
           <span>{additionalInfo.skills}</span>
         </div>
       </div>
-      <div className="flex gap-2 items-start">
+      <div className="flex items-start gap-2">
         <ChevronRight size={14} className="text-[#004A99] mt-1 shrink-0" />
-        <div className="flex gap-2">
-          <span className="font-bold whitespace-nowrap">Sürücü Belgeleri & SRC:</span>
+        <div className="leading-normal">
+          <span className="font-bold">Sürücü Belgeleri & SRC: </span>
           <span>{additionalInfo.drivingLicenses}</span>
         </div>
       </div>

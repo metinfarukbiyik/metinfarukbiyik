@@ -16,7 +16,7 @@ const EducationList: React.FC = () => {
           <p className="text-sm italic text-gray-700 mb-1 leading-tight">{edu.department}</p>
           <ul className="space-y-0.5 text-sm text-gray-800">
             {edu.details.map((detail, i) => (
-              <li key={i} className="flex items-start gap-1 leading-tight">
+              <li key={i} className="flex items-start gap-2 leading-tight">
                 <ChevronRight size={14} className="text-[#004A99] mt-0.5 shrink-0" />
                 <span>{detail}</span>
               </li>

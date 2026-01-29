@@ -1,16 +1,16 @@
 import React from 'react';
 import { personalInfo } from '../data/cvData';
-import myPhoto from '../assets/images/my.jpg';
+import myPhoto from '../assets/images/my.png';
 import { MapPin, Phone, Mail, Globe } from 'lucide-react';
 
 const Header: React.FC = () => {
   return (
     <header className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
-      <div className="w-32 h-40 flex-shrink-0">
+      <div className="w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
         <img 
           src={myPhoto} 
           alt={personalInfo.name} 
-          className="w-full h-full object-cover rounded-sm shadow-md"
+          className="w-full h-full object-cover rounded-full shadow-lg border-2 border-[#004A99]/10"
         />
       </div>
       <div className="flex-grow">

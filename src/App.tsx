@@ -12,16 +12,62 @@ import NotFoundPage from './components/NotFoundPage';
 import Footer from './components/Footer';
 import { personalInfo } from './data/cvData';
 
-const TitleUpdater: React.FC = () => {
+const SEOUpdater: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const titles: Record<string, string> = {
-      '/': 'Metin Faruk Bıyık | Profesyonel Özgeçmiş',
-      '/ekipmanlar': 'Ekipmanlarım | Metin Faruk Bıyık',
-      '/sertifikalar': 'Sertifikalarım | Metin Faruk Bıyık'
+    const seoData: Record<string, { title: string; description: string; keywords: string }> = {
+      '/': {
+        title: 'Metin Faruk Bıyık | Profesyonel Özgeçmiş',
+        description: 'Metin Faruk Bıyık\'ın profesyonel özgeçmişi, iş deneyimleri ve kariyer özeti. Müşteri deneyimi ve ekip yönetimi profesyoneli.',
+        keywords: 'Metin Faruk Bıyık, özgeçmiş, CV, müşteri temsilcisi, ekip yönetimi, Trabzon'
+      },
+      '/ekipmanlar': {
+        title: 'Ekipmanlarım | Metin Faruk Bıyık',
+        description: 'Metin Faruk Bıyık\'ın kullandığı teknik ekipmanlar, çalışma alanı ve teknolojik araçlar.',
+        keywords: 'Metin Faruk Bıyık, ekipmanlar, çalışma alanı, setup, teknoloji, MacBook Air M4'
+      },
+      '/sertifikalar': {
+        title: 'Sertifikalarım | Metin Faruk Bıyık',
+        description: 'Metin Faruk Bıyık\'ın kariyeri boyunca kazandığı sertifikalar ve başarı belgeleri.',
+        keywords: 'Metin Faruk Bıyık, sertifikalar, eğitimler, başarı belgeleri, Turkcell Akademi, BTK Akademi'
+      }
     };
-    document.title = titles[location.pathname] || 'Metin Faruk Bıyık';
+
+    const currentSEO = seoData[location.pathname] || {
+      title: 'Metin Faruk Bıyık',
+      description: 'Metin Faruk Bıyık - Profesyonel Portfolyo ve Özgeçmiş',
+      keywords: 'Metin Faruk Bıyık, CV, Portfolyo'
+    };
+
+    // Title güncelleme
+    document.title = currentSEO.title;
+
+    // Meta Description güncelleme
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', currentSEO.description);
+    }
+
+    // Meta Keywords güncelleme
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', currentSEO.keywords);
+    }
+
+    // Open Graph Title & Description güncelleme
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', currentSEO.title);
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', currentSEO.description);
+
+    const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twitterTitle) twitterTitle.setAttribute('content', currentSEO.title);
+
+    const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twitterDesc) twitterDesc.setAttribute('content', currentSEO.description);
+
   }, [location]);
 
   return null;
@@ -78,7 +124,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="min-h-screen bg-gray-100 flex flex-col">
-        <TitleUpdater />
+        <SEOUpdater />
         <Navbar />
         <main className="flex-grow">
           <Routes>

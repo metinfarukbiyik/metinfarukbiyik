@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Mail, Instagram, Linkedin, Camera, FileText, Award, Download } from 'lucide-react';
+import { Mail, Instagram, Linkedin, Award, Download, FileText, Briefcase } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   return (
@@ -47,10 +47,10 @@ const Navbar: React.FC = () => {
           <a 
             href="/cv/metinfarukbiyik-cv.pdf" 
             download
-            className="flex items-center gap-2 px-3 md:px-4 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium shadow-sm mr-2"
+            className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-full hover:from-green-700 hover:to-emerald-700 transition-all duration-300 text-sm font-bold shadow-md hover:shadow-lg active:scale-95 mr-2 group"
           >
-            <Download size={18} />
-            <span className="hidden lg:inline">CV İndir</span>
+            <Download size={18} className="group-hover:animate-bounce" />
+            <span className="hidden lg:inline">CV İNDİR</span>
           </a>
 
           <NavLink 
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
               : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'
             }`}
           >
-            <Camera size={18} />
+            <Briefcase size={18} />
             <span className="hidden xs:inline">Ekipmanlar</span>
           </NavLink>
         </div>

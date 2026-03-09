@@ -13,7 +13,7 @@ const EducationList: React.FC = () => {
             </h3>
             <div className="flex items-center gap-2 whitespace-nowrap ml-4">
               <span className="px-2 py-0.5 text-[10px] font-semibold bg-gray-100 text-gray-600 rounded-full border border-gray-200 uppercase tracking-wider">
-                {edu.period === "2018" ? "Lise" : "Ön Lisans"}
+                {edu.period.includes("2018") ? "Lise" : "Ön Lisans"}
               </span>
               <span className="font-bold text-gray-900">{edu.period}</span>
             </div>

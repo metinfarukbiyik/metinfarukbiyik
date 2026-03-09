@@ -86,7 +86,7 @@ export const educations: Education[] = [
   {
     school: "ŞEHİT ÜNAL BIÇAKÇI MESLEKİ VE TEKNİK ANADOLU LİSESİ",
     department: "Bilişim Teknolojileri Alanı Web Programcılığı",
-    period: "2018",
+    period: "2015 - 2018",
     details: [
       "HTML, CSS ve temel JavaScript kullanarak statik web sayfaları geliştirme",
       "Temel veritabanı ve algoritma mantığı eğitimi",
@@ -96,7 +96,7 @@ export const educations: Education[] = [
   {
     school: "ATATÜRK ÜNİVERSİTESİ AÇIK ÖĞRETİM FAKÜLTESİ",
     department: "Bilgi Yönetimi",
-    period: "2026",
+    period: "2022 - 2026",
     details: [
       "Bilgi sistemleri ve veri yönetimi üzerine akademik eğitim",
       "Analitik düşünme ve problem çözme yetkinlikleri",

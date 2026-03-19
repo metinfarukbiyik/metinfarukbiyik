@@ -8,6 +8,7 @@ import EducationList from './components/EducationList';
 import AdditionalInfoSection from './components/AdditionalInfoSection';
 import EquipmentPage from './components/EquipmentPage';
 import CertificatesPage from './components/CertificatesPage';
+import ProjectsPage from './components/ProjectsPage';
 import NotFoundPage from './components/NotFoundPage';
 import Footer from './components/Footer';
 import { personalInfo } from './data/cvData';
@@ -31,6 +32,11 @@ const SEOUpdater: React.FC = () => {
         title: 'Sertifikalarım | Metin Faruk Bıyık',
         description: 'Metin Faruk Bıyık\'ın kariyeri boyunca kazandığı sertifikalar ve başarı belgeleri.',
         keywords: 'Metin Faruk Bıyık, sertifikalar, eğitimler, başarı belgeleri, Turkcell Akademi, BTK Akademi'
+      },
+      '/projeler': {
+        title: 'Projelerim | Metin Faruk Bıyık',
+        description: 'Metin Faruk Bıyık\'ın geliştirdiği projeler ve referanslar.',
+        keywords: 'Metin Faruk Bıyık, projeler, referanslar, biyik.dev, elifogretmen.com.tr, bayen.com.tr, cnliletisim.com'
       }
     };
 
@@ -131,6 +137,7 @@ const App: React.FC = () => {
             <Route path="/" element={<CVPage />} />
             <Route path="/ekipmanlar" element={<EquipmentPage />} />
             <Route path="/sertifikalar" element={<CertificatesPage />} />
+            <Route path="/projeler" element={<ProjectsPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

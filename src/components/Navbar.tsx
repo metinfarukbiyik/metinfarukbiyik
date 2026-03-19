@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Mail, Instagram, Linkedin, Award, Download, FileText, Briefcase } from 'lucide-react';
+import { Mail, Instagram, Linkedin, Award, Download, FileText, Briefcase, LayoutGrid } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   return (
@@ -63,6 +63,18 @@ const Navbar: React.FC = () => {
           >
             <FileText size={18} />
             <span className="hidden xs:inline">Özgeçmiş</span>
+          </NavLink>
+
+          <NavLink 
+            to="/projeler"
+            className={({ isActive }) => `flex items-center gap-2 px-3 md:px-4 py-1.5 rounded-md transition-colors text-sm font-medium shadow-sm border ${
+              isActive 
+              ? 'bg-[#004A99] text-white border-transparent' 
+              : 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200'
+            }`}
+          >
+            <LayoutGrid size={18} />
+            <span className="hidden xs:inline">Projeler</span>
           </NavLink>
 
           <NavLink 

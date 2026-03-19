@@ -138,6 +138,45 @@ export interface Equipment {
   specs: string;
 }
 
+export interface Project {
+  id: string;
+  name: string;
+  url: string;
+  description: string;
+  icon: string;
+}
+
+export const projects: Project[] = [
+  {
+    id: '1',
+    name: 'BIYIK.DEV',
+    url: 'https://biyik.dev',
+    description: 'Şahsıma ait kişisel portfolyo ve özgeçmiş sitesi.',
+    icon: 'Globe'
+  },
+  {
+    id: '2',
+    name: 'ELIFOGRETMEN.COM.TR',
+    url: 'https://elifogretmen.com.tr',
+    description: 'Elif Öğretmen, Türkçe öğretmeni tanıtım web sitesi.',
+    icon: 'GraduationCap'
+  },
+  {
+    id: '3',
+    name: 'BAYEN.COM.TR',
+    url: 'https://bayen.com.tr',
+    description: 'Yangın güvenliği ve yapı sistemleri kurumsal web sitesi çalışması.',
+    icon: 'Building2'
+  },
+  {
+    id: '4',
+    name: 'CNLILETISIM.COM',
+    url: 'https://cnliletisim.com',
+    description: 'GSM Teknolojileri kurulumu yapan firmanın tanıtım web sitesi.',
+    icon: 'Smartphone'
+  }
+];
+
 export const equipments: Equipment[] = [
   { 
     id: '1', 

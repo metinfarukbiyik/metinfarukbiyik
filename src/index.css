@@ -1,9 +1,59 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter",
+    "Segoe UI", Roboto, sans-serif;
+
+  --color-accent: #376bfb;
+  --color-accent-dark: #2a55d6;
+
+  --color-grouped: #f2f2f7;
+  --color-card: #ffffff;
+  --color-fill: #f2f2f7;
+  --color-separator: #e6e6eb;
+
+  --color-label: #1c1c1e;
+  --color-label-secondary: #6b6b70;
+  --color-label-tertiary: #9a9aa0;
+
+  --color-ios-red: #ff3b30;
+  --color-ios-orange: #ff9500;
+  --color-ios-green: #34c759;
+  --color-ios-teal: #30b0c7;
+  --color-ios-indigo: #5856d6;
+  --color-ios-pink: #ff2d55;
+  --color-ios-gray: #8e8e93;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-sans);
+  background-color: var(--color-grouped);
+  color: var(--color-label);
+}
+
+@keyframes ios-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ios-page {
+  animation: ios-page-in 0.4s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ios-page {
+    animation: none;
+  }
 }

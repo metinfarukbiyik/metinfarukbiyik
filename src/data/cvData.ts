@@ -9,6 +9,7 @@ export interface Education {
   school: string;
   department: string;
   period: string;
+  level: string;
   details: string[];
 }
 
@@ -20,7 +21,9 @@ export interface AdditionalInfo {
 }
 
 export const personalInfo = {
-  name: "METİN FARUK BIYIK",
+  name: "Metin Faruk Bıyık",
+  linkedin: "https://www.linkedin.com/in/metinbiyik/",
+  instagram: "https://instagram.com/_metinbiyik",
   address: "Aydınlıkevler, Ortahisar/TRABZON",
   phone: "+90 (540) 461 35 43",
   email: "metin@biyik.dev",
@@ -80,6 +83,26 @@ export const experiences: Experience[] = [
       "Saha çalışmaları ve teknik destek faaliyetleri"
     ]
   },
+  {
+    company: "Turkcell Superonline",
+    role: "Superonline FTTH Teknisyeni",
+    period: "2025 - 2025",
+    responsibilities: [
+      "Superonline altyapı sonrası evlere fiber internet kurulumu"
+    ]
+  },
+  {
+    company: "CNL İletişim",
+    role: "Ofis Yöneticisi",
+    period: "2026 - Devam",
+    responsibilities: [
+      "Ofis içi operasyonların yönetimi ve idari süreçlerin yürütülmesi",
+      "Şirket envanterinin takibi, stok kontrolü ve envanter hareketlerinin kayıt altına alınması",
+      "Sahada gerçekleştirilen işlerin süreç, kalite ve tamamlanma durumlarının kontrol edilmesi",
+      "Malzeme giriş-çıkışlarının ve ekipman dağıtımlarının düzenli olarak takip edilmesi",
+      "Saha ekipleri ile ofis arasındaki iletişim ve iş akışının koordinasyonunun sağlanması"
+    ]
+  },
 ];
 
 export const educations: Education[] = [
@@ -87,6 +110,7 @@ export const educations: Education[] = [
     school: "ŞEHİT ÜNAL BIÇAKÇI MESLEKİ VE TEKNİK ANADOLU LİSESİ",
     department: "Bilişim Teknolojileri Alanı Web Programcılığı",
     period: "2015 - 2018",
+    level: "Lise",
     details: [
       "HTML, CSS ve temel JavaScript kullanarak statik web sayfaları geliştirme",
       "Temel veritabanı ve algoritma mantığı eğitimi",
@@ -97,6 +121,7 @@ export const educations: Education[] = [
     school: "ATATÜRK ÜNİVERSİTESİ AÇIK ÖĞRETİM FAKÜLTESİ",
     department: "Bilgi Yönetimi",
     period: "2022 - 2026",
+    level: "Ön Lisans",
     details: [
       "Bilgi sistemleri ve veri yönetimi üzerine akademik eğitim",
       "Analitik düşünme ve problem çözme yetkinlikleri",

@@ -1,36 +1,33 @@
 import React from 'react';
 import { educations } from '../data/cvData';
-import { ChevronRight } from 'lucide-react';
+import ListRow, { Bullets } from './ui/ListRow';
+import { GraduationCap } from 'lucide-react';
 
-const EducationList: React.FC = () => {
-  return (
-    <div className="space-y-4">
-      {educations.map((edu, index) => (
-        <div key={index}>
-          <div className="flex justify-between items-start">
-            <h3 className="font-bold text-gray-900 uppercase">
-              {edu.school}
-            </h3>
-            <div className="flex items-center gap-2 whitespace-nowrap ml-4">
-              <span className="px-2 py-0.5 text-[10px] font-semibold bg-gray-100 text-gray-600 rounded-full border border-gray-200 uppercase tracking-wider">
-                {edu.period.includes("2018") ? "Lise" : "Ön Lisans"}
+const EducationList: React.FC = () => (
+  <>
+    {educations
+      .slice()
+      .reverse()
+      .map((edu, index) => (
+        <ListRow
+          key={index}
+          icon={GraduationCap}
+          iconColor="bg-ios-indigo"
+          title={edu.school}
+          subtitle={edu.department}
+          trailing={
+            <div className="flex flex-col items-end gap-1">
+              <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent">
+                {edu.level}
               </span>
-              <span className="font-bold text-gray-900">{edu.period}</span>
+              <span className="text-[12.5px] font-medium text-label-tertiary">{edu.period}</span>
             </div>
-          </div>
-          <p className="text-sm italic text-gray-700 mb-1 leading-tight">{edu.department}</p>
-          <ul className="space-y-0.5 text-sm text-gray-800">
-            {edu.details.map((detail, i) => (
-              <li key={i} className="flex items-start gap-2 leading-tight">
-                <ChevronRight size={14} className="text-[#004A99] mt-0.5 shrink-0" />
-                <span>{detail}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+          }
+        >
+          <Bullets items={edu.details} />
+        </ListRow>
       ))}
-    </div>
-  );
-};
+  </>
+);
 
 export default EducationList;

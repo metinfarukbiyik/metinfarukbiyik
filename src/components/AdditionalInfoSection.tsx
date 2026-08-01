@@ -1,40 +1,21 @@
 import React from 'react';
 import { additionalInfo } from '../data/cvData';
-import { ChevronRight } from 'lucide-react';
+import ListRow from './ui/ListRow';
+import { Heart, Sparkles, Wrench, Car } from 'lucide-react';
 
-const AdditionalInfoSection: React.FC = () => {
-  return (
-    <div className="space-y-2 text-sm text-gray-800">
-      <div className="flex items-start gap-2">
-        <ChevronRight size={14} className="text-[#004A99] mt-1 shrink-0" />
-        <div className="leading-normal">
-          <span className="font-bold">İlgi Alanları & Hobiler: </span>
-          <span>{additionalInfo.hobbies}</span>
-        </div>
-      </div>
-      <div className="flex items-start gap-2">
-        <ChevronRight size={14} className="text-[#004A99] mt-1 shrink-0" />
-        <div className="leading-normal">
-          <span className="font-bold">Kişisel Yetkinlikler: </span>
-          <span>{additionalInfo.competencies}</span>
-        </div>
-      </div>
-      <div className="flex items-start gap-2">
-        <ChevronRight size={14} className="text-[#004A99] mt-1 shrink-0" />
-        <div className="leading-normal">
-          <span className="font-bold">Yetenekler: </span>
-          <span>{additionalInfo.skills}</span>
-        </div>
-      </div>
-      <div className="flex items-start gap-2">
-        <ChevronRight size={14} className="text-[#004A99] mt-1 shrink-0" />
-        <div className="leading-normal">
-          <span className="font-bold">Sürücü Belgeleri & SRC: </span>
-          <span>{additionalInfo.drivingLicenses}</span>
-        </div>
-      </div>
-    </div>
-  );
-};
+const items = [
+  { icon: Heart, color: 'bg-ios-pink', label: 'İlgi Alanları & Hobiler', value: additionalInfo.hobbies },
+  { icon: Sparkles, color: 'bg-ios-orange', label: 'Kişisel Yetkinlikler', value: additionalInfo.competencies },
+  { icon: Wrench, color: 'bg-ios-teal', label: 'Yetenekler', value: additionalInfo.skills },
+  { icon: Car, color: 'bg-ios-green', label: 'Sürücü Belgeleri & SRC', value: additionalInfo.drivingLicenses },
+];
+
+const AdditionalInfoSection: React.FC = () => (
+  <>
+    {items.map(({ icon, color, label, value }) => (
+      <ListRow key={label} icon={icon} iconColor={color} title={label} subtitle={value} />
+    ))}
+  </>
+);
 
 export default AdditionalInfoSection;

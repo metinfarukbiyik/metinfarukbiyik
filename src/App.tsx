@@ -16,35 +16,39 @@ import NotFoundPage from './components/NotFoundPage';
 import { personalInfo } from './data/cvData';
 import { MapPin, Phone, Mail, Globe } from 'lucide-react';
 
-const seoData: Record<string, { title: string; description: string; keywords: string }> = {
+const seoData: Record<
+  string,
+  { title: string; description: string; keywords: string; image?: string }
+> = {
   '/': {
-    title: 'Metin Faruk Bıyık | Profesyonel Özgeçmiş',
+    title: 'Metin Faruk Bıyık | Kişisel',
     description:
       "Metin Faruk Bıyık'ın profesyonel özgeçmişi, iş deneyimleri ve kariyer özeti. Müşteri deneyimi ve ekip yönetimi profesyoneli.",
     keywords: 'Metin Faruk Bıyık, özgeçmiş, CV, müşteri temsilcisi, ekip yönetimi, Trabzon',
   },
   '/ekipmanlar': {
-    title: 'Ekipmanlarım | Metin Faruk Bıyık',
+    title: 'Metin Faruk Bıyık | Ekipmanlar',
     description: "Metin Faruk Bıyık'ın kullandığı teknik ekipmanlar, çalışma alanı ve teknolojik araçlar.",
     keywords: 'Metin Faruk Bıyık, ekipmanlar, çalışma alanı, setup, teknoloji, MacBook Air M4',
   },
   '/sertifikalar': {
-    title: 'Sertifikalarım | Metin Faruk Bıyık',
+    title: 'Metin Faruk Bıyık | Sertifikalar',
     description: "Metin Faruk Bıyık'ın kariyeri boyunca kazandığı sertifikalar ve başarı belgeleri.",
     keywords: 'Metin Faruk Bıyık, sertifikalar, eğitimler, başarı belgeleri, Turkcell Akademi, BTK Akademi',
   },
   '/projeler': {
-    title: 'Projelerim | Metin Faruk Bıyık',
+    title: 'Metin Faruk Bıyık | Projeler',
     description: "Metin Faruk Bıyık'ın geliştirdiği projeler ve referanslar.",
     keywords:
       'Metin Faruk Bıyık, projeler, referanslar, biyik.dev, elifogretmen.com.tr, bayen.com.tr, cnliletisim.com',
   },
   '/geocam': {
-    title: 'GeoCam: Audit | iOS Uygulaması | Metin Faruk Bıyık',
+    title: 'Metin Faruk Bıyık | GeoCam: Audit',
     description:
       'GeoCam: Audit — SwiftUI ile geliştirilen, fotoğraf ve videoya konum, adres, pusula ve iş bilgisi damgalayan profesyonel saha denetim kamerası. Tamamen cihaz içi çalışır.',
     keywords:
       'GeoCam Audit, iOS uygulaması, SwiftUI, Swift 6, saha denetim kamerası, konum damgası, filigran, Metin Faruk Bıyık',
+    image: 'https://biyik.dev/images/geocam.png',
   },
 };
 
@@ -58,7 +62,7 @@ const RouteEffects: React.FC = () => {
 
   useEffect(() => {
     const seo = seoData[location.pathname] ?? {
-      title: 'Metin Faruk Bıyık',
+      title: 'Metin Faruk Bıyık | Kişisel',
       description: 'Metin Faruk Bıyık - Profesyonel Portfolyo ve Özgeçmiş',
       keywords: 'Metin Faruk Bıyık, CV, Portfolyo',
     };
@@ -70,6 +74,8 @@ const RouteEffects: React.FC = () => {
     setMeta('meta[property="og:description"]', seo.description);
     setMeta('meta[property="twitter:title"]', seo.title);
     setMeta('meta[property="twitter:description"]', seo.description);
+    setMeta('meta[property="og:image"]', seo.image ?? 'https://biyik.dev/og-image.jpg');
+    setMeta('meta[property="twitter:image"]', seo.image ?? 'https://biyik.dev/og-image.jpg');
 
     window.scrollTo({ top: 0 });
   }, [location]);

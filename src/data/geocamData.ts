@@ -8,6 +8,8 @@ export interface FeatureGroup {
 export const geocam = {
   name: 'GeoCam: Audit',
   tagline: 'Profesyonel saha ve denetim kamerası',
+  slogan: 'Konumu doğrula, güvenle kaydet.',
+  poster: '/images/geocam.png',
   status: 'Yakında App Store’da',
   description:
     'Çektiğiniz fotoğraf ve videoya konum, adres, pusula yönü, tarih-saat ve iş bilgisini damgalar. Sağ alttaki GeoCam filigranı kaydın orijinal bir saha kaydı olduğunu gösterir.',

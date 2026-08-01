@@ -33,7 +33,8 @@ const GeoCamPage: React.FC = () => (
         <Camera size={38} className="text-white" strokeWidth={1.8} />
       </div>
       <h2 className="mt-4 text-[22px] font-bold tracking-tight">{geocam.name}</h2>
-      <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-ios-orange/10 px-3 py-1 text-[12px] font-semibold text-ios-orange">
+      <p className="mt-1 text-[14px] font-medium text-accent">{geocam.slogan}</p>
+      <span className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-ios-orange/10 px-3 py-1 text-[12px] font-semibold text-ios-orange">
         <span className="h-1.5 w-1.5 rounded-full bg-ios-orange" />
         {geocam.status}
       </span>
@@ -50,6 +51,21 @@ const GeoCamPage: React.FC = () => (
       </div>
 
       <p className="mt-4 text-[14.5px] leading-relaxed text-label-secondary">{geocam.description}</p>
+    </section>
+
+    <section>
+      <h2 className="px-4 pb-2 text-[12px] font-semibold uppercase tracking-[0.06em] text-label-tertiary">
+        Tanıtım
+      </h2>
+      <div className="overflow-hidden rounded-[14px] bg-[#0c1a2b] shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.06]">
+        <img
+          src={geocam.poster}
+          alt={`${geocam.name} tanıtım görseli`}
+          loading="lazy"
+          className="w-full select-none"
+          draggable={false}
+        />
+      </div>
     </section>
 
     <GroupedSection title="Neler Yapabilirsiniz">

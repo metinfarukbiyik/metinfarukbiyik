@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, Download } from 'lucide-react';
-import Footer from '../Footer';
+import { ChevronLeft } from 'lucide-react';
 
 interface PageShellProps {
   title: string;
@@ -49,16 +48,7 @@ const PageShell: React.FC<PageShellProps> = ({ title, subtitle, backTo, backLabe
             {title}
           </span>
 
-          <div className="flex flex-1 justify-end">
-            <a
-              href="/cv/metinfarukbiyik-cv.pdf"
-              download
-              className="flex items-center gap-1.5 text-[15px] font-medium text-accent transition-opacity active:opacity-60"
-            >
-              <Download size={16} strokeWidth={2.4} />
-              CV İndir
-            </a>
-          </div>
+          <div className="flex flex-1 justify-end" />
         </div>
       </div>
 
@@ -68,7 +58,6 @@ const PageShell: React.FC<PageShellProps> = ({ title, subtitle, backTo, backLabe
           {subtitle && <p className="mt-1 text-[15px] text-label-secondary">{subtitle}</p>}
         </div>
         <div className="space-y-7">{children}</div>
-        <Footer />
       </div>
     </>
   );

@@ -20,7 +20,7 @@ const ProjectsPage: React.FC = () => (
         icon={Aperture}
         iconColor="bg-ios-indigo"
         title="GeoCam: Audit"
-        subtitle="SwiftUI ile geliştirilen iOS saha ve denetim kamerası."
+        subtitle="App Store’da yayınlanan iOS saha ve denetim kamerası."
         to="/geocam"
       />
     </GroupedSection>

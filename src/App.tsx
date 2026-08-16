@@ -45,10 +45,10 @@ const seoData: Record<
   '/geocam': {
     title: 'Metin Faruk Bıyık | GeoCam: Audit',
     description:
-      'GeoCam: Audit — SwiftUI ile geliştirilen, fotoğraf ve videoya konum, adres, pusula ve iş bilgisi damgalayan profesyonel saha denetim kamerası. Tamamen cihaz içi çalışır.',
+      'GeoCam: Audit — App Store’da yayınlanan konum doğrulamalı saha ve denetim kamerası. Fotoğraflara GPS, adres, pusula ve iş bilgisi damgalar.',
     keywords:
-      'GeoCam Audit, iOS uygulaması, SwiftUI, Swift 6, saha denetim kamerası, konum damgası, filigran, Metin Faruk Bıyık',
-    image: 'https://biyik.dev/images/geocam.png',
+      'GeoCam Audit, App Store, iOS uygulaması, GPS kamera, saha denetim kamerası, konum damgası, Metin Faruk Bıyık',
+    image: 'https://biyik.dev/images/geocam/icon.png',
   },
 };
 

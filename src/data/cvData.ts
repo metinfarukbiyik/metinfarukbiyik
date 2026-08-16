@@ -93,7 +93,7 @@ export const experiences: Experience[] = [
   },
   {
     company: "CNL İletişim",
-    role: "Ofis Yöneticisi",
+    role: "Geliştirici & Temsilci",
     period: "2026 - Devam",
     responsibilities: [
       "Ofis içi operasyonların yönetimi ve idari süreçlerin yürütülmesi",

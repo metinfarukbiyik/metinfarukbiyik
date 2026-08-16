@@ -1,16 +1,16 @@
 import React from 'react';
 import { personalInfo, experiences } from '../data/cvData';
 import myPhoto from '../assets/images/my.png';
-import { Mail, Linkedin, Instagram, Phone } from 'lucide-react';
+import { Mail, Linkedin, Phone, Download } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 const currentRole = experiences[experiences.length - 1];
 
-const actions: { icon: LucideIcon; label: string; href: string; external?: boolean }[] = [
+const actions: { icon: LucideIcon; label: string; href: string; external?: boolean; download?: boolean }[] = [
   { icon: Mail, label: 'E-Posta', href: `mailto:${personalInfo.email}` },
   { icon: Phone, label: 'Ara', href: `tel:${personalInfo.phone.replace(/[^\d+]/g, '')}` },
   { icon: Linkedin, label: 'LinkedIn', href: personalInfo.linkedin, external: true },
-  { icon: Instagram, label: 'Instagram', href: personalInfo.instagram, external: true },
+  { icon: Download, label: 'Özgeçmiş İndir', href: '/cv/metinfarukbiyik-cv.pdf', download: true },
 ];
 
 const Header: React.FC = () => (
@@ -26,15 +26,16 @@ const Header: React.FC = () => (
     </p>
 
     <div className="mt-5 grid grid-cols-4 gap-2">
-      {actions.map(({ icon: Icon, label, href, external }) => (
+      {actions.map(({ icon: Icon, label, href, external, download }) => (
         <a
           key={label}
           href={href}
           {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          {...(download ? { download: true } : {})}
           className="flex flex-col items-center gap-1.5 rounded-[12px] bg-fill py-2.5 text-accent transition-transform active:scale-95 hover:bg-accent/10"
         >
           <Icon size={19} strokeWidth={2.2} />
-          <span className="text-[11px] font-medium">{label}</span>
+          <span className="px-0.5 text-center text-[10.5px] font-medium leading-tight">{label}</span>
         </a>
       ))}
     </div>

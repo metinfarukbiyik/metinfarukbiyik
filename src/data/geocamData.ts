@@ -7,79 +7,86 @@ export interface FeatureGroup {
 
 export const geocam = {
   name: 'GeoCam: Audit',
-  tagline: 'Profesyonel saha ve denetim kamerası',
+  tagline: 'GPS Camera with Timestamp',
   slogan: 'Konumu doğrula, güvenle kaydet.',
-  poster: '/images/geocam.png',
-  status: 'Yakında App Store’da',
+  icon: '/images/geocam/icon.png',
+  storeUrl: 'https://apps.apple.com/tr/app/geocam-audit/id6797103829?l=tr',
+  status: 'App Store’da',
+  rating: '4,9',
+  ratingCount: 9,
+  version: '1.5',
   description:
-    'Çektiğiniz fotoğraf ve videoya konum, adres, pusula yönü, tarih-saat ve iş bilgisini damgalar. Sağ alttaki GeoCam filigranı kaydın orijinal bir saha kaydı olduğunu gösterir.',
-  privacy: 'Tamamen cihazınızda çalışır.',
-  badges: ['iPhone', 'iOS 17+', 'Ücretsiz', 'Çevrimdışı'],
+    'Saha çalışmaları, denetimler ve profesyonel dokümantasyon için konum doğrulamalı kamera. Çektiğiniz her fotoğrafa GPS konumu, açık adres, tarih-saat, pusula yönü, rakım ve GPS hassasiyetini otomatik ekler.',
+  privacy: 'Veriler toplanmaz. Uygulama tamamen cihazınızda çalışır.',
+  badges: ['iPhone', 'iOS 17+', 'Ücretsiz', '2 MB'],
 };
 
+export const screenshots: { src: string; alt: string; caption: string }[] = [
+  { src: '/images/geocam/shot-1.jpg', alt: 'GeoCam: Audit açılış ekranı', caption: 'Açılış' },
+  { src: '/images/geocam/shot-2.jpg', alt: 'Konum doğrulamalı kamera önizlemesi', caption: 'Konum damgası' },
+  { src: '/images/geocam/shot-3.jpg', alt: 'Bilgi katmanı ayarları', caption: 'Bilgi katmanı' },
+  { src: '/images/geocam/shot-4.jpg', alt: 'Kurumsal marka ayarları', caption: 'Marka' },
+  { src: '/images/geocam/shot-5.jpg', alt: 'Görünüm ve özelleştirme', caption: 'Özelleştirme' },
+];
+
 export const appInfo: { label: string; value: string }[] = [
-  { label: 'Platform', value: 'iPhone · iOS 17 ve üzeri' },
-  { label: 'Diller', value: 'Türkçe, English, Español, Deutsch' },
+  { label: 'Geliştirici', value: 'Metin Faruk Bıyık' },
+  { label: 'Kategori', value: 'İş' },
+  { label: 'Sürüm', value: '1.5' },
+  { label: 'Boyut', value: '2 MB' },
+  { label: 'Uyumluluk', value: 'iPhone · iOS 17+' },
   { label: 'Fiyat', value: 'Ücretsiz' },
 ];
 
 export const featureGroups: FeatureGroup[] = [
   {
-    title: 'Fotoğraf ve video çekimi',
-    icon: 'Camera',
-    color: 'bg-accent',
-    items: [
-      'Ön / arka kamera, flaş ve zoom',
-      '4:3 ve 9:16 çerçeve oranları',
-      'İsterseniz damgasız orijinali de kaydedin',
-    ],
-  },
-  {
-    title: 'Konum, adres ve pusula',
+    title: 'Konum doğrulaması',
     icon: 'MapPin',
     color: 'bg-ios-red',
     items: [
-      'Mahalle, ilçe, il ve ülke otomatik eklenir',
-      'Enlem, boylam, rakım ve GPS hassasiyeti',
-      'Pusula yönü derece ve yön harfiyle gösterilir',
+      'GPS konumu, açık adres ve koordinatlar',
+      'Rakım, pusula yönü ve GPS hassasiyeti',
+      'İnternet olmadan çalışır',
     ],
   },
   {
-    title: 'Bilgi katmanı',
+    title: 'Profesyonel bilgi katmanı',
     icon: 'Layers',
     color: 'bg-ios-indigo',
     items: [
-      '7 farklı katman tasarımı arasından seçin',
-      'Katmanı sürükleyin, parmakla boyutlandırın',
-      'Ekranda gördüğünüz görüntü kaydedilenle aynıdır',
+      'Tarih, saat ve konum bilgisi fotoğrafa damgalanır',
+      'Gösterilecek alanları özelleştirin',
+      'Orijinal fotoğrafı ayrı kaydedin',
     ],
   },
   {
-    title: 'Kurumsal kullanım',
+    title: 'Saha ve kurumsal kullanım',
     icon: 'Building2',
     color: 'bg-ios-teal',
-    items: ['Marka adı, logo ve renk ekleyin', 'İş emri, Site ID ve not alanlarını doldurun'],
-  },
-  {
-    title: 'Orijinallik filigranı',
-    icon: 'Stamp',
-    color: 'bg-ios-orange',
     items: [
-      'Damgalı her kaydın sağ altında GeoCam filigranı yer alır',
-      'Ücretsiz sürümde kaldırılamaz',
+      'İş emri, Site ID ve not alanları',
+      'Şirket logosu ve marka ekleme',
+      'İnşaat, telekom, enerji ve denetim ekipleri için',
     ],
   },
 ];
 
+export const useCases: string[] = [
+  'İnşaat ve saha denetimi',
+  'Telekom ve altyapı',
+  'Sigorta ekspertizi',
+  'Kalite kontrol',
+];
+
 export const privacyPoints: string[] = [
-  'Fotoğraf, video ve konum bilgileri yalnızca cihazınızda işlenir',
+  'Fotoğraf ve konum bilgileri yalnızca cihazınızda işlenir',
   'Hesap açmanız gerekmez, hiçbir veri sunucuya gönderilmez',
   'Analitik, reklam ve takip teknolojisi kullanılmaz',
 ];
 
-export const permissions: { icon: string; label: string; note: string }[] = [
-  { icon: 'Camera', label: 'Kamera', note: 'Fotoğraf ve video çekimi için' },
-  { icon: 'MapPin', label: 'Konum', note: 'Adres ve koordinat damgası için' },
-  { icon: 'Image', label: 'Fotoğraflar', note: 'Kayıtları arşivinize eklemek için' },
-  { icon: 'Mic', label: 'Mikrofon', note: 'Video kaydında ses için' },
+export const releaseNotes = [
+  'Varsayılan sadeleştirilmiş tasarım iyileştirildi',
+  'Memnuniyet anketi eklendi',
+  'Yatayda bozulan filigran düzeltildi',
+  'Filigran ile koordinat bilgileri mesafesi düzeltildi',
 ];

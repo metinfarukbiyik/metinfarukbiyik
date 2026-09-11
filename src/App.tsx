@@ -1,20 +1,13 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import TabBar from './components/TabBar';
-import Header from './components/Header';
-import PageShell from './components/ui/PageShell';
-import GroupedSection from './components/ui/GroupedSection';
-import ListRow from './components/ui/ListRow';
-import ExperienceList from './components/ExperienceList';
-import EducationList from './components/EducationList';
-import AdditionalInfoSection from './components/AdditionalInfoSection';
-import EquipmentPage from './components/EquipmentPage';
-import CertificatesPage from './components/CertificatesPage';
-import ProjectsPage from './components/ProjectsPage';
-import GeoCamPage from './components/GeoCamPage';
-import NotFoundPage from './components/NotFoundPage';
-import { personalInfo } from './data/cvData';
-import { MapPin, Phone, Mail, Globe } from 'lucide-react';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+import ProjectsPage from './pages/ProjectsPage';
+import GeoCamPage from './pages/GeoCamPage';
+import CertificatesPage from './pages/CertificatesPage';
+import EquipmentPage from './pages/EquipmentPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const seoData: Record<
   string,
@@ -83,75 +76,24 @@ const RouteEffects: React.FC = () => {
   return null;
 };
 
-const CVPage: React.FC = () => (
-  <PageShell title="Özgeçmiş">
-    <Header />
-
-    <GroupedSection title="İletişim">
-      <ListRow icon={MapPin} iconColor="bg-ios-red" title="Adres" subtitle={personalInfo.address} />
-      <ListRow
-        icon={Phone}
-        iconColor="bg-ios-green"
-        title="Telefon"
-        subtitle={personalInfo.phone}
-        href={`tel:${personalInfo.phone.replace(/[^\d+]/g, '')}`}
-      />
-      <ListRow
-        icon={Mail}
-        iconColor="bg-accent"
-        title="E-Posta"
-        subtitle={personalInfo.email}
-        href={`mailto:${personalInfo.email}`}
-      />
-      <ListRow
-        icon={Globe}
-        iconColor="bg-ios-indigo"
-        title="Web"
-        subtitle={personalInfo.web}
-        href={`https://${personalInfo.web}`}
-        external
-      />
-    </GroupedSection>
-
-    <GroupedSection title="Hakkımda">
-      <p className="whitespace-pre-line px-4 py-4 text-[14.5px] leading-relaxed text-label-secondary">
-        {personalInfo.summary}
-      </p>
-    </GroupedSection>
-
-    <GroupedSection title="Deneyim">
-      <ExperienceList />
-    </GroupedSection>
-
-    <GroupedSection title="Eğitim">
-      <EducationList />
-    </GroupedSection>
-
-    <GroupedSection title="Ek Bilgiler">
-      <AdditionalInfoSection />
-    </GroupedSection>
-  </PageShell>
+const App: React.FC = () => (
+  <Router>
+    <div className="flex min-h-screen flex-col bg-white text-gray-900">
+      <RouteEffects />
+      <Navbar />
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/projeler" element={<ProjectsPage />} />
+          <Route path="/geocam" element={<GeoCamPage />} />
+          <Route path="/sertifikalar" element={<CertificatesPage />} />
+          <Route path="/ekipmanlar" element={<EquipmentPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  </Router>
 );
-
-const App: React.FC = () => {
-  return (
-    <Router>
-      <div className="min-h-screen bg-grouped">
-        <RouteEffects />
-        <main>
-          <Routes>
-            <Route path="/" element={<CVPage />} />
-            <Route path="/ekipmanlar" element={<EquipmentPage />} />
-            <Route path="/sertifikalar" element={<CertificatesPage />} />
-            <Route path="/projeler" element={<ProjectsPage />} />
-            <Route path="/geocam" element={<GeoCamPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
-        <TabBar />
-      </div>
-    </Router>
-  );
-};
 
 export default App;

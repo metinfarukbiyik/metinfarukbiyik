@@ -42,7 +42,7 @@ export const featureGroups: FeatureGroup[] = [
   {
     title: 'Konum doğrulaması',
     icon: 'MapPin',
-    color: 'bg-ios-red',
+    color: 'bg-rose-50 text-rose-600',
     items: [
       'GPS konumu, açık adres ve koordinatlar',
       'Rakım, pusula yönü ve GPS hassasiyeti',
@@ -52,7 +52,7 @@ export const featureGroups: FeatureGroup[] = [
   {
     title: 'Profesyonel bilgi katmanı',
     icon: 'Layers',
-    color: 'bg-ios-indigo',
+    color: 'bg-indigo-50 text-indigo-600',
     items: [
       'Tarih, saat ve konum bilgisi fotoğrafa damgalanır',
       'Gösterilecek alanları özelleştirin',
@@ -62,7 +62,7 @@ export const featureGroups: FeatureGroup[] = [
   {
     title: 'Saha ve kurumsal kullanım',
     icon: 'Building2',
-    color: 'bg-ios-teal',
+    color: 'bg-teal-50 text-teal-600',
     items: [
       'İş emri, Site ID ve not alanları',
       'Şirket logosu ve marka ekleme',

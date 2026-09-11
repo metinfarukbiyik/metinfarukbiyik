@@ -10,6 +10,8 @@ export interface Education {
   department: string;
   period: string;
   level: string;
+  status: string;
+  ongoing?: boolean;
   details: string[];
 }
 
@@ -22,6 +24,7 @@ export interface AdditionalInfo {
 
 export const personalInfo = {
   name: "Metin Faruk Bıyık",
+  title: "Geliştirici & Tanıtım Temsilcisi",
   linkedin: "https://www.linkedin.com/in/metinbiyik/",
   instagram: "https://instagram.com/_metinbiyik",
   address: "Aydınlıkevler, Ortahisar/TRABZON",
@@ -93,7 +96,7 @@ export const experiences: Experience[] = [
   },
   {
     company: "CNL İletişim",
-    role: "Geliştirici & Temsilci",
+    role: "Büro Personeli",
     period: "2026 - Devam",
     responsibilities: [
       "Ofis içi operasyonların yönetimi ve idari süreçlerin yürütülmesi",
@@ -111,6 +114,7 @@ export const educations: Education[] = [
     department: "Bilişim Teknolojileri Alanı Web Programcılığı",
     period: "2015 - 2018",
     level: "Lise",
+    status: "Mezun",
     details: [
       "HTML, CSS ve temel JavaScript kullanarak statik web sayfaları geliştirme",
       "Temel veritabanı ve algoritma mantığı eğitimi",
@@ -122,10 +126,23 @@ export const educations: Education[] = [
     department: "Bilgi Yönetimi",
     period: "2022 - 2026",
     level: "Ön Lisans",
+    status: "Mezun",
     details: [
       "Bilgi sistemleri ve veri yönetimi üzerine akademik eğitim",
       "Analitik düşünme ve problem çözme yetkinlikleri",
       "Dokümantasyon, raporlama ve bilgi organizasyonu becerileri"
+    ]
+  },
+  {
+    school: "ATATÜRK ÜNİVERSİTESİ AÇIK ÖĞRETİM FAKÜLTESİ",
+    department: "Kamu Yönetimi",
+    period: "2026",
+    level: "Lisans",
+    status: "Devam ediyor",
+    ongoing: true,
+    details: [
+      "Kamu yönetimi, hukuk ve siyaset bilimi üzerine lisans eğitimi",
+      "Yönetim süreçleri ve kurumsal işleyiş üzerine akademik altyapı"
     ]
   }
 ];

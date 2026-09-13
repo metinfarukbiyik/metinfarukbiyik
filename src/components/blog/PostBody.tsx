@@ -33,28 +33,35 @@ const PostBody = ({ blocks }: { blocks: PostBlock[] }) => (
     {blocks.map((block, index) => {
       switch (block.type) {
         case 'heading':
+          // Ana başlıkta kısa bir aksan çubuğu, alt başlıkta yanda ince bir işaret: hiyerarşi
+          // sayfayı yatay çizgilerle bölmeden okunur kalıyor.
           return block.level === 2 ? (
-            <h2
-              key={index}
-              id={block.id}
-              className="mt-12 scroll-mt-24 flex items-center gap-3 text-2xl font-bold tracking-tight text-gray-900 sm:text-[26px]"
-            >
-              <span className="h-6 w-1.5 shrink-0 rounded-full bg-brand-600" aria-hidden />
-              {block.text}
-            </h2>
+            <div key={index} className="mt-14 first:mt-0">
+              <h2
+                id={block.id}
+                className="scroll-mt-24 text-2xl font-bold leading-tight tracking-tight text-gray-900 sm:text-[28px]"
+              >
+                {block.text}
+              </h2>
+              <span className="mt-3 flex items-center gap-1.5" aria-hidden>
+                <span className="h-1 w-9 rounded-full bg-brand-600" />
+                <span className="h-1 w-1 rounded-full bg-brand-300" />
+              </span>
+            </div>
           ) : (
             <h3
               key={index}
               id={block.id}
-              className="mt-8 scroll-mt-24 text-lg font-semibold tracking-tight text-gray-900"
+              className="mt-10 flex scroll-mt-24 items-center gap-2.5 text-lg font-semibold tracking-tight text-gray-900 sm:text-xl"
             >
+              <span className="h-5 w-[3px] shrink-0 rounded-full bg-brand-400" aria-hidden />
               {block.text}
             </h3>
           );
 
         case 'paragraph':
           return (
-            <p key={index} className="mt-5 text-[17px] leading-8 text-gray-700">
+            <p key={index} className="mt-5 text-[17px] leading-[1.85] text-gray-700">
               {renderInline(block.text)}
             </p>
           );
@@ -86,13 +93,15 @@ const PostBody = ({ blocks }: { blocks: PostBlock[] }) => (
           return (
             <figure
               key={index}
-              className="mt-8 rounded-2xl bg-brand-50/70 p-6 ring-1 ring-brand-600/10"
+              className="mt-10 rounded-r-2xl border-l-4 border-brand-500 bg-gradient-to-r from-brand-50 to-transparent py-6 pl-6 pr-5"
             >
-              <blockquote className="text-lg font-medium leading-8 text-brand-950">
+              <blockquote className="text-xl font-medium italic leading-9 text-gray-900">
                 “{block.text}”
               </blockquote>
               {block.cite && (
-                <figcaption className="mt-3 text-sm text-brand-800/70">{block.cite}</figcaption>
+                <figcaption className="mt-3 text-sm font-medium not-italic text-brand-700">
+                  {block.cite}
+                </figcaption>
               )}
             </figure>
           );

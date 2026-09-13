@@ -79,9 +79,13 @@ const runQuery = async <T>(groq: string, params: Record<string, string> = {}): P
     search.set(`$${key}`, JSON.stringify(value));
   }
 
+  // Geliştirmede Studio'daki değişiklik anında görünsün diye önbelleksiz ve CDN'siz çalışılır.
+  const isDev = process.env.NODE_ENV === 'development';
+  const host = isDev ? 'api' : 'apicdn';
+
   const response = await fetch(
-    `https://${projectId}.apicdn.sanity.io/v${apiVersion}/data/query/${dataset}?${search}`,
-    { next: { revalidate: 3600, tags: ['posts'] } },
+    `https://${projectId}.${host}.sanity.io/v${apiVersion}/data/query/${dataset}?${search}`,
+    isDev ? { cache: 'no-store' } : { next: { revalidate: 3600, tags: ['posts'] } },
   );
 
   if (!response.ok) {

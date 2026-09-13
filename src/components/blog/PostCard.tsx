@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Clock, MapPin } from 'lucide-react';
+import { ArrowRight, Clock, MapPin } from 'lucide-react';
 import PostCover from './PostCover';
 import { formatDate, getCategoryStyle } from '@/lib/blog/categories';
 import type { PostSummary } from '@/lib/blog/types';
@@ -16,15 +16,26 @@ const PostCard = ({ post, featured = false }: PostCardProps) => {
     <article className="group h-full">
       <Link
         href={`/blog/${post.slug}`}
-        className="flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-gray-900/5 transition-shadow hover:shadow-lg"
+        className="flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-gray-900/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-gray-900/10"
       >
-        <div className={`relative overflow-hidden ${featured ? 'aspect-[16/9]' : 'aspect-[16/10]'}`}>
+        <div
+          className={`relative overflow-hidden ${
+            featured ? 'aspect-[16/9] max-h-80' : 'aspect-[16/9] max-h-56'
+          }`}
+        >
           <PostCover
             post={post}
             priority={featured}
             sizes={featured ? '(min-width: 768px) 720px, 100vw' : '(min-width: 640px) 360px, 100vw'}
-            titleClassName={featured ? 'text-2xl sm:text-3xl' : 'text-lg'}
-          />
+          >
+            <h3
+              className={`font-bold leading-snug tracking-tight text-white ${
+                featured ? 'text-2xl sm:text-3xl' : 'text-lg'
+              }`}
+            >
+              {post.title}
+            </h3>
+          </PostCover>
         </div>
 
         <div className="flex flex-1 flex-col p-5">
@@ -47,16 +58,15 @@ const PostCard = ({ post, featured = false }: PostCardProps) => {
             )}
           </div>
 
-          <h3
-            className={`mt-3 font-bold tracking-tight text-gray-900 transition-colors group-hover:text-brand-700 ${
-              featured ? 'text-2xl' : 'text-lg'
-            }`}
-          >
-            {post.title}
-          </h3>
-          <p className="mt-2 line-clamp-3 text-sm leading-6 text-gray-600">{post.excerpt}</p>
+          <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-600">{post.excerpt}</p>
 
-          <span className={`mt-4 text-sm font-semibold ${style.accent}`}>Yazıyı oku →</span>
+          <span className={`mt-4 inline-flex items-center gap-1.5 text-sm font-semibold ${style.accent}`}>
+            Yazıyı oku
+            <ArrowRight
+              size={15}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </span>
         </div>
       </Link>
     </article>

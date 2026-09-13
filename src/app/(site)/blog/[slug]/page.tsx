@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Clock, MapPin } from 'lucide-react';
 import PostBody from '@/components/blog/PostBody';
 import PostCard from '@/components/blog/PostCard';
+import PostCover from '@/components/blog/PostCover';
 import { getPost, getPosts } from '@/lib/blog';
-import { formatDate, getCategoryStyle } from '@/lib/blog/categories';
+import { formatDate } from '@/lib/blog/categories';
 import { personalInfo } from '@/data/cvData';
 import { site } from '@/lib/site';
 
@@ -66,7 +66,6 @@ const PostPage = async ({ params }: PageProps) => {
 
   if (!post) notFound();
 
-  const style = getCategoryStyle(post.category);
   const headings = post.blocks.filter((block) => block.type === 'heading' && block.level === 2);
   const others = (await getPosts()).filter((item) => item.slug !== post.slug).slice(0, 2);
 
@@ -101,17 +100,20 @@ const PostPage = async ({ params }: PageProps) => {
       </Link>
 
       <header className="mt-5 border-b border-gray-200 pb-8">
-        <span
-          className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium ring-1 ring-inset ${style.badge}`}
-        >
-          {post.category}
-        </span>
-        <h1 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-gray-900 sm:text-[42px] sm:leading-[1.15]">
-          {post.title}
-        </h1>
-        <p className="mt-4 max-w-3xl text-lg leading-8 text-gray-600">{post.excerpt}</p>
+        <div className="relative aspect-[16/9] max-h-[26rem] overflow-hidden rounded-3xl bg-gray-100 ring-1 ring-gray-900/5">
+          <PostCover post={post} priority sizes="(min-width: 1024px) 900px, 100vw">
+            <span className="inline-flex items-center rounded-md bg-white/15 px-2.5 py-1 text-xs font-medium text-white ring-1 ring-inset ring-white/30 backdrop-blur-sm">
+              {post.category}
+            </span>
+            <h1 className="mt-3 text-2xl font-bold leading-tight tracking-tight text-white sm:text-4xl sm:leading-[1.15]">
+              {post.title}
+            </h1>
+          </PostCover>
+        </div>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500">
+        <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-600">{post.excerpt}</p>
+
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500">
           <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
           <span className="inline-flex items-center gap-1.5">
             <Clock size={14} />
@@ -125,29 +127,6 @@ const PostPage = async ({ params }: PageProps) => {
           )}
         </div>
       </header>
-
-      {post.cover ? (
-        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-3xl bg-gray-100 ring-1 ring-gray-900/5">
-          <Image
-            src={post.cover.src}
-            alt={post.cover.alt}
-            fill
-            priority
-            sizes="(min-width: 1024px) 900px, 100vw"
-            className="object-cover"
-          />
-        </div>
-      ) : (
-        <div
-          className={`relative mt-8 flex aspect-[16/7] items-end overflow-hidden rounded-3xl bg-gradient-to-br p-8 ${style.gradient}`}
-        >
-          <div
-            className="pointer-events-none absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.5)_1px,transparent_1px)] [background-size:32px_32px]"
-            aria-hidden
-          />
-          <p className="relative text-2xl font-bold text-white sm:text-3xl">{post.title}</p>
-        </div>
-      )}
 
       {headings.length >= 3 && (
         <nav className="mt-10 rounded-2xl bg-gray-50 p-6 ring-1 ring-gray-900/5">

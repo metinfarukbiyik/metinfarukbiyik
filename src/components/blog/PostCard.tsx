@@ -18,11 +18,8 @@ const PostCard = ({ post, featured = false }: PostCardProps) => {
         href={`/blog/${post.slug}`}
         className="flex h-full flex-col overflow-hidden rounded-2xl bg-white ring-1 ring-gray-900/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-gray-900/10"
       >
-        <div
-          className={`relative overflow-hidden ${
-            featured ? 'aspect-[16/9] max-h-80' : 'aspect-[16/9] max-h-56'
-          }`}
-        >
+        {/* Dar ekranda tam 16:9; geniş ekranda öne çıkan kart aşırı uzamasın diye yükseklik sınırlanır. */}
+        <div className={`relative aspect-[16/9] w-full overflow-hidden ${featured ? 'sm:max-h-96' : ''}`}>
           <PostCover
             post={post}
             priority={featured}

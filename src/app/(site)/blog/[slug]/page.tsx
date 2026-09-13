@@ -100,8 +100,9 @@ const PostPage = async ({ params }: PageProps) => {
       </Link>
 
       <header className="mt-5 border-b border-gray-200 pb-8">
-        <div className="relative aspect-[16/9] max-h-[26rem] overflow-hidden rounded-3xl bg-gray-100 ring-1 ring-gray-900/5">
-          <PostCover post={post} priority sizes="(min-width: 1024px) 900px, 100vw">
+        {/* Dar ekranda tam 16:9; geniş ekranda tam genişlikte kalıp yükseklik sınırlanır. */}
+        <div className="relative aspect-[16/9] w-full max-h-[26rem] overflow-hidden rounded-3xl bg-gray-100 ring-1 ring-gray-900/5">
+          <PostCover post={post} priority sizes="(min-width: 1024px) 960px, 100vw">
             <span className="inline-flex items-center rounded-md bg-white/15 px-2.5 py-1 text-xs font-medium text-white ring-1 ring-inset ring-white/30 backdrop-blur-sm">
               {post.category}
             </span>

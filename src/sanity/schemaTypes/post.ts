@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
+import BlockquoteStyle from './BlockquoteStyle';
 
 const turkishSlug = (input: string) =>
   input
@@ -110,7 +111,7 @@ export const post = defineType({
             { title: 'Paragraf', value: 'normal' },
             { title: 'Başlık', value: 'h2' },
             { title: 'Alt başlık', value: 'h3' },
-            { title: 'Alıntı', value: 'blockquote' },
+            { title: 'Alıntı', value: 'blockquote', component: BlockquoteStyle },
           ],
           lists: [
             { title: 'Madde', value: 'bullet' },

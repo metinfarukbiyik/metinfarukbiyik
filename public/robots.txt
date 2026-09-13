@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://biyik.dev/sitemap.xml

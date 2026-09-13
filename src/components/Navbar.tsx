@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Download, Menu, X } from 'lucide-react';
-import { personalInfo } from '../data/cvData';
+import { personalInfo } from '@/data/cvData';
+import { navigation } from '@/lib/site';
 
-const navigation = [
-  { name: 'Özgeçmiş', to: '/' },
-  { name: 'Projeler', to: '/projeler' },
-  { name: 'Sertifikalar', to: '/sertifikalar' },
-  { name: 'Ekipmanlar', to: '/ekipmanlar' },
-];
-
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
-  useEffect(() => setOpen(false), [location.pathname]);
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-sm font-bold text-white">
             MB
           </span>
@@ -28,18 +26,17 @@ const Navbar: React.FC = () => {
 
         <div className="hidden items-center gap-1 md:flex">
           {navigation.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/'}
-              className={({ isActive }) =>
-                `rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  isActive ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`
-              }
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                isActive(item.href)
+                  ? 'bg-brand-50 text-brand-700'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+              }`}
             >
               {item.name}
-            </NavLink>
+            </Link>
           ))}
           <a
             href="/cv/metinfarukbiyik-cv.pdf"
@@ -66,18 +63,16 @@ const Navbar: React.FC = () => {
         <div className="border-t border-gray-200 bg-white md:hidden">
           <div className="space-y-1 px-4 py-3 sm:px-6">
             {navigation.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.to === '/'}
-                className={({ isActive }) =>
-                  `block rounded-lg px-3 py-2.5 text-base font-medium ${
-                    isActive ? 'bg-brand-50 text-brand-700' : 'text-gray-700 hover:bg-gray-50'
-                  }`
-                }
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className={`block rounded-lg px-3 py-2.5 text-base font-medium ${
+                  isActive(item.href) ? 'bg-brand-50 text-brand-700' : 'text-gray-700 hover:bg-gray-50'
+                }`}
               >
                 {item.name}
-              </NavLink>
+              </Link>
             ))}
             <a
               href="/cv/metinfarukbiyik-cv.pdf"

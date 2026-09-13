@@ -1,8 +1,11 @@
-import React, { useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { screenshots } from '../data/geocamData';
+'use client';
 
-const ScreenshotGallery: React.FC = () => {
+import { useRef } from 'react';
+import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { screenshots } from '@/data/geocamData';
+
+const ScreenshotGallery = () => {
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   const scrollBy = (direction: 1 | -1) => {
@@ -44,13 +47,16 @@ const ScreenshotGallery: React.FC = () => {
       >
         {screenshots.map((shot) => (
           <figure key={shot.src} className="w-[190px] shrink-0 snap-start sm:w-[220px]">
-            <img
-              src={shot.src}
-              alt={shot.alt}
-              loading="lazy"
-              draggable={false}
-              className="aspect-[9/19.5] w-full select-none rounded-2xl object-cover ring-1 ring-gray-900/10"
-            />
+            <div className="relative aspect-[9/19.5] overflow-hidden rounded-2xl ring-1 ring-gray-900/10">
+              <Image
+                src={shot.src}
+                alt={shot.alt}
+                fill
+                sizes="220px"
+                className="select-none object-cover"
+                draggable={false}
+              />
+            </div>
             <figcaption className="mt-2 text-center text-xs font-medium text-gray-600">
               {shot.caption}
             </figcaption>

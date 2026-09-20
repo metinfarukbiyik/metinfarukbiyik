@@ -6,7 +6,7 @@ import { site } from '@/lib/site';
 const SiteLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="flex min-h-screen flex-col">
     <Navbar />
-    <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
+    <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
       {children}
     </main>
     <Footer />

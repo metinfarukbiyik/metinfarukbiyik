@@ -3,9 +3,28 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Download, Menu, X } from 'lucide-react';
+import {
+  Award,
+  FolderKanban,
+  Home,
+  Menu,
+  Newspaper,
+  UserRound,
+  Wrench,
+  X,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { personalInfo } from '@/data/cvData';
 import { navigation } from '@/lib/site';
+
+const icons: Record<string, LucideIcon> = {
+  Home,
+  UserRound,
+  Newspaper,
+  FolderKanban,
+  Award,
+  Wrench,
+};
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -16,7 +35,7 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-md">
-      <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-sm font-bold text-white">
             MB
@@ -25,27 +44,23 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                isActive(item.href)
-                  ? 'bg-brand-50 text-brand-700'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-              }`}
-            >
-              {item.name}
-            </Link>
-          ))}
-          <a
-            href="/cv/metinfarukbiyik-cv.pdf"
-            download
-            className="ml-2 inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
-          >
-            <Download size={16} />
-            CV İndir
-          </a>
+          {navigation.map((item) => {
+            const Icon = icons[item.icon] ?? Home;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  isActive(item.href)
+                    ? 'bg-brand-50 text-brand-700'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+              >
+                <Icon size={15} strokeWidth={2} aria-hidden />
+                {item.name}
+              </Link>
+            );
+          })}
         </div>
 
         <button
@@ -62,26 +77,24 @@ const Navbar = () => {
       {open && (
         <div className="border-t border-gray-200 bg-white md:hidden">
           <div className="space-y-1 px-4 py-3 sm:px-6">
-            {navigation.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className={`block rounded-lg px-3 py-2.5 text-base font-medium ${
-                  isActive(item.href) ? 'bg-brand-50 text-brand-700' : 'text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <a
-              href="/cv/metinfarukbiyik-cv.pdf"
-              download
-              className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-3.5 py-2.5 text-base font-semibold text-white"
-            >
-              <Download size={18} />
-              CV İndir
-            </a>
+            {navigation.map((item) => {
+              const Icon = icons[item.icon] ?? Home;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-base font-medium ${
+                    isActive(item.href)
+                      ? 'bg-brand-50 text-brand-700'
+                      : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon size={18} strokeWidth={2} aria-hidden />
+                  {item.name}
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}

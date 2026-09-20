@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 const NotFound = () => (
   <div className="flex min-h-screen flex-col">
     <Navbar />
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8">
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8">
       <p className="text-sm font-semibold text-brand-600">404</p>
       <h1 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
         Sayfa bulunamadı
@@ -18,13 +18,13 @@ const NotFound = () => (
           href="/"
           className="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
         >
-          Özgeçmişe dön
+          Ana sayfaya dön
         </Link>
         <Link
-          href="/blog"
+          href="/ozgecmis"
           className="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 transition-colors hover:bg-gray-50"
         >
-          Blogu gör
+          Özgeçmiş
         </Link>
       </div>
     </main>

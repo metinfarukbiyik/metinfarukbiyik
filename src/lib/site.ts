@@ -9,9 +9,10 @@ export const site = {
 };
 
 export const navigation = [
-  { name: 'Özgeçmiş', href: '/' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'Projeler', href: '/projeler' },
-  { name: 'Sertifikalar', href: '/sertifikalar' },
-  { name: 'Ekipmanlar', href: '/ekipmanlar' },
+  { name: 'Ana Sayfa', href: '/', icon: 'Home' },
+  { name: 'Özgeçmiş', href: '/ozgecmis', icon: 'UserRound' },
+  { name: 'Blog', href: '/blog', icon: 'Newspaper' },
+  { name: 'Projeler', href: '/projeler', icon: 'FolderKanban' },
+  { name: 'Sertifikalar', href: '/sertifikalar', icon: 'Award' },
+  { name: 'Ekipmanlar', href: '/ekipmanlar', icon: 'Wrench' },
 ];

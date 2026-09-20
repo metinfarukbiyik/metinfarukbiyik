@@ -7,6 +7,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: site.url, changeFrequency: 'monthly', priority: 1 },
+    { url: `${site.url}/ozgecmis`, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${site.url}/blog`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${site.url}/projeler`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${site.url}/geocam`, changeFrequency: 'monthly', priority: 0.8 },

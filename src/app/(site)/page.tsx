@@ -138,28 +138,43 @@ const HomePage = async () => {
 
           <Link
             href="/byk-seri-baski-pro"
-            className="group flex h-full flex-col gap-4 rounded-2xl bg-white p-5 ring-1 ring-gray-900/5 transition-shadow hover:shadow-md"
+            className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-2xl bg-[#0b1220] p-5 ring-1 ring-white/10"
           >
+            <div
+              className="pointer-events-none absolute -right-8 -top-10 h-36 w-36 rounded-full bg-[radial-gradient(circle,rgba(239,68,68,0.35),transparent_65%)]"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute bottom-0 left-1/3 h-28 w-40 rounded-full bg-[radial-gradient(circle,rgba(34,197,94,0.25),transparent_70%)]"
+              aria-hidden
+            />
+            <div
+              className="pointer-events-none absolute right-10 top-16 h-24 w-24 rounded-full bg-[radial-gradient(circle,rgba(234,179,8,0.28),transparent_70%)]"
+              aria-hidden
+            />
+
             <Image
               src={byk.icon}
               alt={`${byk.name} program ikonu`}
               width={56}
               height={56}
-              className="h-14 w-14 shrink-0 rounded-2xl ring-1 ring-gray-900/10"
+              className="relative h-14 w-14 shrink-0 rounded-2xl ring-1 ring-white/20"
             />
-            <div className="min-w-0 flex-1">
+            <div className="relative min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-base font-semibold text-gray-900">{byk.name}</h3>
-                <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
-                  Windows
-                </span>
-                <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
-                  macOS
+                <h3 className="text-base font-semibold text-white">{byk.name}</h3>
+                <span className="inline-flex items-center gap-1.5 rounded-md bg-white/10 px-2 py-0.5 text-xs font-medium text-white">
+                  <span className="flex items-center gap-0.5" aria-hidden>
+                    <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  </span>
+                  Windows · macOS
                 </span>
               </div>
-              <p className="mt-2 text-sm leading-6 text-gray-600">{byk.slogan}</p>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{byk.slogan}</p>
             </div>
-            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600">
+            <span className="relative inline-flex items-center gap-1.5 text-sm font-semibold text-white">
               Detayları gör
               <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
             </span>

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import PageHeader from '@/components/ui/PageHeader';
 import Section from '@/components/ui/Section';
+import { byk } from '@/data/bykData';
 import { projects } from '@/data/cvData';
 import { geocam } from '@/data/geocamData';
 import {
@@ -18,8 +19,9 @@ import type { LucideIcon } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Projeler',
-  description: "Metin Faruk Bıyık'ın geliştirdiği mobil uygulama ve web siteleri.",
-  keywords: ['projeler', 'referanslar', 'biyik.dev', 'GeoCam Audit'],
+  description:
+    "Metin Faruk Bıyık'ın geliştirdiği mobil uygulama, masaüstü programı ve web siteleri.",
+  keywords: ['projeler', 'referanslar', 'biyik.dev', 'GeoCam Audit', 'BYK Seri Baskı Pro'],
   alternates: { canonical: '/projeler' },
 };
 
@@ -35,7 +37,7 @@ const ProjectsPage = () => (
     <PageHeader
       eyebrow="Portfolyo"
       title="Projeler"
-      description="Tasarlayıp geliştirdiğim mobil uygulama ve web siteleri."
+      description="Tasarlayıp geliştirdiğim mobil uygulama, masaüstü programı ve web siteleri."
     />
 
     <Section title="Mobil uygulama">
@@ -61,6 +63,39 @@ const ProjectsPage = () => (
           </div>
           <p className="mt-1 text-sm leading-6 text-gray-300">
             App Store’da yayınlanan, konum doğrulamalı saha ve denetim kamerası.
+          </p>
+        </div>
+        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-white">
+          Detayları gör
+          <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
+        </span>
+      </Link>
+    </Section>
+
+    <Section title="Masaüstü uygulaması">
+      <Link
+        href="/byk-seri-baski-pro"
+        className="group flex flex-col gap-5 rounded-2xl bg-gray-900 p-6 sm:flex-row sm:items-center"
+      >
+        <Image
+          src={byk.icon}
+          alt={`${byk.name} program ikonu`}
+          width={64}
+          height={64}
+          className="h-16 w-16 shrink-0 rounded-2xl ring-1 ring-white/15"
+        />
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-lg font-semibold text-white">{byk.name}</h3>
+            <span className="rounded-md bg-white/10 px-2 py-0.5 text-xs font-medium text-white">
+              Windows
+            </span>
+            <span className="rounded-md bg-white/10 px-2 py-0.5 text-xs font-medium text-white">
+              macOS
+            </span>
+          </div>
+          <p className="mt-1 text-sm leading-6 text-gray-300">
+            Excel’deki seri numarası ve barkod listesini termal etiket yazıcısına basan program.
           </p>
         </div>
         <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-white">

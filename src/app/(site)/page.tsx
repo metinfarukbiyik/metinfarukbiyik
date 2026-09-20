@@ -3,9 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import myPhoto from '@/assets/images/my.png';
 import Section from '@/components/ui/Section';
-import PostCard from '@/components/blog/PostCard';
+import PostRow from '@/components/blog/PostRow';
 import { getLatestPosts } from '@/lib/blog';
 import { personalInfo, experiences, educations, additionalInfo } from '@/data/cvData';
+import { byk } from '@/data/bykData';
 import { geocam } from '@/data/geocamData';
 import {
   ArrowRight,
@@ -103,13 +104,36 @@ const HomePage = async () => {
         </div>
       </section>
 
-      {latestPosts.length > 0 && (
+      <div className="grid items-start lg:grid-cols-2 lg:gap-x-12">
+        {latestPosts.length > 0 && (
+          <Section
+            title="Son yazılar"
+            description="Hayatımdan notlar ve geziler."
+            actions={
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700"
+              >
+                Tümünü gör
+                <ArrowRight size={15} />
+              </Link>
+            }
+          >
+            <div className="divide-y divide-gray-200">
+              {latestPosts.map((post) => (
+                <div key={post.slug} className="py-5 first:pt-0 last:pb-0">
+                  <PostRow post={post} compact />
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
         <Section
-          title="Son yazılar"
-          description="Hayatımdan notlar, gezdiğim yerler ve geliştirdiğim projeler."
+          title="Öne çıkan projeler"
           actions={
             <Link
-              href="/blog"
+              href="/projeler"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700"
             >
               Tümünü gör
@@ -117,16 +141,70 @@ const HomePage = async () => {
             </Link>
           }
         >
-          <div className="grid gap-5 sm:grid-cols-2">
-            {latestPosts.map((post) => (
-              <PostCard key={post.slug} post={post} />
-            ))}
+          <div className="space-y-3">
+            <Link
+              href="/geocam"
+              className="group flex gap-4 rounded-2xl bg-gray-900 p-5"
+            >
+              <Image
+                src={geocam.icon}
+                alt={`${geocam.name} uygulama ikonu`}
+                width={56}
+                height={56}
+                className="h-14 w-14 shrink-0 rounded-2xl ring-1 ring-white/15"
+              />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-base font-semibold text-white">{geocam.name}</h3>
+                  <span className="inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-0.5 text-xs font-medium text-white">
+                    <Star size={11} className="fill-amber-400 text-amber-400" />
+                    {geocam.rating}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm leading-6 text-gray-300">
+                  App Store’da yayınlanan, konum doğrulamalı saha ve denetim kamerası.
+                </p>
+                <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-white">
+                  Detayları gör
+                  <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              href="/byk-seri-baski-pro"
+              className="group flex gap-4 rounded-2xl bg-white p-5 ring-1 ring-gray-900/5 transition-shadow hover:shadow-md"
+            >
+              <Image
+                src={byk.icon}
+                alt={`${byk.name} program ikonu`}
+                width={56}
+                height={56}
+                className="h-14 w-14 shrink-0 rounded-2xl ring-1 ring-gray-900/10"
+              />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-base font-semibold text-gray-900">{byk.name}</h3>
+                  <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+                    Windows
+                  </span>
+                  <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+                    macOS
+                  </span>
+                </div>
+                <p className="mt-1 text-sm leading-6 text-gray-600">{byk.slogan}</p>
+                <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600">
+                  Detayları gör
+                  <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </div>
+            </Link>
           </div>
         </Section>
-      )}
+      </div>
 
       <Section title="Hakkımda">
-        <div className="rounded-2xl bg-gray-50 p-6 ring-1 ring-gray-900/5">
+        <div className="rounded-2xl bg-gradient-to-br from-white via-gray-50 to-slate-100/80 p-6 shadow-[0_18px_40px_-18px_rgba(15,23,42,0.28)] ring-1 ring-gray-900/8">
           <p className="whitespace-pre-line text-sm leading-7 text-gray-700">{personalInfo.summary}</p>
         </div>
       </Section>
@@ -165,37 +243,6 @@ const HomePage = async () => {
             );
           })}
         </dl>
-      </Section>
-
-      <Section title="Öne çıkan proje">
-        <Link
-          href="/geocam"
-          className="group flex flex-col gap-5 rounded-2xl bg-gray-900 p-6 sm:flex-row sm:items-center"
-        >
-          <Image
-            src={geocam.icon}
-            alt={`${geocam.name} uygulama ikonu`}
-            width={64}
-            height={64}
-            className="h-16 w-16 shrink-0 rounded-2xl ring-1 ring-white/15"
-          />
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-semibold text-white">{geocam.name}</h3>
-              <span className="inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-0.5 text-xs font-medium text-white">
-                <Star size={11} className="fill-amber-400 text-amber-400" />
-                {geocam.rating}
-              </span>
-            </div>
-            <p className="mt-1 text-sm leading-6 text-gray-300">
-              App Store’da yayınlanan, konum doğrulamalı saha ve denetim kamerası.
-            </p>
-          </div>
-          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-white">
-            Detayları gör
-            <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
-          </span>
-        </Link>
       </Section>
 
       <Section title="Deneyim">

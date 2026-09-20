@@ -9,6 +9,8 @@ interface PostCoverProps {
   priority?: boolean;
   /** Kapak alanının üzerine binen içerik (başlık, kategori rozeti gibi). */
   children?: ReactNode;
+  /** Başlık kapağın yanında gösterildiğinde üzerine yazı ve karartma binmez. */
+  bare?: boolean;
 }
 
 /**
@@ -16,7 +18,7 @@ interface PostCoverProps {
  * Üzerine içerik bindiğinde okunabilirlik için görselin altına koyu geçiş eklenir.
  * Konumlandırma için kendisini saran öğenin `relative` olması beklenir.
  */
-const PostCover = ({ post, sizes, priority, children }: PostCoverProps) => {
+const PostCover = ({ post, sizes, priority, children, bare = false }: PostCoverProps) => {
   const style = getCategoryStyle(post.category);
   const overlay = children ?? (
     <p className="text-xl font-bold leading-snug text-white">{post.title}</p>
@@ -34,10 +36,12 @@ const PostCover = ({ post, sizes, priority, children }: PostCoverProps) => {
             priority={priority}
             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-gray-950/75 via-gray-950/20 to-transparent transition-colors duration-500 group-hover:from-gray-950/85"
-            aria-hidden
-          />
+          {!bare && (
+            <div
+              className="absolute inset-0 bg-gradient-to-t from-gray-950/75 via-gray-950/20 to-transparent transition-colors duration-500 group-hover:from-gray-950/85"
+              aria-hidden
+            />
+          )}
         </>
       ) : (
         <div
@@ -50,9 +54,11 @@ const PostCover = ({ post, sizes, priority, children }: PostCoverProps) => {
         </div>
       )}
 
-      <div className="absolute inset-0 flex items-end p-5 sm:p-6">
-        <div className="w-full">{overlay}</div>
-      </div>
+      {!bare && (
+        <div className="absolute inset-0 flex items-end p-5 sm:p-6">
+          <div className="w-full">{overlay}</div>
+        </div>
+      )}
     </>
   );
 };

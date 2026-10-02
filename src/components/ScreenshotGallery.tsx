@@ -42,11 +42,11 @@ const ScreenshotGallery = () => {
 
       <div
         ref={scrollerRef}
-        className="no-scrollbar mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2"
+        className="no-scrollbar mt-4 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-1"
       >
         {screenshots.map((shot) => (
           <figure key={shot.src} className="w-[190px] shrink-0 snap-start sm:w-[220px]">
-            <div className="relative aspect-[9/19.5] overflow-hidden rounded-2xl ring-1 ring-border">
+            <div className="relative aspect-[9/19.5] overflow-hidden rounded-2xl">
               <Image
                 src={shot.src}
                 alt={shot.alt}

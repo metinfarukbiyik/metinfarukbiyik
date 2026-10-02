@@ -11,6 +11,7 @@
   --color-chip: var(--chip);
   --color-chip-fg: var(--chip-fg);
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-geist: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 @theme {
@@ -31,15 +32,15 @@
 
 :root {
   color-scheme: dark;
-  --canvas: #101418;
-  --surface: #171c22;
-  --border: #2c333d;
-  --fg: #eceae4;
-  --muted: #b0b6be;
-  --subtle: #7d858f;
-  --hover: #1e242c;
-  --chip: #eceae4;
-  --chip-fg: #101418;
+  --canvas: #070809;
+  --surface: #101214;
+  --border: #1c2026;
+  --fg: #f3f1eb;
+  --muted: #a3a8af;
+  --subtle: #6c727a;
+  --hover: #14171b;
+  --chip: #f3f1eb;
+  --chip-fg: #070809;
 }
 
 html {
@@ -53,8 +54,24 @@ body {
 }
 
 ::selection {
-  background: #2a3d52;
-  color: #eceae4;
+  background: #1c2c3a;
+  color: #f3f1eb;
+}
+
+@keyframes status-pulse {
+  0% {
+    box-shadow: 0 0 0 0 oklch(69.6% 0.17 162.48 / 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 7px oklch(69.6% 0.17 162.48 / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 oklch(69.6% 0.17 162.48 / 0);
+  }
+}
+
+.status-dot {
+  animation: status-pulse 2.2s ease-out infinite;
 }
 
 @keyframes fade-up {
@@ -73,7 +90,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up {
+  .animate-fade-up,
+  .status-dot {
     animation: none;
   }
 }

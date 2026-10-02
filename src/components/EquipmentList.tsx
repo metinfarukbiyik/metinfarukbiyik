@@ -34,23 +34,21 @@ const EquipmentList = () => {
         })}
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3">
         {visible.map((item) => (
-          <article key={item.id} className="overflow-hidden rounded-md border border-border bg-surface">
-            <div className="relative h-28 bg-canvas">
+          <article key={item.id}>
+            <div className="relative h-24">
               <Image
                 src={`/images/equipment/${item.image}`}
                 alt={item.name}
                 fill
-                sizes="(min-width: 640px) 200px, 45vw"
-                className="object-contain p-4"
+                sizes="(min-width: 640px) 180px, 45vw"
+                className="object-contain"
               />
             </div>
-            <div className="border-t border-border px-3 py-3">
-              <p className="font-mono text-[11px] text-subtle">{item.category}</p>
-              <h3 className="mt-1 text-sm text-fg">{item.name}</h3>
-              <p className="mt-1 text-xs leading-5 text-muted">{item.specs}</p>
-            </div>
+            <p className="mt-2 font-mono text-[11px] text-subtle">{item.category}</p>
+            <h3 className="mt-1 text-sm text-fg">{item.name}</h3>
+            <p className="mt-1 text-xs leading-5 text-muted">{item.specs}</p>
           </article>
         ))}
       </div>

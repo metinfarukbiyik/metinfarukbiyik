@@ -53,14 +53,14 @@ const HakkimdaAccordions = () => (
                 key={label}
                 href={href}
                 {...(label === 'Web' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="block rounded-md border border-border bg-surface px-3 py-2.5 transition-colors hover:bg-hover"
+                className="block py-1 hover:text-fg"
               >
                 {content}
               </a>
             ) : (
               <div
                 key={label}
-                className="block rounded-md border border-border bg-surface px-3 py-2.5"
+                className="block py-1"
               >
                 {content}
               </div>
@@ -106,15 +106,12 @@ const HakkimdaAccordions = () => (
       </AccordionItem>
 
       <AccordionItem id="egitim" index="04" title="Eğitim" count={educations.length}>
-        <div className="space-y-3">
+        <div className="divide-y divide-border border-y border-border">
           {educations
             .slice()
             .reverse()
             .map((edu) => (
-              <div
-                key={`${edu.school}-${edu.department}`}
-                className="rounded-md border border-border bg-surface p-4"
-              >
+              <div key={`${edu.school}-${edu.department}`} className="py-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span
                     className={`font-mono text-[11px] ${edu.ongoing ? 'text-brand-300' : 'text-subtle'}`}
@@ -149,9 +146,9 @@ const HakkimdaAccordions = () => (
       </AccordionItem>
 
       <AccordionItem id="ek-bilgiler" index="07" title="Ek bilgiler">
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2">
           {extraItems.map(({ title, value }) => (
-            <div key={title} className="rounded-md border border-border bg-surface p-4">
+            <div key={title}>
               <h3 className="font-mono text-[11px] tracking-wide text-subtle">{title}</h3>
               <p className="mt-2 text-sm leading-6 text-fg">{value}</p>
             </div>

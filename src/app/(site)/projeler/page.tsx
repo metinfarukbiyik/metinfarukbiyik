@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import PageHeader from '@/components/ui/PageHeader';
 import { ayet } from '@/data/ayetData';
@@ -19,18 +20,21 @@ const apps = [
   {
     href: '/geocam',
     name: geocam.name,
+    icon: geocam.icon,
     meta: 'iOS · App Store',
     summary: 'Konum doğrulamalı saha kamerası. Fotoğrafa GPS, adres ve pusula damgalar.',
   },
   {
     href: '/1-ayet',
     name: ayet.name,
+    icon: ayet.icon,
     meta: 'iOS · Android · Yakında',
     summary: 'Her güne bir ayet. Diyanet meali ve kısa bir tefekkür.',
   },
   {
     href: '/byk-seri-baski-pro',
     name: byk.name,
+    icon: byk.icon,
     meta: 'Windows · macOS',
     summary: 'Excel’deki barkod listesini termal etikete basar. Kurulumdan sonra çevrimdışı çalışır.',
   },
@@ -51,21 +55,27 @@ const ProjectsPage = () => (
       <ul className="mt-2 divide-y divide-border border-y border-border">
         {apps.map((project, index) => (
           <li key={project.href}>
-            <Link
-              href={project.href}
-              className="group flex items-baseline gap-4 py-4 hover:bg-hover sm:gap-6"
-            >
-              <span className="font-mono text-xs text-subtle">
-                {String(index + 1).padStart(2, '0')}
-              </span>
+            <Link href={project.href} className="group flex items-center gap-5 py-4">
+              <Image
+                src={project.icon}
+                alt=""
+                width={44}
+                height={44}
+                className="h-11 w-11 shrink-0 rounded-md"
+              />
               <span className="min-w-0 flex-1">
-                <span className="block text-sm font-medium text-fg">{project.name}</span>
-                <span className="mt-0.5 block text-sm text-muted">{project.summary}</span>
+                <span className="flex items-baseline gap-2">
+                  <span className="font-mono text-[11px] text-subtle">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className="text-sm font-medium text-fg">{project.name}</span>
+                </span>
+                <span className="mt-0.5 block text-sm leading-5 text-muted">{project.summary}</span>
               </span>
-              <span className="hidden shrink-0 font-mono text-[11px] text-subtle sm:block">
-                {project.meta}
+              <span className="hidden shrink-0 items-center gap-3 sm:flex">
+                <span className="font-mono text-[11px] text-subtle">{project.meta}</span>
+                <ArrowUpRight size={14} className="text-subtle" />
               </span>
-              <ArrowUpRight size={14} className="shrink-0 text-subtle" />
             </Link>
           </li>
         ))}
@@ -81,11 +91,11 @@ const ProjectsPage = () => (
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-baseline gap-4 py-4 hover:bg-hover sm:gap-6"
+              className="group flex items-baseline gap-4 py-4 sm:gap-6"
             >
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-medium text-fg">{project.name.toLowerCase()}</span>
-                <span className="mt-0.5 block text-sm text-muted">{project.description}</span>
+                <span className="mt-0.5 block text-sm leading-5 text-muted">{project.description}</span>
               </span>
               <span className="hidden shrink-0 font-mono text-[11px] text-subtle sm:block">
                 {hostOf(project.url)}

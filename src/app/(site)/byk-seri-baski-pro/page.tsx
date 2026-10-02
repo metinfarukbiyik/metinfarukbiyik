@@ -55,7 +55,7 @@ const BykPage = () => {
             alt={`${byk.name} program ikonu`}
             width={64}
             height={64}
-            className="h-16 w-16 shrink-0 rounded-md ring-1 ring-border"
+            className="h-16 w-16 shrink-0 rounded-md"
           />
           <div>
             <p className="font-mono text-xs text-subtle">Windows · macOS · ücretsiz · çevrimdışı</p>
@@ -79,7 +79,7 @@ const BykPage = () => {
 
       <p className="mt-8 max-w-2xl text-sm leading-7 text-muted">{byk.description}</p>
 
-      <div className="mt-10 grid gap-8 sm:grid-cols-3">
+      <div className="mt-10 grid gap-8 md:grid-cols-3">
         {features.map((group) => (
           <section key={group.title}>
             <h2 className="font-mono text-xs tracking-wide text-subtle">{group.title}</h2>

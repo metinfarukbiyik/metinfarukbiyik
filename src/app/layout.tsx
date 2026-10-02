@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
+import { Geist_Mono, IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import { site } from '@/lib/site';
 import './globals.css';
 
@@ -7,6 +7,13 @@ const sans = IBM_Plex_Sans({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '500', '600'],
   variable: '--font-sans-family',
+  display: 'swap',
+});
+
+const geistMono = Geist_Mono({
+  subsets: ['latin'],
+  weight: ['100', '400', '500'],
+  variable: '--font-geist-mono',
   display: 'swap',
 });
 
@@ -38,11 +45,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#101418',
+  themeColor: '#070809',
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => (
-  <html lang="tr" className={`${sans.variable} ${mono.variable}`} data-scroll-behavior="smooth">
+  <html lang="tr" className={`${sans.variable} ${mono.variable} ${geistMono.variable}`} data-scroll-behavior="smooth">
     <body className="bg-canvas text-fg">{children}</body>
   </html>
 );

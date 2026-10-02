@@ -18,14 +18,13 @@ const ScreenshotGallery = () => {
     <section className="mt-12">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight text-gray-900">Önizleme</h2>
-          <p className="mt-1 text-sm text-gray-600">Ekranlar arasında kaydırarak gezinebilirsiniz.</p>
+          <h2 className="font-mono text-xs tracking-wide text-muted">Önizleme</h2>
         </div>
         <div className="hidden gap-2 sm:flex">
           <button
             type="button"
             onClick={() => scrollBy(-1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-600 ring-1 ring-inset ring-gray-300 transition-colors hover:bg-gray-50"
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface text-muted hover:bg-hover hover:text-fg"
             aria-label="Önceki görseller"
           >
             <ChevronLeft size={18} />
@@ -33,7 +32,7 @@ const ScreenshotGallery = () => {
           <button
             type="button"
             onClick={() => scrollBy(1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-600 ring-1 ring-inset ring-gray-300 transition-colors hover:bg-gray-50"
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface text-muted hover:bg-hover hover:text-fg"
             aria-label="Sonraki görseller"
           >
             <ChevronRight size={18} />
@@ -47,7 +46,7 @@ const ScreenshotGallery = () => {
       >
         {screenshots.map((shot) => (
           <figure key={shot.src} className="w-[190px] shrink-0 snap-start sm:w-[220px]">
-            <div className="relative aspect-[9/19.5] overflow-hidden rounded-2xl ring-1 ring-gray-900/10">
+            <div className="relative aspect-[9/19.5] overflow-hidden rounded-2xl ring-1 ring-border">
               <Image
                 src={shot.src}
                 alt={shot.alt}
@@ -57,7 +56,7 @@ const ScreenshotGallery = () => {
                 draggable={false}
               />
             </div>
-            <figcaption className="mt-2 text-center text-xs font-medium text-gray-600">
+            <figcaption className="mt-2 text-center font-mono text-[11px] text-subtle">
               {shot.caption}
             </figcaption>
           </figure>

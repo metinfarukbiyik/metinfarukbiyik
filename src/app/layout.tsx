@@ -1,11 +1,19 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import { site } from '@/lib/site';
 import './globals.css';
 
-const inter = Inter({
+const sans = IBM_Plex_Sans({
   subsets: ['latin', 'latin-ext'],
-  variable: '--font-inter',
+  weight: ['400', '500', '600'],
+  variable: '--font-sans-family',
+  display: 'swap',
+});
+
+const mono = IBM_Plex_Mono({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
   display: 'swap',
 });
 
@@ -15,7 +23,7 @@ export const metadata: Metadata = {
   description: site.description,
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
-  alternates: { canonical: '/', types: { 'application/rss+xml': '/feed.xml' } },
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     locale: 'tr_TR',
@@ -30,12 +38,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#ffffff',
+  themeColor: '#101418',
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => (
-  <html lang="tr" className={inter.variable} data-scroll-behavior="smooth">
-    <body className="bg-white text-gray-900">{children}</body>
+  <html lang="tr" className={`${sans.variable} ${mono.variable}`} data-scroll-behavior="smooth">
+    <body className="bg-canvas text-fg">{children}</body>
   </html>
 );
 

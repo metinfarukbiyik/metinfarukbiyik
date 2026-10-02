@@ -1,14 +1,7 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 
-interface WebhookBody {
-  slug?: string | { current?: string };
-}
-
-const readSlug = (body: WebhookBody) =>
-  typeof body.slug === 'string' ? body.slug : body.slug?.current;
-
 /**
- * CMS'te bir yazı yayınlandığında buraya webhook gönderilir ve ilgili sayfalar tazelenir.
+ * CMS veya içerik güncellemesinde ilgili sayfalar tazelenir.
  * Örnek: POST https://biyik.dev/api/revalidate  (header: x-webhook-secret)
  */
 export const POST = async (request: Request) => {
@@ -18,13 +11,11 @@ export const POST = async (request: Request) => {
     return Response.json({ revalidated: false, error: 'Yetkisiz istek.' }, { status: 401 });
   }
 
-  const body = (await request.json().catch(() => ({}))) as WebhookBody;
-  const slug = readSlug(body);
-
   revalidateTag('posts', 'max');
-  revalidatePath('/blog');
   revalidatePath('/');
-  if (slug) revalidatePath(`/blog/${slug}`);
+  revalidatePath('/hakkimda');
+  revalidatePath('/projeler');
+  revalidatePath('/1-ayet');
 
-  return Response.json({ revalidated: true, slug: slug ?? null, at: Date.now() });
+  return Response.json({ revalidated: true, at: Date.now() });
 };

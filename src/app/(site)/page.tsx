@@ -63,9 +63,9 @@ const HomePage = () => (
               aria-label="open to work"
               className="status-dot inline-block size-2.5 shrink-0 rounded-full bg-emerald-500 outline-none"
             />
-            <span className="grid grid-cols-[0fr] items-center opacity-0 transition-[grid-template-columns,opacity] duration-300 ease-out group-hover/status:grid-cols-[1fr] group-hover/status:opacity-100 group-focus-within/status:grid-cols-[1fr] group-focus-within/status:opacity-100">
+            <span className="grid grid-cols-[0fr] items-center opacity-0 transition-[grid-template-columns,opacity] duration-300 ease-in-out group-hover/status:grid-cols-[1fr] group-hover/status:opacity-100 group-focus-within/status:grid-cols-[1fr] group-focus-within/status:opacity-100">
               <span className="overflow-hidden">
-                <span className="block pl-2 font-geist text-[15px] font-thin leading-none whitespace-nowrap text-emerald-500">
+                <span className="block pl-2 font-geist text-[15px] font-light leading-none whitespace-nowrap text-emerald-400">
                   open to work
                 </span>
               </span>

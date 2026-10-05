@@ -212,10 +212,10 @@ export const projects: Project[] = [
   },
   {
     id: '4',
-    name: 'CNLILETISIM.COM',
-    url: 'https://cnliletisim.com',
-    description: 'GSM Teknolojileri kurulumu yapan firmanın tanıtım web sitesi.',
-    icon: 'Smartphone'
+    name: 'Creda System',
+    url: 'https://creda.cnliletisim.com',
+    description: 'Geliştirdiğim CRM, ERP ve veri yönetimi odaklı sistem; personel, eğitim ve iş emirlerinin takibini tek platformda sunar.',
+    icon: 'Building2'
   }
 ];
 

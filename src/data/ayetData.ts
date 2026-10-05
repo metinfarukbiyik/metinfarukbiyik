@@ -101,7 +101,7 @@ export const privacyPoints: string[] = [
 export const appInfo: { label: string; value: string }[] = [
   { label: 'Geliştirici', value: 'Metin Faruk Bıyık' },
   { label: 'Kategori', value: 'Yaşam tarzı' },
-  { label: 'Uyumluluk', value: 'iPhone · Android' },
+  { label: 'Uyumluluk', value: 'iPhone' },
   { label: 'Durum', value: 'App Store onayında' },
   { label: 'Fiyat', value: 'Ücretsiz' },
   { label: 'Bağlantı', value: 'İnternetsiz çalışır' },

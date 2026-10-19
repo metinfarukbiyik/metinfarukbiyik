@@ -15,7 +15,6 @@ export const POST = async (request: Request) => {
   revalidatePath('/');
   revalidatePath('/hakkimda');
   revalidatePath('/projeler');
-  revalidatePath('/1-ayet');
 
   return Response.json({ revalidated: true, at: Date.now() });
 };

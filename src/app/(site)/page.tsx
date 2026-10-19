@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import myPhoto from '@/assets/images/mefa.png';
 import { personalInfo } from '@/data/cvData';
-import { ayet } from '@/data/ayetData';
 import { byk } from '@/data/bykData';
 import { geocam } from '@/data/geocamData';
 import { ArrowUpRight, Download, Linkedin, Mail } from 'lucide-react';
@@ -22,13 +21,6 @@ const featured = [
     icon: geocam.icon,
     meta: 'iOS · App Store',
     summary: 'Konum doğrulamalı saha kamerası. Fotoğrafa GPS, adres ve pusula damgalar.',
-  },
-  {
-    href: '/1-ayet',
-    name: ayet.name,
-    icon: ayet.icon,
-    meta: 'iOS · Android · Yakında',
-    summary: 'Her güne bir ayet. Diyanet meali ve kısa bir tefekkür.',
   },
   {
     href: '/byk-seri-baski-pro',

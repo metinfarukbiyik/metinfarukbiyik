@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import PageHeader from '@/components/ui/PageHeader';
-import { ayet } from '@/data/ayetData';
 import { byk } from '@/data/bykData';
 import { projects } from '@/data/cvData';
 import { geocam } from '@/data/geocamData';
@@ -12,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Projeler',
   description:
     "Metin Faruk Bıyık'ın geliştirdiği mobil uygulama, masaüstü programı ve web siteleri.",
-  keywords: ['projeler', 'referanslar', 'biyik.dev', 'GeoCam Audit', 'BYK Seri Baskı Pro', '1 Ayet'],
+  keywords: ['projeler', 'referanslar', 'biyik.dev', 'GeoCam Audit', 'BYK Seri Baskı Pro'],
   alternates: { canonical: '/projeler' },
 };
 
@@ -23,13 +22,6 @@ const apps = [
     icon: geocam.icon,
     meta: 'iOS · App Store',
     summary: 'Konum doğrulamalı saha kamerası. Fotoğrafa GPS, adres ve pusula damgalar.',
-  },
-  {
-    href: '/1-ayet',
-    name: ayet.name,
-    icon: ayet.icon,
-    meta: 'iOS · Android · Yakında',
-    summary: 'Her güne bir ayet. Diyanet meali ve kısa bir tefekkür.',
   },
   {
     href: '/byk-seri-baski-pro',

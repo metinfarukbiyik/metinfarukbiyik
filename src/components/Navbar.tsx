@@ -1,36 +1,39 @@
 'use client';
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Link2 } from 'lucide-react';
+import { ArrowUpRight, Command } from 'lucide-react';
 import { navigation } from '@/lib/site';
 
-const Navbar = () => {
+export default function Navbar() {
   const pathname = usePathname();
-
-  const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
-
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-canvas/90 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="inline-flex items-center gap-2 font-mono text-sm font-medium tracking-tight text-fg">
-          <Link2 size={15} className="text-muted" aria-hidden />
-          biyik.dev
+    <header className="site-header">
+      <div className="header-inner">
+        <Link href="/" className="brand" aria-label="biyik.dev ana sayfa">
+          <span className="brand-icon">
+            <Command size={19} />
+          </span>
+          biyik<span className="brand-domain">.dev</span>
         </Link>
-
-        <nav aria-label="Sayfalar" className="flex items-center gap-1">
+        <nav aria-label="Ana menü">
           {navigation.map((item) => {
-            const active = isActive(item.href);
+            const active =
+              item.href === '/'
+                ? pathname === '/'
+                : item.href === '/projeler'
+                  ? pathname === '/projeler' ||
+                    pathname.startsWith('/projeler/')
+                  : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-md px-2.5 py-1.5 text-sm ${
-                  active ? 'bg-surface text-fg shadow-sm ring-1 ring-border' : 'text-muted hover:text-fg'
-                }`}
+                aria-current={active ? 'page' : undefined}
               >
                 {item.name}
+                {item.href === '/iletisim' && (
+                  <ArrowUpRight size={14} aria-hidden="true" />
+                )}
               </Link>
             );
           })}
@@ -38,6 +41,4 @@ const Navbar = () => {
       </div>
     </header>
   );
-};
-
-export default Navbar;
+}

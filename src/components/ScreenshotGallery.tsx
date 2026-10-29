@@ -11,14 +11,17 @@ const ScreenshotGallery = () => {
   const scrollBy = (direction: 1 | -1) => {
     const scroller = scrollerRef.current;
     if (!scroller) return;
-    scroller.scrollBy({ left: direction * scroller.clientWidth * 0.8, behavior: 'smooth' });
+    scroller.scrollBy({
+      left: direction * scroller.clientWidth * 0.8,
+      behavior: 'smooth',
+    });
   };
 
   return (
-    <section className="mt-12">
+    <section className="project-detail-section">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <h2 className="font-mono text-xs tracking-wide text-muted">Önizleme</h2>
+          <h2 className="mb-0!">Uygulamadan görüntüler</h2>
         </div>
         <div className="hidden gap-2 sm:flex">
           <button
@@ -45,7 +48,10 @@ const ScreenshotGallery = () => {
         className="no-scrollbar mt-4 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-1"
       >
         {screenshots.map((shot) => (
-          <figure key={shot.src} className="w-[190px] shrink-0 snap-start sm:w-[220px]">
+          <figure
+            key={shot.src}
+            className="w-[190px] shrink-0 snap-start sm:w-[220px]"
+          >
             <div className="relative aspect-[9/19.5] overflow-hidden rounded-2xl">
               <Image
                 src={shot.src}

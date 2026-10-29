@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 const mono = IBM_Plex_Mono({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '500'],
-  variable: '--font-mono',
+  variable: '--font-mono-family',
   display: 'swap',
 });
 
@@ -28,6 +28,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.defaultTitle, template: site.titleTemplate },
   description: site.description,
+  keywords: [
+    'Metin Faruk Bıyık',
+    'yazılım geliştirici',
+    'BYK Music',
+    'GeoCam Audit',
+    'BYK Seri Baskı Pro',
+    'Trabzon',
+  ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
   alternates: { canonical: '/' },
@@ -39,17 +47,25 @@ export const metadata: Metadata = {
     title: site.defaultTitle,
     description: site.description,
   },
-  twitter: { card: 'summary_large_image', title: site.defaultTitle, description: site.description },
+  twitter: {
+    card: 'summary_large_image',
+    title: site.defaultTitle,
+    description: site.description,
+  },
   robots: { index: true, follow: true },
   icons: { icon: '/m.png', apple: '/m.png' },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#070809',
+  themeColor: '#f7f8fa',
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => (
-  <html lang="tr" className={`${sans.variable} ${mono.variable} ${geistMono.variable}`} data-scroll-behavior="smooth">
+  <html
+    lang="tr"
+    className={`${sans.variable} ${mono.variable} ${geistMono.variable}`}
+    data-scroll-behavior="smooth"
+  >
     <body className="bg-canvas text-fg">{children}</body>
   </html>
 );

@@ -1,16 +1,16 @@
 import type { MetadataRoute } from 'next';
 import { site } from '@/lib/site';
-
-const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: site.url, changeFrequency: 'monthly', priority: 1 },
-    { url: `${site.url}/hakkimda`, changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${site.url}/projeler`, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${site.url}/geocam`, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${site.url}/byk-seri-baski-pro`, changeFrequency: 'monthly', priority: 0.8 },
-  ];
-
-  return staticRoutes;
-};
-
-export default sitemap;
+import { portfolioProjects } from '@/data/projects';
+export default function sitemap(): MetadataRoute.Sitemap {
+  return [
+    '/',
+    '/hakkimda',
+    '/projeler',
+    '/iletisim',
+    ...portfolioProjects.map((p) => p.href),
+  ].map((path) => ({
+    url: `${site.url}${path === '/' ? '' : path}`,
+    changeFrequency: 'monthly',
+    priority: path === '/' ? 1 : 0.8,
+  }));
+}

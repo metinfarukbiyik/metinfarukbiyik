@@ -1,14 +1,35 @@
 import { personalInfo } from '@/data/cvData';
-
-const Footer = () => (
-  <footer className="mt-20 border-t border-border">
-    <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-6 sm:px-6 lg:px-8">
-      <p className="font-mono text-xs text-subtle">
-        © {new Date().getFullYear()} {personalInfo.name}
-      </p>
-      <p className="font-mono text-xs text-subtle">Trabzon</p>
-    </div>
-  </footer>
-);
-
-export default Footer;
+import { Github, Linkedin, Mail } from 'lucide-react';
+export default function Footer() {
+  return (
+    <footer className="site-footer">
+      <div>
+        <p>
+          © {new Date().getFullYear()} {personalInfo.name}
+        </p>
+        <span>Trabzon, Türkiye</span>
+      </div>
+      <div className="footer-links">
+        <a
+          href="https://github.com/metinfarukbiyik"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+        >
+          <Github size={17} />
+        </a>
+        <a
+          href={personalInfo.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="LinkedIn"
+        >
+          <Linkedin size={17} />
+        </a>
+        <a href={`mailto:${personalInfo.email}`} aria-label="E-posta">
+          <Mail size={17} />
+        </a>
+      </div>
+    </footer>
+  );
+}

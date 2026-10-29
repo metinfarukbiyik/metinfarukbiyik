@@ -1,22 +1,10 @@
 'use client';
+import { useEffect, useState } from 'react';
+import { byk, downloads } from '@/data/bykData';
+import ProductDownloads from '@/components/ProductDownloads';
 
-import { useEffect, useState, useSyncExternalStore } from 'react';
-import { Download } from 'lucide-react';
-import { byk, downloads, type Platform } from '@/data/bykData';
-
-const subscribe = () => () => {};
-
-const detectPlatform = (): Platform | null => {
-  const ua = navigator.userAgent;
-  if (/iPhone|iPad|iPod|Android/i.test(ua)) return null;
-  if (/Windows/i.test(ua)) return 'windows';
-  if (/Macintosh|Mac OS X/i.test(ua)) return 'macos';
-  return null;
-};
-
-const useLatestVersion = () => {
+export default function BykDownloads() {
   const [version, setVersion] = useState<string | null>(null);
-
   useEffect(() => {
     const controller = new AbortController();
     fetch(byk.latestReleaseApi, { signal: controller.signal })
@@ -27,46 +15,14 @@ const useLatestVersion = () => {
       .catch(() => {});
     return () => controller.abort();
   }, []);
-
-  return version;
-};
-
-const BykDownloads = () => {
-  const detected = useSyncExternalStore(subscribe, detectPlatform, () => null);
-  const version = useLatestVersion();
-  const primary: Platform = detected ?? 'windows';
-  const ordered = [
-    ...downloads.filter((item) => item.platform === primary),
-    ...downloads.filter((item) => item.platform !== primary),
-  ];
-
   return (
-    <div>
-      <div className="flex flex-col gap-2 sm:flex-row">
-        {ordered.map((item) => {
-          const isPrimary = item.platform === primary;
-          return (
-            <a
-              key={item.platform}
-              href={item.url}
-              className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-4 text-sm ${
-                isPrimary
-                  ? 'bg-fg text-canvas hover:opacity-90'
-                  : 'border border-border bg-surface text-fg hover:bg-hover'
-              }`}
-            >
-              <Download size={15} aria-hidden />
-              {item.label}
-            </a>
-          );
-        })}
-      </div>
-      <p className="mt-2 font-mono text-[11px] text-subtle sm:text-right">
-        {version ? `Sürüm ${version}` : 'En son sürüm'}
-        {detected && ` · ${detected === 'windows' ? 'Windows' : 'macOS'} algılandı`}
-      </p>
-    </div>
+    <ProductDownloads
+      downloads={downloads.map((item) => ({
+        label: `${item.label} için indir`,
+        url: item.url,
+      }))}
+      note={`Windows 10 / 11 · macOS 12+ · TSPL yazıcılar${version ? ` · Sürüm ${version}` : ''}`}
+      repository="https://github.com/metinfarukbiyik/bykseripro"
+    />
   );
-};
-
-export default BykDownloads;
+}

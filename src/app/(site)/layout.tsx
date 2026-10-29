@@ -1,27 +1,59 @@
 import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import JsonLd from '@/components/JsonLd';
 import { site } from '@/lib/site';
+import { personalInfo } from '@/data/cvData';
 
-const SiteLayout = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex min-h-screen flex-col bg-canvas">
-    <Navbar />
-    <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-      {children}
-    </main>
-    <Footer />
-
-    <Script
-      src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`}
-      strategy="afterInteractive"
-    />
-    <Script id="ga" strategy="afterInteractive">
-      {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${site.gaId}');`}
-    </Script>
-  </div>
-);
-
-export default SiteLayout;
+export default function SiteLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="site-shell">
+      <a href="#main-content" className="skip-link">
+        İçeriğe geç
+      </a>
+      <Navbar />
+      <main id="main-content" className="main-panel">
+        {children}
+      </main>
+      <Footer />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'Person',
+              '@id': `${site.url}/#person`,
+              name: site.name,
+              url: site.url,
+              jobTitle: 'Yazılım Geliştirici',
+              sameAs: [
+                personalInfo.linkedin,
+                'https://github.com/metinfarukbiyik',
+              ],
+            },
+            {
+              '@type': 'WebSite',
+              '@id': `${site.url}/#website`,
+              name: 'biyik.dev',
+              url: site.url,
+              inLanguage: 'tr',
+              author: { '@id': `${site.url}/#person` },
+            },
+          ],
+        }}
+      />
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`}
+        strategy="afterInteractive"
+      />
+      <Script
+        id="ga"
+        strategy="afterInteractive"
+      >{`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${site.gaId}');`}</Script>
+    </div>
+  );
+}

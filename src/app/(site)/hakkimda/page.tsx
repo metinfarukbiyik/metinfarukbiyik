@@ -1,20 +1,26 @@
-import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import PageHeader from '@/components/ui/PageHeader';
 import HakkimdaAccordions from '@/components/hakkimda/HakkimdaAccordions';
 import { Download } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'Hakkımda',
-  description:
-    "Metin Faruk Bıyık'ın profili, deneyimleri, eğitimi, sertifikaları ve kullandığı ekipmanlar.",
-  keywords: ['Metin Faruk Bıyık', 'hakkımda', 'özgeçmiş', 'CV', 'Trabzon', 'sertifikalar', 'ekipmanlar'],
-  alternates: { canonical: '/hakkimda' },
-};
+export const metadata = pageMetadata(
+  'Hakkımda — Deneyim ve özgeçmiş',
+  'Metin Faruk Bıyık’ın yazılım, telekomünikasyon ve operasyon deneyimi. Eğitim, sertifikalar, projeler ve iletişim bilgileri.',
+  '/hakkimda',
+  [
+    'Metin Faruk Bıyık',
+    'özgeçmiş',
+    'yazılım geliştirici',
+    'telekomünikasyon',
+    'Trabzon',
+  ],
+);
 
 const HakkimdaPage = () => (
   <div className="animate-fade-up">
     <PageHeader
-      title="Hakkımda"
+      eyebrow="Tanışalım / Hakkımda"
+      title="İşin arkasındaki kişi."
       description="Profil, deneyim, eğitim, sertifikalar ve çalışma alanı."
       actions={
         <a

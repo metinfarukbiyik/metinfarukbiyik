@@ -25,6 +25,7 @@ export interface AdditionalInfo {
 export const personalInfo = {
   name: "Metin Faruk Bıyık",
   title: "Geliştirici & Tanıtım Temsilcisi",
+  github: "https://github.com/metinfarukbiyik",
   linkedin: "https://www.linkedin.com/in/metinbiyik/",
   instagram: "https://instagram.com/_metinbiyik",
   address: "Aydınlıkevler, Ortahisar/TRABZON",

@@ -1,3 +1,4 @@
+import { portfolioProjects } from '@/data/projects';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
 /**
@@ -8,13 +9,18 @@ export const POST = async (request: Request) => {
   const secret = process.env.REVALIDATE_SECRET;
 
   if (!secret || request.headers.get('x-webhook-secret') !== secret) {
-    return Response.json({ revalidated: false, error: 'Yetkisiz istek.' }, { status: 401 });
+    return Response.json(
+      { revalidated: false, error: 'Yetkisiz istek.' },
+      { status: 401 },
+    );
   }
 
   revalidateTag('posts', 'max');
   revalidatePath('/');
   revalidatePath('/hakkimda');
   revalidatePath('/projeler');
+  revalidatePath('/iletisim');
+  for (const project of portfolioProjects) revalidatePath(project.href);
 
   return Response.json({ revalidated: true, at: Date.now() });
 };

@@ -209,13 +209,61 @@ summary {
   font-size: 10px;
   line-height: 1.4;
   white-space: nowrap;
+  animation: work-status-glow 2.8s ease-in-out infinite;
 }
 .work-status > span {
+  position: relative;
   width: 5px;
   height: 5px;
   flex-shrink: 0;
   border-radius: 50%;
   background: #73a887;
+  animation: work-status-dot 2.8s ease-in-out infinite;
+}
+.work-status > span::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border: 1px solid #73a887;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: work-status-ring 2.8s ease-out infinite;
+}
+@keyframes work-status-glow {
+  0%,
+  100% {
+    background-color: #f4faf6;
+    border-color: #e0eee5;
+    box-shadow: 0 0 0 0 #73a88700;
+  }
+  45% {
+    background-color: #edf8f0;
+    border-color: #bcdcc7;
+    box-shadow: 0 0 9px 1px #73a88724;
+  }
+}
+@keyframes work-status-dot {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  45% {
+    opacity: 1;
+  }
+}
+@keyframes work-status-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.5;
+  }
+  65%,
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
 }
 .eyebrow {
   display: flex;
@@ -1177,7 +1225,10 @@ summary {
   html {
     scroll-behavior: auto;
   }
-  .animate-fade-up {
+  .animate-fade-up,
+  .work-status,
+  .work-status > span,
+  .work-status > span::after {
     animation: none;
   }
   * {

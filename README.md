@@ -30,7 +30,7 @@
   <a href="#-yerel-kurulum">Kurulum</a> ·
   <a href="#-proje-yapısı">Proje yapısı</a> ·
   <a href="#-seo-ve-erişilebilirlik">SEO</a> ·
-  <a href="#-iletişim">İletişim</a>
+  <a href="#iletisim">İletişim</a>
 </p>
 
 ---
@@ -150,6 +150,8 @@ docs/                   # SEO notları ve README görselleri
 - Klavye odağı, içeriğe geç bağlantısı ve azaltılmış hareket tercihi desteği.
 
 Proje bazındaki anahtar kelimeler ve uygulama ayrıntıları: **[SEO dokümanı](docs/seo.md)**.
+
+<a id="iletisim"></a>
 
 ## 💬 İletişim
 

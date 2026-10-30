@@ -17,7 +17,7 @@ const CertificateList = () => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-x-3 gap-y-1">
+      <div className="filter-tabs" role="group" aria-label="Sertifika kurumları">
         {issuers.map((item) => {
           const isActive = item === issuer;
           return (
@@ -25,7 +25,7 @@ const CertificateList = () => {
               key={item}
               type="button"
               onClick={() => setIssuer(item)}
-              className={`font-mono text-[11px] ${isActive ? 'text-fg' : 'text-subtle hover:text-fg'}`}
+              aria-pressed={isActive}
             >
               {item}
             </button>
@@ -33,7 +33,7 @@ const CertificateList = () => {
         })}
       </div>
 
-      <ul className="mt-4 divide-y divide-border border-y border-border">
+      <ul className="mt-3 divide-y divide-border border-y border-border">
         {visible.map((cert) => (
           <li
             key={cert.id}

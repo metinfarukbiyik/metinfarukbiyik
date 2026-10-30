@@ -1,3 +1,4 @@
+import SectionTitle from '@/components/ui/SectionTitle';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -79,7 +80,7 @@ export default function HomePage() {
         </div>
       </section>
       <div className="intro-actions">
-        <Link href="/hakkimda" className="pill-button">
+        <Link href="/hakkimda" className="pill-button primary-button">
           Biraz daha tanışalım <ArrowRight size={14} />
         </Link>
         <a href="/cv/metinfarukbiyik-cv.pdf" download className="text-button">
@@ -90,7 +91,7 @@ export default function HomePage() {
         <div className="section-heading">
           <div>
             <span className="eyebrow">Portföy</span>
-            <h2>Fikirler, uygulamaya dönüştü.</h2>
+            <SectionTitle icon="projects">Fikirler, uygulamaya dönüştü.</SectionTitle>
             <p>İhtiyaçtan doğan, özenle geliştirdiğim projeler.</p>
           </div>
           <Link href="/projeler" className="text-button">
@@ -102,7 +103,7 @@ export default function HomePage() {
             <span className="category-badge green">
               <Code2 size={12} /> Uygulamalar
             </span>
-            <span>03 proje</span>
+            <span>{portfolioProjects.filter((p) => p.category === 'Uygulama').length} proje</span>
           </div>
           <ProjectList
             projects={portfolioProjects.filter(
@@ -115,7 +116,7 @@ export default function HomePage() {
             <span className="category-badge purple">
               Web & kurumsal çözümler
             </span>
-            <span>04 proje</span>
+            <span>{portfolioProjects.filter((p) => p.category === 'Web sitesi').length} proje</span>
           </div>
           <ProjectList
             projects={portfolioProjects.filter(
@@ -132,7 +133,7 @@ export default function HomePage() {
           <h2>Bir fikrin mi var? Konuşalım.</h2>
           <p>Projeler, iş birlikleri veya sadece bir merhaba için.</p>
         </div>
-        <Link href="/iletisim" className="pill-button">
+        <Link href="/iletisim" className="pill-button primary-button">
           İletişime geç <ArrowUpRight size={14} />
         </Link>
       </section>

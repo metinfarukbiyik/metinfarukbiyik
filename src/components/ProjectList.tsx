@@ -23,9 +23,12 @@ const icons: Record<string, LucideIcon> = {
 
 export default function ProjectList({
   projects,
+  headingLevel = 3,
 }: {
   projects: PortfolioProject[];
+  headingLevel?: 2 | 3;
 }) {
+  const Heading = headingLevel === 2 ? 'h2' : 'h3';
   return (
     <ul className="project-list">
       {projects.map((project) => {
@@ -44,12 +47,9 @@ export default function ProjectList({
               )}
             </span>
             <div className="project-copy">
-              <div className="project-title">
+              <Heading className="project-title">
                 <Link href={project.href}>{project.name}</Link>
-                {project.slug === 'byk-music' && (
-                  <span className="new-badge">Yeni</span>
-                )}
-              </div>
+              </Heading>
               <p>{project.description}</p>
               <span className="project-platform">{project.platform}</span>
             </div>

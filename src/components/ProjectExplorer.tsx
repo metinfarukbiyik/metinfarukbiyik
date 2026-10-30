@@ -17,7 +17,7 @@ export default function ProjectExplorer() {
   return (
     <>
       <div className="explorer-toolbar">
-        <div className="filter-tabs" aria-label="Proje kategorisi">
+        <div className="filter-tabs" role="group" aria-label="Proje kategorisi">
           {['Tümü', 'Uygulama', 'Web sitesi'].map((c) => (
             <button
               type="button"
@@ -51,7 +51,7 @@ export default function ProjectExplorer() {
       </div>
       {filtered.length ? (
         <div className="list-panel">
-          <ProjectList projects={filtered} />
+          <ProjectList projects={filtered} headingLevel={2} />
         </div>
       ) : (
         <div className="empty-state">

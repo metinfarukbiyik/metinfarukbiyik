@@ -18,7 +18,7 @@ const EquipmentList = () => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-x-3 gap-y-1">
+      <div className="filter-tabs" role="group" aria-label="Ekipman kategorileri">
         {categories.map((item) => {
           const isActive = item === category;
           return (
@@ -26,7 +26,7 @@ const EquipmentList = () => {
               key={item}
               type="button"
               onClick={() => setCategory(item)}
-              className={`font-mono text-[11px] ${isActive ? 'text-fg' : 'text-subtle hover:text-fg'}`}
+              aria-pressed={isActive}
             >
               {item}
             </button>
@@ -34,7 +34,7 @@ const EquipmentList = () => {
         })}
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3">
+      <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3">
         {visible.map((item) => (
           <article key={item.id}>
             <div className="relative h-24">

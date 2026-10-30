@@ -33,39 +33,27 @@ const HakkimdaAccordions = () => (
     <HashOpenDetails />
     <div className="mt-2">
       <AccordionItem id="profil" index="01" title="Profil" defaultOpen>
-        <p className="max-w-3xl whitespace-pre-line text-sm leading-7 text-muted">{personalInfo.summary}</p>
+        <p className="max-w-3xl whitespace-pre-line text-sm leading-5 text-muted">{personalInfo.summary}</p>
       </AccordionItem>
 
       <AccordionItem id="iletisim" index="02" title="İletişim">
         <dl className="grid gap-3 sm:grid-cols-2">
-          {contactItems.map(({ label, value, href }) => {
-            const content = (
-              <>
-                <span className="min-w-0">
-                  <dt className="font-mono text-[11px] tracking-wide text-subtle">{label}</dt>
-                  <dd className="truncate text-sm text-fg">{value}</dd>
-                </span>
-              </>
-            );
-
-            return href ? (
-              <a
-                key={label}
-                href={href}
-                {...(label === 'Web' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="block py-1 hover:text-fg"
-              >
-                {content}
-              </a>
-            ) : (
-              <div
-                key={label}
-                className="block py-1"
-              >
-                {content}
-              </div>
-            );
-          })}
+          {contactItems.map(({ label, value, href }) => (
+            <div key={label} className="min-w-0 py-1">
+              <dt className="text-xs text-subtle">{label}</dt>
+              <dd className="break-words text-sm text-fg">
+                {href ? (
+                  <a
+                    href={href}
+                    {...(label === 'Web' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    className="text-button"
+                  >
+                    {value}
+                  </a>
+                ) : value}
+              </dd>
+            </div>
+          ))}
         </dl>
       </AccordionItem>
 
@@ -75,7 +63,7 @@ const HakkimdaAccordions = () => (
             .slice()
             .reverse()
             .map((exp, index, list) => (
-              <li key={`${exp.company}-${exp.period}`} className="flex gap-3 pb-6 last:pb-0">
+              <li key={`${exp.company}-${exp.period}`} className="flex gap-3 pb-4 last:pb-0">
                 <div className="relative flex w-3 shrink-0 justify-center">
                   {index !== list.length - 1 && (
                     <span
@@ -93,7 +81,7 @@ const HakkimdaAccordions = () => (
                   <p className="mt-0.5 text-sm text-muted">{exp.role}</p>
                   <ul className="mt-2 space-y-1">
                     {exp.responsibilities.map((item) => (
-                      <li key={item} className="flex gap-2 text-sm leading-6 text-muted">
+                      <li key={item} className="flex gap-2 text-sm leading-5 text-muted">
                         <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-subtle" />
                         {item}
                       </li>
@@ -111,7 +99,7 @@ const HakkimdaAccordions = () => (
             .slice()
             .reverse()
             .map((edu) => (
-              <div key={`${edu.school}-${edu.department}`} className="py-4">
+              <div key={`${edu.school}-${edu.department}`} className="py-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span
                     className={`font-mono text-[11px] ${edu.ongoing ? 'text-brand-300' : 'text-subtle'}`}
@@ -126,7 +114,7 @@ const HakkimdaAccordions = () => (
                 <p className="mt-0.5 text-sm text-muted">{edu.department}</p>
                 <ul className="mt-2 space-y-1">
                   {edu.details.map((item) => (
-                    <li key={item} className="flex gap-2 text-sm leading-6 text-muted">
+                    <li key={item} className="flex gap-2 text-sm leading-5 text-muted">
                       <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-subtle" />
                       {item}
                     </li>
@@ -146,11 +134,11 @@ const HakkimdaAccordions = () => (
       </AccordionItem>
 
       <AccordionItem id="ek-bilgiler" index="07" title="Ek bilgiler">
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           {extraItems.map(({ title, value }) => (
             <div key={title}>
-              <h3 className="font-mono text-[11px] tracking-wide text-subtle">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-fg">{value}</p>
+              <h3 className="text-sm font-medium text-fg">{title}</h3>
+              <p className="mt-2 text-sm leading-5 text-fg">{value}</p>
             </div>
           ))}
         </div>

@@ -25,7 +25,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       'YouTube bağlantılarını MP3 ve MP4’e dönüştüren masaüstü indirme uygulaması.',
     detail:
-      'BYK Music ile video ve oynatma listelerini tek bir pencereden yönetin. İstediğiniz parçaları seçin, ses veya video kalitesini belirleyin ve birden fazla bağlantıyı indirme kuyruğuna ekleyin. Türkçe arayüzüyle Windows ve Apple Silicon Mac bilgisayarlarda çalışır.',
+      'YouTube video ve oynatma listelerini ses veya video dosyası olarak kaydetmenizi sağlar. Türkçe arayüzünde biçim ve kalite seçebilir, indirmeleri tek pencereden takip edebilirsiniz.',
     keywords: [
       'BYK Music',
       'YouTube MP3 indirici',
@@ -40,11 +40,9 @@ export const portfolioProjects: PortfolioProject[] = [
     href: '/projeler/byk-music',
     iconImage: '/images/music/icon.png',
     features: [
-      '128–320 kbps MP3 ve 360p–4K MP4 seçenekleri',
-      'Oynatma listesinden parça seçimi',
-      'Birden fazla bağlantı ve eşzamanlı indirme',
-      'Tarayıcı eklentisi ve indirme geçmişi',
-      'Uygulama içinden güncelleme',
+      'MP3 ve MP4 olarak kaydetme',
+      'Oynatma listesinden parça seçme',
+      'İndirmeleri tek ekrandan takip etme',
     ],
   },
   {
@@ -71,8 +69,8 @@ export const portfolioProjects: PortfolioProject[] = [
     iconImage: '/images/geocam/icon.png',
     features: [
       'GPS ve zaman damgası',
-      'Kurumsal bilgi katmanı',
-      'Cihaz üzerinde veri işleme',
+      'Fotoğrafa iş bilgisi ve logo ekleme',
+      'Fotoğrafları cihazda saklama',
     ],
   },
   {
@@ -83,7 +81,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       'Excel listelerini toplu barkod ve seri numarası etiketlerine dönüştüren baskı programı.',
     detail:
-      'Üretim, depo ve satış süreçleri için Excel’den toplu barkod etiketi hazırlama ve yazdırma uygulaması. TSPL termal yazıcı desteği, birebir önizleme ve sürükle-bırak yerleşim araçlarını bir arada sunar.',
+      'Excel listenizden barkod ve seri numarası etiketleri oluşturmanızı sağlar. Etiketleri önizleyebilir, yerleşimi düzenleyebilir ve uyumlu termal yazıcıyla toplu baskı alabilirsiniz.',
     keywords: [
       'BYK Seri Baskı Pro',
       'barkod yazdırma programı',
@@ -99,7 +97,7 @@ export const portfolioProjects: PortfolioProject[] = [
     iconImage: '/images/byk/icon.png',
     features: [
       'Excel’den toplu baskı',
-      'TSPL termal yazıcı desteği',
+      'Baskı öncesi etiket önizleme',
       'Çevrimdışı kullanım',
     ],
   },
@@ -155,7 +153,12 @@ export const portfolioProjects: PortfolioProject[] = [
       name: ['biyik.dev', 'Elif Öğretmen', 'BAYEN', 'Creda System'][index],
       category: 'Web sitesi',
       platform: index === 3 ? 'Web uygulaması' : 'Web sitesi',
-      description: project.description,
+      description: [
+        'Uygulamalarımı, web projelerimi ve mesleki deneyimimi bir araya getiren portföy sitesi.',
+        'Türkçe öğretmeni profili, eğitim bilgileri ve iletişim kanallarını sunan tanıtım sitesi.',
+        'Yangın güvenliği ve yapı sistemleri hizmetlerini tanıtan kurumsal web sitesi.',
+        'Personel, eğitim ve iş emirlerini tek platformda takip etmeyi sağlayan web uygulaması.',
+      ][index],
       detail: details[index],
       keywords: keywords[index],
       icon: project.icon,

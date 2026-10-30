@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+
 export default function PageHeader({
   eyebrow,
   title,
@@ -14,7 +15,9 @@ export default function PageHeader({
     <header className="page-heading">
       <div>
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-        <h1>{title}</h1>
+        <h1 className="page-title">
+          <span>{title}</span>
+        </h1>
         {description && <p className="page-description">{description}</p>}
       </div>
       {actions && <div className="page-actions">{actions}</div>}

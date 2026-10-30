@@ -22,8 +22,8 @@ export default function ProjectsPage() {
     <div className="animate-fade-up">
       <PageHeader
         eyebrow="Portföy / Projeler"
-        title="Ürettiklerim."
-        description="Günlük ihtiyaçlara ve iş süreçlerine dokunan uygulamalar, web siteleri ve kurumsal çözümler."
+        title="Projeler"
+        description="Mobil, masaüstü ve web projelerimi inceleyebilir, uygulamaları indirebilir veya web sitelerini ziyaret edebilirsiniz."
       />
       <ProjectExplorer />
       <JsonLd

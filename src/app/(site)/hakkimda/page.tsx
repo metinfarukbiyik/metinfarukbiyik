@@ -26,7 +26,7 @@ const HakkimdaPage = () => (
         <a
           href="/cv/metinfarukbiyik-cv.pdf"
           download
-          className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3.5 py-2 text-sm text-fg hover:bg-hover"
+          className="pill-button primary-button"
         >
           <Download size={15} />
           Özgeçmişi indir

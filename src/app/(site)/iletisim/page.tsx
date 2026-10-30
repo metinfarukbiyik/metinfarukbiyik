@@ -1,3 +1,4 @@
+import SectionTitle from '@/components/ui/SectionTitle';
 import {
   ArrowUpRight,
   ChevronDown,
@@ -118,7 +119,7 @@ export default function ContactPage() {
         description="Bir projen, iş birliği fikrin veya sormak istediğin bir şey mi var? Aşağıdaki kanallardan bana ulaşabilirsin."
       />
       <section className="project-detail-section contact-section">
-        <h2>Doğrudan ulaş</h2>
+        <SectionTitle icon="contact">Doğrudan ulaş</SectionTitle>
         <ul className="contact-methods">
           {methods.map((method) => (
             <ContactMethod key={method.name} {...method} />
@@ -161,7 +162,7 @@ export default function ContactPage() {
         </ul>
       </section>
       <section className="project-detail-section contact-section">
-        <h2>Sosyal medyada buluşalım</h2>
+        <SectionTitle icon="contact">Sosyal medyada buluşalım</SectionTitle>
         <ul className="contact-methods">
           {socials.map((social) => (
             <ContactMethod key={social.name} {...social} />

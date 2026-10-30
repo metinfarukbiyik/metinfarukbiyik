@@ -1,4 +1,5 @@
 import React from 'react';
+import SectionTitle from './SectionTitle';
 
 interface SectionProps {
   title: string;
@@ -8,10 +9,10 @@ interface SectionProps {
 }
 
 const Section: React.FC<SectionProps> = ({ title, description, actions, children }) => (
-  <section className="mt-10">
+  <section className="project-detail-section">
     <div className="flex items-end justify-between gap-4">
       <div>
-        <h2 className="font-mono text-xs tracking-wide text-muted">{title}</h2>
+        <SectionTitle>{title}</SectionTitle>
         {description && <p className="mt-1 text-sm text-muted">{description}</p>}
       </div>
       {actions}

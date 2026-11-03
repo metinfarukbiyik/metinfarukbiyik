@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Geist_Mono, IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import { site } from '@/lib/site';
 import './globals.css';
+import './design-refresh.css';
 
 const sans = IBM_Plex_Sans({
   subsets: ['latin', 'latin-ext'],

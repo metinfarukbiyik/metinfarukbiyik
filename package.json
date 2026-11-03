@@ -7,7 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:photo": "node scripts/test-passport-photo.mjs",
+    "test:tools": "node scripts/test-tools.mjs",
+    "test:speed-image": "node scripts/test-speed-result-image.mjs"
   },
   "dependencies": {
     "@sanity/image-url": "^2.1.1",

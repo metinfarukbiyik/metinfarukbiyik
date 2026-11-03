@@ -42,7 +42,7 @@ export default function HomePage() {
             fill
             priority
             placeholder="blur"
-            sizes="(max-width: 640px) 72px, 120px"
+            sizes="(max-width: 640px) 84px, 166px"
             className="object-contain"
           />
         </div>

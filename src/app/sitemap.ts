@@ -7,6 +7,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/hakkimda',
     '/projeler',
     '/iletisim',
+    '/araclar',
+    '/araclar/vesikalik-fotograf',
+    '/araclar/internet-hiz-testi',
+    '/araclar/ip-adresim',
     ...portfolioProjects.map((p) => p.href),
   ].map((path) => ({
     url: `${site.url}${path === '/' ? '' : path}`,

@@ -12,5 +12,6 @@ export const navigation = [
   { name: 'Ana Sayfa', href: '/' },
   { name: 'Hakkımda', href: '/hakkimda' },
   { name: 'Projeler', href: '/projeler' },
+  { name: 'Araçlar', href: '/araclar' },
   { name: 'İletişim', href: '/iletisim' },
 ];

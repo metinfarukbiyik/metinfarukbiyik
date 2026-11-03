@@ -701,7 +701,7 @@ export default function PassportPhotoTool() {
             </p>
             <button
               type="button"
-              className="pill-button photo-download-button"
+              className="btn btn-accent btn-lg btn-block photo-download-button"
               disabled={!image || loading || downloading}
               onClick={download}
             >

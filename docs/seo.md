@@ -1,31 +1,39 @@
-# Portföy SEO yapılandırması
+# biyik.dev SEO yapılandırması
 
-SEO kapsamı, bu depodaki biyik.dev sayfalarıdır. Diğer projelerin kendi alan adlarındaki kaynak kodlarını değiştirmez.
+Tüm sayfa başlıkları, açıklamaları ve anahtar kelimeleri tek bir yerden yönetilir.
 
-Her proje için benzersiz başlık, açıklama, canonical adres, Open Graph ve Twitter kartı tanımlanır. Proje türüne göre SoftwareApplication veya CreativeWork yapılandırılmış verisi eklenir. Proje listesi ItemList, web proje detayları BreadcrumbList içerir. Tüm herkese açık sayfalar sitemap.xml içinde bulunur; Studio ve API yolları robots.txt içinde hariç tutulur.
+## Kaynaklar
 
-## Anahtar kelime grupları
+- Sayfa bazlı başlık / açıklama / anahtar kelime: `src/lib/seo.ts` → `seoPages`
+- Proje sayfaları: `src/data/projects.ts` → `seoTitle`, `seoDescription`, `keywords`
+- Araçlar: `src/data/tools.ts`
+- Sosyal paylaşım görseli: `src/app/og/route.tsx` (`title`, `description`, `label` parametreleri)
+- Favicon ve uygulama ikonu: `src/app/icon.tsx`, `src/app/apple-icon.tsx`, `src/app/manifest.ts`
+- Sitemap ve robots: `src/app/sitemap.ts`, `src/app/robots.ts`
 
-- **BYK Music:** YouTube MP3 indirici, YouTube MP4 indirici, oynatma listesi indirme, Windows müzik indirme programı, macOS video indirici.
-- **GeoCam: Audit:** GPS kamera, konum damgalı fotoğraf, saha denetim kamerası, iPhone tarih saat kamera, telekom saha fotoğrafı.
-- **BYK Seri Baskı Pro:** barkod yazdırma programı, Excel barkod baskı, seri numarası etiketi, TSPL etiket yazıcı, toplu etiket baskı.
-- **biyik.dev:** Metin Faruk Bıyık, yazılım geliştirici portföyü, kişisel web sitesi, Trabzon yazılım geliştirici.
-- **Elif Öğretmen:** Türkçe öğretmeni web sitesi, öğretmen tanıtım sitesi, eğitim web tasarımı.
-- **BAYEN:** yangın güvenliği web sitesi, yapı sistemleri, kurumsal web tasarım.
-- **Creda System:** iş emri takip sistemi, personel yönetimi, CRM ERP, eğitim takibi, kurumsal veri yönetimi.
+## Kurallar
 
-Bunlar proje içeriklerine göre belirlenen hedef terimlerdir; arama hacmi veya sıralama ölçümü yapılmamıştır. Terimler meta keywords alanına eklenir; başlıklar, açıklamalar ve görünür içerik de projelerin konusunu açıkça anlatır.
+- Başlıklar, kullanıcının aradığı ifadeyle başlar; sonuna otomatik olarak `| biyik.dev` eklenir.
+- Açıklamalar ~160 karakteri geçmez ve sayfanın görünür içeriğiyle örtüşür.
+- Anahtar kelimeler genel (ör. “internet hız testi”) ve uzun kuyruk (ör. “4,5 x 6 vesikalık”) terimleri birlikte içerir.
+- Her iç sayfa görünür bir sayfa yolu ve `BreadcrumbList` şeması üretir (`PageHeader` / `Breadcrumbs`).
 
-## Kaynaklar ve bakım
+## Yapılandırılmış veri
 
-- Proje içeriği ve anahtar kelimeler: `src/data/projects.ts`
-- Ortak metadata ve proje şemaları: `src/lib/seo.ts`
-- Sosyal paylaşım görseli: `src/app/og/route.tsx`
-- Sitemap: `src/app/sitemap.ts`
-- BYK Music özellikleri ve indirmeleri: https://github.com/metinfarukbiyik/byk-music
+| Sayfa | Şema |
+| --- | --- |
+| Tüm site | `Person`, `WebSite` |
+| Projeler / Araçlar | `CollectionPage` + `ItemList` |
+| Uygulama detayı | `SoftwareApplication` (+ `downloadUrl`) |
+| Web projesi detayı | `CreativeWork` |
+| Araç sayfaları | `WebApplication` (ücretsiz `Offer`) + `FAQPage` |
+| BYK Seri Baskı Pro | `FAQPage` (sorun giderme) |
+| İletişim | `ContactPage` + `ContactPoint` |
 
-Yayın sonrası sitemap adresi: https://biyik.dev/sitemap.xml. Arama motorlarındaki tarama ve indeksleme durumu ayrıca Search Console üzerinden takip edilebilir.
+FAQ şeması yalnızca sayfada görünen `Faq` bileşeninden üretilir; görünmeyen soru-cevap eklenmez.
 
-## Proje adresleri
+Anahtar kelimeler proje içeriğine göre seçilmiştir; arama hacmi ölçümü yapılmamıştır. Sıralama ve indeksleme Search Console’dan izlenmelidir: https://biyik.dev/sitemap.xml
 
-Tüm proje detayları `/projeler/<proje-adi>` yapısını kullanır. Uygulama adresleri `/projeler/geocam`, `/projeler/byk-music` ve `/projeler/byk-seri-baski-pro` olarak düzenlenmiştir. Eski `/geocam`, `/byk-music` ve `/byk-seri-baski-pro` adresleri HTTP 308 ile kalıcı olarak yeni adreslere yönlenir. Canonical, JSON-LD, site içi bağlantılar ve sitemap yeni adresleri kullanır.
+## Adresler
+
+Tüm projeler `/projeler/<slug>` altında tek bir dinamik rotadan üretilir. Eski `/geocam`, `/byk-music`, `/byk-seri-baski-pro`, `/ozgecmis`, `/sertifikalar` ve `/ekipmanlar` adresleri `next.config.ts` içinde kalıcı olarak yönlendirilir.

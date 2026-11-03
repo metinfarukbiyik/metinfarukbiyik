@@ -63,24 +63,24 @@ export async function createSpeedResultImage(
     else context.fillText(value, x, y);
   };
   const gradient = context.createLinearGradient(0, 0, 1200, 900);
-  gradient.addColorStop(0, '#eaf1f6');
-  gradient.addColorStop(1, '#f7f9fa');
+  gradient.addColorStop(0, '#efece5');
+  gradient.addColorStop(1, '#f6f4ef');
   context.fillStyle = gradient;
   context.fillRect(0, 0, 1200, 900);
 
   rounded(54, 48, 1092, 804, 32, '#ffffff');
-  rounded(98, 90, 64, 64, 19, '#e8f0f6');
-  context.strokeStyle = '#5c7e99';
+  rounded(98, 90, 64, 64, 19, '#e2ebe8');
+  context.strokeStyle = '#33625c';
   context.lineWidth = 4;
   context.beginPath();
   context.arc(130, 122, 17, Math.PI, 0);
   context.moveTo(130, 122);
   context.lineTo(141, 110);
   context.stroke();
-  label('biyik.dev', 182, 117, 28, '#30475a', 600);
-  label('İNTERNET ARAÇLARI', 182, 145, 15, '#788d9d', 600);
-  label('İnternet hız testi', 98, 229, 46, '#263d50', 600);
-  label('Bağlantı ölçümüm', 100, 272, 22, '#6c8191');
+  label('biyik.dev', 182, 117, 28, '#1e2227', 600);
+  label('İNTERNET ARAÇLARI', 182, 145, 15, '#6f7277', 600);
+  label('İnternet hız testi', 98, 229, 46, '#1e2227', 600);
+  label('Bağlantı ölçümüm', 100, 272, 22, '#5f6368');
 
   const metrics = [
     {
@@ -113,12 +113,12 @@ export async function createSpeedResultImage(
     },
   ];
   for (const metric of metrics) {
-    rounded(metric.x, metric.y, 495, 180, 20, '#f2f6f9');
-    label(metric.title, metric.x + 28, metric.y + 42, 17, '#70889a', 600);
-    label(metric.value, metric.x + 28, metric.y + 119, 54, '#355a76', 600, 340);
-    label(metric.unit, metric.x + 28, metric.y + 150, 18, '#718696');
+    rounded(metric.x, metric.y, 495, 180, 20, '#f6f4ef');
+    label(metric.title, metric.x + 28, metric.y + 42, 17, '#6f7277', 600);
+    label(metric.value, metric.x + 28, metric.y + 119, 54, '#1e2227', 600, 340);
+    label(metric.unit, metric.x + 28, metric.y + 150, 18, '#6f7277');
   }
-  context.strokeStyle = '#e4ebf0';
+  context.strokeStyle = '#e3dfd5';
   context.lineWidth = 1;
   context.beginPath();
   context.moveTo(98, 741);
@@ -131,9 +131,9 @@ export async function createSpeedResultImage(
     hour: '2-digit',
     minute: '2-digit',
   });
-  label(date, 98, 788, 19, '#687e8e');
+  label(date, 98, 788, 19, '#6f7277');
   context.textAlign = 'right';
-  label('Cloudflare ağı üzerinden ölçüldü', 1102, 788, 18, '#687e8e');
+  label('Cloudflare ağı üzerinden ölçüldü', 1102, 788, 18, '#6f7277');
 
   return new Promise((resolve, reject) =>
     canvas.toBlob(

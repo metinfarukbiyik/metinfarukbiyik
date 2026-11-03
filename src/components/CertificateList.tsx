@@ -1,53 +1,41 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
+import { Award } from 'lucide-react';
+import { Segmented } from '@/components/ui';
 import { certificates } from '@/data/cvData';
 
 const ALL = 'Tümü';
+const issuers = [ALL, ...Array.from(new Set(certificates.map((cert) => cert.issuer)))];
 
-const CertificateList = () => {
+export default function CertificateList() {
   const [issuer, setIssuer] = useState(ALL);
-
-  const issuers = useMemo(
-    () => [ALL, ...Array.from(new Set(certificates.map((cert) => cert.issuer)))],
-    [],
-  );
-
   const visible = issuer === ALL ? certificates : certificates.filter((cert) => cert.issuer === issuer);
 
   return (
     <>
-      <div className="filter-tabs" role="group" aria-label="Sertifika kurumları">
-        {issuers.map((item) => {
-          const isActive = item === issuer;
-          return (
-            <button
-              key={item}
-              type="button"
-              onClick={() => setIssuer(item)}
-              aria-pressed={isActive}
-            >
-              {item}
-            </button>
-          );
-        })}
-      </div>
-
-      <ul className="mt-3 divide-y divide-border border-y border-border">
+      <Segmented
+        label="Sertifika kurumları"
+        value={issuer}
+        onChange={setIssuer}
+        options={issuers.map((item) => ({
+          value: item,
+          label: item,
+          count:
+            item === ALL ? certificates.length : certificates.filter((c) => c.issuer === item).length,
+        }))}
+      />
+      <ul className="cert-list">
         {visible.map((cert) => (
-          <li
-            key={cert.id}
-            className="flex flex-col gap-0.5 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-          >
-            <h3 className="text-sm text-fg">{cert.title}</h3>
-            <p className="shrink-0 font-mono text-[11px] text-subtle">
+          <li key={cert.id}>
+            <Award aria-hidden="true" />
+            <h3 className="title-4">{cert.title}</h3>
+            <span className="text-meta">
               {cert.issuer} · {cert.date}
-            </p>
+            </span>
           </li>
         ))}
       </ul>
     </>
   );
-};
-
-export default CertificateList;
+}

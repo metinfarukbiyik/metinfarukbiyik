@@ -1,42 +1,40 @@
-import PageHeader from '@/components/ui/PageHeader';
-import ProjectExplorer from '@/components/ProjectExplorer';
+import ContactCta from '@/components/ContactCta';
 import JsonLd from '@/components/JsonLd';
+import ProjectExplorer from '@/components/projects/ProjectExplorer';
+import { PageHeader } from '@/components/ui';
 import { portfolioProjects } from '@/data/projects';
-import { pageMetadata } from '@/lib/seo';
+import { pageMetadata, seoPages } from '@/lib/seo';
 import { site } from '@/lib/site';
 
-export const metadata = pageMetadata(
-  'Projeler — Mobil, masaüstü ve web',
-  'BYK Music, GeoCam: Audit, BYK Seri Baskı Pro, Creda System ve web siteleri. Metin Faruk Bıyık’ın geliştirdiği tüm projeleri keşfedin.',
-  '/projeler',
-  [
-    'Metin Faruk Bıyık projeler',
-    ...portfolioProjects.map((p) => p.name),
-    'masaüstü uygulama',
-    'mobil uygulama',
-    'web tasarım',
-  ],
-);
+export const metadata = pageMetadata(seoPages.projects);
+
 export default function ProjectsPage() {
   return (
-    <div className="animate-fade-up">
+    <div className="container">
       <PageHeader
-        eyebrow="Portföy / Projeler"
+        crumbs={[{ name: 'Projeler', href: '/projeler' }]}
+        kicker="portföy"
         title="Projeler"
-        description="Mobil, masaüstü ve web projelerimi inceleyebilir, uygulamaları indirebilir veya web sitelerini ziyaret edebilirsiniz."
+        description="Masaüstü ve mobil uygulamalar, kurumsal sistemler ve web siteleri. Uygulamaları indirebilir, web projelerini ziyaret edebilirsin."
       />
       <ProjectExplorer />
+      <ContactCta />
       <JsonLd
         data={{
           '@context': 'https://schema.org',
-          '@type': 'ItemList',
-          name: 'Metin Faruk Bıyık — Projeler',
-          itemListElement: portfolioProjects.map((p, index) => ({
-            '@type': 'ListItem',
-            position: index + 1,
-            name: p.name,
-            url: `${site.url}${p.href}`,
-          })),
+          '@type': 'CollectionPage',
+          name: 'Projeler — Metin Faruk Bıyık',
+          url: `${site.url}/projeler`,
+          inLanguage: 'tr',
+          mainEntity: {
+            '@type': 'ItemList',
+            itemListElement: portfolioProjects.map((p, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              name: p.name,
+              url: `${site.url}${p.href}`,
+            })),
+          },
         }}
       />
     </div>

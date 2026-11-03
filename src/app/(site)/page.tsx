@@ -1,142 +1,165 @@
-import SectionTitle from '@/components/ui/SectionTitle';
 import Image from 'next/image';
-import Link from 'next/link';
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Code2,
-  Download,
-  Github,
-  Mail,
-  MapPin,
-} from 'lucide-react';
+import { Download, MapPin } from 'lucide-react';
 import myPhoto from '@/assets/images/mefa.png';
-import { personalInfo } from '@/data/cvData';
-import { portfolioProjects } from '@/data/projects';
-import ProjectList from '@/components/ProjectList';
-import { pageMetadata } from '@/lib/seo';
+import ContactCta from '@/components/ContactCta';
+import WebJourney from '@/components/home/WebJourney';
+import { ProjectGrid, ProjectRows } from '@/components/projects/ProjectCard';
+import ToolCard from '@/components/tools/ToolCard';
+import { Badge, ButtonLink, Frame, Kicker, Section, TextLink, Tooltip } from '@/components/ui';
+import { certificates } from '@/data/cvData';
+import { appProjects, portfolioProjects, webProjects } from '@/data/projects';
+import { tools } from '@/data/tools';
+import { pageMetadata, seoPages } from '@/lib/seo';
+import { site } from '@/lib/site';
 
-export const metadata = pageMetadata(
-  'Yazılım, fikirler ve ürettiklerim',
-  'Metin Faruk Bıyık’ın portföyü. BYK Music, GeoCam: Audit, BYK Seri Baskı Pro ve web projeleri; mobil, masaüstü ve web uygulamaları.',
-  '/',
-  [
-    'Metin Faruk Bıyık',
-    'yazılım geliştirici',
-    'Trabzon',
-    'BYK Music',
-    'GeoCam Audit',
-    'BYK Seri Baskı Pro',
-    'web uygulama geliştirme',
-  ],
-);
+export const metadata = pageMetadata(seoPages.home);
+
+const firstLineYear = 2015;
+const stats = [
+  { value: String(portfolioProjects.length), label: 'yayında proje' },
+  { value: String(tools.length), label: 'ücretsiz araç' },
+  { value: `${new Date().getFullYear() - firstLineYear}+`, label: 'yıldır web ile' },
+  { value: String(certificates.length), label: 'sertifika' },
+];
 
 export default function HomePage() {
   return (
-    <div className="animate-fade-up">
-      <section className="profile-hero">
-        <div className="profile-picture">
-          <Image
-            src={myPhoto}
-            alt={personalInfo.name}
-            fill
-            priority
-            placeholder="blur"
-            sizes="(max-width: 640px) 84px, 166px"
-            className="object-contain"
-          />
-        </div>
-        <div className="profile-intro">
-          <div className="profile-heading">
-            <span className="eyebrow">Fikirden çalışan ürüne</span>
-            <h1>
-              Merhaba, ben <span>Metin Faruk Bıyık.</span>
-            </h1>
-          </div>
-          <p>
-            Günlük hayatı ve iş süreçlerini kolaylaştıran
-            <br className="desktop-break" /> web, mobil ve masaüstü uygulamaları
-            geliştiriyorum.
+    <div className="container">
+      <section className="hero" aria-labelledby="hero-baslik">
+        <div className="hero-copy rise">
+          <Kicker>merhaba, ben</Kicker>
+          <h1 id="hero-baslik" className="title-display">
+            Metin Faruk Bıyık<span className="hero-caret" aria-hidden="true" />
+          </h1>
+          <p className="lead">
+            HTML ile başlayan merakımı bugün web, mobil ve masaüstünde günlük işleri
+            kolaylaştıran sade ürünlere dönüştürüyorum.
           </p>
-          <div className="profile-meta">
-            <div className="hero-links">
-              <span>
-                <MapPin size={13} aria-hidden="true" /> Trabzon, Türkiye
-              </span>
-              <span className="hero-divider" aria-hidden="true" />
-              <a
-                href="https://github.com/metinfarukbiyik"
-                target="_blank"
-                rel="noopener noreferrer"
+          <div className="hero-meta">
+            <Badge icon={<MapPin aria-hidden="true" />}>Trabzon, Türkiye</Badge>
+            <Badge tone="accent" live>
+              Yeni projelere açık
+            </Badge>
+            <Badge code>web · ios · desktop</Badge>
+          </div>
+          <div className="hero-actions">
+            <ButtonLink href="/projeler" variant="primary" size="lg" trailing="arrow">
+              Projeleri incele
+            </ButtonLink>
+            <ButtonLink href="/hakkimda" size="lg">
+              Biraz tanışalım
+            </ButtonLink>
+            <Tooltip content="PDF · güncel özgeçmiş">
+              <ButtonLink
+                href={site.cv}
+                download
+                variant="ghost"
+                size="lg"
+                icon={<Download aria-hidden="true" />}
               >
-                <Github size={14} aria-hidden="true" /> GitHub{' '}
-                <ArrowUpRight size={12} aria-hidden="true" />
-              </a>
-            </div>
-            <span className="work-status">
-              <span aria-hidden="true" /> Open to work
-            </span>
+                CV
+              </ButtonLink>
+            </Tooltip>
           </div>
         </div>
+        <Frame
+          className="hero-card rise rise-2"
+          title="biyik.dev/metin"
+          meta="200 OK"
+          bodyClassName="hero-card-body"
+        >
+          <div className="hero-photo">
+            <Image
+              src={myPhoto}
+              alt="Metin Faruk Bıyık"
+              fill
+              priority
+              placeholder="blur"
+              sizes="(max-width: 860px) 60vw, 300px"
+            />
+          </div>
+          <pre className="hero-code" aria-hidden="true">
+            <code>
+              <span className="tk-p">&lt;</span>
+              <span className="tk-t">person</span>
+              {'\n  '}
+              <span className="tk-a">name</span>=<span className="tk-s">&quot;Metin Faruk Bıyık&quot;</span>
+              {'\n  '}
+              <span className="tk-a">city</span>=<span className="tk-s">&quot;Trabzon&quot;</span>
+              {'\n  '}
+              <span className="tk-a">since</span>=<span className="tk-s">&quot;1999&quot;</span>
+              {'\n'}
+              <span className="tk-p">/&gt;</span>
+            </code>
+          </pre>
+        </Frame>
       </section>
-      <div className="intro-actions">
-        <Link href="/hakkimda" className="pill-button primary-button">
-          Biraz daha tanışalım <ArrowRight size={14} />
-        </Link>
-        <a href="/cv/metinfarukbiyik-cv.pdf" download className="text-button">
-          <Download size={14} /> Özgeçmişimi indir
-        </a>
-      </div>
-      <section className="home-projects">
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">Portföy</span>
-            <SectionTitle icon="projects">Fikirler, uygulamaya dönüştü.</SectionTitle>
-            <p>İhtiyaçtan doğan, özenle geliştirdiğim projeler.</p>
+
+      <dl className="stats rise rise-3">
+        {stats.map((stat) => (
+          <div key={stat.label}>
+            <dt>{stat.label}</dt>
+            <dd className="mono">{stat.value}</dd>
           </div>
-          <Link href="/projeler" className="text-button">
-            Tüm projeler <ArrowUpRight size={15} />
-          </Link>
+        ))}
+      </dl>
+
+      <Section
+        id="yolculuk"
+        kicker="web yolculuğu"
+        index="01"
+        title="1999’dan bugüne, web ile birlikte büyüdüm."
+        description="Tablo düzenli sayfalardan fiber altyapıya, oradan bugünün uygulamalarına: her dönem bir sonraki ürüne malzeme oldu."
+      >
+        <WebJourney />
+      </Section>
+
+      <Section
+        id="uygulamalar"
+        kicker="uygulamalar"
+        index="02"
+        title="Fikirden çalışan ürüne."
+        description="İhtiyaçtan doğan, gerçek kullanıcıların her gün açtığı masaüstü ve mobil uygulamalar."
+        action={
+          <TextLink href="/projeler" arrow>
+            Tüm projeler
+          </TextLink>
+        }
+      >
+        <ProjectGrid projects={appProjects} />
+      </Section>
+
+      <Section
+        id="web"
+        kicker="web & kurumsal"
+        index="03"
+        title="Kurumlar ve kişiler için web."
+        description="Kurumsal tanıtım sitelerinden iş emri takip sistemlerine kadar web projeleri."
+        tight
+      >
+        <ProjectRows projects={webProjects} />
+      </Section>
+
+      <Section
+        id="araclar"
+        kicker="araçlar"
+        index="04"
+        title="Ücretsiz, kurulumsuz, tarayıcında."
+        description="Günlük küçük işler için hazırladığım araçlar. Veriler mümkün olan her yerde cihazında kalır."
+        action={
+          <TextLink href="/araclar" arrow>
+            Tüm araçlar
+          </TextLink>
+        }
+      >
+        <div className="tool-grid">
+          {tools.map((tool) => (
+            <ToolCard key={tool.slug} tool={tool} />
+          ))}
         </div>
-        <div className="list-panel">
-          <div className="panel-label">
-            <span className="category-badge green">
-              <Code2 size={12} /> Uygulamalar
-            </span>
-            <span>{portfolioProjects.filter((p) => p.category === 'Uygulama').length} proje</span>
-          </div>
-          <ProjectList
-            projects={portfolioProjects.filter(
-              (p) => p.category === 'Uygulama',
-            )}
-          />
-        </div>
-        <div className="list-panel">
-          <div className="panel-label">
-            <span className="category-badge purple">
-              Web & kurumsal çözümler
-            </span>
-            <span>{portfolioProjects.filter((p) => p.category === 'Web sitesi').length} proje</span>
-          </div>
-          <ProjectList
-            projects={portfolioProjects.filter(
-              (p) => p.category === 'Web sitesi',
-            )}
-          />
-        </div>
-      </section>
-      <section className="contact-strip">
-        <div className="contact-icon">
-          <Mail size={21} strokeWidth={1.5} />
-        </div>
-        <div>
-          <h2>Bir fikrin mi var? Konuşalım.</h2>
-          <p>Projeler, iş birlikleri veya sadece bir merhaba için.</p>
-        </div>
-        <Link href="/iletisim" className="pill-button primary-button">
-          İletişime geç <ArrowUpRight size={14} />
-        </Link>
-      </section>
+      </Section>
+
+      <ContactCta />
     </div>
   );
 }

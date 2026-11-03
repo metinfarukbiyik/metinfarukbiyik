@@ -3,20 +3,15 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/JsonLd';
 import { site } from '@/lib/site';
-import { personalInfo } from '@/data/cvData';
 
-export default function SiteLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="site-shell">
-      <a href="#main-content" className="skip-link">
+    <div className="shell">
+      <a href="#icerik" className="skip-link">
         İçeriğe geç
       </a>
       <Navbar />
-      <main id="main-content" className="main-panel">
+      <main id="icerik" className="main">
         {children}
       </main>
       <Footer />
@@ -28,19 +23,33 @@ export default function SiteLayout({
               '@type': 'Person',
               '@id': `${site.url}/#person`,
               name: site.name,
+              alternateName: 'Metin Bıyık',
               url: site.url,
-              jobTitle: 'Yazılım Geliştirici',
-              sameAs: [
-                personalInfo.linkedin,
-                'https://github.com/metinfarukbiyik',
+              email: `mailto:${site.email}`,
+              jobTitle: site.jobTitle,
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: site.city,
+                addressCountry: 'TR',
+              },
+              knowsAbout: [
+                'Web geliştirme',
+                'Masaüstü uygulama geliştirme',
+                'iOS uygulama geliştirme',
+                'Kurumsal web siteleri',
+                'Telekomünikasyon altyapısı',
               ],
+              sameAs: [site.github, site.linkedin, site.instagram],
             },
             {
               '@type': 'WebSite',
               '@id': `${site.url}/#website`,
-              name: 'biyik.dev',
+              name: site.brand,
+              alternateName: site.name,
               url: site.url,
+              description: site.description,
               inLanguage: 'tr',
+              publisher: { '@id': `${site.url}/#person` },
               author: { '@id': `${site.url}/#person` },
             },
           ],
@@ -50,10 +59,9 @@ export default function SiteLayout({
         src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`}
         strategy="afterInteractive"
       />
-      <Script
-        id="ga"
-        strategy="afterInteractive"
-      >{`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${site.gaId}');`}</Script>
+      <Script id="ga" strategy="afterInteractive">
+        {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${site.gaId}');`}
+      </Script>
     </div>
   );
 }

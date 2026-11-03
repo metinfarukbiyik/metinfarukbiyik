@@ -1,20 +1,25 @@
 import type { MetadataRoute } from 'next';
-import { site } from '@/lib/site';
 import { portfolioProjects } from '@/data/projects';
+import { tools } from '@/data/tools';
+import { site } from '@/lib/site';
+
 export default function sitemap(): MetadataRoute.Sitemap {
+  const lastModified = new Date();
+  const entry = (
+    path: string,
+    priority: number,
+    changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'] = 'monthly',
+  ) => ({ url: `${site.url}${path === '/' ? '' : path}`, lastModified, changeFrequency, priority });
+
   return [
-    '/',
-    '/hakkimda',
-    '/projeler',
-    '/iletisim',
-    '/araclar',
-    '/araclar/vesikalik-fotograf',
-    '/araclar/internet-hiz-testi',
-    '/araclar/ip-adresim',
-    ...portfolioProjects.map((p) => p.href),
-  ].map((path) => ({
-    url: `${site.url}${path === '/' ? '' : path}`,
-    changeFrequency: 'monthly',
-    priority: path === '/' ? 1 : 0.8,
-  }));
+    entry('/', 1, 'weekly'),
+    entry('/projeler', 0.9, 'weekly'),
+    entry('/araclar', 0.9),
+    ...tools.map((tool) => entry(tool.href, 0.9)),
+    ...portfolioProjects.map((project) =>
+      entry(project.href, project.category === 'Uygulama' ? 0.8 : 0.6),
+    ),
+    entry('/hakkimda', 0.7),
+    entry('/iletisim', 0.6, 'yearly'),
+  ];
 }

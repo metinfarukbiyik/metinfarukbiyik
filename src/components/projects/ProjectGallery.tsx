@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Expand, X } from 'lucide-react';
 import type { ProjectImage } from '@/data/projectPresentation';
+import { buttonClass } from '@/components/ui';
 
 export default function ProjectGallery({ images }: { images: ProjectImage[] }) {
   const [active, setActive] = useState<number | null>(null);
@@ -39,13 +40,12 @@ export default function ProjectGallery({ images }: { images: ProjectImage[] }) {
         {images.map((image, index) => (
           <figure key={image.src} className="project-preview">
             <button type="button" className="project-preview-image" onClick={() => setActive(index)} aria-label={`${image.caption} görselini büyüt`} aria-haspopup="dialog">
-              <Image src={image.src} alt={image.alt} fill sizes="(max-width: 640px) 85vw, 400px" className="object-contain p-3" />
+              <Image src={image.src} alt={image.alt} fill sizes="(max-width: 640px) 85vw, 360px" />
+              <span className="project-preview-zoom" aria-hidden="true"><Expand /></span>
             </button>
             <figcaption>
-              <span>{image.caption}</span>
-              <button type="button" className="pill-button" onClick={() => setActive(index)} aria-label={`${image.caption} görselini büyüt`} aria-haspopup="dialog">
-                <Expand size={13} aria-hidden="true" /> Büyüt
-              </button>
+              <span className="mono">{String(index + 1).padStart(2, '0')}</span>
+              {image.caption}
             </figcaption>
           </figure>
         ))}
@@ -66,21 +66,21 @@ export default function ProjectGallery({ images }: { images: ProjectImage[] }) {
       >
         <div className="image-viewer-panel">
           <div className="image-viewer-header">
-            <h2 id={titleId}>Proje görselleri</h2>
-            <button type="button" className="viewer-control" aria-label="Görseli kapat" onClick={() => dialogRef.current?.close()} autoFocus>
+            <h2 id={titleId} className="title-4">Proje görselleri</h2>
+            <button type="button" className={buttonClass({ iconOnly: true })} aria-label="Görseli kapat" onClick={() => dialogRef.current?.close()} autoFocus>
               <X size={20} aria-hidden="true" />
             </button>
           </div>
           <div className="image-viewer-stage">
-            {selected && <Image key={selected.src} src={selected.src} alt={selected.alt} fill sizes="95vw" className="object-contain" />}
+            {selected && <Image key={selected.src} src={selected.src} alt={selected.alt} fill sizes="95vw" />}
           </div>
           <div className="image-viewer-footer">
             <p id={captionId} aria-live="polite">{selected?.caption}</p>
             {images.length > 1 && (
               <div className="image-viewer-navigation">
-                <button type="button" className="viewer-control" aria-label="Önceki görsel" onClick={() => move(-1)}><ChevronLeft size={20} aria-hidden="true" /></button>
-                <span>{(active ?? 0) + 1} / {images.length}</span>
-                <button type="button" className="viewer-control" aria-label="Sonraki görsel" onClick={() => move(1)}><ChevronRight size={20} aria-hidden="true" /></button>
+                <button type="button" className={buttonClass({ iconOnly: true })} aria-label="Önceki görsel" onClick={() => move(-1)}><ChevronLeft size={20} aria-hidden="true" /></button>
+                <span className="mono">{(active ?? 0) + 1} / {images.length}</span>
+                <button type="button" className={buttonClass({ iconOnly: true })} aria-label="Sonraki görsel" onClick={() => move(1)}><ChevronRight size={20} aria-hidden="true" /></button>
               </div>
             )}
           </div>

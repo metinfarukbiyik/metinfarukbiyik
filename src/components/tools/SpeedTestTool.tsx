@@ -311,7 +311,7 @@ export default function SpeedTestTool() {
         <div className="speed-start">
           <button
             type="button"
-            className="pill-button network-primary"
+            className="btn btn-accent btn-lg network-primary"
             onClick={running ? () => controller.current?.abort() : start}
           >
             {running ? (
@@ -341,7 +341,7 @@ export default function SpeedTestTool() {
           >
             <button
               type="button"
-              className="pill-button"
+              className="btn btn-sm"
               disabled={exporting}
               onClick={() => void exportResult(result)}
             >
@@ -349,7 +349,7 @@ export default function SpeedTestTool() {
             </button>
             <button
               type="button"
-              className="pill-button"
+              className="btn btn-sm"
               disabled={exporting}
               onClick={() => void exportResult(result, true)}
             >
@@ -389,14 +389,14 @@ export default function SpeedTestTool() {
             <div className="network-actions">
               <button
                 type="button"
-                className="pill-button"
+                className="btn btn-sm"
                 onClick={exportHistory}
               >
                 <Download size={13} aria-hidden="true" /> CSV indir
               </button>
               <button
                 type="button"
-                className="pill-button"
+                className="btn btn-sm"
                 onClick={() => setConfirmClear(true)}
               >
                 <Trash2 size={13} aria-hidden="true" /> Temizle
@@ -409,14 +409,14 @@ export default function SpeedTestTool() {
             <p>Bu tarayıcıdaki tüm hız testi sonuçları silinsin mi?</p>
             <button
               type="button"
-              className="pill-button"
+              className="btn btn-sm"
               onClick={clearHistory}
             >
               Geçmişi sil
             </button>
             <button
               type="button"
-              className="pill-button"
+              className="btn btn-sm"
               onClick={() => setConfirmClear(false)}
             >
               Vazgeç

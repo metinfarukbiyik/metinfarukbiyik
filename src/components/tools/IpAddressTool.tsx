@@ -150,7 +150,7 @@ export default function IpAddressTool() {
         </p>
         <button
           type="button"
-          className="pill-button"
+          className="btn btn-sm"
           disabled={loading}
           onClick={() => {
             setLoading(true);
@@ -182,7 +182,7 @@ export default function IpAddressTool() {
             </p>
             <button
               type="button"
-              className="pill-button"
+              className="btn btn-sm"
               disabled={!info[version]}
               onClick={() => info[version] && copy(info[version])}
             >

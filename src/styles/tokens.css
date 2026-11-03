@@ -1,0 +1,117 @@
+/*
+ * biyik.dev UI — design tokens
+ * Soft paper surfaces, ink typography and a single muted teal accent.
+ * Every colour, radius, size and motion value in the site comes from here.
+ */
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --paper: #f6f4ef;
+  --paper-sunken: #efece5;
+  --surface: #fbfaf7;
+  --surface-raised: #ffffff;
+  --line: #e3dfd5;
+  --line-strong: #d3cec2;
+
+  /* Text */
+  --ink: #1e2227;
+  --text: #393e44;
+  --muted: #5f6368;
+  --subtle: #6f7277;
+  --on-ink: #f6f4ef;
+
+  /* Accent: soft teal */
+  --accent: #33625c;
+  --accent-strong: #264b46;
+  --accent-soft: #e2ebe8;
+  --accent-line: #c6d8d3;
+
+  /* Supporting tones (badges, states) */
+  --clay: #9a5434;
+  --clay-soft: #f3e5dc;
+  --clay-line: #e6cdbd;
+  --sky: #3f5f80;
+  --sky-soft: #e3eaf1;
+  --sky-line: #c9d6e3;
+  --sun: #85621a;
+  --sun-soft: #f4ecd6;
+  --sun-line: #e5d6ac;
+  --rose: #9b3f3f;
+  --rose-soft: #f6e3e1;
+  --rose-line: #e9c6c2;
+
+  /* Window chrome dots */
+  --dot-1: #e3a598;
+  --dot-2: #e6cf95;
+  --dot-3: #a9cdb0;
+
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --fs-display: clamp(2.125rem, 1.4rem + 3vw, 3.25rem);
+  --fs-h1: clamp(1.875rem, 1.4rem + 1.8vw, 2.5rem);
+  --fs-h2: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --fs-h3: 1.0625rem;
+  --fs-h4: 0.9375rem;
+  --fs-lead: clamp(1.0313rem, 0.98rem + 0.25vw, 1.125rem);
+  --fs-body: 0.9375rem;
+  --fs-small: 0.8438rem;
+  --fs-meta: 0.75rem;
+  --fs-micro: 0.6875rem;
+
+  --lh-tight: 1.12;
+  --lh-heading: 1.25;
+  --lh-body: 1.65;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.022em;
+  --tracking-mono: -0.01em;
+
+  /* Spacing scale (4px grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --section-gap: clamp(56px, 7vw, 96px);
+
+  /* Shape */
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Control heights */
+  --control-sm: 32px;
+  --control-md: 40px;
+  --control-lg: 48px;
+
+  /* Elevation — kept flat; depth comes from lines, not blur */
+  --shadow-key: 0 1px 0 var(--line-strong);
+  --shadow-card: 0 1px 0 rgba(30, 34, 39, 0.03), 0 8px 24px -16px rgba(30, 34, 39, 0.18);
+  --shadow-pop: 0 12px 32px -12px rgba(30, 34, 39, 0.28);
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-fast: 140ms;
+  --dur: 220ms;
+
+  /* Layout */
+  --container: 1120px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --header-h: 68px;
+  --focus: 0 0 0 3px var(--paper), 0 0 0 5px var(--accent);
+}

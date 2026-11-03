@@ -1,74 +1,67 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist_Mono, IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import { site } from '@/lib/site';
+import { ogImage, seoPages } from '@/lib/seo';
 import './globals.css';
-import './design-refresh.css';
 
-const sans = IBM_Plex_Sans({
+const inter = Inter({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600'],
-  variable: '--font-sans-family',
+  variable: '--font-inter',
   display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  weight: ['300', '400', '500'],
-  variable: '--font-geist-mono',
-  display: 'swap',
-});
-
-const mono = IBM_Plex_Mono({
+const mono = JetBrains_Mono({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '500'],
-  variable: '--font-mono-family',
+  variable: '--font-jetbrains',
   display: 'swap',
 });
+
+const image = ogImage(seoPages.home.ogTitle, seoPages.home.description);
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.defaultTitle, template: site.titleTemplate },
   description: site.description,
-  keywords: [
-    'Metin Faruk Bıyık',
-    'yazılım geliştirici',
-    'BYK Music',
-    'GeoCam Audit',
-    'BYK Seri Baskı Pro',
-    'Trabzon',
-  ],
+  applicationName: site.brand,
+  keywords: site.keywords,
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
+  publisher: site.name,
+  category: 'technology',
   alternates: { canonical: '/' },
+  formatDetection: { telephone: false, email: false, address: false },
   openGraph: {
     type: 'website',
-    locale: 'tr_TR',
+    locale: site.locale,
     url: site.url,
-    siteName: site.name,
+    siteName: site.brand,
     title: site.defaultTitle,
     description: site.description,
+    images: [{ url: image, width: 1200, height: 630, alt: site.defaultTitle }],
   },
   twitter: {
     card: 'summary_large_image',
     title: site.defaultTitle,
     description: site.description,
+    images: [image],
   },
-  robots: { index: true, follow: true },
-  icons: { icon: '/m.png', apple: '/m.png' },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#f5f7f8',
+  themeColor: '#f6f4ef',
+  colorScheme: 'light',
 };
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => (
-  <html
-    lang="tr"
-    className={`${sans.variable} ${mono.variable} ${geistMono.variable}`}
-    data-scroll-behavior="smooth"
-  >
-    <body className="bg-canvas text-fg">{children}</body>
-  </html>
-);
-
-export default RootLayout;
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="tr" className={`${inter.variable} ${mono.variable}`} data-scroll-behavior="smooth">
+      <body>{children}</body>
+    </html>
+  );
+}

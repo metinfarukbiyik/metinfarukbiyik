@@ -199,7 +199,7 @@ export async function createSpeedResultImage(
   text('/', left + 10 + b, foot + 53, 20, color.dot3, { mono: true, weight: 500 });
   text('biyik.dev', left + 60, foot + 44, 22, color.ink, { weight: 600 });
   text('Ücretsiz internet hız testi', left + 60, foot + 68, 15, color.subtle);
-  const status = text('Hazır · Cloudflare ağı üzerinden ölçüldü', right, foot + 51, 16, color.muted, {
+  const status = text(result.server ? `Hazır · Cloudflare ${result.server}` : 'Hazır · Cloudflare ağı üzerinden ölçüldü', right, foot + 51, 16, color.muted, {
     mono: true,
     align: 'right',
   });

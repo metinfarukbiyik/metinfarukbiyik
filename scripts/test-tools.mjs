@@ -176,6 +176,15 @@ for (const milliseconds of [1, 50, 400, 1000, 4000, 10000, 60000]) {
 }
 assert.equal(network.additionalTransfer(5_000_000, 10000), 0);
 assert.equal(network.additionalTransfer(5_000_000, 1), 45_000_000);
+for (const total of [5_000_000, 45_000_000, 1_234_567, 100_000, 1]) {
+  const parts = network.splitBytes(total, network.STREAMS);
+  assert.equal(parts.reduce((sum, part) => sum + part, 0), total);
+  assert(parts.every((part) => part > 0) && parts.length <= network.STREAMS);
+}
+assert.equal(network.describeColo('IST'), 'İstanbul (IST)');
+assert.equal(network.describeColo('xyz'), 'XYZ');
+assert.equal(network.describeColo('<b>'), undefined);
+assert.equal(network.describeColo(null), undefined);
 const valid = {
   id: '1',
   timestamp: '2026-11-04T00:00:00Z',
@@ -187,6 +196,8 @@ const valid = {
   uploadBytes: 5e6,
 };
 assert.equal(network.parseSpeedHistory('{broken').length, 0);
+assert.equal(network.parseSpeedHistory(JSON.stringify([{ ...valid, server: 'Amsterdam (AMS)' }]))[0].server, 'Amsterdam (AMS)');
+assert.equal(network.parseSpeedHistory(JSON.stringify([{ ...valid, server: 42 }])).length, 0);
 assert.equal(
   network.parseSpeedHistory(
     JSON.stringify([{}, null, { ...valid, download: -1 }, valid]),
@@ -224,8 +235,10 @@ Object.defineProperty(globalThis, 'performance', {
   value: { now: () => clock },
   configurable: true,
 });
-globalThis.fetch = async (_url, options) => {
+globalThis.fetch = async (url, options) => {
   options.signal.throwIfAborted();
+  if (String(url).includes('/cdn-cgi/trace'))
+    return new Response(mode === 'trace-down' ? 'oops' : 'fl=1\ncolo=ams\nloc=TR\n', { status: mode === 'trace-down' ? 500 : 200 });
   clock += 20;
   return new Response(null, { status: 200 });
 };
@@ -282,6 +295,21 @@ assert.equal(measured.latency, 20);
 assert.equal(measured.jitter, 0);
 assert(progress.every((p) => p.fraction >= 0 && p.fraction <= 1));
 assert(transfers.some((t) => t.direction === 'POST'));
+assert.equal(measured.server, 'Amsterdam (AMS)');
+// Warm-up runs as STREAMS concurrent requests that add up to exactly MIN_TRANSFER.
+const warmup = transfers.filter((t) => t.direction === 'GET').slice(0, network.STREAMS);
+assert.equal(warmup.length, network.STREAMS);
+assert.equal(warmup.reduce((sum, t) => sum + t.bytes, 0), network.MIN_TRANSFER);
+assert.equal(
+  transfers.filter((t) => t.direction === 'GET').reduce((sum, t) => sum + t.bytes, 0),
+  measured.downloadBytes,
+);
+// The location lookup is optional: if it fails the test still completes without it.
+mode = 'trace-down';
+const withoutServer = await network.runSpeedTest(new AbortController().signal, () => {});
+assert.equal(withoutServer.server, undefined);
+assert(withoutServer.download > 0);
+mode = 'ok';
 const cancelled = new AbortController();
 cancelled.abort();
 await assert.rejects(() => network.runSpeedTest(cancelled.signal, () => {}), {

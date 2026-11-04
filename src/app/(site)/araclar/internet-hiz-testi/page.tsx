@@ -41,8 +41,17 @@ const guide = (
           <li>Bu sayfa bir web uygulamasıdır; uygulama veya yazılım yüklemen gerekmez.</li>
           <li>Wi-Fi, 4G veya 5G bağlantını yapılandırma yapmadan test edebilirsin.</li>
           <li>
-            Önce her yönde 5 MB aktarılır. İlk aktarım süresine göre o yöndeki toplam test boyutu 5–50 MB
-            arasında otomatik belirlenir; düşük hızlı ağlarda daha küçük test kullanılır.
+            Her yönde veri 6 paralel bağlantıyla aktarılır. Uzak sunucularda tek bağlantı hattın tamamını
+            dolduramaz; paralel aktarım daha gerçekçi bir sonuç verir.
+          </li>
+          <li>
+            İlk 5 MB bağlantıyı ısıtır ve hattın kapasitesini tahmin eder. Asıl hız, bağlantı ısındıktan
+            sonraki aktarımdan hesaplanır. Toplam test boyutu yön başına 5–50 MB arasında otomatik belirlenir.
+          </li>
+          <li>
+            Test, Cloudflare’ın sana yönlendirdiği veri merkezinde yapılır ve hangi şehir olduğu ölçüm
+            panelinde gösterilir. Bazı Türk operatörleri bu trafiği yurt dışındaki bir merkeze (ör.
+            Amsterdam) yönlendirdiği için gecikme yüksek görünebilir.
           </li>
           <li>
             Tamamlanan son 50 sonuç yalnızca bu tarayıcıya kaydedilir. Geçmişi CSV olarak indirebilir veya

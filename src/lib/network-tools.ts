@@ -1,6 +1,11 @@
 export const SPEED_HISTORY_KEY = 'biyik-dev:speed-results:v1';
 export const MIN_TRANSFER = 5_000_000;
 export const MAX_TRANSFER = 50_000_000;
+/**
+ * Concurrent requests per direction. One request cannot fill a fast line when the
+ * round trip is long (Turkey → Cloudflare often routes via Amsterdam, ~60 ms).
+ */
+export const STREAMS = 6;
 export type SpeedPhase = 'latency' | 'download' | 'upload';
 export type SpeedResult = {
   id: string;
@@ -11,6 +16,8 @@ export type SpeedResult = {
   jitter: number;
   downloadBytes: number;
   uploadBytes: number;
+  /** Cloudflare data centre that served the test, e.g. "Amsterdam (AMS)". */
+  server?: string;
 };
 export type SpeedProgress = {
   phase: SpeedPhase;
@@ -18,7 +25,45 @@ export type SpeedProgress = {
   mbps?: number;
   latency?: number;
   jitter?: number;
+  server?: string;
 };
+
+/** Common Cloudflare data centres near Türkiye; unknown codes are shown as-is. */
+const COLO_CITIES: Record<string, string> = {
+  IST: 'İstanbul',
+  ESB: 'Ankara',
+  ADB: 'İzmir',
+  SOF: 'Sofya',
+  OTP: 'Bükreş',
+  ATH: 'Atina',
+  SKG: 'Selanik',
+  BEG: 'Belgrad',
+  BUD: 'Budapeşte',
+  VIE: 'Viyana',
+  FRA: 'Frankfurt',
+  AMS: 'Amsterdam',
+  CDG: 'Paris',
+  LHR: 'Londra',
+  MXP: 'Milano',
+  WAW: 'Varşova',
+  PRG: 'Prag',
+  TLV: 'Tel Aviv',
+  TBS: 'Tiflis',
+  KBP: 'Kiev',
+};
+
+export function describeColo(colo: string | null | undefined) {
+  const code = colo?.trim().toUpperCase();
+  if (!code || !/^[A-Z]{3}$/.test(code)) return undefined;
+  return COLO_CITIES[code] ? `${COLO_CITIES[code]} (${code})` : code;
+}
+
+/** Splits a byte budget into near-equal parts, one per concurrent request. */
+export function splitBytes(total: number, parts: number) {
+  const count = Math.max(1, Math.min(parts, Math.floor(total / 65_536) || 1));
+  const base = Math.floor(total / count);
+  return Array.from({ length: count }, (_, i) => (i === count - 1 ? total - base * (count - 1) : base));
+}
 export const mbpsFromTransfer = (bytes: number, milliseconds: number) =>
   (bytes * 8) / (milliseconds * 1000);
 export const additionalTransfer = (bytes: number, milliseconds: number) =>
@@ -63,7 +108,9 @@ export function parseSpeedHistory(raw: string | null): SpeedResult[] {
               typeof value[key] === 'number' &&
               Number.isFinite(value[key]) &&
               value[key] >= 0,
-          ),
+          ) &&
+          (value.server === undefined ||
+            (typeof value.server === 'string' && value.server.length <= 40)),
       )
       .slice(0, 50);
   } catch {
@@ -166,11 +213,62 @@ function transfer(
   });
 }
 
+/**
+ * Runs a byte budget as several concurrent requests and reports the combined progress.
+ * If one request fails, the others are cancelled so no orphan traffic keeps running.
+ */
+async function parallelTransfer(
+  direction: 'download' | 'upload',
+  total: number,
+  signal: AbortSignal,
+  onProgress: (loaded: number, milliseconds: number) => void,
+): Promise<number> {
+  const parts = splitBytes(total, STREAMS);
+  const loaded = parts.map(() => 0);
+  const group = new AbortController();
+  const stop = () => group.abort();
+  signal.addEventListener('abort', stop, { once: true });
+  const started = performance.now();
+  try {
+    await Promise.all(
+      parts.map((bytes, index) =>
+        transfer(direction, bytes, group.signal, (value) => {
+          loaded[index] = value;
+          onProgress(
+            loaded.reduce((sum, part) => sum + part, 0),
+            performance.now() - started,
+          );
+        }).catch((cause) => {
+          group.abort();
+          throw cause;
+        }),
+      ),
+    );
+  } catch (cause) {
+    if (signal.aborted) throw new DOMException('İptal edildi', 'AbortError');
+    throw cause;
+  } finally {
+    signal.removeEventListener('abort', stop);
+  }
+  return performance.now() - started;
+}
+
 export async function runSpeedTest(
   signal: AbortSignal,
   onProgress: (progress: SpeedProgress) => void,
 ): Promise<SpeedResult> {
   const samples: number[] = [];
+  // Which data centre answers; read in parallel and never blocks or fails the test.
+  // Only the `colo=` line is kept from the trace response.
+  const colo = fetch(`https://speed.cloudflare.com/cdn-cgi/trace?r=${crypto.randomUUID()}`, {
+    cache: 'no-store',
+    credentials: 'omit',
+    referrerPolicy: 'no-referrer',
+    signal: AbortSignal.any([signal, AbortSignal.timeout(5000)]),
+  })
+    .then((response) => (response.ok ? response.text() : ''))
+    .then((text) => describeColo(text.match(/^colo=(\w+)$/m)?.[1]))
+    .catch(() => undefined);
   for (let index = 0; index < 6; index++) {
     onProgress({ phase: 'latency', fraction: index / 6 });
     const start = performance.now();
@@ -187,47 +285,40 @@ export async function runSpeedTest(
     await response.arrayBuffer();
     if (index > 0) samples.push(performance.now() - start);
   }
+  const server = await colo;
   const latency = median(samples);
   const jitter =
     samples
       .slice(1)
       .reduce((total, sample, i) => total + Math.abs(sample - samples[i]), 0) /
     (samples.length - 1);
-  onProgress({ phase: 'latency', fraction: 1, latency, jitter });
+  onProgress({ phase: 'latency', fraction: 1, latency, jitter, server });
+
   const measure = async (phase: 'download' | 'upload') => {
     onProgress({ phase, fraction: 0 });
-    const firstDuration = await transfer(
-      phase,
-      MIN_TRANSFER,
-      signal,
-      (loaded, duration) =>
+    // Warm-up: opens the connection, lets TCP leave slow start and sizes the main stage.
+    const warmup = await parallelTransfer(phase, MIN_TRANSFER, signal, (loaded, duration) =>
+      onProgress({
+        phase,
+        fraction: (loaded / MIN_TRANSFER) * 0.35,
+        mbps: mbpsFromTransfer(loaded, Math.max(duration, 1)),
+      }),
+    );
+    const extra = additionalTransfer(MIN_TRANSFER, warmup);
+    let mbps = mbpsFromTransfer(MIN_TRANSFER, Math.max(warmup, 1));
+    if (extra > 0) {
+      // Main stage on the warm connection: this is the speed we report.
+      const duration = await parallelTransfer(phase, extra, signal, (loaded, elapsed) =>
         onProgress({
           phase,
-          fraction: (loaded / MIN_TRANSFER) * 0.35,
-          mbps: mbpsFromTransfer(loaded, Math.max(duration, 1)),
+          fraction: 0.35 + (loaded / extra) * 0.65,
+          mbps: mbpsFromTransfer(loaded, Math.max(elapsed, 1)),
         }),
-    );
-    const extra = additionalTransfer(MIN_TRANSFER, firstDuration);
-    let totalDuration = firstDuration;
-    if (extra > 0)
-      totalDuration += await transfer(
-        phase,
-        extra,
-        signal,
-        (loaded, duration) =>
-          onProgress({
-            phase,
-            fraction: 0.35 + (loaded / extra) * 0.65,
-            mbps: mbpsFromTransfer(
-              MIN_TRANSFER + loaded,
-              Math.max(firstDuration + duration, 1),
-            ),
-          }),
       );
-    const bytes = MIN_TRANSFER + extra;
-    const mbps = mbpsFromTransfer(bytes, Math.max(totalDuration, 1));
+      mbps = mbpsFromTransfer(extra, Math.max(duration, 1));
+    }
     onProgress({ phase, fraction: 1, mbps });
-    return { bytes, mbps };
+    return { bytes: MIN_TRANSFER + extra, mbps };
   };
   const download = await measure('download');
   const upload = await measure('upload');
@@ -240,5 +331,6 @@ export async function runSpeedTest(
     jitter,
     downloadBytes: download.bytes,
     uploadBytes: upload.bytes,
+    ...(server ? { server } : {}),
   };
 }

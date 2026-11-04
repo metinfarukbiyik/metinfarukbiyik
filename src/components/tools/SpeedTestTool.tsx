@@ -42,6 +42,7 @@ export default function SpeedTestTool() {
     upload?: number;
     latency?: number;
     jitter?: number;
+    server?: string;
   }>({});
   const [result, setResult] = useState<SpeedResult | null>(null);
   const [history, setHistory] = useState<SpeedResult[]>([]);
@@ -98,6 +99,7 @@ export default function SpeedTestTool() {
           ...(update.latency !== undefined
             ? { latency: update.latency, jitter: update.jitter }
             : {}),
+          ...(update.server ? { server: update.server } : {}),
         }));
       });
       if (request.signal.aborted) return;
@@ -166,6 +168,7 @@ export default function SpeedTestTool() {
   const upload = result?.upload ?? live.upload;
   const latency = result?.latency ?? live.latency;
   const jitter = result?.jitter ?? live.jitter;
+  const server = result?.server ?? live.server;
   const overall = progress
     ? { latency: 0, download: 10, upload: 55 }[progress.phase] +
       progress.fraction *
@@ -248,7 +251,9 @@ export default function SpeedTestTool() {
     <>
       <section className="network-panel" aria-label="İnternet hız ölçümü">
         <div className="network-toolbar">
-          <span className="network-chip">Cloudflare ağı üzerinden</span>
+          <span className="network-chip" title="Testin yapıldığı Cloudflare veri merkezi">
+            {server ? `Cloudflare · ${server}` : 'Cloudflare ağı üzerinden'}
+          </span>
           <fieldset className="network-unit">
             <legend className="sr-only">Hız birimi</legend>
             {(['Mbps', 'MB/s'] as const).map((value) => (

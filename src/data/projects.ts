@@ -10,7 +10,7 @@ export interface PortfolioProject {
   seoTitle: string;
   seoDescription: string;
   keywords: string[];
-  icon: 'Music2' | 'Camera' | 'Barcode' | 'Globe' | 'GraduationCap' | 'Building2' | 'Workflow';
+  icon: 'Music2' | 'Camera' | 'Barcode' | 'Globe' | 'GraduationCap' | 'Building2' | 'Workflow' | 'RadioTower';
   iconImage?: string;
   image?: string;
   url: string;
@@ -158,6 +158,37 @@ export const portfolioProjects: PortfolioProject[] = [
       'Personel ve eğitim takibi',
       'İş emri yönetimi',
       'CRM, ERP ve veri yönetimi',
+    ],
+  },
+  {
+    slug: 'cnl-iletisim',
+    name: 'CNL İletişim',
+    category: 'Web sitesi',
+    platform: 'Kurumsal web sitesi',
+    platforms: ['Kurumsal web'],
+    description:
+      'Baz istasyonu kurulum, montaj ve revizyon hizmetlerini tanıtan telekomünikasyon firması sitesi.',
+    detail:
+      'Trabzon merkezli telekomünikasyon firması CNL İletişim için tasarlayıp geliştirdiğim kurumsal web sitesi. Turkcell, Türk Telekom ve Vodafone baz istasyonlarına yönelik kurulum, montaj ve revizyon hizmetlerini; saha keşfi, anten kurulumu ve kablo tesisatı gibi çalışma alanlarını anlatır.',
+    seoTitle: 'CNL İletişim — Baz İstasyonu Kurulumu Kurumsal Web Sitesi',
+    seoDescription:
+      'CNL İletişim için geliştirilen kurumsal web sitesi: Trabzon merkezli, Turkcell, Türk Telekom ve Vodafone baz istasyonu kurulum, montaj ve revizyon hizmetleri.',
+    keywords: [
+      'CNL İletişim',
+      'baz istasyonu kurulumu',
+      'baz istasyonu montajı',
+      'telekomünikasyon firması web sitesi',
+      'Trabzon telekomünikasyon',
+      'kurumsal web tasarım Trabzon',
+      'kurumsal web sitesi örneği',
+    ],
+    icon: 'RadioTower',
+    url: 'https://cnliletisim.com',
+    href: '/projeler/cnl-iletisim',
+    features: [
+      'Baz istasyonu kurulum, montaj ve revizyon',
+      'Turkcell, Türk Telekom ve Vodafone odağı',
+      'Saha keşfi, anten ve kablo tesisatı',
     ],
   },
   {

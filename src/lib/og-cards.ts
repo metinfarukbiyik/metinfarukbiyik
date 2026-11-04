@@ -83,6 +83,32 @@ const siteCheckVisual = () =>
   <path d="M122 160 L150 188 L202 132" fill="none" stroke="${accent}" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`);
 
+const exifVisual = () =>
+  svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="28" fill="#fff"/>
+  <rect x="56" y="76" width="208" height="168" rx="14" fill="${soft}" stroke="${line}" stroke-width="3"/>
+  <path d="M56 214 L122 156 L170 198 L204 168 L264 220 V230 A14 14 0 0 1 250 244 H70 A14 14 0 0 1 56 230 Z" fill="${accent}" opacity="0.35"/>
+  <path d="M160 92 C138 92 122 108 122 129 C122 156 160 190 160 190 C160 190 198 156 198 129 C198 108 182 92 160 92 Z" fill="${accent}"/>
+  <circle cx="160" cy="128" r="13" fill="#fff"/>
+  <line x1="92" y1="84" x2="232" y2="236" stroke="${ink}" stroke-width="12" stroke-linecap="round"/>
+</svg>`);
+
+const diagnosisVisual = () => {
+  const rows = [0, 1, 2, 3]
+    .map((i) => {
+      const y = 92 + i * 46;
+      const doneRow = i < 2;
+      return `<rect x="70" y="${y}" width="26" height="26" rx="7" fill="${doneRow ? accent : '#fff'}" stroke="${accent}" stroke-width="3"/>
+      ${doneRow ? `<path d="M76 ${y + 13} l6 6 l10 -12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
+      <rect x="112" y="${y + 6}" width="${[138, 110, 128, 92][i]}" height="14" rx="7" fill="${doneRow ? line : soft}"/>`;
+    })
+    .join('');
+  return svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="28" fill="#fff"/>
+  ${rows}
+</svg>`);
+};
+
 const brand: OgVisual = { kind: 'mark', text: 'b', accent: '/' };
 
 const toolVisuals: Record<string, () => OgVisual> = {
@@ -90,6 +116,8 @@ const toolVisuals: Record<string, () => OgVisual> = {
   'barkod-olusturucu': () => ({ kind: 'illustration', src: barcodeVisual(), caption: '869 1234 5678 9 · EAN-13' }),
   'internet-hiz-testi': () => ({ kind: 'illustration', src: speedVisual(), caption: 'indirme · yükleme · ping' }),
   'vesikalik-fotograf': () => ({ kind: 'illustration', src: passportVisual(), caption: 'A4 · 8 adet · PDF' }),
+  'exif-temizleyici': () => ({ kind: 'illustration', src: exifVisual(), caption: 'konum · tarih · cihaz' }),
+  'ag-sorunu-teshis': () => ({ kind: 'illustration', src: diagnosisVisual(), caption: 'Wi-Fi mı, hat mı?' }),
   'web-sitesi-kontrol': () => ({ kind: 'illustration', src: siteCheckVisual(), caption: 'SSL · DNS · 301 → 200' }),
   'ip-adresim': () => ({ kind: 'illustration', src: ipVisual(), caption: 'IPv4 · IPv6' }),
 };
@@ -149,7 +177,7 @@ function buildCards(): OgCard[] {
       '/araclar',
       'ücretsiz araçlar',
       'İşini kolaylaştıran küçük araçlar',
-      'QR kod, barkod, vesikalık fotoğraf, hız testi, IP adresi ve site kontrolü. Kurulum, hesap veya ücret yok.',
+      'Fotoğraf, QR kod ve barkod araçları; hız testi, ağ teşhisi ve site kontrolü. Kurulum, hesap veya ücret yok.',
       tools.map((tool) => capitalize(tool.short)).slice(0, 4),
       { kind: 'illustration', src: qrVisual(), caption: `${tools.length} araç · ücretsiz` },
     ),

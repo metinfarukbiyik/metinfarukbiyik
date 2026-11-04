@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { ArrowRight, Barcode, Gauge, Globe2, QrCode, ScanFace, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Barcode, Gauge, Globe2, ImageOff, QrCode, ScanFace, ShieldCheck, Stethoscope } from 'lucide-react';
 import type { ToolItem } from '@/data/tools';
 
-const icons = { ScanFace, Gauge, Globe2, QrCode, Barcode, ShieldCheck };
+const icons = { ScanFace, Gauge, Globe2, QrCode, Barcode, ShieldCheck, ImageOff, Stethoscope };
 
 /** Compact, single-row tool entry: icon, name, two-line summary, path. */
 export default function ToolCard({

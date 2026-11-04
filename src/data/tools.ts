@@ -11,7 +11,7 @@ export interface ToolItem {
   description: string;
   href: string;
   category: ToolCategory['id'];
-  icon: 'ScanFace' | 'Gauge' | 'Globe2' | 'QrCode' | 'Barcode' | 'ShieldCheck';
+  icon: 'ScanFace' | 'Gauge' | 'Globe2' | 'QrCode' | 'Barcode' | 'ShieldCheck' | 'ImageOff' | 'Stethoscope';
   tags: string[];
   /** Feature list used by the WebApplication schema and the tool card. */
   features: string[];
@@ -21,7 +21,7 @@ export const toolCategories: ToolCategory[] = [
   {
     id: 'fotograf-baski',
     name: 'Fotoğraf & baskı',
-    description: 'Fotoğraflarını düzenle, baskıya hazır dosyalar oluştur.',
+    description: 'Fotoğraflarını düzenle, baskıya hazırla ve paylaşmadan önce gizli bilgilerini temizle.',
   },
   {
     id: 'kod-paylasim',
@@ -50,6 +50,24 @@ export const tools: ToolItem[] = [
       '3,5 × 4,5, 4 × 6, 4,5 × 6 ve 5 × 6 cm ölçüler',
       'A4 ve A5 baskı şablonu',
       'PDF, PNG ve JPEG çıktı',
+      'Fotoğraf sunucuya yüklenmez',
+    ],
+  },
+  {
+    slug: 'exif-temizleyici',
+    name: 'Fotoğraf EXIF temizleyici',
+    short: 'EXIF temizleyici',
+    description:
+      'Fotoğrafındaki konum, tarih ve cihaz bilgilerini gör; seçtiklerini kalite kaybı olmadan sil.',
+    href: '/araclar/exif-temizleyici',
+    category: 'fotograf-baski',
+    icon: 'ImageOff',
+    tags: ['Konum · tarih · cihaz', 'Kalite kaybı yok'],
+    features: [
+      'GPS konumu, çekim tarihi ve cihaz bilgisini gösterme',
+      'Konum, tarih, cihaz ve teknik bilgileri ayrı ayrı silme',
+      'XMP, IPTC, yorum ve gömülü önizlemeyi temizleme',
+      'JPEG, PNG ve WebP; yeniden sıkıştırma yok',
       'Fotoğraf sunucuya yüklenmez',
     ],
   },
@@ -104,6 +122,23 @@ export const tools: ToolItem[] = [
       'HTTP gecikmesi ve jitter',
       'Sonuç görseli ve CSV geçmişi',
       'Kurulum gerektirmez',
+    ],
+  },
+  {
+    slug: 'ag-sorunu-teshis',
+    name: 'Ağ sorunu teşhis rehberi',
+    short: 'Ağ teşhisi',
+    description:
+      'Hız testi sonucuna ve bağlantı türüne göre nereden başlayacağını gör, adım adım ilerle.',
+    href: '/araclar/ag-sorunu-teshis',
+    category: 'internet-ag',
+    icon: 'Stethoscope',
+    tags: ['Hız testiyle bağlantılı', 'Adım adım'],
+    features: [
+      'Son hız testi sonucunu otomatik kullanma',
+      'Fiber, VDSL ve mobil bağlantıya özel öneriler',
+      'Wi-Fi ve kablolu ölçüm karşılaştırması',
+      'Belirtilere göre sıralı kontrol listesi',
     ],
   },
   {

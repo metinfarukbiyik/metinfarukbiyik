@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Download, MapPin } from 'lucide-react';
+import { Download, MapPin, UserRound } from 'lucide-react';
 import myPhoto from '@/assets/images/mefa.png';
 import ContactCta from '@/components/ContactCta';
 import WebJourney from '@/components/home/WebJourney';
@@ -46,8 +46,8 @@ export default function HomePage() {
             <ButtonLink href="/projeler" variant="primary" size="lg" trailing="arrow">
               Projeleri incele
             </ButtonLink>
-            <ButtonLink href="/hakkimda" size="lg">
-              Biraz tanışalım
+            <ButtonLink href="/hakkimda" size="lg" icon={<UserRound aria-hidden="true" />}>
+              Hakkımda ve deneyimim
             </ButtonLink>
             <Tooltip content="PDF · güncel özgeçmiş">
               <ButtonLink

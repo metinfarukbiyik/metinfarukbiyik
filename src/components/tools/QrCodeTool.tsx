@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState, type ChangeEvent, type ReactNode } from 'react';
+import { useMemo, useRef, useState, type ChangeEvent } from 'react';
 import {
   Copy,
   Eye,
@@ -36,6 +36,8 @@ import {
   type QrStyle,
   type WifiSecurity,
 } from '@/lib/qr-code';
+import { copyPng, saveBlob, svgToPng } from '@/lib/svg-export';
+import { Field, Options, Step } from './ToolForm';
 
 const kinds: { value: QrKind; label: string; icon: LucideIcon }[] = [
   { value: 'url', label: 'Bağlantı', icon: Link2 },
@@ -74,70 +76,6 @@ const errorLevels: { value: ErrorLevel; label: string; hint: string }[] = [
 
 const pngSizes = [512, 1024, 2048];
 
-function Step({ index, title, children }: { index: number; title: string; children: ReactNode }) {
-  return (
-    <>
-      <div className="photo-step-title">
-        <span>{index}</span>
-        <h2>{title}</h2>
-      </div>
-      {children}
-    </>
-  );
-}
-
-function Options<T extends string>({
-  legend,
-  name,
-  options,
-  value,
-  onChange,
-  className = '',
-}: {
-  legend: string;
-  name: string;
-  options: { value: T; label: string; hint?: string; icon?: LucideIcon }[];
-  value: T;
-  onChange: (value: T) => void;
-  className?: string;
-}) {
-  return (
-    <fieldset className="photo-field">
-      <legend>{legend}</legend>
-      <div className={`photo-options ${className}`}>
-        {options.map((option) => (
-          <label key={option.value}>
-            <input
-              type="radio"
-              name={name}
-              value={option.value}
-              checked={value === option.value}
-              onChange={() => onChange(option.value)}
-            />
-            <span>
-              {option.icon && <option.icon aria-hidden="true" />}
-              <strong>{option.label}</strong>
-              {option.hint && <small>{option.hint}</small>}
-            </span>
-          </label>
-        ))}
-      </div>
-    </fieldset>
-  );
-}
-
-function Field({ id, label, hint, children }: { id: string; label: string; hint?: string; children: ReactNode }) {
-  return (
-    <div className="form-field">
-      <label htmlFor={id} className="form-label">
-        {label}
-        {hint && <span>{hint}</span>}
-      </label>
-      {children}
-    </div>
-  );
-}
-
 /** Downscales an uploaded logo so the exported SVG stays small. */
 function readLogo(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -160,44 +98,6 @@ function readLogo(file: File): Promise<string> {
     };
     image.src = url;
   });
-}
-
-function svgToPng(svg: string, width: number): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
-    const image = new Image();
-    image.onload = () => {
-      const ratio = image.height / image.width || 1;
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = Math.round(width * ratio);
-      const context = canvas.getContext('2d');
-      if (!context) {
-        URL.revokeObjectURL(url);
-        return reject(new Error('canvas'));
-      }
-      context.imageSmoothingEnabled = false;
-      context.drawImage(image, 0, 0, canvas.width, canvas.height);
-      URL.revokeObjectURL(url);
-      canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error('blob'))), 'image/png');
-    };
-    image.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error('svg'));
-    };
-    image.src = url;
-  });
-}
-
-function save(blob: Blob, filename: string) {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
 
 export default function QrCodeTool() {
@@ -254,8 +154,8 @@ export default function QrCodeTool() {
     if (!svg) return;
     setError('');
     try {
-      if (type === 'svg') save(new Blob([svg], { type: 'image/svg+xml' }), qrFileName(content.kind, 'svg'));
-      else save(await svgToPng(svg, pngSize), qrFileName(content.kind, 'png'));
+      if (type === 'svg') saveBlob(new Blob([svg], { type: 'image/svg+xml' }), qrFileName(content.kind, 'svg'));
+      else saveBlob(await svgToPng(svg, pngSize), qrFileName(content.kind, 'png'));
       setStatus(`${type.toUpperCase()} indirme işlemi başlatıldı.`);
     } catch {
       setError('Görsel hazırlanamadı. Lütfen tekrar dene.');
@@ -266,8 +166,7 @@ export default function QrCodeTool() {
     if (!svg) return;
     setError('');
     try {
-      const blob = await svgToPng(svg, pngSize);
-      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      await copyPng(await svgToPng(svg, pngSize));
       setStatus('QR kod panoya kopyalandı.');
     } catch {
       setError('Bu tarayıcı görsel kopyalamayı desteklemiyor; PNG olarak indirebilirsin.');

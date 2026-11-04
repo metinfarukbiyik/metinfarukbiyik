@@ -12,6 +12,8 @@
     "test:tools": "node scripts/test-tools.mjs",
     "test:speed-image": "node scripts/test-speed-result-image.mjs",
     "test:qr": "node scripts/test-qr.mjs",
+    "test:barcode": "node scripts/test-barcode.mjs",
+    "test:site-check": "node scripts/test-site-check.mjs",
     "check:seo": "node scripts/check-seo.mjs"
   },
   "dependencies": {

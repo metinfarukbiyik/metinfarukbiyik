@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { portfolioProjects } from '@/data/projects';
 import { tools } from '@/data/tools';
+import { encodeBarcode, defaultStyle as barcodeStyle, renderBarcodeSvg } from './barcode';
 import { createMatrix, defaultStyle, renderQrSvg } from './qr-code';
 import { ogKey } from './seo';
 import { site } from './site';
@@ -35,6 +36,15 @@ const soft = '#e2ebe8';
 const qrVisual = () =>
   svg(renderQrSvg(createMatrix(`${site.url}/araclar/qr-kod-olusturucu`, 'M'), { ...defaultStyle, eyeStyle: 'rounded', margin: 2 }));
 
+/** A real EAN-13 with the GS1 Türkiye prefix; digits are left out because Satori cannot draw SVG text. */
+const barcodeVisual = () => {
+  const code = renderBarcodeSvg(encodeBarcode('ean13', '869123456789'), { ...barcodeStyle, showText: false, height: 70, margin: 0 });
+  const width = 236;
+  const height = (width * code.height) / code.width;
+  const inner = code.svg.replace(/ width="[\d.]+" height="[\d.]+"/, ` x="42" y="${(320 - height) / 2}" width="${width}" height="${height}"`);
+  return svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320"><rect width="320" height="320" rx="28" fill="#fff"/>${inner}</svg>`);
+};
+
 const speedVisual = () =>
   svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
   <rect width="320" height="320" rx="28" fill="#fff"/>
@@ -66,12 +76,21 @@ const ipVisual = () =>
   <line x1="74" y1="160" x2="246" y2="160" stroke="${accent}" stroke-width="6"/>
 </svg>`);
 
+const siteCheckVisual = () =>
+  svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="28" fill="#fff"/>
+  <path d="M160 52 L246 86 V158 C246 212 208 250 160 268 C112 250 74 212 74 158 V86 Z" fill="${soft}" stroke="${accent}" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M122 160 L150 188 L202 132" fill="none" stroke="${accent}" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`);
+
 const brand: OgVisual = { kind: 'mark', text: 'b', accent: '/' };
 
 const toolVisuals: Record<string, () => OgVisual> = {
   'qr-kod-olusturucu': () => ({ kind: 'illustration', src: qrVisual(), caption: 'okut → araç açılır' }),
+  'barkod-olusturucu': () => ({ kind: 'illustration', src: barcodeVisual(), caption: '869 1234 5678 9 · EAN-13' }),
   'internet-hiz-testi': () => ({ kind: 'illustration', src: speedVisual(), caption: 'indirme · yükleme · ping' }),
   'vesikalik-fotograf': () => ({ kind: 'illustration', src: passportVisual(), caption: 'A4 · 8 adet · PDF' }),
+  'web-sitesi-kontrol': () => ({ kind: 'illustration', src: siteCheckVisual(), caption: 'SSL · DNS · 301 → 200' }),
   'ip-adresim': () => ({ kind: 'illustration', src: ipVisual(), caption: 'IPv4 · IPv6' }),
 };
 
@@ -130,9 +149,9 @@ function buildCards(): OgCard[] {
       '/araclar',
       'ücretsiz araçlar',
       'İşini kolaylaştıran küçük araçlar',
-      'QR kod, vesikalık fotoğraf, internet hız testi ve IP adresi. Kurulum, hesap veya ücret yok.',
+      'QR kod, barkod, vesikalık fotoğraf, hız testi, IP adresi ve site kontrolü. Kurulum, hesap veya ücret yok.',
       tools.map((tool) => capitalize(tool.short)).slice(0, 4),
-      { kind: 'illustration', src: qrVisual(), caption: '4 araç · ücretsiz' },
+      { kind: 'illustration', src: qrVisual(), caption: `${tools.length} araç · ücretsiz` },
     ),
     ...tools.map((tool) =>
       page(

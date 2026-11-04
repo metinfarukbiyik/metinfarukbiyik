@@ -11,7 +11,7 @@ export interface ToolItem {
   description: string;
   href: string;
   category: ToolCategory['id'];
-  icon: 'ScanFace' | 'Gauge' | 'Globe2' | 'QrCode';
+  icon: 'ScanFace' | 'Gauge' | 'Globe2' | 'QrCode' | 'Barcode' | 'ShieldCheck';
   tags: string[];
   /** Feature list used by the WebApplication schema and the tool card. */
   features: string[];
@@ -26,12 +26,12 @@ export const toolCategories: ToolCategory[] = [
   {
     id: 'kod-paylasim',
     name: 'Kod & paylaşım',
-    description: 'Bağlantıları, Wi-Fi ağlarını ve iletişim bilgilerini taranabilir kodlara dönüştür.',
+    description: 'Bağlantıları, Wi-Fi ağlarını ve ürün numaralarını taranabilir kodlara dönüştür.',
   },
   {
     id: 'internet-ag',
     name: 'İnternet & ağ',
-    description: 'Bağlantını ölç ve ağ bilgilerini öğren.',
+    description: 'Bağlantını ölç, ağ bilgilerini öğren ve web sitelerini kontrol et.',
   },
 ];
 
@@ -72,6 +72,24 @@ export const tools: ToolItem[] = [
     ],
   },
   {
+    slug: 'barkod-olusturucu',
+    name: 'Barkod oluşturucu',
+    short: 'Barkod',
+    description:
+      'EAN-13, Code 128, Code 39, UPC ve ITF-14 barkodu üret; kontrol hanesi otomatik eklenir, PNG veya SVG indir.',
+    href: '/araclar/barkod-olusturucu',
+    category: 'kod-paylasim',
+    icon: 'Barcode',
+    tags: ['EAN-13 · Code 128', 'SVG · PNG'],
+    features: [
+      'EAN-13, EAN-8, UPC-A, ITF-14, Code 128 ve Code 39',
+      'Kontrol hanesi hesaplama ve doğrulama',
+      'Renk, yükseklik ve kenar boşluğu ayarı',
+      'Keskin PNG ve vektör SVG çıktı',
+      'Veriler sunucuya gönderilmez',
+    ],
+  },
+  {
     slug: 'internet-hiz-testi',
     name: 'İnternet hız testi',
     short: 'Hız testi',
@@ -103,6 +121,24 @@ export const tools: ToolItem[] = [
       'İnternet servis sağlayıcı (ASN)',
       'IP’ye bağlı yaklaşık konum',
       'Tek tıkla kopyalama',
+    ],
+  },
+  {
+    slug: 'web-sitesi-kontrol',
+    name: 'Web sitesi kontrolü',
+    short: 'Site kontrolü',
+    description:
+      'Alan adının SSL sertifikasını, DNS kayıtlarını, yönlendirmelerini ve güvenlik başlıklarını kontrol et.',
+    href: '/araclar/web-sitesi-kontrol',
+    category: 'internet-ag',
+    icon: 'ShieldCheck',
+    tags: ['SSL · DNS', 'Yönlendirme zinciri'],
+    features: [
+      'SSL sertifikası, bitiş tarihi ve zincir kontrolü',
+      'A, AAAA, CNAME, MX, NS, TXT ve CAA kayıtları',
+      'http → https ve www yönlendirme zinciri',
+      'HSTS, CSP ve diğer güvenlik başlıkları',
+      'SPF ve DMARC e-posta kayıtları',
     ],
   },
 ];

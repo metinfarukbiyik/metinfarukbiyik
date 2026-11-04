@@ -47,7 +47,7 @@ export default function HomePage() {
               Projeleri incele
             </ButtonLink>
             <ButtonLink href="/hakkimda" size="lg" icon={<UserRound aria-hidden="true" />}>
-              Hakkımda ve deneyimim
+              Hakkımda
             </ButtonLink>
             <Tooltip content="PDF · güncel özgeçmiş">
               <ButtonLink

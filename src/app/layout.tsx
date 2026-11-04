@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { site } from '@/lib/site';
-import { ogImage, seoPages } from '@/lib/seo';
+import { ogImage } from '@/lib/seo';
 import './globals.css';
 
 const inter = Inter({
@@ -17,7 +17,7 @@ const mono = JetBrains_Mono({
   display: 'swap',
 });
 
-const image = ogImage(seoPages.home.ogTitle, seoPages.home.description);
+const image = ogImage('/');
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),

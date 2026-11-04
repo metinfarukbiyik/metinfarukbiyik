@@ -462,7 +462,7 @@ export default function SpeedTestTool() {
                         onClick={() => void exportResult(r)}
                         aria-label={`${new Date(r.timestamp).toLocaleString('tr-TR')} tarihli testin görselini indir`}
                       >
-                        <ImageDown size={14} aria-hidden="true" /> Görsel indir
+                        <ImageDown aria-hidden="true" /> PNG
                       </button>
                     </td>
                   </tr>

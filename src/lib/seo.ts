@@ -90,22 +90,25 @@ export const seoPages = {
     ],
   },
   tools: {
-    title: 'Ücretsiz Online Araçlar — Vesikalık, Hız Testi, IP Adresi',
+    title: 'Ücretsiz Online Araçlar: QR Kod, Vesikalık, Hız Testi',
     ogTitle: 'Ücretsiz online araçlar',
     description:
-      'Kurulum gerektirmeyen ücretsiz araçlar: vesikalık fotoğraf oluştur, internet hız testi yap ve IP adresini öğren. Hepsi tarayıcında çalışır.',
+      'Kurulum gerektirmeyen ücretsiz araçlar: QR kod ve Wi-Fi QR oluştur, vesikalık fotoğraf hazırla, internet hız testi yap, IP adresini öğren.',
     path: '/araclar',
     keywords: [
       'ücretsiz online araçlar',
+      'online araçlar',
+      'QR kod oluşturucu',
+      'Wi-Fi QR kod',
       'vesikalık fotoğraf oluştur',
       'internet hız testi',
       'IP adresim',
-      'online araçlar Türkçe',
       'kurulumsuz web araçları',
+      'Türkçe online araçlar',
     ],
   },
   passport: {
-    title: 'Vesikalık Fotoğraf Oluştur — Ücretsiz Online Şablon (PDF)',
+    title: 'Vesikalık Fotoğraf Oluştur — Ücretsiz, PDF Şablon',
     ogTitle: 'Vesikalık fotoğraf oluştur',
     description:
       'Fotoğrafını 3,5 × 4,5, 4 × 6, 4,5 × 6 veya 5 × 6 cm ölçüsünde kırp; 1–8 adetlik A4/A5 vesikalık şablonunu PDF, PNG veya JPEG olarak ücretsiz indir.',
@@ -114,13 +117,48 @@ export const seoPages = {
       'vesikalık fotoğraf oluştur',
       'online vesikalık',
       'vesikalık fotoğraf yapma',
+      'ücretsiz vesikalık',
       'vesikalık şablonu',
       'vesikalık PDF',
+      'vesikalık fotoğraf boyutu',
       'biyometrik fotoğraf ölçüsü',
+      'pasaport fotoğrafı',
+      'kimlik kartı fotoğrafı',
+      'vize fotoğrafı 35x45',
       '3,5 x 4,5 vesikalık',
       '4,5 x 6 vesikalık',
+      '5 x 6 biyometrik',
       'evde vesikalık çıktı',
       'A4 vesikalık baskı',
+    ],
+  },
+  qr: {
+    title: 'QR Kod Oluşturucu — Ücretsiz Wi-Fi ve URL QR Kod Yap',
+    ogTitle: 'QR kod oluşturucu',
+    description:
+      'Ücretsiz QR kod oluştur: bağlantı, Wi-Fi (şifreyle otomatik bağlanma), metin, e-posta ve telefon. Renk, logo ve alt yazı ekle; PNG veya SVG indir.',
+    path: '/araclar/qr-kod-olusturucu',
+    keywords: [
+      'QR kod oluşturucu',
+      'QR kod oluşturma',
+      'QR kod yapma',
+      'ücretsiz QR kod oluşturucu',
+      'Wi-Fi QR kod',
+      'Wi-Fi şifresi QR kod',
+      'wifi qr kod oluşturma',
+      'URL QR kod',
+      'link QR kod yapma',
+      'web sitesi QR kod',
+      'logolu QR kod',
+      'renkli QR kod',
+      'QR kod SVG indir',
+      'QR kod PNG indir',
+      'menü QR kod',
+      'kartvizit QR kod',
+      'e-posta QR kod',
+      'telefon QR kod',
+      'süresiz QR kod',
+      'QR code generator',
     ],
   },
   speed: {
@@ -132,14 +170,20 @@ export const seoPages = {
     keywords: [
       'internet hız testi',
       'hız testi',
-      'speed test',
       'internet hızı ölçme',
+      'speed test',
+      'speedtest',
       'ping testi',
+      'gecikme testi',
+      'jitter testi',
       'indirme hızı',
       'yükleme hızı',
       'Wi-Fi hız testi',
       'fiber hız testi',
+      'mobil internet hız testi',
+      '5G hız testi',
       'Mbps nedir',
+      'Mbps MB/s dönüştürme',
     ],
   },
   ip: {
@@ -151,26 +195,37 @@ export const seoPages = {
     keywords: [
       'IP adresim',
       'IP adresim nedir',
+      'IP adresim ne',
       'IP adresi öğrenme',
       'IP sorgulama',
+      'IP adresi bulma',
       'IPv4 adresim',
       'IPv6 adresim',
-      'IP adresi bulma',
+      'genel IP adresi',
+      'dış IP adresi',
       'ISS sorgulama',
+      'ASN sorgulama',
+      'IP konum sorgulama',
       'modem IP adresi',
+      'statik IP dinamik IP',
     ],
   },
 } satisfies Record<string, SeoEntry>;
 
-export function ogImage(title: string, description: string, label?: string) {
-  const params = new URLSearchParams({ title, description });
-  if (label) params.set('label', label);
-  return `/og?${params.toString()}`;
+/** Stable, short file key for a page's social card: `/araclar/ip-adresim` → `araclar_ip-adresim`. */
+export function ogKey(path: string) {
+  return path === '/' ? 'ana-sayfa' : path.replace(/^\//, '').replace(/\//g, '_');
 }
 
-export function pageMetadata(entry: SeoEntry, label?: string): Metadata {
+/** Social preview image, pre-rendered at build time by src/app/og/[key]/route.tsx. */
+export function ogImage(path: string) {
+  return `/og/${ogKey(path)}`;
+}
+
+export function pageMetadata(entry: SeoEntry): Metadata {
   const fullTitle = `${entry.title} | ${site.brand}`;
-  const image = ogImage(entry.ogTitle ?? entry.title, entry.description, label);
+  const image = ogImage(entry.path);
+  const alt = `${entry.ogTitle ?? entry.title} — ${site.brand}`;
   return {
     title: { absolute: fullTitle },
     description: entry.description,
@@ -183,13 +238,13 @@ export function pageMetadata(entry: SeoEntry, label?: string): Metadata {
       siteName: site.brand,
       title: fullTitle,
       description: entry.description,
-      images: [{ url: image, width: 1200, height: 630, alt: fullTitle }],
+      images: [{ url: image, width: 1200, height: 630, alt, type: 'image/png' }],
     },
     twitter: {
       card: 'summary_large_image',
       title: fullTitle,
       description: entry.description,
-      images: [image],
+      images: [{ url: image, alt }],
     },
   };
 }
@@ -248,6 +303,7 @@ export function toolSchema(tool: ToolItem, entry: SeoEntry) {
     isAccessibleForFree: true,
     featureList: tool.features,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'TRY' },
+    image: `${site.url}${ogImage(tool.href)}`,
     author: { '@id': `${site.url}/#person` },
   };
 }

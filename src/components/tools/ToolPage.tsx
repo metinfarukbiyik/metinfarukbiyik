@@ -65,7 +65,7 @@ export default function ToolPage({
         }
         tight
       >
-        <div className="tool-grid tool-grid-2">
+        <div className="tool-grid">
           {siblings.map((item) => (
             <ToolCard key={item.slug} tool={item} />
           ))}

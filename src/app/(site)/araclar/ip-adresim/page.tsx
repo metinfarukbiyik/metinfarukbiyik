@@ -2,7 +2,7 @@ import IpAddressTool from '@/components/tools/IpAddressTool';
 import ToolPage from '@/components/tools/ToolPage';
 import { pageMetadata, seoPages } from '@/lib/seo';
 
-export const metadata = pageMetadata(seoPages.ip, 'ücretsiz araç');
+export const metadata = pageMetadata(seoPages.ip);
 
 const faq = [
   {

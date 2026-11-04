@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
-  return pageMetadata(projectSeo(project), project.category === 'Uygulama' ? 'uygulama' : 'web projesi');
+  return pageMetadata(projectSeo(project));
 }
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {

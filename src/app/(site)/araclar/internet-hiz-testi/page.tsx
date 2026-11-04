@@ -3,7 +3,7 @@ import ToolPage from '@/components/tools/ToolPage';
 import { Section, TextLink } from '@/components/ui';
 import { pageMetadata, seoPages } from '@/lib/seo';
 
-export const metadata = pageMetadata(seoPages.speed, 'ücretsiz araç');
+export const metadata = pageMetadata(seoPages.speed);
 
 const faq = [
   {

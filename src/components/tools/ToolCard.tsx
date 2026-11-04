@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { ArrowRight, Gauge, Globe2, ScanFace } from 'lucide-react';
+import { ArrowRight, Gauge, Globe2, QrCode, ScanFace } from 'lucide-react';
 import type { ToolItem } from '@/data/tools';
-import { Badge } from '@/components/ui';
 
-const icons = { ScanFace, Gauge, Globe2 };
+const icons = { ScanFace, Gauge, Globe2, QrCode };
 
+/** Compact, single-row tool entry: icon, name, two-line summary, path. */
 export default function ToolCard({
   tool,
   headingLevel = 'h3',
@@ -15,32 +15,20 @@ export default function ToolCard({
   const Icon = icons[tool.icon];
   const Heading = headingLevel;
   return (
-    <article className="card card-interactive tool-card">
-      <div className="tool-card-top">
-        <span className="icon-tile" aria-hidden="true">
-          <Icon strokeWidth={1.6} />
-        </span>
-        <Badge tone="accent" dot>
-          Ücretsiz
-        </Badge>
-      </div>
-      <Heading className="title-3">
-        <Link href={tool.href} className="card-link">
-          {tool.name}
-        </Link>
-      </Heading>
-      <p className="text-small">{tool.description}</p>
-      <div className="tool-card-tags">
-        {tool.tags.map((tag) => (
-          <Badge key={tag} outline>
-            {tag}
-          </Badge>
-        ))}
-      </div>
-      <span className="tool-card-path mono" aria-hidden="true">
-        {tool.href}
-        <ArrowRight />
+    <article className="tool-card">
+      <span className="tool-card-icon" aria-hidden="true">
+        <Icon strokeWidth={1.6} />
       </span>
+      <div className="tool-card-copy">
+        <Heading className="title-4">
+          <Link href={tool.href} className="card-link">
+            {tool.name}
+          </Link>
+        </Heading>
+        <p>{tool.description}</p>
+        <span className="tool-card-meta mono">{tool.tags.join(' · ')}</span>
+      </div>
+      <ArrowRight className="tool-card-arrow" aria-hidden="true" />
     </article>
   );
 }

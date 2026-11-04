@@ -11,7 +11,7 @@ export interface ToolItem {
   description: string;
   href: string;
   category: ToolCategory['id'];
-  icon: 'ScanFace' | 'Gauge' | 'Globe2';
+  icon: 'ScanFace' | 'Gauge' | 'Globe2' | 'QrCode';
   tags: string[];
   /** Feature list used by the WebApplication schema and the tool card. */
   features: string[];
@@ -22,6 +22,11 @@ export const toolCategories: ToolCategory[] = [
     id: 'fotograf-baski',
     name: 'Fotoğraf & baskı',
     description: 'Fotoğraflarını düzenle, baskıya hazır dosyalar oluştur.',
+  },
+  {
+    id: 'kod-paylasim',
+    name: 'Kod & paylaşım',
+    description: 'Bağlantıları, Wi-Fi ağlarını ve iletişim bilgilerini taranabilir kodlara dönüştür.',
   },
   {
     id: 'internet-ag',
@@ -46,6 +51,24 @@ export const tools: ToolItem[] = [
       'A4 ve A5 baskı şablonu',
       'PDF, PNG ve JPEG çıktı',
       'Fotoğraf sunucuya yüklenmez',
+    ],
+  },
+  {
+    slug: 'qr-kod-olusturucu',
+    name: 'QR kod oluşturucu',
+    short: 'QR kod',
+    description:
+      'Bağlantı, Wi-Fi, metin, e-posta veya telefon için QR kod üret; renk, biçim, logo ve alt yazıyla özelleştir.',
+    href: '/araclar/qr-kod-olusturucu',
+    category: 'kod-paylasim',
+    icon: 'QrCode',
+    tags: ['Wi-Fi QR', 'Logo · SVG · PNG'],
+    features: [
+      'URL, Wi-Fi, metin, e-posta ve telefon QR kodu',
+      'Okutunca otomatik bağlanan Wi-Fi QR kodu',
+      'Renk, modül ve köşe biçimi, logo ve alt yazı',
+      'PNG (2048 px’e kadar) ve SVG çıktı',
+      'Veriler sunucuya gönderilmez',
     ],
   },
   {

@@ -2,7 +2,7 @@ import PassportPhotoTool from '@/components/tools/PassportPhotoTool';
 import ToolPage from '@/components/tools/ToolPage';
 import { pageMetadata, seoPages } from '@/lib/seo';
 
-export const metadata = pageMetadata(seoPages.passport, 'ücretsiz araç');
+export const metadata = pageMetadata(seoPages.passport);
 
 const faq = [
   {

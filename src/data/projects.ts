@@ -67,7 +67,7 @@ export const portfolioProjects: PortfolioProject[] = [
       'Fotoğraflara GPS, adres ve zaman damgası ekleyen saha ve denetim kamerası.',
     detail:
       'Saha çalışmaları ve profesyonel dokümantasyon için konum doğrulamalı iPhone kamera uygulaması. GPS koordinatları, açık adres, tarih, saat, pusula ve iş bilgilerini fotoğraf üzerinde bir araya getirir.',
-    seoTitle: 'GeoCam: Audit — GPS Kamera ve Konum Damgalı Fotoğraf (iPhone)',
+    seoTitle: 'GeoCam: Audit — iPhone GPS Kamera, Konum Damgalı Fotoğraf',
     seoDescription:
       'GeoCam: Audit ile iPhone fotoğraflarına GPS koordinatı, adres, tarih, saat ve iş bilgisi ekleyin. Saha ve denetim ekipleri için konum doğrulamalı kamera.',
     keywords: [
@@ -103,7 +103,7 @@ export const portfolioProjects: PortfolioProject[] = [
       'Excel listelerini toplu barkod ve seri numarası etiketlerine dönüştüren baskı programı.',
     detail:
       'Excel listenizden barkod ve seri numarası etiketleri oluşturmanızı sağlar. Etiketleri önizleyebilir, yerleşimi düzenleyebilir ve uyumlu termal yazıcıyla toplu baskı alabilirsiniz.',
-    seoTitle: 'BYK Seri Baskı Pro — Excel’den Toplu Barkod Etiket Yazdırma',
+    seoTitle: 'BYK Seri Baskı Pro — Excel’den Toplu Barkod Etiketi',
     seoDescription:
       'Excel listesinden toplu barkod, QR kod ve seri numarası etiketi yazdırın. TSPL uyumlu termal yazıcılar için Windows ve macOS etiket baskı programı.',
     keywords: [

@@ -1,6 +1,6 @@
 import JsonLd from '@/components/JsonLd';
 import ToolCard from '@/components/tools/ToolCard';
-import { Badge, PageHeader, Section } from '@/components/ui';
+import { Badge, PageHeader } from '@/components/ui';
 import { toolCategories, tools } from '@/data/tools';
 import { pageMetadata, seoPages } from '@/lib/seo';
 import { site } from '@/lib/site';
@@ -14,7 +14,7 @@ export default function ToolsPage() {
         crumbs={[{ name: 'Araçlar', href: '/araclar' }]}
         kicker="araçlar"
         title="İşini kolaylaştıran küçük araçlar."
-        description="Kurulum, hesap veya ücret yok. Doğrudan tarayıcında çalışan; fotoğraf, baskı ve ağ için pratik yardımcılar."
+        description="Kurulum, hesap veya ücret yok. Doğrudan tarayıcında çalışan; fotoğraf, paylaşım ve ağ için pratik yardımcılar."
         meta={
           <>
             <Badge tone="accent" dot>
@@ -25,27 +25,27 @@ export default function ToolsPage() {
           </>
         }
       />
-      {toolCategories.map((category, index) => (
-        <Section
-          key={category.id}
-          id={category.id}
-          kicker={category.name.toLocaleLowerCase('tr')}
-          index={String(index + 1).padStart(2, '0')}
-          title={category.name}
-          description={category.description}
-          line
-          tight={index > 0}
-          className={index === 0 ? 'section-first' : undefined}
-        >
-          <div className="tool-grid tool-grid-2">
-            {tools
-              .filter((tool) => tool.category === category.id)
-              .map((tool) => (
-                <ToolCard key={tool.slug} tool={tool} />
-              ))}
-          </div>
-        </Section>
-      ))}
+      <div className="tool-groups">
+        {toolCategories.map((category, index) => {
+          const items = tools.filter((tool) => tool.category === category.id);
+          return (
+            <section key={category.id} id={category.id} className="tool-group" aria-labelledby={`${category.id}-baslik`}>
+              <header className="tool-group-header">
+                <h2 id={`${category.id}-baslik`} className="tool-group-title mono">
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  {category.name}
+                </h2>
+                <p>{category.description}</p>
+              </header>
+              <div className="tool-grid">
+                {items.map((tool) => (
+                  <ToolCard key={tool.slug} tool={tool} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
       <JsonLd
         data={{
           '@context': 'https://schema.org',

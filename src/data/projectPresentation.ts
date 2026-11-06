@@ -1,3 +1,4 @@
+import { screenshots as bizimKoyScreenshots } from './bizimKoyData';
 import { downloads, portableDownload } from './bykData';
 import { screenshots } from './geocamData';
 import type { PortfolioProject } from './projects';
@@ -47,6 +48,13 @@ export function getProjectPresentation(project: PortfolioProject): ProjectPresen
         { src: '/images/byk/label-square.png', alt: 'Kare barkod etiketi örneği', caption: 'Barkod etiketi' },
         { src: '/images/byk/label-qr.png', alt: 'QR kodlu etiket örneği', caption: 'QR kod etiketi' },
       ],
+    };
+  }
+  if (project.slug === 'bizim-koy') {
+    return {
+      actions: [{ label: 'Hemen oyna', url: project.url, kind: 'visit', external: true }],
+      note: 'İndirme yok · Masaüstü ve mobil tarayıcıda çalışır · Ücretsiz',
+      images: bizimKoyScreenshots,
     };
   }
   if (project.slug === 'geocam') {

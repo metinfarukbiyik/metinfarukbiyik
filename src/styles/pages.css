@@ -283,6 +283,11 @@
 .compat-head svg { width: 18px; height: 18px; padding: 2px; border-radius: 5px; background: var(--rose-soft); color: var(--rose); }
 .compat-card[data-ok='true'] .compat-head svg { background: var(--accent-soft); color: var(--accent); }
 .badge-cloud { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.table-note { margin-top: 12px; }
+.level-path {display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+.level-path li { display: inline-flex; align-items: center; gap: 8px; }
+.level-path .badge { min-height: 30px; padding: 0 12px; font-size: var(--fs-meta); }
+.level-path svg { width: 14px; height: 14px; color: var(--subtle); }
 .badge-cloud-lg .badge { min-height: 30px; padding: 0 12px; font-size: var(--fs-meta); }
 
 @media (max-width: 860px) {

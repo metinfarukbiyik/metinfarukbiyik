@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { portfolioProjects } from '@/data/projects';
+import { isGame, portfolioProjects } from '@/data/projects';
 import { tools } from '@/data/tools';
 import { encodeBarcode, defaultStyle as barcodeStyle, renderBarcodeSvg } from './barcode';
 import { createMatrix, defaultStyle, renderQrSvg } from './qr-code';
@@ -123,6 +123,7 @@ const toolVisuals: Record<string, () => OgVisual> = {
 };
 
 const projectIcons: Record<string, string> = {
+  'bizim-koy': 'og/icon-bizim-koy.png',
   'byk-music': 'og/icon-music.png',
   geocam: 'og/icon-geocam.png',
   'byk-seri-baski-pro': 'og/icon-byk.png',
@@ -194,7 +195,9 @@ function buildCards(): OgCard[] {
     ...portfolioProjects.map((project) =>
       page(
         project.href,
-        project.category === 'Uygulama' ? `uygulama · ${project.platform.toLocaleLowerCase('tr')}` : 'web projesi',
+        isGame(project)
+          ? 'oyun · tarayıcı'
+          : project.category === 'Uygulama' ? `uygulama · ${project.platform.toLocaleLowerCase('tr')}` : 'web projesi',
         project.name,
         project.description,
         [...project.platforms, project.category === 'Uygulama' ? 'Ücretsiz' : 'Yayında'],

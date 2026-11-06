@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { site } from './site';
-import type { PortfolioProject } from '@/data/projects';
+import { isGame, type PortfolioProject } from '@/data/projects';
 import type { ToolItem } from '@/data/tools';
 
 export interface SeoEntry {
@@ -419,9 +419,10 @@ export function toolSchema(tool: ToolItem, entry: SeoEntry) {
 
 export function projectSchema(project: PortfolioProject) {
   const isApp = project.category === 'Uygulama';
+  const game = isGame(project);
   return {
     '@context': 'https://schema.org',
-    '@type': isApp ? 'SoftwareApplication' : 'CreativeWork',
+    '@type': game ? 'VideoGame' : isApp ? 'SoftwareApplication' : 'CreativeWork',
     name: project.name,
     description: project.detail,
     url: `${site.url}${project.href}`,
@@ -435,6 +436,9 @@ export function projectSchema(project: PortfolioProject) {
           applicationCategory: project.applicationCategory,
           offers: { '@type': 'Offer', price: '0', priceCurrency: 'TRY' },
           featureList: project.features,
+          ...(game
+            ? { gamePlatform: ['Web tarayıcısı', 'Mobil tarayıcı'], playMode: ['SinglePlayer', 'MultiPlayer'], genre: 'Köy kurma, strateji', sameAs: project.url }
+            : {}),
         }
       : { sameAs: project.url }),
   };

@@ -3,7 +3,7 @@ import ContactCta from '@/components/ContactCta';
 import JsonLd from '@/components/JsonLd';
 import { Badge, Breadcrumbs, DataList, Frame, Kicker, Section, TextLink } from '@/components/ui';
 import { getProjectPresentation } from '@/data/projectPresentation';
-import { portfolioProjects, type PortfolioProject } from '@/data/projects';
+import { isGame, portfolioProjects, type PortfolioProject } from '@/data/projects';
 import { projectSchema } from '@/lib/seo';
 import { site } from '@/lib/site';
 import ProjectActions from './ProjectActions';
@@ -20,6 +20,8 @@ export default function ProjectDetail({ project }: { project: PortfolioProject }
     .slice(0, 3);
   const domain = project.url.replace(/^https?:\/\//, '').split('/')[0];
   const download = presentation.actions.find((action) => action.kind === 'download');
+  const game = isGame(project);
+  const kicker = game ? 'oyun' : project.category === 'Uygulama' ? 'uygulama' : 'web projesi';
 
   return (
     <article className="container">
@@ -33,7 +35,7 @@ export default function ProjectDetail({ project }: { project: PortfolioProject }
         <div className="project-hero-grid">
           <ProjectIcon project={project} size="lg" priority />
           <div className="page-header-copy">
-            <Kicker>{project.category === 'Uygulama' ? 'uygulama' : 'web projesi'}</Kicker>
+            <Kicker>{kicker}</Kicker>
             <h1 className="title-1">{project.name}</h1>
             <p className="lead">{project.description}</p>
             <div className="page-header-meta">
@@ -74,11 +76,11 @@ export default function ProjectDetail({ project }: { project: PortfolioProject }
           <DataList
             columns={1}
             items={[
-              { label: 'Proje türü', value: project.category },
+              { label: 'Proje türü', value: game ? 'Oyun' : project.category },
               { label: 'Platform', value: project.platform },
               { label: 'Geliştirici', value: site.name },
               {
-                label: project.category === 'Uygulama' ? 'Kaynak / mağaza' : 'Adres',
+                label: game ? 'Oyun adresi' : project.category === 'Uygulama' ? 'Kaynak / mağaza' : 'Adres',
                 value: <TextLink href={project.url}>{domain}</TextLink>,
               },
             ]}

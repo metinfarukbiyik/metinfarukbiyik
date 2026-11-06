@@ -10,7 +10,7 @@ export interface PortfolioProject {
   seoTitle: string;
   seoDescription: string;
   keywords: string[];
-  icon: 'Music2' | 'Camera' | 'Barcode' | 'Globe' | 'GraduationCap' | 'Building2' | 'Workflow' | 'RadioTower';
+  icon: 'Music2' | 'Camera' | 'Barcode' | 'Globe' | 'GraduationCap' | 'Building2' | 'Workflow' | 'RadioTower' | 'House';
   iconImage?: string;
   image?: string;
   url: string;
@@ -21,6 +21,43 @@ export interface PortfolioProject {
 }
 
 export const portfolioProjects: PortfolioProject[] = [
+  {
+    slug: 'bizim-koy',
+    name: 'Bizim Köy',
+    category: 'Uygulama',
+    platform: 'Tarayıcı oyunu · Web · Mobil',
+    platforms: ['Tarayıcı', 'Mobil'],
+    description:
+      'Köyünü kurup kaynak topladığın ve arkadaşlarınla birlikte büyüttüğün 3B tarayıcı oyunu.',
+    detail:
+      'Küçük bir adada 4 köylüyle başlayıp köyünü bir liman şehrine dönüştürdüğün, tarayıcıda çalışan 3B köy kurma oyunu. Köylülerini doyurup barındırır, mesleklere ayırır, pazarda ticaret yapar, limandan denize açılırsın. Google ile giriş yapınca klan kurabilir, diğer köylere sefer düzenleyebilir ve arkadaşlarının köylerini ziyaret edebilirsin.',
+    seoTitle: 'Bizim Köy — Ücretsiz Tarayıcı Köy Kurma Oyunu',
+    seoDescription:
+      'Bizim Köy: köyünü kur, kaynak topla, ticaret yap ve arkadaşlarınla büyüt. İndirme gerektirmeyen, masaüstü ve mobilde oynanan ücretsiz Türkçe 3B tarayıcı oyunu.',
+    keywords: [
+      'Bizim Köy',
+      'köy kurma oyunu',
+      'tarayıcı oyunu',
+      'online strateji oyunu',
+      'ücretsiz tarayıcı oyunu',
+      'Türkçe köy oyunu',
+      'şehir kurma oyunu',
+      'indirmeden oynanan oyun',
+      'klan oyunu',
+    ],
+    icon: 'House',
+    iconImage: '/images/bizim-koy/icon.png',
+    image: '/images/bizim-koy/shot-1.jpg',
+    url: 'https://oyun.biyik.dev',
+    href: '/projeler/bizim-koy',
+    features: [
+      'Köy kurma, üretim ve ekonomi yönetimi',
+      'Liman, deniz ticareti ve keşif haritaları',
+      'Klan, sefer ve oyuncu pazarı',
+    ],
+    operatingSystem: 'Web tarayıcısı',
+    applicationCategory: 'GameApplication',
+  },
   {
     slug: 'byk-music',
     name: 'BYK Music',
@@ -274,6 +311,7 @@ export const portfolioProjects: PortfolioProject[] = [
   },
 ];
 
-export const appProjects = portfolioProjects.filter((p) => p.category === 'Uygulama');
+export const isGame = (project: PortfolioProject) => project.applicationCategory === 'GameApplication';
+export const appProjects =portfolioProjects.filter((p) => p.category === 'Uygulama');
 export const webProjects = portfolioProjects.filter((p) => p.category === 'Web sitesi');
 export const getProject = (slug: string) => portfolioProjects.find((p) => p.slug === slug);

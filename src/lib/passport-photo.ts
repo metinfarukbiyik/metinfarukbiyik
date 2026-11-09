@@ -160,6 +160,89 @@ export type CutMark = { x1: number; y1: number; x2: number; y2: number };
  * guides are drawn only in the empty strips around the grid, in line with the
  * cutting edges; they never touch a photo.
  */
+/** Shared look of cut guides in the PDF, PNG/JPEG export and on-screen preview. */
+export const CUT_MARK_STYLE = {
+  /** Solid black so the guides stay visible on any printer and paper. */
+  color: '#000000',
+  /** Line width in millimetres (≈ 0.7 pt). */
+  width: 0.25,
+} as const;
+/** Gap kept between a guide and the photo, so a slightly off cut leaves no line on it. */
+const CUT_MARK_OFFSET = 0.5;
+/** Longest guide; long enough to line up a ruler or a trimmer blade. */
+const CUT_MARK_LENGTH = 4;
+
+/**
+ * Free distance from (x, y) along a horizontal (axis 'x') or vertical ray,
+ * up to the next photo or the paper edge. Between two photos only half of the
+ * gap is used, so the neighbour's guide on the same line has room too.
+ */
+function freeDistance(
+  cells: PhotoCell[],
+  paper: { width: number; height: number },
+  x: number,
+  y: number,
+  axis: 'x' | 'y',
+  direction: 1 | -1,
+) {
+  const position = axis === 'x' ? x : y;
+  const cross = axis === 'x' ? y : x;
+  let free =
+    direction === 1
+      ? (axis === 'x' ? paper.width : paper.height) - position
+      : position;
+  for (const c of cells) {
+    const [start, size, crossStart, crossSize] =
+      axis === 'x'
+        ? [c.x, c.width, c.y, c.height]
+        : [c.y, c.height, c.x, c.width];
+    if (cross < crossStart - 0.01 || cross > crossStart + crossSize + 0.01)
+      continue;
+    const distance =
+      direction === 1 ? start - position : position - (start + size);
+    if (distance > 0.01) free = Math.min(free, distance / 2);
+  }
+  return free;
+}
+
+/**
+ * Joins guides that lie on the same cutting line and nearly meet (the two
+ * halves drawn into a gap from photos on either side), so the gap shows one
+ * solid line instead of two short dashes.
+ */
+function mergeCollinear(marks: CutMark[]) {
+  const round = (value: number) => Math.round(value * 1000) / 1000;
+  const lines = new Map<string, { start: number; end: number }[]>();
+  for (const m of marks) {
+    const vertical = m.x1 === m.x2;
+    const key = `${vertical ? 'v' : 'h'}${round(vertical ? m.x1 : m.y1)}`;
+    const [a, b] = vertical ? [m.y1, m.y2] : [m.x1, m.x2];
+    const list = lines.get(key) ?? [];
+    list.push({ start: Math.min(a, b), end: Math.max(a, b) });
+    lines.set(key, list);
+  }
+  const merged: CutMark[] = [];
+  for (const [key, list] of lines) {
+    const vertical = key[0] === 'v';
+    const at = Number(key.slice(1));
+    list.sort((a, b) => a.start - b.start);
+    const runs: { start: number; end: number }[] = [];
+    for (const segment of list) {
+      const last = runs[runs.length - 1];
+      if (last && segment.start - last.end <= 0.6)
+        last.end = Math.max(last.end, segment.end);
+      else runs.push({ ...segment });
+    }
+    for (const { start, end } of runs)
+      merged.push(
+        vertical
+          ? { x1: at, y1: start, x2: at, y2: end }
+          : { x1: start, y1: at, x2: end, y2: at },
+      );
+  }
+  return merged;
+}
+
 export function cutMarks(
   cells: PhotoCell[],
   paper: { width: number; height: number },
@@ -172,14 +255,33 @@ export function cutMarks(
         for (const y of [cell.y, cell.y + cell.height]) {
           const dx = x === cell.x ? -1 : 1;
           const dy = y === cell.y ? -1 : 1;
-          marks.push({ x1: x + dx * 0.4, y1: y, x2: x + dx * 1.5, y2: y });
-          marks.push({ x1: x, y1: y + dy * 0.4, x2: x, y2: y + dy * 1.5 });
+          // Each corner gets two guides that continue the photo's edges outward.
+          const reachX = Math.min(
+            CUT_MARK_LENGTH + CUT_MARK_OFFSET,
+            freeDistance(cells, paper, x, y, 'x', dx) - 0.2,
+          );
+          const reachY = Math.min(
+            CUT_MARK_LENGTH + CUT_MARK_OFFSET,
+            freeDistance(cells, paper, x, y, 'y', dy) - 0.2,
+          );
+          marks.push({
+            x1: x + dx * CUT_MARK_OFFSET,
+            y1: y,
+            x2: x + dx * Math.max(reachX, CUT_MARK_OFFSET + 0.5),
+            y2: y,
+          });
+          marks.push({
+            x1: x,
+            y1: y + dy * CUT_MARK_OFFSET,
+            x2: x,
+            y2: y + dy * Math.max(reachY, CUT_MARK_OFFSET + 0.5),
+          });
         }
-    return marks;
+    return mergeCollinear(marks);
   }
   if (!cells.length) return marks;
-  const GUIDE = 5;
-  const CLEARANCE = 1;
+  const GUIDE = 6;
+  const CLEARANCE = CUT_MARK_OFFSET;
   const round = (value: number) => Math.round(value * 1000) / 1000;
   const unique = (values: number[]) =>
     [...new Set(values.map(round))].filter(
@@ -400,7 +502,8 @@ export async function createPhotoPdf(
   const pt = (mm: number) => ((mm * 72) / 25.4).toFixed(5);
   const layout = photoLayout(size, count, paperSize, orientation, borderless);
   const streams = layout.pages.map((cells) => {
-    const commands = ['0.65 G 0.25 w'];
+    // Pure black (0 G), 0.25 mm wide, butt caps so guides end exactly where computed.
+    const commands = [`0 G ${pt(CUT_MARK_STYLE.width)} w 0 J`];
     for (const cell of cells)
       commands.push(
         `q ${pt(cell.width)} 0 0 ${pt(cell.height)} ${pt(cell.x)} ${pt(layout.paper.height - cell.y - cell.height)} cm /Photo Do Q`,

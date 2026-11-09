@@ -25,6 +25,7 @@ import {
   BIOMETRIC_SOURCE_URL,
   biometricRules,
   createPhotoPdf,
+  CUT_MARK_STYLE,
   cutMarks,
   photosPerSheet,
   supportsBorderless,
@@ -171,8 +172,9 @@ export default function PassportPhotoTool() {
     if (!context) return;
     context.fillStyle = '#fff';
     context.fillRect(0, 0, sheet.width, sheet.height);
-    context.strokeStyle = '#a6a6a6';
-    context.lineWidth = 0.6;
+    // Same black guides as the print; at least 1 px so they stay visible when scaled down.
+    context.strokeStyle = CUT_MARK_STYLE.color;
+    context.lineWidth = Math.max(1, CUT_MARK_STYLE.width * 3);
     const cells = photoLayout(size, count, paperSize, orientation, borderless)
       .pages[pageIndex];
     for (const cell of cells)

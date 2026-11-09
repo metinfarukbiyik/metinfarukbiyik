@@ -1,4 +1,5 @@
 import {
+  CUT_MARK_STYLE,
   cutMarks,
   DPI,
   photoLayout,
@@ -163,8 +164,9 @@ export async function createPhotoRaster(
     ctx.fillRect(0, 0, sheet.width, sheet.height);
     ctx.setTransform(scale, 0, 0, scale, 0, 0);
     ctx.imageSmoothingQuality = 'high';
-    ctx.strokeStyle = '#a6a6a6';
-    ctx.lineWidth = 0.09;
+    ctx.strokeStyle = CUT_MARK_STYLE.color;
+    ctx.lineWidth = CUT_MARK_STYLE.width;
+    ctx.lineCap = 'butt';
     const cells = layout.pages[index];
     for (const cell of cells)
       ctx.drawImage(crop, cell.x, cell.y, cell.width, cell.height);

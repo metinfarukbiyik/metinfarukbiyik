@@ -1,4 +1,5 @@
 import {
+  cutMarks,
   DPI,
   photoLayout,
   type PhotoCount,
@@ -145,8 +146,9 @@ export async function createPhotoRaster(
   quality: number,
   baseName: string,
   selectedPage?: number,
+  borderless = false,
 ) {
-  const layout = photoLayout(size, count, paperSize, orientation);
+  const layout = photoLayout(size, count, paperSize, orientation, borderless);
   const files: { name: string; blob: Blob }[] = [];
   const indices =
     selectedPage === undefined ? layout.pages.map((_, i) => i) : [selectedPage];
@@ -163,20 +165,16 @@ export async function createPhotoRaster(
     ctx.imageSmoothingQuality = 'high';
     ctx.strokeStyle = '#a6a6a6';
     ctx.lineWidth = 0.09;
-    for (const cell of layout.pages[index]) {
+    const cells = layout.pages[index];
+    for (const cell of cells)
       ctx.drawImage(crop, cell.x, cell.y, cell.width, cell.height);
-      if (marks)
-        for (const x of [cell.x, cell.x + cell.width])
-          for (const y of [cell.y, cell.y + cell.height]) {
-            const dx = x === cell.x ? -1 : 1,
-              dy = y === cell.y ? -1 : 1;
-            ctx.beginPath();
-            ctx.moveTo(x + dx * 0.4, y);
-            ctx.lineTo(x + dx * 1.5, y);
-            ctx.moveTo(x, y + dy * 0.4);
-            ctx.lineTo(x, y + dy * 1.5);
-            ctx.stroke();
-          }
+    if (marks) {
+      ctx.beginPath();
+      for (const mark of cutMarks(cells, layout.paper, layout.borderless)) {
+        ctx.moveTo(mark.x1, mark.y1);
+        ctx.lineTo(mark.x2, mark.y2);
+      }
+      ctx.stroke();
     }
     const raw = await new Promise<Blob>((resolve, reject) =>
       sheet.toBlob(

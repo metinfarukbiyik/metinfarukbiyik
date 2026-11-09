@@ -11,6 +11,11 @@ const faq = [
       'Kullanım yerine göre değişir. Türkiye’de pasaport ve kimlik kartı için biyometrik fotoğraf 50 × 60 mm’dir; Schengen vizesi gibi başvurularda 35 × 45 mm sık istenir; klasik vesikalık için 45 × 60 mm yaygındır. Başvuracağın kurumun güncel kuralını mutlaka kontrol et.',
   },
   {
+    question: 'Pasaport ve kimlik kartı için biyometrik fotoğraf nasıl olmalı?',
+    answer:
+      'NVİ’ye göre biyometrik fotoğraf 50 × 60 mm, beyaz ve desensiz fonda, gölgesiz ve son 6 ay içinde çekilmiş olmalı; 35 × 45 mm’ye kesilmemeli. Yüz ortalanmış ve saçla birlikte tamamen görünmeli, gözler açık olmalı, doğrudan kameraya bakılmalı; güneş gözlüğü, şapka veya başlık olmamalı. Araçta “Pasaport / Kimlik” türünü seçtiğinde ölçü 50 × 60 mm’ye sabitlenir ve tüm kurallar NVİ kaynağıyla birlikte gösterilir.',
+  },
+  {
     question: 'Fotoğrafım bir sunucuya yükleniyor mu?',
     answer:
       'Hayır. Kırpma, yerleştirme ve dosya oluşturma tamamen tarayıcında, kendi cihazında yapılır. Fotoğrafın internete gönderilmez ve kaydedilmez.',
@@ -18,17 +23,19 @@ const faq = [
   {
     question: 'Vesikalığı evde doğru ölçüde nasıl yazdırırım?',
     answer:
-      'İndirdiğin dosyayı yazdırırken kağıt boyutunu şablonla aynı (A4 veya A5) seç, ölçeği %100 / Gerçek boyut yap ve “Sayfaya sığdır” seçeneğini kapat. Yazıcı ayarlarında fotoğraf kağıdı türünü seçmek baskı kalitesini artırır.',
+      'İndirdiğin dosyayı yazdırırken kağıt boyutunu şablonla aynı (A4 veya 10 × 15 cm) seç, ölçeği %100 / Gerçek boyut yap ve “Sayfaya sığdır” seçeneğini kapat. Yazıcı ayarlarında fotoğraf kağıdı türünü seçmek baskı kalitesini artırır.',
   },
   {
-    question: 'Tek sayfaya kaç vesikalık sığar, hangi formatlarda indirebilirim?',
+    question:
+      'Tek sayfaya kaç vesikalık sığar, hangi formatlarda indirebilirim?',
     answer:
-      'Şablona 1, 2, 4 veya 8 adet vesikalık yerleştirebilirsin. Sonucu A4 ya da A5 sayfa düzeninde PDF, PNG veya JPEG olarak indirebilirsin.',
+      'Şablona 1, 2, 4 veya 8 adet vesikalık yerleştirebilirsin. Sonucu A4 ya da 10 × 15 cm fotoğraf kağıdı düzeninde PDF, PNG veya JPEG olarak indirebilirsin.',
   },
   {
-    question: 'Araç arka planı değiştiriyor veya biyometrik uygunluğu kontrol ediyor mu?',
+    question:
+      'Araç arka planı değiştiriyor veya biyometrik uygunluğu kontrol ediyor mu?',
     answer:
-      'Hayır. Araç fotoğrafı seçtiğin ölçüye kırpar ve baskı şablonuna yerleştirir. Arka plan, ışık ve yüz konumu gibi biyometrik kurallara uygun bir fotoğrafla başlamalısın.',
+      'Arka planı değiştirmez. Biyometrik modda fonun beyaz görünüp görünmediğini kabaca kontrol eder ve yüzü ortalaman için bir kılavuz gösterir; ancak bu kontroller resmi uygunluğu garanti etmez. Işık, gölge ve yüz konumu gibi kurallara uygun bir fotoğrafla başlamalısın.',
   },
 ];
 
@@ -37,8 +44,8 @@ export default function PassportPhotoPage() {
     <ToolPage
       slug="vesikalik-fotograf"
       seo={seoPages.passport}
-      title="Vesikalık fotoğraf oluştur, baskıya hazır indir."
-      description="Fotoğrafını yükle, ölçüyü seç, kadrajı ayarla. 1–8 adetlik A4 veya A5 vesikalık şablonunu PDF, PNG ya da JPEG olarak ücretsiz indir."
+      title="Vesikalık ve biyometrik fotoğraf oluştur, baskıya hazır indir."
+      description="Vesikalık veya pasaport / kimlik için 50 × 60 mm biyometrik fotoğrafı seç, kadrajı ayarla. 1–8 adetlik A4 veya 10 × 15 cm şablonu PDF, PNG ya da JPEG olarak ücretsiz indir."
       faq={faq}
     >
       <PassportPhotoTool />

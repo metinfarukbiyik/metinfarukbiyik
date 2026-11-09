@@ -131,17 +131,17 @@ for (const format of ['png', 'jpeg']) {
     'large',
     8,
     true,
-    'A5',
+    '10x15',
     'portrait',
     format,
     0.95,
     'Test',
   );
   assert.equal(output.blob.type, 'application/zip');
-  assert.equal(rendered.length, 2);
+  assert.equal(rendered.length, 4);
   rendered.forEach((sheet) => {
-    assert.equal(sheet.width, geometry.mmToPixels(148));
-    assert.equal(sheet.height, geometry.mmToPixels(210));
+    assert.equal(sheet.width, geometry.mmToPixels(100));
+    assert.equal(sheet.height, geometry.mmToPixels(150));
     assert.equal(sheet.mime, `image/${format}`);
     assert.equal(sheet.quality, 0.95);
   });
@@ -151,7 +151,7 @@ for (const format of ['png', 'jpeg']) {
     'large',
     8,
     false,
-    'A5',
+    '10x15',
     'portrait',
     format,
     1,

@@ -41,14 +41,15 @@ export const tools: ToolItem[] = [
     name: 'Vesikalık fotoğraf oluştur',
     short: 'Vesikalık',
     description:
-      'Kadrajını ayarla; 1, 2, 4 veya 8 adet vesikalığı A4/A5 şablonunda PDF, PNG veya JPEG olarak indir.',
+      'Kadrajını ayarla; 1, 2, 4 veya 8 adet vesikalığı A4 veya 10 × 15 cm şablonunda PDF, PNG veya JPEG olarak indir.',
     href: '/araclar/vesikalik-fotograf',
     category: 'fotograf-baski',
     icon: 'ScanFace',
     tags: ['Cihazında işlenir', 'PDF · PNG · JPEG'],
     features: [
+      'Vesikalık ve pasaport / kimlik (biyometrik) seçimi',
       '3,5 × 4,5, 4 × 6, 4,5 × 6 ve 5 × 6 cm ölçüler',
-      'A4 ve A5 baskı şablonu',
+      'A4 ve 10 × 15 cm baskı şablonu',
       'PDF, PNG ve JPEG çıktı',
       'Fotoğraf sunucuya yüklenmez',
     ],

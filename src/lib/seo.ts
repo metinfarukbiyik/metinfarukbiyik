@@ -114,7 +114,7 @@ export const seoPages = {
     title: 'Vesikalık Fotoğraf Oluştur — Ücretsiz, PDF Şablon',
     ogTitle: 'Vesikalık fotoğraf oluştur',
     description:
-      'Fotoğrafını 3,5 × 4,5, 4 × 6, 4,5 × 6 veya 5 × 6 cm ölçüsünde kırp; 1–8 adetlik A4/A5 vesikalık şablonunu PDF, PNG veya JPEG olarak ücretsiz indir.',
+      'Fotoğrafını 3,5 × 4,5, 4 × 6, 4,5 × 6 veya 5 × 6 cm ölçüsünde kırp; 1–8 adetlik A4 veya 10 × 15 cm vesikalık şablonunu PDF, PNG veya JPEG olarak ücretsiz indir.',
     path: '/araclar/vesikalik-fotograf',
     keywords: [
       'vesikalık fotoğraf oluştur',
@@ -133,6 +133,9 @@ export const seoPages = {
       '5 x 6 biyometrik',
       'evde vesikalık çıktı',
       'A4 vesikalık baskı',
+      '10x15 vesikalık baskı',
+      'biyometrik fotoğraf 50x60',
+      'pasaport biyometrik fotoğraf ölçüsü',
     ],
   },
   qr: {

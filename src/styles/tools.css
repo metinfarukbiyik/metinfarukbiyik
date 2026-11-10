@@ -582,3 +582,338 @@
 .photo-rules li { display: flex; align-items: flex-start; gap: 8px; font-size: var(--fs-small); color: var(--text); }
 .photo-rules li svg { flex: none; margin-top: 3px; color: var(--accent); }
 
+
+/* ── Flip clock: clock, stopwatch, pomodoro ─────────────── */
+.clock-stage {
+  /* Theme "flip", night (default). Every colour of the stage comes from these variables; themes and their day/night tones override them. */
+  --clock-bg: #15181c;
+  --clock-card: #272c33;
+  --clock-card-top: #2d333b;
+  --clock-hinge: var(--clock-bg);
+  --clock-shadow: rgba(0, 0, 0, 0.45);
+  --clock-digit: #f6f4ef;
+  --clock-on-digit: #15181c;
+  --clock-dim: #9097a0;
+  --clock-line: rgba(255, 255, 255, 0.14);
+  --clock-line-strong: rgba(255, 255, 255, 0.32);
+  --clock-soft: rgba(255, 255, 255, 0.07);
+  --clock-focus: #9ad0c5;
+  --clock-break: #e6cf95;
+  --clock-accent: var(--clock-focus);
+  --clock-on-accent: #15181c;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  align-items: center;
+  gap: clamp(18px, 3vw, 28px);
+  min-height: clamp(340px, 46vw, 480px);
+  padding: 18px clamp(14px, 3vw, 28px) 22px;
+  border-radius: var(--radius-lg);
+  background: var(--clock-bg);
+  color: var(--clock-digit);
+}
+.clock-stage[data-phase='short'], .clock-stage[data-phase='long'] { --clock-accent: var(--clock-break); }
+.clock-stage[data-immersive] {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  min-height: 0;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  border-radius: 0;
+}
+/* Full screen: the flip theme goes fully black, like a lock screen. */
+.clock-stage[data-design='flip'][data-tone='night'][data-immersive] { --clock-bg: #000; --clock-card: #1b1e22; --clock-card-top: #202429; }
+/* Flip by day: paper and ink. */
+.clock-stage[data-design='flip'][data-tone='day'] {
+  --clock-bg: #e9e5dc;
+  --clock-card: #fbfaf7;
+  --clock-card-top: #ffffff;
+  --clock-hinge: #cfc9bc;
+  --clock-shadow: rgba(30, 34, 39, 0.18);
+  --clock-digit: #1e2227;
+  --clock-on-digit: #ffffff;
+  --clock-dim: #5f6368;
+  --clock-line: rgba(30, 34, 39, 0.2);
+  --clock-line-strong: rgba(30, 34, 39, 0.45);
+  --clock-soft: rgba(30, 34, 39, 0.07);
+  --clock-focus: #33625c;
+  --clock-break: #85621a;
+  --clock-on-accent: #ffffff;
+}
+.clock-stage[data-idle] { cursor: none; }
+.clock-chrome { transition: opacity 300ms var(--ease), visibility 300ms; }
+/* Hidden while idle, unless someone is moving through the buttons with the keyboard. */
+.clock-stage[data-idle] .clock-chrome:not(:has(:focus-visible)) { opacity: 0; visibility: hidden; }
+.clock-stage:focus { outline: none; }
+
+.clock-tabs { display: inline-flex; gap: 2px; max-width: 100%; padding: 4px; border-radius: var(--radius-pill); background: var(--clock-soft); }
+.clock-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--control-sm);
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--clock-dim);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.clock-tabs button:hover { color: var(--clock-digit); }
+.clock-tabs button[aria-pressed='true'] { background: var(--clock-digit); color: var(--clock-on-digit); }
+.clock-tabs button:focus-visible, .clock-button:focus-visible { outline: 2px solid var(--clock-accent); outline-offset: 2px; }
+
+.clock-face { display: flex; flex-direction: column; align-items: center; gap: clamp(12px, 2vw, 20px); width: 100%; min-width: 0; }
+.clock-caption, .clock-lap-note { margin: 0; min-height: 1.4em; font-family: var(--font-mono); font-size: var(--fs-small); letter-spacing: 0.04em; color: var(--clock-dim); white-space: pre; }
+.clock-stage[data-mode='pomodoro'] .clock-caption { color: var(--clock-accent); }
+.clock-stage[data-immersive] .clock-caption, .clock-stage[data-immersive] .clock-lap-note { font-size: clamp(0.85rem, 1.6vw, 1.25rem); }
+
+.flip-clock { --flip: clamp(44px, 15.5vw, 132px); display: flex; gap: calc(var(--flip) * 0.14); font-size: var(--flip); }
+.flip-clock[data-groups='2'] { --flip: clamp(60px, 22vw, 168px); }
+.clock-stage[data-immersive] .flip-clock { --flip: min(19.5vw, 46vh); }
+.clock-stage[data-immersive] .flip-clock[data-groups='2'] { --flip: min(29vw, 48vh); }
+.flip-card {
+  position: relative;
+  width: 1.44em;
+  height: 1.3em;
+  border-radius: 0.08em;
+  perspective: 5em;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  box-shadow: 0 0.04em 0.1em var(--clock-shadow);
+}
+.flip-half { position: absolute; left: 0; right: 0; height: 50%; overflow: hidden; background: var(--clock-card); backface-visibility: hidden; }
+.flip-half > span { position: absolute; left: 0; right: 0; height: 200%; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.flip-top { top: 0; border-radius: 0.08em 0.08em 0 0; background: var(--clock-card-top); }
+.flip-top > span { top: 0; }
+.flip-bottom { bottom: 0; border-radius: 0 0 0.08em 0.08em; }
+.flip-bottom > span { bottom: 0; }
+/* The hinge: a thin gap between the two halves. */
+.flip-card::after { content: ''; position: absolute; z-index: 3; left: 0; right: 0; top: 50%; height: max(1px, 0.014em); transform: translateY(-50%); background: var(--clock-hinge); }
+.flip-fold { z-index: 2; transform-origin: bottom; animation: flip-fold 240ms ease-in forwards; }
+.flip-unfold { z-index: 2; transform-origin: top; transform: rotateX(90deg); animation: flip-unfold 240ms ease-out 240ms forwards; }
+@keyframes flip-fold { to { transform: rotateX(-90deg); } }
+@keyframes flip-unfold { to { transform: rotateX(0); } }
+
+.clock-progress { width: min(100%, 420px); height: 3px; border-radius: 2px; background: var(--clock-line); overflow: hidden; }
+.clock-progress span { display: block; height: 100%; border-radius: inherit; background: var(--clock-accent); transition: width 200ms linear; }
+.clock-rounds { display: flex; gap: 8px; }
+.clock-rounds span { width: 8px; height: 8px; border: 1px solid var(--clock-dim); border-radius: 50%; }
+.clock-rounds span[data-state='current'] { border-color: var(--clock-accent); }
+.clock-rounds span[data-state='done'] { border-color: var(--clock-accent); background: var(--clock-accent); }
+
+.clock-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.clock-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: var(--control-md);
+  padding: 0 16px;
+  border: 1px solid var(--clock-line);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--clock-digit);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.clock-button:hover:not(:disabled) { border-color: var(--clock-line-strong); background: var(--clock-soft); }
+.clock-button:disabled { opacity: 0.4; cursor: not-allowed; }
+.clock-button-primary { min-width: 132px; border-color: var(--clock-accent); background: var(--clock-accent); color: var(--clock-on-accent); }
+.clock-button-primary:hover:not(:disabled) { border-color: var(--clock-digit); background: var(--clock-digit); }
+
+.clock-panel { display: grid; gap: 14px; margin-top: 16px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); }
+.clock-panel .photo-field { margin: 0; }
+.clock-panel .photo-options { max-width: 560px; }
+.clock-note { margin: 0; font-size: var(--fs-small); color: var(--muted); }
+.clock-note strong { font-weight: var(--fw-medium); color: var(--ink); }
+.clock-note kbd { padding: 1px 6px; border: 1px solid var(--line-strong); border-radius: var(--radius-xs); background: var(--surface-raised); font-family: var(--font-mono); font-size: var(--fs-micro); }
+.clock-laps { width: 100%; max-width: 420px; border-collapse: collapse; font-family: var(--font-mono); font-size: var(--fs-small); font-variant-numeric: tabular-nums; }
+.clock-laps th { padding: 0 0 8px; font-size: var(--fs-meta); font-weight: var(--fw-medium); color: var(--muted); text-align: left; }
+.clock-laps td { padding: 7px 0; border-top: 1px solid var(--line); color: var(--ink); }
+.clock-laps td:first-child { color: var(--subtle); }
+
+/* Plain digits, shared by the themes without flip cards. */
+.plain-clock { --plain: clamp(48px, 17vw, 150px); display: flex; align-items: center; justify-content: center; font-size: var(--plain); font-variant-numeric: tabular-nums; line-height: 1; }
+.plain-clock[data-groups='2'] { --plain: clamp(64px, 26vw, 200px); }
+.clock-stage[data-immersive] .plain-clock { --plain: min(21vw, 50vh); }
+.clock-stage[data-immersive] .plain-clock[data-groups='2'] { --plain: min(32vw, 56vh); }
+.plain-separator { padding: 0 0.04em; transform: translateY(-0.06em); font-weight: 400; opacity: 0.5; }
+.clock-theme-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 760px; }
+/* Equal-height boxes: each label fills its grid cell and the box fills the label. */
+.clock-theme-options label { display: flex; }
+.clock-theme-options label > span { display: flex; flex: 1; flex-direction: column; justify-content: center; }
+.clock-tone-options { max-width: 372px; }
+.clock-tone-options span { display: flex; align-items: center; justify-content: center; gap: 7px; }
+
+/* Theme "safir": crisp desktop lock screen. Deep blue light, thin type, date under the time, sharp corners, underlined tabs. */
+.clock-stage[data-design='safir'] {
+  --clock-bg: #071a3d;
+  --clock-digit: #ffffff;
+  --clock-on-digit: #071a3d;
+  --clock-dim: #b9c9e6;
+  --clock-line: rgba(255, 255, 255, 0.18);
+  --clock-line-strong: rgba(255, 255, 255, 0.4);
+  --clock-soft: rgba(255, 255, 255, 0.08);
+  --clock-focus: #60cdff;
+  --clock-break: #f9d27d;
+  --clock-on-accent: #00213d;
+  --clock-glow-1: #2f7df0;
+  --clock-glow-2: #1746b8;
+  --clock-glow-3: rgba(96, 205, 255, 0.22);
+  background:
+    radial-gradient(70% 90% at 78% 110%, var(--clock-glow-1) 0%, transparent 62%),
+    radial-gradient(60% 80% at 18% 105%, var(--clock-glow-2) 0%, transparent 65%),
+    radial-gradient(50% 50% at 55% 60%, var(--clock-glow-3) 0%, transparent 70%),
+    var(--clock-bg);
+}
+/* Safir by day: a pale morning sky with navy type. */
+.clock-stage[data-design='safir'][data-tone='day'] {
+  --clock-bg: #eaf2fc;
+  --clock-digit: #0b2a5c;
+  --clock-on-digit: #ffffff;
+  --clock-dim: #3d5680;
+  --clock-line: rgba(11, 42, 92, 0.22);
+  --clock-line-strong: rgba(11, 42, 92, 0.5);
+  --clock-soft: rgba(255, 255, 255, 0.55);
+  --clock-focus: #0067c0;
+  --clock-break: #8a5a00;
+  --clock-on-accent: #ffffff;
+  --clock-glow-1: #a9cdfb;
+  --clock-glow-2: #c7dcfa;
+  --clock-glow-3: rgba(255, 255, 255, 0.8);
+}
+.clock-stage[data-design='safir'] .plain-clock { order: 1; font-family: 'Segoe UI Variable Display', 'Segoe UI', 'Helvetica Neue', var(--font-sans); font-weight: 300; letter-spacing: -0.03em; }
+.clock-stage[data-design='safir'] .plain-separator { font-weight: 300; opacity: 0.7; }
+.clock-stage[data-design='safir'] .clock-caption { order: 2; font-family: 'Segoe UI Variable Text', 'Segoe UI', var(--font-sans); font-size: clamp(1rem, 2.2vw, 1.4rem); font-weight: 400; letter-spacing: 0; }
+.clock-stage[data-design='safir'][data-mode='clock'] .clock-caption { color: var(--clock-digit); }
+.clock-stage[data-design='safir'][data-immersive] .clock-caption { font-size: clamp(1.2rem, 2.4vw, 2rem); }
+.clock-stage[data-design='safir'] .clock-progress { order: 3; }
+.clock-stage[data-design='safir'] .clock-rounds { order: 4; }
+.clock-stage[data-design='safir'] .clock-lap-note { order: 5; }
+.clock-stage[data-design='safir'] .clock-rounds span { border-radius: 2px; }
+.clock-stage[data-design='safir'] .clock-tabs { gap: 4px; padding: 0; border-radius: 0; background: none; }
+.clock-stage[data-design='safir'] .clock-tabs button { border-radius: 4px 4px 0 0; }
+.clock-stage[data-design='safir'] .clock-tabs button[aria-pressed='true'] { background: none; color: var(--clock-digit); box-shadow: inset 0 -3px 0 var(--clock-focus); }
+.clock-stage[data-design='safir'] .clock-button { border-radius: 4px; }
+.clock-stage[data-design='safir'] .clock-button:not(.clock-button-primary) { background: var(--clock-soft); }
+
+/* Theme "sedef": frosted glass over a glowing dusk wallpaper. Date above a tight bold time. */
+.clock-stage[data-design='sedef'] {
+  --clock-bg: #1f1c40;
+  --clock-digit: #ffffff;
+  --clock-on-digit: #2a2350;
+  --clock-dim: #ded8f0;
+  --clock-line: rgba(255, 255, 255, 0.3);
+  --clock-line-strong: rgba(255, 255, 255, 0.55);
+  --clock-soft: rgba(255, 255, 255, 0.16);
+  --clock-focus: #ffffff;
+  --clock-break: #ffd9a6;
+  --clock-on-accent: #2a2350;
+  --clock-glow-1: #5468dc;
+  --clock-glow-2: #f08f6e;
+  --clock-glow-3: #a558c4;
+  --clock-text-shadow: 0 0.02em 0.12em rgba(31, 28, 64, 0.25);
+  background:
+    radial-gradient(85% 75% at 8% 0%, var(--clock-glow-1) 0%, transparent 68%),
+    radial-gradient(80% 75% at 100% 100%, var(--clock-glow-2) 0%, transparent 66%),
+    radial-gradient(60% 60% at 60% 40%, var(--clock-glow-3) 0%, transparent 72%),
+    var(--clock-bg);
+}
+/* Sedef by day: mother-of-pearl pastels with deep indigo type. */
+.clock-stage[data-design='sedef'][data-tone='day'] {
+  --clock-bg: #f6f1f7;
+  --clock-digit: #2a2350;
+  --clock-on-digit: #ffffff;
+  --clock-dim: #585176;
+  --clock-line: rgba(42, 35, 80, 0.2);
+  --clock-line-strong: rgba(42, 35, 80, 0.45);
+  --clock-soft: rgba(255, 255, 255, 0.5);
+  --clock-focus: #2a2350;
+  --clock-break: #a04f2e;
+  --clock-on-accent: #ffffff;
+  --clock-glow-1: #c3cdff;
+  --clock-glow-2: #ffd0bd;
+  --clock-glow-3: #f1cdee;
+  --clock-text-shadow: none;
+}
+.clock-stage[data-design='sedef'] .plain-clock { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', var(--font-sans); font-weight: 700; letter-spacing: -0.045em; text-shadow: var(--clock-text-shadow); }
+.clock-stage[data-design='sedef'] .clock-face { gap: clamp(2px, 0.6vw, 8px); }
+.clock-stage[data-design='sedef'] .clock-caption { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', var(--font-sans); font-size: clamp(1rem, 2.4vw, 1.5rem); font-weight: var(--fw-medium); letter-spacing: 0; color: var(--clock-digit); opacity: 0.9; }
+.clock-stage[data-design='sedef'][data-immersive] .clock-caption { font-size: clamp(1.2rem, 2.6vw, 2.2rem); }
+.clock-stage[data-design='sedef'] .clock-progress, .clock-stage[data-design='sedef'] .clock-rounds { margin-top: clamp(10px, 1.6vw, 18px); }
+.clock-stage[data-design='sedef'] .clock-tabs,
+.clock-stage[data-design='sedef'] .clock-button:not(.clock-button-primary) {
+  border: 1px solid var(--clock-line);
+  background: var(--clock-soft);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+}
+.clock-stage[data-design='sedef'] .clock-tabs { border-radius: 11px; }
+.clock-stage[data-design='sedef'] .clock-tabs button { border-radius: 8px; }
+.clock-stage[data-design='sedef'] .clock-button { border-radius: 10px; }
+
+/* Theme "yesim": soft tonal phone lock screen. Pale jade surface, rounded type, digits stacked when the screen is upright. */
+.clock-stage[data-design='yesim'] {
+  --clock-bg: #dcebe5;
+  --clock-digit: #17302b;
+  --clock-on-digit: #ffffff;
+  --clock-dim: #4a625c;
+  --clock-line: rgba(23, 48, 43, 0.2);
+  --clock-line-strong: rgba(23, 48, 43, 0.45);
+  --clock-soft: rgba(23, 48, 43, 0.08);
+  --clock-focus: #2f6b60;
+  --clock-break: #8a6417;
+  --clock-on-accent: #ffffff;
+  border-radius: 28px;
+}
+.clock-stage[data-design='yesim'][data-immersive] { border-radius: 0; }
+/* Yeşim by night: deep jade with pale mint type. */
+.clock-stage[data-design='yesim'][data-tone='night'] {
+  --clock-bg: #111c19;
+  --clock-digit: #dcebe5;
+  --clock-on-digit: #10201c;
+  --clock-dim: #9db3ac;
+  --clock-line: rgba(220, 235, 229, 0.18);
+  --clock-line-strong: rgba(220, 235, 229, 0.4);
+  --clock-soft: rgba(220, 235, 229, 0.08);
+  --clock-focus: #9ad0c5;
+  --clock-break: #e6cf95;
+  --clock-on-accent: #0f2b25;
+}
+.clock-stage[data-design='yesim'] .plain-clock { font-family: ui-rounded, 'Google Sans', 'Product Sans', 'SF Pro Rounded', Roboto, var(--font-sans); font-weight: 500; letter-spacing: -0.02em; color: var(--clock-accent); }
+.clock-stage[data-design='yesim'] .clock-caption, .clock-stage[data-design='yesim'] .clock-lap-note { font-family: ui-rounded, 'Google Sans', Roboto, var(--font-sans); font-size: var(--fs-body); letter-spacing: 0; }
+.clock-stage[data-design='yesim'] .clock-tabs { background: color-mix(in srgb, var(--clock-focus) 14%, transparent); }
+.clock-stage[data-design='yesim'] .clock-tabs button[aria-pressed='true'] { background: color-mix(in srgb, var(--clock-focus) 26%, transparent); color: var(--clock-digit); }
+.clock-stage[data-design='yesim'] .clock-button { min-height: var(--control-lg); padding: 0 20px; border-color: transparent; background: color-mix(in srgb, var(--clock-accent) 16%, transparent); }
+.clock-stage[data-design='yesim'] .clock-button:hover:not(:disabled) { border-color: transparent; background: color-mix(in srgb, var(--clock-accent) 28%, transparent); }
+.clock-stage[data-design='yesim'] .clock-button-primary { border-radius: 16px; background: var(--clock-accent); }
+.clock-stage[data-design='yesim'] .clock-button-primary:hover:not(:disabled) { background: color-mix(in srgb, var(--clock-accent) 82%, var(--clock-digit)); }
+.clock-stage[data-design='yesim'] .clock-progress { height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--clock-accent) 20%, transparent); }
+.clock-stage[data-design='yesim'] .clock-rounds span { width: 10px; height: 10px; }
+@media (orientation: portrait) {
+  .clock-stage[data-design='yesim'] .plain-clock { --plain: clamp(84px, 34vw, 160px); flex-direction: column; line-height: 0.9; }
+  .clock-stage[data-design='yesim'] .plain-clock[data-groups='2'] { --plain: clamp(96px, 40vw, 190px); }
+  .clock-stage[data-design='yesim'][data-immersive] .plain-clock { --plain: min(56vw, 21vh); }
+  .clock-stage[data-design='yesim'][data-immersive] .plain-clock[data-groups='2'] { --plain: min(60vw, 30vh); }
+  .clock-stage[data-design='yesim'] .plain-separator { display: none; }
+}
+
+@media (max-width: 560px) { .clock-theme-options { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) {
+  .clock-tabs button { padding: 0 10px; }
+  .clock-button { padding: 0 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flip-fold { display: none; }
+  .flip-unfold { animation: none; transform: none; }
+  .clock-chrome, .clock-progress span { transition: none; }
+}

@@ -109,6 +109,37 @@ const diagnosisVisual = () => {
 </svg>`);
 };
 
+/** A flip clock reading 25:00; digits are seven-segment bars because Satori cannot draw SVG text. */
+const flipClockVisual = () => {
+  //            a  b  c  d  e  f  g
+  const segments: Record<string, number[]> = { '0': [1, 1, 1, 1, 1, 1, 0], '2': [1, 1, 0, 1, 1, 0, 1], '5': [1, 0, 1, 1, 0, 1, 1] };
+  const digit = (value: string, x: number, y: number) => {
+    const [w, h, t] = [42, 84, 10];
+    const bars = [
+      [x + t, y, w - 2 * t, t],
+      [x + w - t, y + t, t, h / 2 - 1.5 * t],
+      [x + w - t, y + h / 2 + t / 2, t, h / 2 - 1.5 * t],
+      [x + t, y + h - t, w - 2 * t, t],
+      [x, y + h / 2 + t / 2, t, h / 2 - 1.5 * t],
+      [x, y + t, t, h / 2 - 1.5 * t],
+      [x + t, y + h / 2 - t / 2, w - 2 * t, t],
+    ];
+    return bars
+      .filter((_, i) => segments[value][i])
+      .map(([bx, by, bw, bh]) => `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="3" fill="#f6f4ef"/>`)
+      .join('');
+  };
+  const card = (value: string, x: number) =>
+    // The hinge sits behind the digits, so the middle bars stay readable.
+    `<rect x="${x}" y="84" width="124" height="152" rx="12" fill="#272c33"/>
+    <rect x="${x}" y="159" width="124" height="2" fill="${ink}"/>
+    ${digit(value[0], x + 15, 118)}${digit(value[1], x + 67, 118)}`;
+  return svg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <rect width="320" height="320" rx="28" fill="${ink}"/>
+  ${card('25', 28)}${card('00', 168)}
+</svg>`);
+};
+
 const brand: OgVisual = { kind: 'mark', text: 'b', accent: '/' };
 
 const toolVisuals: Record<string, () => OgVisual> = {
@@ -119,6 +150,7 @@ const toolVisuals: Record<string, () => OgVisual> = {
   'exif-temizleyici': () => ({ kind: 'illustration', src: exifVisual(), caption: 'konum · tarih · cihaz' }),
   'ag-sorunu-teshis': () => ({ kind: 'illustration', src: diagnosisVisual(), caption: 'Wi-Fi mı, hat mı?' }),
   'web-sitesi-kontrol': () => ({ kind: 'illustration', src: siteCheckVisual(), caption: 'SSL · DNS · 301 → 200' }),
+  'flip-saat': () => ({ kind: 'illustration', src: flipClockVisual(), caption: 'pomodoro · kronometre' }),
   'ip-adresim': () => ({ kind: 'illustration', src: ipVisual(), caption: 'IPv4 · IPv6' }),
 };
 

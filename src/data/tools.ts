@@ -11,7 +11,7 @@ export interface ToolItem {
   description: string;
   href: string;
   category: ToolCategory['id'];
-  icon: 'ScanFace' | 'Gauge' | 'Globe2' | 'QrCode' | 'Barcode' | 'ShieldCheck' | 'ImageOff' | 'Stethoscope';
+  icon: 'ScanFace' | 'Gauge' | 'Globe2' | 'QrCode' | 'Barcode' | 'ShieldCheck' | 'ImageOff' | 'Stethoscope' | 'Timer';
   tags: string[];
   /** Feature list used by the WebApplication schema and the tool card. */
   features: string[];
@@ -27,6 +27,11 @@ export const toolCategories: ToolCategory[] = [
     id: 'kod-paylasim',
     name: 'Kod & paylaşım',
     description: 'Bağlantıları, Wi-Fi ağlarını ve ürün numaralarını taranabilir kodlara dönüştür.',
+  },
+  {
+    id: 'odak-calisma',
+    name: 'Odak & çalışma',
+    description: 'Ders çalışırken süreni takip et, dikkatini dağıtmayan bir ekranla odaklan.',
   },
   {
     id: 'internet-ag',
@@ -106,6 +111,25 @@ export const tools: ToolItem[] = [
       'Renk, yükseklik ve kenar boşluğu ayarı',
       'Keskin PNG ve vektör SVG çıktı',
       'Veriler sunucuya gönderilmez',
+    ],
+  },
+  {
+    slug: 'flip-saat',
+    name: 'Flip saat: pomodoro ve kronometre',
+    short: 'Flip saat',
+    description:
+      'Tam ekran flip saat, pomodoro sayacı ve kronometre. Ders çalışırken telefonunu ya da ekranını kilit ekranı saatine çevir.',
+    href: '/araclar/flip-saat',
+    category: 'odak-calisma',
+    icon: 'Timer',
+    tags: ['Tam ekran', 'Pomodoro · Kronometre'],
+    features: [
+      'Tam ekran flip saat; ekran açık kalır',
+      'Pomodoro sayacı: 25 / 5, 45 / 10 ve 60 / 15 dakika',
+      'Tur kaydeden kronometre',
+      'Dört tema (Flip, Safir, Sedef, Yeşim); gündüz ve gece modu',
+      'Süre bitince sesli uyarı',
+      'Hesap ve kurulum gerektirmez',
     ],
   },
   {

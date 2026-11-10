@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import {
   ArrowDown,
   ArrowUp,
@@ -13,7 +12,6 @@ import {
   Download,
   ImageDown,
   Share2,
-  Stethoscope,
 } from 'lucide-react';
 import {
   createSpeedResultImage,
@@ -362,9 +360,6 @@ export default function SpeedTestTool() {
             >
               <Share2 size={15} aria-hidden="true" /> Paylaş
             </button>
-            <Link href="/araclar/ag-sorunu-teshis" className="btn btn-sm btn-accent">
-              <Stethoscope size={15} aria-hidden="true" /> Şimdi neyi kontrol edeyim?
-            </Link>
           </div>
         )}
         <p className="network-service-note">

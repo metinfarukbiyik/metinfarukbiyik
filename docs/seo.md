@@ -39,7 +39,7 @@ Yayından sonra önbelleği yenilemek için: Facebook Sharing Debugger (WhatsApp
 | Projeler / Araçlar | `CollectionPage` + `ItemList` |
 | Uygulama detayı | `SoftwareApplication` (+ `downloadUrl`) |
 | Web projesi detayı | `CreativeWork` |
-| Araç sayfaları (vesikalık, EXIF temizleyici, QR kod, barkod, hız testi, ağ teşhisi, IP, site kontrolü) | `WebApplication` (ücretsiz `Offer`) + `FAQPage` |
+| Araç sayfaları (vesikalık, EXIF temizleyici, QR kod, barkod, hız testi, IP, site kontrolü) | `WebApplication` (ücretsiz `Offer`) + `FAQPage` |
 | BYK Seri Baskı Pro | `FAQPage` (sorun giderme) |
 | İletişim | `ContactPage` + `ContactPoint` |
 

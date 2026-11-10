@@ -16,7 +16,6 @@
     "test:site-check": "node scripts/test-site-check.mjs",
     "test:exif": "node scripts/test-exif.mjs",
     "test:clock": "node scripts/test-study-clock.mjs",
-    "test:diagnosis": "node scripts/test-network-diagnosis.mjs",
     "check:seo": "node scripts/check-seo.mjs"
   },
   "dependencies": {

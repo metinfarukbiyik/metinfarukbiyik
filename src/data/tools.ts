@@ -11,7 +11,7 @@ export interface ToolItem {
   description: string;
   href: string;
   category: ToolCategory['id'];
-  icon: 'ScanFace' | 'Gauge' | 'Globe2' | 'QrCode' | 'Barcode' | 'ShieldCheck' | 'ImageOff' | 'Stethoscope' | 'Timer';
+  icon: 'ScanFace' | 'Gauge' | 'Globe2' | 'QrCode' | 'Barcode' | 'ShieldCheck' | 'ImageOff' | 'Timer';
   tags: string[];
   /** Feature list used by the WebApplication schema and the tool card. */
   features: string[];
@@ -147,23 +147,6 @@ export const tools: ToolItem[] = [
       'HTTP gecikmesi ve jitter',
       'Sonuç görseli ve CSV geçmişi',
       'Kurulum gerektirmez',
-    ],
-  },
-  {
-    slug: 'ag-sorunu-teshis',
-    name: 'Ağ sorunu teşhis rehberi',
-    short: 'Ağ teşhisi',
-    description:
-      'Hız testi sonucuna ve bağlantı türüne göre nereden başlayacağını gör, adım adım ilerle.',
-    href: '/araclar/ag-sorunu-teshis',
-    category: 'internet-ag',
-    icon: 'Stethoscope',
-    tags: ['Hız testiyle bağlantılı', 'Adım adım'],
-    features: [
-      'Son hız testi sonucunu otomatik kullanma',
-      'Fiber, VDSL ve mobil bağlantıya özel öneriler',
-      'Wi-Fi ve kablolu ölçüm karşılaştırması',
-      'Belirtilere göre sıralı kontrol listesi',
     ],
   },
   {

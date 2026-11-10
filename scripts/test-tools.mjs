@@ -109,6 +109,7 @@ globalThis.document = {
         beginPath() {},
         moveTo() {},
         lineTo() {},
+        rect() {},
         stroke() {},
       }),
       toBlob(callback, mime, quality) {
@@ -134,7 +135,6 @@ for (const format of ['png', 'jpeg']) {
     '10x15',
     'portrait',
     format,
-    0.95,
     'Test',
   );
   assert.equal(output.blob.type, 'application/zip');
@@ -149,20 +149,16 @@ for (const format of ['png', 'jpeg']) {
   const single = await photo.createPhotoRaster(
     {},
     'large',
-    8,
+    2,
     false,
     '10x15',
-    'portrait',
+    'landscape',
     format,
-    1,
     'Test',
-    1,
   );
   assert.equal(rendered.length, 1);
-  assert.equal(
-    single.name,
-    `Test_Sayfa-02.${format === 'png' ? 'png' : 'jpg'}`,
-  );
+  assert.equal(rendered[0].width, geometry.mmToPixels(150));
+  assert.equal(single.name, `Test.${format === 'png' ? 'png' : 'jpg'}`);
 }
 
 assert.equal(network.mbpsFromTransfer(1_000_000, 1000), 8);

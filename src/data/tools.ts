@@ -41,7 +41,7 @@ export const tools: ToolItem[] = [
     name: 'Vesikalık fotoğraf oluştur',
     short: 'Vesikalık',
     description:
-      'Kadrajını ayarla; 1, 2, 4 veya 8 adet vesikalığı A4 veya 10 × 15 cm şablonunda PDF, PNG veya JPEG olarak indir.',
+      'Kadrajını ayarla; 1, 2, 4, 6 veya 8 adet vesikalığı A4 veya 10 × 15 cm şablonunda PDF, PNG veya JPEG olarak indir.',
     href: '/araclar/vesikalik-fotograf',
     category: 'fotograf-baski',
     icon: 'ScanFace',

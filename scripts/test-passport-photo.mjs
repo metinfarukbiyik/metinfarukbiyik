@@ -22,9 +22,8 @@ const {
   photoLayout,
   photoSizes,
   paperSizes,
-  printSpacing,
   photosPerSheet,
-  cutMarks,
+  cutFrames,
   createPhotoPdf,
   photoDocumentName,
   drawCrop,
@@ -34,183 +33,140 @@ const {
 } = compiledModule.exports;
 let variants = 0;
 
+const { PRINT_MARGIN, PHOTO_GAP, CUT_MARK_STYLE, photoCounts } =
+  compiledModule.exports;
+assert.deepEqual([...photoCounts], [1, 2, 4, 6, 8]);
+assert(CUT_MARK_STYLE.width <= 0.05);
+
 for (const size of Object.keys(photoSizes)) {
-  for (const count of [1, 2, 4, 8]) {
+  for (const count of photoCounts) {
     for (const paper of Object.keys(paperSizes)) {
       for (const orientation of ['auto', 'portrait', 'landscape']) {
-        for (const borderless of [false, true]) {
-          if (borderless && !paperSizes[paper].borderless) continue;
-          const { margin: PRINT_MARGIN, gap: PHOTO_GAP } =
-            printSpacing(borderless);
-          const layout = photoLayout(
-            size,
-            count,
-            paper,
-            orientation,
-            borderless,
+        const layout = photoLayout(size, count, paper, orientation);
+        if (orientation !== 'auto')
+          assert.equal(layout.orientation, orientation);
+        assert.equal(layout.pages.flat().length, count);
+        assert(layout.pages.every((page) => page.length > 0));
+        const stock = paperSizes[paper];
+        assert.deepEqual(
+          [layout.paper.width, layout.paper.height].sort(),
+          [stock.width, stock.height].sort(),
+        );
+        const dimensions = photoSizes[size];
+        const capacity = (w, h) =>
+          Math.floor(
+            (w - 2 * PRINT_MARGIN + PHOTO_GAP) / (dimensions.width + PHOTO_GAP),
+          ) *
+          Math.floor(
+            (h - 2 * PRINT_MARGIN + PHOTO_GAP) /
+              (dimensions.height + PHOTO_GAP),
           );
-          assert.equal(layout.borderless, borderless);
-          assert.equal(layout.pages.flat().length, count);
-          assert(layout.pages.every((page) => page.length > 0));
-          if (orientation !== 'auto')
-            assert.equal(layout.orientation, orientation);
-          const stock = paperSizes[paper];
-          assert.deepEqual(
-            [layout.paper.width, layout.paper.height].sort(),
-            [stock.width, stock.height].sort(),
-          );
-          const dimensions = photoSizes[size];
-          const capacity = (w, h) =>
-            Math.floor(
-              (w - 2 * PRINT_MARGIN + PHOTO_GAP) /
-                (dimensions.width + PHOTO_GAP),
-            ) *
-            Math.floor(
-              (h - 2 * PRINT_MARGIN + PHOTO_GAP) /
-                (dimensions.height + PHOTO_GAP),
-            );
-          const maxCapacity =
-            orientation === 'auto'
-              ? Math.max(
-                  capacity(stock.width, stock.height),
-                  capacity(stock.height, stock.width),
-                )
-              : capacity(layout.paper.width, layout.paper.height);
-          assert.equal(layout.pages.length, Math.ceil(count / maxCapacity));
-          assert.equal(
-            photosPerSheet(size, paper, orientation, borderless),
-            maxCapacity,
-          );
-          for (const cells of layout.pages)
-            for (const mark of cutMarks(cells, layout.paper, borderless)) {
-              // Marks stay on the paper and never touch or cross a photo.
-              for (const t of [0, 0.5, 1]) {
-                const x = mark.x1 + (mark.x2 - mark.x1) * t;
-                const y = mark.y1 + (mark.y2 - mark.y1) * t;
-                assert(x >= 0 && y >= 0);
-                assert(x <= layout.paper.width && y <= layout.paper.height);
-                assert(
-                  cells.every(
-                    (c) =>
-                      x < c.x - 0.01 ||
-                      x > c.x + c.width + 0.01 ||
-                      y < c.y - 0.01 ||
-                      y > c.y + c.height + 0.01,
-                  ),
-                );
-              }
-            }
-          for (const cells of layout.pages) {
-            cells.forEach((cell, index) => {
-              assert.equal(cell.width, dimensions.width);
-              assert.equal(cell.height, dimensions.height);
-              assert(cell.x >= PRINT_MARGIN && cell.y >= PRINT_MARGIN);
-              assert(cell.x + cell.width <= layout.paper.width - PRINT_MARGIN);
-              assert(
-                cell.y + cell.height <= layout.paper.height - PRINT_MARGIN,
-              );
-              cells
-                .slice(index + 1)
-                .forEach((other) =>
-                  assert(
-                    cell.x + cell.width + PHOTO_GAP <= other.x ||
-                      other.x + other.width + PHOTO_GAP <= cell.x ||
-                      cell.y + cell.height + PHOTO_GAP <= other.y ||
-                      other.y + other.height + PHOTO_GAP <= cell.y,
-                  ),
-                );
-            });
-          }
-          for (const marks of [true, false]) {
-            // Image encoding is the browser's responsibility; these bytes test binary PDF offsets.
-            const imageBytes = new Uint8Array([255, 216, 0, 128, 255, 217]);
-            const canvas = {
-              width: mmToPixels(dimensions.width),
-              height: mmToPixels(dimensions.height),
-              toBlob: (callback) => callback(new Blob([imageBytes])),
-            };
-            const blob = await createPhotoPdf(
-              canvas,
-              size,
-              count,
-              marks,
-              paper,
-              orientation,
-              borderless,
-            );
-            const text = Buffer.from(await blob.arrayBuffer()).toString(
-              'latin1',
-            );
-            const mediaBox = `/MediaBox [0 0 ${((layout.paper.width * 72) / 25.4).toFixed(5)} ${((layout.paper.height * 72) / 25.4).toFixed(5)}]`;
-            assert.equal(text.split(mediaBox).length - 1, layout.pages.length);
-            assert(text.includes(`/Count ${layout.pages.length}`));
-            assert(text.includes('/PrintScaling /None'));
-            assert.equal((text.match(/\/Photo Do/g) || []).length, count);
+        const maxCapacity =
+          orientation === 'auto'
+            ? Math.max(
+                capacity(stock.width, stock.height),
+                capacity(stock.height, stock.width),
+              )
+            : capacity(layout.paper.width, layout.paper.height);
+        assert.equal(photosPerSheet(size, paper, orientation), maxCapacity);
+        assert.equal(layout.pages.length, Math.ceil(count / maxCapacity));
+        for (const cells of layout.pages) {
+          const frames = cutFrames(cells);
+          // One frame per photo, hugging it from the outside.
+          assert.equal(frames.length, cells.length);
+          const w = CUT_MARK_STYLE.width;
+          frames.forEach((frame, i) => {
+            const c = cells[i];
+            assert(Math.abs(frame.x + w / 2 - c.x) < 1e-9);
+            assert(Math.abs(frame.y + w / 2 - c.y) < 1e-9);
+            assert(Math.abs(frame.width - w - c.width) < 1e-9);
+            assert(Math.abs(frame.height - w - c.height) < 1e-9);
+            // Frame stays on the paper and clear of neighbouring photos.
+            assert(frame.x - w / 2 >= 0 && frame.y - w / 2 >= 0);
+            assert(frame.x + frame.width + w / 2 <= layout.paper.width);
+            assert(frame.y + frame.height + w / 2 <= layout.paper.height);
+          });
+          // Full pages form a complete grid: rows are equally long.
+          const rows = new Map();
+          for (const c of cells) rows.set(c.y, (rows.get(c.y) ?? 0) + 1);
+          if (layout.pages.length === 1)
             assert.equal(
-              (text.match(/ l S/g) || []).length,
-              marks
-                ? layout.pages.reduce(
-                    (sum, cells) =>
-                      sum + cutMarks(cells, layout.paper, borderless).length,
-                    0,
-                  )
-                : 0,
+              new Set(rows.values()).size,
+              1,
+              `${size} ${count} ${paper}`,
             );
-            if (marks && !borderless) {
-              // Every corner gets guides; halves that meet in a gap are joined.
-              const lines = (text.match(/ l S/g) || []).length;
-              assert(lines > 0 && lines <= count * 8);
-            }
-            assert.equal((text.match(/\/Subtype \/Image/g) || []).length, 1);
-            const xref = Number(text.match(/startxref\n(\d+)/)[1]);
-            assert.equal(text.slice(xref, xref + 4), 'xref');
-            const xrefLines = text.slice(xref).split('\n');
-            const objects = Number(xrefLines[1].split(' ')[1]);
-            xrefLines
-              .slice(3, 3 + objects - 1)
-              .forEach((entry, i) =>
+          cells.forEach((cell, index) => {
+            assert.equal(cell.width, dimensions.width);
+            assert.equal(cell.height, dimensions.height);
+            assert(cell.x >= PRINT_MARGIN && cell.y >= PRINT_MARGIN);
+            assert(cell.x + cell.width <= layout.paper.width - PRINT_MARGIN);
+            assert(cell.y + cell.height <= layout.paper.height - PRINT_MARGIN);
+            cells
+              .slice(index + 1)
+              .forEach((other) =>
                 assert(
-                  text
-                    .slice(Number(entry.slice(0, 10)))
-                    .startsWith(`${i + 1} 0 obj`),
+                  cell.x + cell.width + PHOTO_GAP <= other.x + 1e-9 ||
+                    other.x + other.width + PHOTO_GAP <= cell.x + 1e-9 ||
+                    cell.y + cell.height + PHOTO_GAP <= other.y + 1e-9 ||
+                    other.y + other.height + PHOTO_GAP <= cell.y + 1e-9,
                 ),
               );
-            variants++;
-          }
+          });
+        }
+        for (const marks of [true, false]) {
+          // Image encoding is the browser's responsibility; these bytes test binary PDF offsets.
+          const imageBytes = new Uint8Array([255, 216, 0, 128, 255, 217]);
+          const canvas = {
+            width: mmToPixels(dimensions.width),
+            height: mmToPixels(dimensions.height),
+            toBlob: (callback) => callback(new Blob([imageBytes])),
+          };
+          const blob = await createPhotoPdf(
+            canvas,
+            size,
+            count,
+            marks,
+            paper,
+            orientation,
+          );
+          const text = Buffer.from(await blob.arrayBuffer()).toString('latin1');
+          const mediaBox = `/MediaBox [0 0 ${((layout.paper.width * 72) / 25.4).toFixed(5)} ${((layout.paper.height * 72) / 25.4).toFixed(5)}]`;
+          assert.equal(text.split(mediaBox).length - 1, layout.pages.length);
+          assert(text.includes(`/Count ${layout.pages.length}`));
+          assert(text.includes('/PrintScaling /None'));
+          assert.equal((text.match(/\/Photo Do/g) || []).length, count);
+          assert.equal((text.match(/ re S/g) || []).length, marks ? count : 0);
+          assert.equal((text.match(/\/Subtype \/Image/g) || []).length, 1);
+          const xref = Number(text.match(/startxref\n(\d+)/)[1]);
+          assert.equal(text.slice(xref, xref + 4), 'xref');
+          const xrefLines = text.slice(xref).split('\n');
+          const objects = Number(xrefLines[1].split(' ')[1]);
+          xrefLines
+            .slice(3, 3 + objects - 1)
+            .forEach((entry, i) =>
+              assert(
+                text
+                  .slice(Number(entry.slice(0, 10)))
+                  .startsWith(`${i + 1} 0 obj`),
+              ),
+            );
+          variants++;
         }
       }
     }
   }
 }
-// Borderless 10 × 15: four 50 × 60 mm biometric photos fit on one sheet (2 × 2).
-{
-  const layout = photoLayout('large', 4, '10x15', 'auto', true);
-  assert.equal(layout.pages.length, 1);
-  assert.equal(layout.orientation, 'portrait');
-  assert.deepEqual(
-    layout.pages[0].map(({ x, y }) => [x, y]),
-    [
-      [0, 15],
-      [50, 15],
-      [0, 75],
-      [50, 75],
-    ],
-  );
-  assert.equal(photosPerSheet('large', '10x15', 'auto', true), 4);
-  assert.equal(photosPerSheet('large', '10x15', 'auto', false), 2);
-  assert.equal(photosPerSheet('standard', '10x15', 'auto', true), 8);
-  // Guides print only in the empty strips above and below the grid.
-  const marks = cutMarks(layout.pages[0], layout.paper, true);
-  assert(marks.length > 0);
-  assert(
-    marks.every(
-      (m) => Math.max(m.y1, m.y2) <= 15 || Math.min(m.y1, m.y2) >= 135,
-    ),
-  );
-  assert(marks.some((m) => m.x1 === 50 && m.x2 === 50));
-  // A4 ignores the borderless flag.
-  assert.equal(photoLayout('large', 4, 'A4', 'auto', true).borderless, false);
-}
+// With a 2 mm gap, six 35 × 45 mm photos fit one 10 × 15 sheet as a 2 × 3 grid.
+assert.deepEqual(
+  photoLayout('standard', 6, '10x15').pages.map((p) => p.length),
+  [6],
+);
+// Eight need two sheets: a full 2 × 3 page, then a row of 2.
+assert.deepEqual(
+  photoLayout('standard', 8, '10x15').pages.map((p) => p.length),
+  [6, 2],
+);
+assert.equal(photoLayout('standard', 6, 'A4').pages.length, 1);
 assert.equal(photoLayout('large', 8, '10x15').pages.length, 4);
 {
   const pixels = (width, height, paint) => {
@@ -290,5 +246,5 @@ for (const size of Object.keys(photoSizes)) {
       }
 }
 console.log(
-  `${variants} PDF variants passed: A4/10x15 (bordered and borderless), all sizes/counts/orientations, pagination, physical dimensions, spacing, crop bounds and file names.`,
+  `${variants} PDF variants passed: A4/10x15, all sizes/counts/orientations, pagination, regular grids, cut frames, physical dimensions, spacing, crop bounds and file names.`,
 );

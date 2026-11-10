@@ -10,7 +10,6 @@ import {
 } from 'react';
 import {
   BadgeCheck,
-  Maximize,
   Download,
   ExternalLink,
   ImagePlus,
@@ -26,11 +25,9 @@ import {
   biometricRules,
   createPhotoPdf,
   CUT_MARK_STYLE,
-  cutMarks,
-  photosPerSheet,
-  supportsBorderless,
   drawCrop,
   paperSizes,
+  photoCounts,
   photoDocumentName,
   type PaperSize,
   type PaperOrientation,
@@ -57,16 +54,11 @@ export default function PassportPhotoTool() {
   const [filename, setFilename] = useState('');
   const [purpose, setPurpose] = useState<PhotoPurpose>('vesikalik');
   const [vesikalikSize, setVesikalikSize] = useState<PhotoSize>('standard');
-  const [faceGuide, setFaceGuide] = useState(true);
   const [count, setCount] = useState<PhotoCount>(4);
   const [format, setFormat] = useState<PhotoFormat>('pdf');
-  const [jpegQuality, setJpegQuality] = useState('0.95');
-  const [exportPages, setExportPages] = useState('all');
   const [paperSize, setPaperSize] = useState<PaperSize>('A4');
   const [orientation, setOrientation] = useState<PaperOrientation>('auto');
-  const [borderlessChoice, setBorderlessChoice] = useState(false);
   const [previewPage, setPreviewPage] = useState(0);
-  const [documentTitle, setDocumentTitle] = useState('Vesikalık Fotoğraf');
   const [crop, setCrop] = useState(initialCrop);
   const [marks, setMarks] = useState(true);
   const [error, setError] = useState('');
@@ -88,31 +80,16 @@ export default function PassportPhotoTool() {
   // Biometric photos have a single official size; vesikalık keeps the user's pick.
   const size: PhotoSize = biometric ? 'large' : vesikalikSize;
   const dimensions = photoSizes[size];
-  const borderlessAvailable = supportsBorderless(paperSize);
-  const borderless = borderlessAvailable && borderlessChoice;
-  const layout = photoLayout(size, count, paperSize, orientation, borderless);
-  const perSheet = photosPerSheet(size, paperSize, orientation, borderless);
-  const perSheetOther = borderlessAvailable
-    ? photosPerSheet(size, paperSize, orientation, !borderless)
-    : perSheet;
-  // Offer edge-to-edge printing when it would save sheets.
-  const borderlessPages =
-    borderlessAvailable && !borderless
-      ? photoLayout(size, count, paperSize, orientation, true).pages.length
-      : layout.pages.length;
-  const paperLabel = `${paperSizes[paperSize].label}${borderless ? ' kenarsız' : ''}`;
+  const layout = photoLayout(size, count, paperSize, orientation);
+  const paperLabel = paperSizes[paperSize].label;
   const pageIndex = Math.min(previewPage, layout.pages.length - 1);
   const paper = layout.paper;
   const baseName = photoDocumentName(
     size,
     count,
     paperSize,
-    documentTitle,
+    photoPurposes[purpose].title,
   ).replace(/\.pdf$/, '');
-  const documentName =
-    format === 'pdf'
-      ? `${baseName}.pdf`
-      : `${baseName}${layout.pages.length > 1 && exportPages === 'all' ? `_${format.toUpperCase()}.zip` : `${layout.pages.length > 1 ? `_Sayfa-${String(pageIndex + 1).padStart(2, '0')}` : ''}.${format === 'jpeg' ? 'jpg' : 'png'}`}`;
   const effectivePpi = image
     ? Math.round(
         300 /
@@ -149,13 +126,6 @@ export default function PassportPhotoTool() {
   }, [image, biometric, size, crop]);
 
   function choosePurpose(next: PhotoPurpose) {
-    if (next === purpose) return;
-    // Swap the default document name only if the user has not typed their own.
-    if (
-      documentTitle.trim() === photoPurposes[purpose].title ||
-      !documentTitle.trim()
-    )
-      setDocumentTitle(photoPurposes[next].title);
     setPurpose(next);
     setPreviewPage(0);
   }
@@ -172,11 +142,12 @@ export default function PassportPhotoTool() {
     if (!context) return;
     context.fillStyle = '#fff';
     context.fillRect(0, 0, sheet.width, sheet.height);
-    // Same black guides as the print; at least 1 px so they stay visible when scaled down.
+    // Same frame as the print; 1 px is the thinnest line that stays visible on screen.
     context.strokeStyle = CUT_MARK_STYLE.color;
-    context.lineWidth = Math.max(1, CUT_MARK_STYLE.width * 3);
-    const cells = photoLayout(size, count, paperSize, orientation, borderless)
-      .pages[pageIndex];
+    context.lineWidth = 1;
+    const cells = photoLayout(size, count, paperSize, orientation).pages[
+      pageIndex
+    ];
     for (const cell of cells)
       context.drawImage(
         cropped,
@@ -187,9 +158,16 @@ export default function PassportPhotoTool() {
       );
     if (marks) {
       context.beginPath();
-      for (const mark of cutMarks(cells, paper, borderless)) {
-        context.moveTo(mark.x1 * 3, mark.y1 * 3);
-        context.lineTo(mark.x2 * 3, mark.y2 * 3);
+      // A 1 px frame snapped to the pixel grid just outside each photo.
+      for (const cell of cells) {
+        const left = Math.round(cell.x * 3) - 0.5;
+        const top = Math.round(cell.y * 3) - 0.5;
+        context.rect(
+          left,
+          top,
+          Math.round((cell.x + cell.width) * 3) + 0.5 - left,
+          Math.round((cell.y + cell.height) * 3) + 0.5 - top,
+        );
       }
       context.stroke();
     }
@@ -201,7 +179,6 @@ export default function PassportPhotoTool() {
     marks,
     paperSize,
     orientation,
-    borderless,
     pageIndex,
     paper,
   ]);
@@ -312,7 +289,6 @@ export default function PassportPhotoTool() {
                 marks,
                 paperSize,
                 orientation,
-                borderless,
               ),
               name: `${baseName}.pdf`,
             }
@@ -324,10 +300,7 @@ export default function PassportPhotoTool() {
               paperSize,
               orientation,
               format,
-              Number(jpegQuality),
               baseName,
-              exportPages === 'current' ? pageIndex : undefined,
-              borderless,
             );
       const blob = result.blob;
       const url = URL.createObjectURL(blob);
@@ -339,7 +312,7 @@ export default function PassportPhotoTool() {
       link.remove();
       window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
       setStatus(
-        `Dosya hazır; indirme başlatıldı. Yazdırırken ${paperSizes[paperSize].description}, ${layout.orientation === 'portrait' ? 'dikey' : 'yatay'} yön ve %100 / gerçek boyut seç${borderless ? '; yazıcıda kenarsız baskıyı aç' : ''}.`,
+        `Dosya hazır; indirme başlatıldı. Yazdırırken ${paperSizes[paperSize].description}, ${layout.orientation === 'portrait' ? 'dikey' : 'yatay'} yön ve %100 / gerçek boyut seç.`,
       );
     } catch {
       setStatus('');
@@ -462,7 +435,10 @@ export default function PassportPhotoTool() {
                     name="paper-size"
                     value={key}
                     checked={paperSize === key}
-                    onChange={() => setPaperSize(key)}
+                    onChange={() => {
+                      setPaperSize(key);
+                      setPreviewPage(0);
+                    }}
                   />
                   <span>
                     <strong>{paperSizes[key].label}</strong>
@@ -472,57 +448,6 @@ export default function PassportPhotoTool() {
               ))}
             </div>
           </fieldset>
-          {borderlessAvailable && (
-            <div className={`photo-borderless${borderless ? ' is-on' : ''}`}>
-              <label className="photo-switch">
-                <input
-                  type="checkbox"
-                  role="switch"
-                  checked={borderless}
-                  onChange={(event) => {
-                    setBorderlessChoice(event.target.checked);
-                    setPreviewPage(0);
-                  }}
-                />
-                <span className="photo-switch-track" aria-hidden="true" />
-                <span className="photo-switch-text">
-                  <strong>
-                    <Maximize size={13} aria-hidden="true" /> Kenarsız baskı
-                  </strong>
-                  <small>
-                    Fotoğraflar kenar boşluğu ve ara boşluk olmadan, kenardan
-                    kenara dizilir.
-                  </small>
-                </span>
-              </label>
-              <div className="photo-borderless-stats">
-                <span>
-                  Sayfa başına
-                  <strong>{perSheet} adet</strong>
-                </span>
-                <span>
-                  {borderless ? 'Kenarlı düzende' : 'Kenarsız düzende'}
-                  <strong>{perSheetOther} adet</strong>
-                </span>
-                <span>
-                  Kenar · ara boşluk
-                  <strong>{borderless ? '0 · 0 mm' : '5 · 4 mm'}</strong>
-                </span>
-              </div>
-              {borderless && (
-                <p className="photo-borderless-warning">
-                  <TriangleAlert size={14} aria-hidden="true" />
-                  <span>
-                    Yazıcın <strong>kenarsız baskıyı</strong> desteklemeli.
-                    Yazdırırken kenarsız seçeneğini aç ve varsa{' '}
-                    <strong>genişletme miktarını en aza</strong> indir; aksi
-                    halde fotoğraflar birkaç milimetre büyüyebilir ya da
-                    kenarlardan kırpılabilir.
-                  </span>
-                </p>
-              )}
-            </div>
-          )}
           <label className="photo-select-label" htmlFor="paper-orientation">
             Kağıt yönü
           </label>
@@ -530,9 +455,10 @@ export default function PassportPhotoTool() {
             className="photo-select"
             id="paper-orientation"
             value={orientation}
-            onChange={(event) =>
-              setOrientation(event.target.value as PaperOrientation)
-            }
+            onChange={(event) => {
+              setOrientation(event.target.value as PaperOrientation);
+              setPreviewPage(0);
+            }}
           >
             <option value="auto">Otomatik yerleştir</option>
             <option value="portrait">Dikey</option>
@@ -548,7 +474,10 @@ export default function PassportPhotoTool() {
                     name="photo-size"
                     value={key}
                     checked={size === key}
-                    onChange={() => setVesikalikSize(key)}
+                    onChange={() => {
+                      setVesikalikSize(key);
+                      setPreviewPage(0);
+                    }}
                   />
                   <span>{photoSizes[key].label}</span>
                 </label>
@@ -565,14 +494,17 @@ export default function PassportPhotoTool() {
           <fieldset className="photo-field">
             <legend>Toplam fotoğraf adedi</legend>
             <div className="photo-options photo-count-options">
-              {([1, 2, 4, 8] as const).map((value) => (
+              {photoCounts.map((value) => (
                 <label key={value}>
                   <input
                     type="radio"
                     name="photo-count"
                     value={value}
                     checked={count === value}
-                    onChange={() => setCount(value)}
+                    onChange={() => {
+                      setCount(value);
+                      setPreviewPage(0);
+                    }}
                   />
                   <span>{value} adet</span>
                 </label>
@@ -585,7 +517,7 @@ export default function PassportPhotoTool() {
               checked={marks}
               onChange={(event) => setMarks(event.target.checked)}
             />{' '}
-            Kesim işaretlerini göster
+            Kesim çerçevelerini göster
           </label>
           <div className="photo-step-title">
             <span>4</span>
@@ -636,16 +568,6 @@ export default function PassportPhotoTool() {
                 setCrop({ ...crop, vertical: Number(event.target.value) })
               }
             />
-            {biometric && (
-              <label className="photo-checkbox photo-guide-toggle">
-                <input
-                  type="checkbox"
-                  checked={faceGuide}
-                  onChange={(event) => setFaceGuide(event.target.checked)}
-                />{' '}
-                Yüz kılavuzunu göster
-              </label>
-            )}
             <button
               type="button"
               className="photo-reset"
@@ -698,7 +620,7 @@ export default function PassportPhotoTool() {
                     drag.current = null;
                   }}
                 />
-                {image && biometric && faceGuide && (
+                {image && biometric && (
                   <svg
                     className="photo-face-guide"
                     viewBox="0 0 50 60"
@@ -726,7 +648,7 @@ export default function PassportPhotoTool() {
               </p>
               {image && (
                 <span className="photo-drag-hint">
-                  {biometric && faceGuide
+                  {biometric
                     ? 'Başını ve saçını kesikli alana yerleştir'
                     : 'Kadraj için sürükle'}
                 </span>
@@ -753,10 +675,7 @@ export default function PassportPhotoTool() {
                   </div>
                 )}
               </div>
-              <p>
-                {paperSizes[paperSize].description}
-                {borderless ? ' · kenarsız' : ''}
-              </p>
+              <p>{paperSizes[paperSize].description}</p>
               {layout.pages.length > 1 && (
                 <div
                   className="photo-page-navigation"
@@ -798,24 +717,9 @@ export default function PassportPhotoTool() {
           </div>
           {layout.pages.length > 1 && (
             <div className="photo-layout-note" role="status">
-              <p>
-                Bu ölçüde {count} fotoğraf tek {paperLabel} sayfasına sığmıyor.
-                Fotoğraf ölçüleri korunarak {layout.pages.length} sayfaya
-                yerleştirildi.
-              </p>
-              {borderlessPages < layout.pages.length && (
-                <button
-                  type="button"
-                  className="photo-layout-action"
-                  onClick={() => {
-                    setBorderlessChoice(true);
-                    setPreviewPage(0);
-                  }}
-                >
-                  <Maximize size={13} aria-hidden="true" /> Kenarsız düzene geç
-                  · {borderlessPages} sayfa
-                </button>
-              )}
+              Bu ölçüde {count} fotoğraf tek {paperLabel} sayfasına sığmıyor.
+              Fotoğraf ölçüleri korunarak {layout.pages.length} sayfaya
+              yerleştirildi.
             </div>
           )}
           {background && (
@@ -858,61 +762,10 @@ export default function PassportPhotoTool() {
                 ))}
               </div>
             </fieldset>
-            {format === 'jpeg' && (
-              <>
-                <label className="photo-select-label" htmlFor="jpeg-quality">
-                  JPEG kalitesi
-                </label>
-                <select
-                  className="photo-select"
-                  id="jpeg-quality"
-                  value={jpegQuality}
-                  onChange={(e) => setJpegQuality(e.target.value)}
-                >
-                  <option value="0.9">%90 · Daha küçük dosya</option>
-                  <option value="0.95">%95 · Dengeli</option>
-                  <option value="1">%100 · En yüksek kalite</option>
-                </select>
-              </>
-            )}
-            {format !== 'pdf' && layout.pages.length > 1 && (
-              <>
-                <label className="photo-select-label" htmlFor="export-pages">
-                  İndirilecek sayfalar
-                </label>
-                <select
-                  className="photo-select"
-                  id="export-pages"
-                  value={exportPages}
-                  onChange={(e) => setExportPages(e.target.value)}
-                >
-                  <option value="all">Tüm sayfalar · ZIP dosyası</option>
-                  <option value="current">Önizlemedeki sayfa</option>
-                </select>
-              </>
-            )}
             <p className="photo-format-note">
               {format === 'pdf'
                 ? 'Baskı için önerilir. Tüm sayfalar tek PDF dosyasındadır.'
-                : `${photoFormats[format]} görselleri 300 dpi olarak hazırlanır.${layout.pages.length > 1 && exportPages === 'all' ? ' Her sayfa ayrı görseldir; birlikte ZIP olarak indirilir.' : ''}`}
-            </p>
-            <label
-              className="photo-select-label"
-              htmlFor="photo-document-title"
-            >
-              Belge adı
-            </label>
-            <input
-              className="photo-document-title"
-              id="photo-document-title"
-              type="text"
-              maxLength={60}
-              value={documentTitle}
-              onChange={(event) => setDocumentTitle(event.target.value)}
-              placeholder={photoPurposes[purpose].title}
-            />
-            <p className="photo-download-filename" title={documentName}>
-              {documentName}
+                : `${photoFormats[format]} görselleri 300 dpi olarak hazırlanır.${layout.pages.length > 1 ? ' Her sayfa ayrı görseldir; birlikte ZIP olarak indirilir.' : ''}`}
             </p>
             <button
               type="button"
@@ -950,17 +803,9 @@ export default function PassportPhotoTool() {
           </strong>
           , ölçeği <strong>%100 / Gerçek boyut</strong> olarak seç. “Sayfaya
           sığdır” seçeneğini kapat. Yazıcı ayarlarından kullandığın fotoğraf
-          kağıdı türünü seç. Kesim işaretleri fotoğrafların sınırlarını
+          kağıdı türünü seç. Kesim çerçeveleri fotoğrafların sınırlarını
           gösterir.
         </p>
-        {borderless && (
-          <p>
-            <strong>Kenarsız baskı:</strong> Yazıcı ayarlarında “Kenarsız”
-            seçeneğini aç ve genişletme miktarını en düşük seviyeye getir.
-            Fotoğraflar birbirine bitişik basılır; kağıdın boş şeridindeki kesim
-            işaretlerini takip ederek fotoğraf sınırlarından kes.
-          </p>
-        )}
         <p>
           Bu araç fotoğrafı seçilen ölçüye kırpar ve yerleştirir; arka planı
           değiştirmez. Fon kontrolü ve yüz kılavuzu yalnızca yardımcıdır,

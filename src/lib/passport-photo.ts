@@ -1,4 +1,3 @@
-export type PhotoCount = 1 | 2 | 4 | 8;
 export const photoSizes = {
   standard: { label: '3,5 × 4,5 cm', width: 35, height: 45 },
   classic: { label: '4 × 6 cm', width: 40, height: 60 },
@@ -77,323 +76,144 @@ export function backgroundWhiteness(
   const ratio = total ? white / total : 0;
   return { ratio, white: ratio >= 0.8 };
 }
+export const photoCounts = [1, 2, 4, 6, 8] as const;
+export type PhotoCount = (typeof photoCounts)[number];
+
 export const paperSizes = {
-  A4: {
-    label: 'A4',
-    width: 210,
-    height: 297,
-    description: '21 × 29,7 cm',
-    borderless: false,
-  },
+  A4: { label: 'A4', width: 210, height: 297, description: '21 × 29,7 cm' },
   '10x15': {
     label: '10 × 15',
     width: 100,
     height: 150,
     description: '10 × 15 cm fotoğraf kağıdı',
-    // Photo printers commonly print 10 × 15 edge to edge.
-    borderless: true,
   },
 } as const;
 export type PaperSize = keyof typeof paperSizes;
 export type PaperOrientation = 'auto' | 'portrait' | 'landscape';
 export const DPI = 300;
+/** Safe margin from the paper edge, in millimetres. */
 export const PRINT_MARGIN = 5;
-export const PHOTO_GAP = 4;
+/** Cutting gap between neighbouring photos, in millimetres. */
+export const PHOTO_GAP = 2;
 export const mmToPixels = (mm: number) => Math.round((mm * DPI) / 25.4);
 
-export const supportsBorderless = (paperSize: PaperSize) =>
-  paperSizes[paperSize].borderless;
+export type PhotoCell = { x: number; y: number; width: number; height: number };
+/** Shared look of the cut frame in the PDF, PNG/JPEG export and on-screen preview. */
+export const CUT_MARK_STYLE = {
+  color: '#000000',
+  /** Fine hairline, in millimetres (≈ 0.14 pt). */
+  width: 0.05,
+} as const;
 
-/** Bordered prints keep a safe margin and a cutting gap; borderless prints use neither. */
-export const printSpacing = (borderless: boolean) =>
-  borderless ? { margin: 0, gap: 0 } : { margin: PRINT_MARGIN, gap: PHOTO_GAP };
-
-function sheetGrid(
-  size: PhotoSize,
-  paper: { width: number; height: number },
-  borderless: boolean,
-) {
+function sheetGrid(size: PhotoSize, paper: { width: number; height: number }) {
   const { width, height } = photoSizes[size];
-  const { margin, gap } = printSpacing(borderless);
-  // The epsilon keeps exact fits (2 × 50 mm on 100 mm) from rounding down.
+  // The epsilon keeps exact fits from rounding down.
   return {
     columns: Math.floor(
-      (paper.width - margin * 2 + gap) / (width + gap) + 1e-9,
+      (paper.width - PRINT_MARGIN * 2 + PHOTO_GAP) / (width + PHOTO_GAP) + 1e-9,
     ),
-    rows: Math.floor((paper.height - margin * 2 + gap) / (height + gap) + 1e-9),
+    rows: Math.floor(
+      (paper.height - PRINT_MARGIN * 2 + PHOTO_GAP) / (height + PHOTO_GAP) +
+        1e-9,
+    ),
   };
 }
+
+/** Orientations to try: both for 'auto', otherwise only the chosen one. */
+const directions = (orientation: PaperOrientation) =>
+  orientation === 'auto'
+    ? (['portrait', 'landscape'] as const)
+    : ([orientation] as const);
+
+const orientedPaper = (
+  paperSize: PaperSize,
+  direction: 'portrait' | 'landscape',
+) => {
+  const { width, height } = paperSizes[paperSize];
+  return direction === 'portrait'
+    ? { width, height }
+    : { width: height, height: width };
+};
 
 /** Most photos of `size` that fit on one sheet in the given (or best) orientation. */
 export function photosPerSheet(
   size: PhotoSize,
   paperSize: PaperSize,
   orientation: PaperOrientation = 'auto',
-  borderless = false,
 ) {
-  const stock = paperSizes[paperSize];
-  const effective = borderless && stock.borderless;
-  const directions =
-    orientation === 'auto'
-      ? (['portrait', 'landscape'] as const)
-      : [orientation];
   return Math.max(
-    ...directions.map((direction) => {
+    ...directions(orientation).map((direction) => {
       const { columns, rows } = sheetGrid(
         size,
-        direction === 'portrait'
-          ? { width: stock.width, height: stock.height }
-          : { width: stock.height, height: stock.width },
-        effective,
+        orientedPaper(paperSize, direction),
       );
       return columns * rows;
     }),
   );
 }
 
-export type PhotoCell = { x: number; y: number; width: number; height: number };
-export type CutMark = { x1: number; y1: number; x2: number; y2: number };
-
 /**
- * Cut guides for one page, in millimetres. Bordered sheets get corner ticks
- * just outside every photo. Borderless sheets have no gaps between photos, so
- * guides are drawn only in the empty strips around the grid, in line with the
- * cutting edges; they never touch a photo.
+ * Cut frames for one page, in millimetres: one thin rectangle around every
+ * photo. The returned rectangle is the stroke's centre line, pushed out by half
+ * the line width, so the line lies just outside the photo and never covers it;
+ * cutting along the inner edge of the frame gives the exact photo size.
  */
-/** Shared look of cut guides in the PDF, PNG/JPEG export and on-screen preview. */
-export const CUT_MARK_STYLE = {
-  /** Solid black so the guides stay visible on any printer and paper. */
-  color: '#000000',
-  /** Line width in millimetres (≈ 0.7 pt). */
-  width: 0.25,
-} as const;
-/** Gap kept between a guide and the photo, so a slightly off cut leaves no line on it. */
-const CUT_MARK_OFFSET = 0.5;
-/** Longest guide; long enough to line up a ruler or a trimmer blade. */
-const CUT_MARK_LENGTH = 4;
-
-/**
- * Free distance from (x, y) along a horizontal (axis 'x') or vertical ray,
- * up to the next photo or the paper edge. Between two photos only half of the
- * gap is used, so the neighbour's guide on the same line has room too.
- */
-function freeDistance(
-  cells: PhotoCell[],
-  paper: { width: number; height: number },
-  x: number,
-  y: number,
-  axis: 'x' | 'y',
-  direction: 1 | -1,
-) {
-  const position = axis === 'x' ? x : y;
-  const cross = axis === 'x' ? y : x;
-  let free =
-    direction === 1
-      ? (axis === 'x' ? paper.width : paper.height) - position
-      : position;
-  for (const c of cells) {
-    const [start, size, crossStart, crossSize] =
-      axis === 'x'
-        ? [c.x, c.width, c.y, c.height]
-        : [c.y, c.height, c.x, c.width];
-    if (cross < crossStart - 0.01 || cross > crossStart + crossSize + 0.01)
-      continue;
-    const distance =
-      direction === 1 ? start - position : position - (start + size);
-    if (distance > 0.01) free = Math.min(free, distance / 2);
-  }
-  return free;
+export function cutFrames(cells: PhotoCell[]): PhotoCell[] {
+  const half = CUT_MARK_STYLE.width / 2;
+  return cells.map((cell) => ({
+    x: cell.x - half,
+    y: cell.y - half,
+    width: cell.width + CUT_MARK_STYLE.width,
+    height: cell.height + CUT_MARK_STYLE.width,
+  }));
 }
 
 /**
- * Joins guides that lie on the same cutting line and nearly meet (the two
- * halves drawn into a gap from photos on either side), so the gap shows one
- * solid line instead of two short dashes.
+ * Places `count` photos in a regular grid. Pages are filled in order; each page
+ * uses the same column count, so photos line up and cut lines stay straight.
  */
-function mergeCollinear(marks: CutMark[]) {
-  const round = (value: number) => Math.round(value * 1000) / 1000;
-  const lines = new Map<string, { start: number; end: number }[]>();
-  for (const m of marks) {
-    const vertical = m.x1 === m.x2;
-    const key = `${vertical ? 'v' : 'h'}${round(vertical ? m.x1 : m.y1)}`;
-    const [a, b] = vertical ? [m.y1, m.y2] : [m.x1, m.x2];
-    const list = lines.get(key) ?? [];
-    list.push({ start: Math.min(a, b), end: Math.max(a, b) });
-    lines.set(key, list);
-  }
-  const merged: CutMark[] = [];
-  for (const [key, list] of lines) {
-    const vertical = key[0] === 'v';
-    const at = Number(key.slice(1));
-    list.sort((a, b) => a.start - b.start);
-    const runs: { start: number; end: number }[] = [];
-    for (const segment of list) {
-      const last = runs[runs.length - 1];
-      if (last && segment.start - last.end <= 0.6)
-        last.end = Math.max(last.end, segment.end);
-      else runs.push({ ...segment });
-    }
-    for (const { start, end } of runs)
-      merged.push(
-        vertical
-          ? { x1: at, y1: start, x2: at, y2: end }
-          : { x1: start, y1: at, x2: end, y2: at },
-      );
-  }
-  return merged;
-}
-
-export function cutMarks(
-  cells: PhotoCell[],
-  paper: { width: number; height: number },
-  borderless = false,
-): CutMark[] {
-  const marks: CutMark[] = [];
-  if (!borderless) {
-    for (const cell of cells)
-      for (const x of [cell.x, cell.x + cell.width])
-        for (const y of [cell.y, cell.y + cell.height]) {
-          const dx = x === cell.x ? -1 : 1;
-          const dy = y === cell.y ? -1 : 1;
-          // Each corner gets two guides that continue the photo's edges outward.
-          const reachX = Math.min(
-            CUT_MARK_LENGTH + CUT_MARK_OFFSET,
-            freeDistance(cells, paper, x, y, 'x', dx) - 0.2,
-          );
-          const reachY = Math.min(
-            CUT_MARK_LENGTH + CUT_MARK_OFFSET,
-            freeDistance(cells, paper, x, y, 'y', dy) - 0.2,
-          );
-          marks.push({
-            x1: x + dx * CUT_MARK_OFFSET,
-            y1: y,
-            x2: x + dx * Math.max(reachX, CUT_MARK_OFFSET + 0.5),
-            y2: y,
-          });
-          marks.push({
-            x1: x,
-            y1: y + dy * CUT_MARK_OFFSET,
-            x2: x,
-            y2: y + dy * Math.max(reachY, CUT_MARK_OFFSET + 0.5),
-          });
-        }
-    return mergeCollinear(marks);
-  }
-  if (!cells.length) return marks;
-  const GUIDE = 6;
-  const CLEARANCE = CUT_MARK_OFFSET;
-  const round = (value: number) => Math.round(value * 1000) / 1000;
-  const unique = (values: number[]) =>
-    [...new Set(values.map(round))].filter(
-      (value) => value > 0.01 && value < Math.max(paper.width, paper.height),
-    );
-  const top = Math.min(...cells.map((c) => c.y));
-  const bottom = Math.max(...cells.map((c) => c.y + c.height));
-  const left = Math.min(...cells.map((c) => c.x));
-  const right = Math.max(...cells.map((c) => c.x + c.width));
-  const edgesX = (row: PhotoCell[]) =>
-    unique(row.flatMap((c) => [c.x, c.x + c.width])).filter(
-      (x) => x < paper.width - 0.01,
-    );
-  const edgesY = unique(cells.flatMap((c) => [c.y, c.y + c.height])).filter(
-    (y) => y < paper.height - 0.01,
-  );
-  // Vertical guides above the top row and below the bottom row.
-  if (top >= CLEARANCE + 1)
-    for (const x of edgesX(cells.filter((c) => round(c.y) === round(top))))
-      marks.push({
-        x1: x,
-        y1: Math.max(0, top - CLEARANCE - GUIDE),
-        x2: x,
-        y2: top - CLEARANCE,
-      });
-  if (paper.height - bottom >= CLEARANCE + 1)
-    for (const x of edgesX(
-      cells.filter((c) => round(c.y + c.height) === round(bottom)),
-    ))
-      marks.push({
-        x1: x,
-        y1: bottom + CLEARANCE,
-        x2: x,
-        y2: Math.min(paper.height, bottom + CLEARANCE + GUIDE),
-      });
-  // Horizontal guides left and right of the whole grid.
-  if (left >= CLEARANCE + 1)
-    for (const y of edgesY)
-      marks.push({
-        x1: Math.max(0, left - CLEARANCE - GUIDE),
-        y1: y,
-        x2: left - CLEARANCE,
-        y2: y,
-      });
-  if (paper.width - right >= CLEARANCE + 1)
-    for (const y of edgesY)
-      marks.push({
-        x1: right + CLEARANCE,
-        y1: y,
-        x2: Math.min(paper.width, right + CLEARANCE + GUIDE),
-        y2: y,
-      });
-  return marks;
-}
-
 export function photoLayout(
   size: PhotoSize,
   count: PhotoCount,
   paperSize: PaperSize = 'A4',
   orientation: PaperOrientation = 'auto',
-  borderlessRequest = false,
 ) {
   const { width, height } = photoSizes[size];
-  const stock = paperSizes[paperSize];
-  const borderless = borderlessRequest && stock.borderless;
-  const { gap: PHOTO_GAP } = printSpacing(borderless);
-  const directions =
-    orientation === 'auto'
-      ? (['portrait', 'landscape'] as const)
-      : [orientation];
-  const candidates = directions.flatMap((direction) => {
-    const paper =
-      direction === 'portrait'
-        ? { width: stock.width, height: stock.height }
-        : { width: stock.height, height: stock.width };
-    const { columns: maxColumns, rows: maxRows } = sheetGrid(
-      size,
-      paper,
-      borderless,
-    );
-    return Array.from({ length: Math.min(count, maxColumns) }, (_, i) => {
+  const candidates = directions(orientation).flatMap((direction) => {
+    const paper = orientedPaper(paperSize, direction);
+    const grid = sheetGrid(size, paper);
+    if (!grid.columns || !grid.rows) return [];
+    return Array.from({ length: Math.min(count, grid.columns) }, (_, i) => {
       const columns = i + 1;
-      const capacity = columns * maxRows;
-      const pageCount = Math.ceil(count / capacity);
-      const perPage = Math.ceil(count / pageCount);
-      const rows = Math.ceil(perPage / columns);
+      const perPage = columns * grid.rows;
+      const sizes = Array.from(
+        { length: Math.ceil(count / perPage) },
+        (_, page) => Math.min(perPage, count - page * perPage),
+      );
+      // Empty slots in incomplete rows make the grid irregular.
+      const empty = sizes.reduce(
+        (sum, n) => sum + Math.ceil(n / columns) * columns - n,
+        0,
+      );
+      const rows = Math.ceil(sizes[0] / columns);
       const gridWidth = columns * width + (columns - 1) * PHOTO_GAP;
       const gridHeight = rows * height + (rows - 1) * PHOTO_GAP;
       const score =
-        pageCount * 10000 +
-        (columns * rows - perPage) * 100 +
+        sizes.length * 10000 +
+        empty * 100 +
         Math.abs(
           Math.log(gridWidth / gridHeight / (paper.width / paper.height)),
         );
-      return {
-        paper,
-        orientation: direction,
-        columns,
-        pageCount,
-        perPage,
-        score,
-      };
-    }).filter((candidate) => Number.isFinite(candidate.score));
+      return { paper, orientation: direction, columns, sizes, score };
+    });
   });
   const best = candidates.sort((a, b) => a.score - b.score)[0];
   if (!best) throw new Error('Seçilen ölçü bu kağıda yerleştirilemiyor.');
-  const pages = Array.from({ length: best.pageCount }, (_, pageIndex) => {
-    const pagePhotos = Math.min(best.perPage, count - pageIndex * best.perPage);
+  const pages = best.sizes.map((pagePhotos) => {
     const rows = Math.ceil(pagePhotos / best.columns);
     const gridHeight = rows * height + (rows - 1) * PHOTO_GAP;
     const top = (best.paper.height - gridHeight) / 2;
-    return Array.from({ length: pagePhotos }, (_, index) => {
+    return Array.from({ length: pagePhotos }, (_, index): PhotoCell => {
       const row = Math.floor(index / best.columns);
       const rowColumns = Math.min(
         best.columns,
@@ -410,12 +230,7 @@ export function photoLayout(
       };
     });
   });
-  return {
-    paper: best.paper,
-    orientation: best.orientation,
-    pages,
-    borderless,
-  };
+  return { paper: best.paper, orientation: best.orientation, pages };
 }
 
 export function photoDocumentName(
@@ -487,7 +302,6 @@ export async function createPhotoPdf(
   marks: boolean,
   paperSize: PaperSize = 'A4',
   orientation: PaperOrientation = 'auto',
-  borderless = false,
 ) {
   const jpeg = await new Promise<Blob>((resolve, reject) =>
     crop.toBlob(
@@ -500,18 +314,18 @@ export async function createPhotoPdf(
   const image = new Uint8Array(await jpeg.arrayBuffer());
   const encoder = new TextEncoder();
   const pt = (mm: number) => ((mm * 72) / 25.4).toFixed(5);
-  const layout = photoLayout(size, count, paperSize, orientation, borderless);
+  const layout = photoLayout(size, count, paperSize, orientation);
   const streams = layout.pages.map((cells) => {
-    // Pure black (0 G), 0.25 mm wide, butt caps so guides end exactly where computed.
-    const commands = [`0 G ${pt(CUT_MARK_STYLE.width)} w 0 J`];
+    // Pure black (0 G) hairline with mitred corners so every frame closes cleanly.
+    const commands = [`0 G ${pt(CUT_MARK_STYLE.width)} w 0 j`];
     for (const cell of cells)
       commands.push(
         `q ${pt(cell.width)} 0 0 ${pt(cell.height)} ${pt(cell.x)} ${pt(layout.paper.height - cell.y - cell.height)} cm /Photo Do Q`,
       );
     if (marks)
-      for (const mark of cutMarks(cells, layout.paper, layout.borderless))
+      for (const frame of cutFrames(cells))
         commands.push(
-          `${pt(mark.x1)} ${pt(layout.paper.height - mark.y1)} m ${pt(mark.x2)} ${pt(layout.paper.height - mark.y2)} l S`,
+          `${pt(frame.x)} ${pt(layout.paper.height - frame.y - frame.height)} ${pt(frame.width)} ${pt(frame.height)} re S`,
         );
     return commands.join('\n');
   });

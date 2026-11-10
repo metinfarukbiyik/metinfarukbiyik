@@ -29,7 +29,7 @@ const faq = [
     question:
       'Tek sayfaya kaç vesikalık sığar, hangi formatlarda indirebilirim?',
     answer:
-      'Şablona 1, 2, 4 veya 8 adet vesikalık yerleştirebilirsin. Sonucu A4 ya da 10 × 15 cm fotoğraf kağıdı düzeninde PDF, PNG veya JPEG olarak indirebilirsin.',
+      'Şablona 1, 2, 4, 6 veya 8 adet vesikalık yerleştirebilirsin. Sonucu A4 ya da 10 × 15 cm fotoğraf kağıdı düzeninde PDF, PNG veya JPEG olarak indirebilirsin.',
   },
   {
     question:

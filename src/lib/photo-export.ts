@@ -1,6 +1,6 @@
 import {
   CUT_MARK_STYLE,
-  cutMarks,
+  cutFrames,
   DPI,
   photoLayout,
   type PhotoCount,
@@ -11,6 +11,7 @@ import {
 
 export type PhotoFormat = 'pdf' | 'png' | 'jpeg';
 export const photoFormats = { pdf: 'PDF', png: 'PNG', jpeg: 'JPEG' } as const;
+export const JPEG_QUALITY = 0.95;
 
 export function crc32(bytes: Uint8Array) {
   let crc = 0xffffffff;
@@ -144,17 +145,12 @@ export async function createPhotoRaster(
   paperSize: PaperSize,
   orientation: PaperOrientation,
   format: 'png' | 'jpeg',
-  quality: number,
   baseName: string,
-  selectedPage?: number,
-  borderless = false,
 ) {
-  const layout = photoLayout(size, count, paperSize, orientation, borderless);
+  const layout = photoLayout(size, count, paperSize, orientation);
   const files: { name: string; blob: Blob }[] = [];
-  const indices =
-    selectedPage === undefined ? layout.pages.map((_, i) => i) : [selectedPage];
   const scale = DPI / 25.4;
-  for (const index of indices) {
+  for (let index = 0; index < layout.pages.length; index++) {
     const sheet = document.createElement('canvas');
     sheet.width = Math.round(layout.paper.width * scale);
     sheet.height = Math.round(layout.paper.height * scale);
@@ -166,16 +162,14 @@ export async function createPhotoRaster(
     ctx.imageSmoothingQuality = 'high';
     ctx.strokeStyle = CUT_MARK_STYLE.color;
     ctx.lineWidth = CUT_MARK_STYLE.width;
-    ctx.lineCap = 'butt';
+    ctx.lineJoin = 'miter';
     const cells = layout.pages[index];
     for (const cell of cells)
       ctx.drawImage(crop, cell.x, cell.y, cell.width, cell.height);
     if (marks) {
       ctx.beginPath();
-      for (const mark of cutMarks(cells, layout.paper, layout.borderless)) {
-        ctx.moveTo(mark.x1, mark.y1);
-        ctx.lineTo(mark.x2, mark.y2);
-      }
+      for (const frame of cutFrames(cells))
+        ctx.rect(frame.x, frame.y, frame.width, frame.height);
       ctx.stroke();
     }
     const raw = await new Promise<Blob>((resolve, reject) =>
@@ -183,7 +177,7 @@ export async function createPhotoRaster(
         (blob) =>
           blob ? resolve(blob) : reject(new Error('Görsel oluşturulamadı.')),
         `image/${format}`,
-        quality,
+        JPEG_QUALITY,
       ),
     );
     const suffix =

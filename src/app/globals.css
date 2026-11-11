@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 /* biyik.dev UI */
+@custom-variant dark (&:where(.dark, .dark *));
 @import '../styles/tokens.css';
 @import '../styles/base.css';
 @import '../styles/ui.css';
@@ -9,8 +10,8 @@
 @import '../styles/tools.css';
 
 @theme inline {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --color-paper: var(--paper);
   --color-surface: var(--surface);
   --color-line: var(--line);

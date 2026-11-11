@@ -1,8 +1,8 @@
-import { Mail } from 'lucide-react';
-import { ButtonLink, Heading, Kicker } from '@/components/ui';
+import Link from 'next/link';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { site } from '@/lib/site';
 
-/** Closing call-to-action shared by the home, about and project pages. */
+/** Closing contact block shared by the about and project pages. */
 export default function ContactCta({
   title = 'Bir fikrin mi var? Birlikte hayata geçirelim.',
   description = 'Web sitesi, kurumsal sistem, mobil ya da masaüstü uygulama — ihtiyacını dinleyip en sade çözümü birlikte planlayalım.',
@@ -11,25 +11,30 @@ export default function ContactCta({
   description?: string;
 }) {
   return (
-    <section className="cta section" aria-labelledby="cta-baslik">
-      <div className="cta-copy">
-        <Kicker>iletişim</Kicker>
-        <Heading id="cta-baslik" size="2">
-          {title}
-        </Heading>
-        <p className="text-small">{description}</p>
-      </div>
-      <div className="cta-actions">
-        <ButtonLink href="/iletisim" variant="primary" trailing="arrow">
-          İletişime geç
-        </ButtonLink>
-        <ButtonLink
-          href={`mailto:${site.email}`}
-          variant="secondary"
-          icon={<Mail aria-hidden="true" />}
-        >
-          {site.email}
-        </ButtonLink>
+    <section className="section" aria-labelledby="cta-baslik">
+      <h2 id="cta-baslik" className="home-heading">
+        İletişim
+      </h2>
+      <p className="home-copy">
+        {title} {description}{' '}
+        <a className="text-link" href={`mailto:${site.email}`}>
+          Bana e-posta gönder
+        </a>
+        .
+      </p>
+      <div className="socials">
+        <Link href="/iletisim">
+          İletişim sayfası
+          <ArrowRight aria-hidden="true" />
+        </Link>
+        <a href={site.github} target="_blank" rel="noopener noreferrer">
+          GitHub
+          <ArrowUpRight aria-hidden="true" />
+        </a>
+        <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+          LinkedIn
+          <ArrowUpRight aria-hidden="true" />
+        </a>
       </div>
     </section>
   );

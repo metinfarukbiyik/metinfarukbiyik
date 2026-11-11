@@ -1,165 +1,194 @@
-import Image from 'next/image';
-import { Download, MapPin, UserRound } from 'lucide-react';
-import myPhoto from '@/assets/images/mefa.png';
-import ContactCta from '@/components/ContactCta';
-import WebJourney from '@/components/home/WebJourney';
-import { ProjectGrid, ProjectRows } from '@/components/projects/ProjectCard';
-import ToolCard from '@/components/tools/ToolCard';
-import { Badge, ButtonLink, Frame, Kicker, Section, TextLink, Tooltip } from '@/components/ui';
-import { certificates } from '@/data/cvData';
-import { appProjects, portfolioProjects, webProjects } from '@/data/projects';
-import { tools } from '@/data/tools';
+import { Fragment } from 'react';
+import Image, { type StaticImageData } from 'next/image';
+import Link from 'next/link';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import myPhoto from '@/assets/images/my.png';
+import { ProjectLogo } from '@/components/projects/ProjectIcon';
+import { experiences } from '@/data/cvData';
+import { getProject, portfolioProjects, type PortfolioProject } from '@/data/projects';
+import { toolCategories, tools } from '@/data/tools';
 import { pageMetadata, seoPages } from '@/lib/seo';
 import { site } from '@/lib/site';
 
 export const metadata = pageMetadata(seoPages.home);
 
-const firstLineYear = 2015;
-const stats = [
-  { value: String(portfolioProjects.length), label: 'yayında proje' },
-  { value: String(tools.length), label: 'ücretsiz araç' },
-  { value: `${new Date().getFullYear() - firstLineYear}+`, label: 'yıldır web ile' },
-  { value: String(certificates.length), label: 'sertifika' },
+const current = experiences[experiences.length - 1];
+const jobs = [...experiences].reverse().slice(0, 4);
+const featured = ['bizim-koy', 'byk-music', 'geocam', 'byk-seri-baski-pro']
+  .map(getProject)
+  .filter((project): project is PortfolioProject => Boolean(project));
+const projects = portfolioProjects.filter((project) => project.slug !== 'biyik-dev');
+const latestTools = tools.slice(0, 4);
+const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
+
+type Photo = { src: string | StaticImageData; alt: string; href: string; position?: string };
+
+/** Üç sütun, iki satır: sütunlar dikey/yatay oranları sırayla değiştirir. */
+const gallery: Photo[][] = [
+  [
+    { src: myPhoto, alt: 'Metin Faruk Bıyık', href: '/hakkimda' },
+    { src: '/images/bizim-koy/shot-1.jpg', alt: 'Bizim Köy — köy görünümü', href: '/projeler/bizim-koy' },
+  ],
+  [
+    { src: '/images/bizim-koy/shot-2.jpg', alt: 'Bizim Köy — tüccar gemisi', href: '/projeler/bizim-koy' },
+    { src: '/images/geocam/shot-2.jpg', alt: 'GeoCam: Audit — konum damgalı fotoğraf', href: '/projeler/geocam', position: 'top' },
+  ],
+  [
+    { src: '/images/bizim-koy/shot-4.jpg', alt: 'Bizim Köy — liman', href: '/projeler/bizim-koy' },
+    { src: '/images/bizim-koy/shot-7.jpg', alt: 'Bizim Köy — mobil görünüm', href: '/projeler/bizim-koy', position: 'top' },
+  ],
+];
+
+const socials = [
+  { label: 'GitHub', href: site.github },
+  { label: 'LinkedIn', href: site.linkedin },
+  { label: 'Instagram', href: site.instagram },
 ];
 
 export default function HomePage() {
   return (
-    <div className="container">
-      <section className="hero" aria-labelledby="hero-baslik">
-        <div className="hero-copy rise">
-          <Kicker>merhaba, ben</Kicker>
-          <h1 id="hero-baslik" className="title-display">
-            Metin Faruk Bıyık<span className="hero-caret" aria-hidden="true" />
-          </h1>
-          <p className="lead">
-            HTML ile başlayan merakımı bugün web, mobil ve masaüstünde günlük işleri
-            kolaylaştıran sade ürünlere dönüştürüyorum.
-          </p>
-          <div className="hero-meta">
-            <Badge icon={<MapPin aria-hidden="true" />}>Trabzon, Türkiye</Badge>
-            <Badge tone="accent" live>
-              Yeni projelere açık
-            </Badge>
-            <Badge code>web · ios · desktop</Badge>
-          </div>
-          <div className="hero-actions">
-            <ButtonLink href="/projeler" variant="primary" size="lg" trailing="arrow">
-              Projeleri incele
-            </ButtonLink>
-            <ButtonLink href="/hakkimda" size="lg" icon={<UserRound aria-hidden="true" />}>
-              Hakkımda
-            </ButtonLink>
-            <Tooltip content="PDF · güncel özgeçmiş">
-              <ButtonLink
-                href={site.cv}
-                download
-                variant="ghost"
-                size="lg"
-                icon={<Download aria-hidden="true" />}
-              >
-                CV
-              </ButtonLink>
-            </Tooltip>
-          </div>
-        </div>
-        <Frame
-          className="hero-card rise rise-2"
-          title="biyik.dev/metin"
-          meta="200 OK"
-          bodyClassName="hero-card-body"
-        >
-          <div className="hero-photo">
-            <Image
-              src={myPhoto}
-              alt="Metin Faruk Bıyık"
-              fill
-              priority
-              placeholder="blur"
-              sizes="(max-width: 860px) 60vw, 300px"
-            />
-          </div>
-          <pre className="hero-code" aria-hidden="true">
-            <code>
-              <span className="tk-p">&lt;</span>
-              <span className="tk-t">person</span>
-              {'\n  '}
-              <span className="tk-a">name</span>=<span className="tk-s">&quot;Metin Faruk Bıyık&quot;</span>
-              {'\n  '}
-              <span className="tk-a">city</span>=<span className="tk-s">&quot;Trabzon&quot;</span>
-              {'\n  '}
-              <span className="tk-a">since</span>=<span className="tk-s">&quot;1999&quot;</span>
-              {'\n'}
-              <span className="tk-p">/&gt;</span>
-            </code>
-          </pre>
-        </Frame>
-      </section>
+    <div className="home">
+      <section id="hakkimda" aria-labelledby="hakkimda-baslik">
+        <h2 id="hakkimda-baslik" className="home-heading">
+          Hakkımda
+        </h2>
+        <p className="home-copy">
+          {site.city}’da yaşayan bir yazılım geliştiriciyim. Şu anda{' '}
+          <Link className="text-link" href="/hakkimda#deneyim">
+            {current.company}
+          </Link>
+          ’de {current.role.toLocaleLowerCase('tr')} olarak çalışıyorum. Geri kalan zamanımda web, mobil ve
+          masaüstü için kendi ürünlerimi geliştiriyorum:{' '}
+          {featured.map((project, index) => (
+            <Fragment key={project.slug}>
+              {index > 0 ? (index === featured.length - 1 ? ' ve ' : ', ') : null}
+              <Link className="inline-project" href={project.href}>
+                <ProjectLogo project={project} />
+                {project.name}
+              </Link>
+            </Fragment>
+          ))}
+          . Hepsi sahada ve ofiste gördüğüm gerçek ihtiyaçlardan doğdu.
+        </p>
 
-      <dl className="stats rise rise-3">
-        {stats.map((stat) => (
-          <div key={stat.label}>
-            <dt>{stat.label}</dt>
-            <dd className="mono">{stat.value}</dd>
-          </div>
-        ))}
-      </dl>
-
-      <Section
-        id="yolculuk"
-        kicker="web yolculuğu"
-        index="01"
-        title="1999’dan bugüne, web ile birlikte büyüdüm."
-        description="Tablo düzenli sayfalardan fiber altyapıya, oradan bugünün uygulamalarına: her dönem bir sonraki ürüne malzeme oldu."
-      >
-        <WebJourney />
-      </Section>
-
-      <Section
-        id="uygulamalar"
-        kicker="uygulamalar"
-        index="02"
-        title="Fikirden çalışan ürüne."
-        description="İhtiyaçtan doğan, gerçek kullanıcıların her gün açtığı masaüstü ve mobil uygulamalar."
-        action={
-          <TextLink href="/projeler" arrow>
-            Tüm projeler
-          </TextLink>
-        }
-      >
-        <ProjectGrid projects={appProjects} />
-      </Section>
-
-      <Section
-        id="web"
-        kicker="web & kurumsal"
-        index="03"
-        title="Kurumlar ve kişiler için web."
-        description="Kurumsal tanıtım sitelerinden iş emri takip sistemlerine kadar web projeleri."
-        tight
-      >
-        <ProjectRows projects={webProjects} />
-      </Section>
-
-      <Section
-        id="araclar"
-        kicker="araçlar"
-        index="04"
-        title="Ücretsiz, kurulumsuz, tarayıcında."
-        description="Günlük küçük işler için hazırladığım araçlar. Veriler mümkün olan her yerde cihazında kalır."
-        action={
-          <TextLink href="/araclar" arrow>
-            Tüm araçlar
-          </TextLink>
-        }
-      >
-        <div className="tool-grid">
-          {tools.map((tool) => (
-            <ToolCard key={tool.slug} tool={tool} />
+        <div className="gallery">
+          {gallery.map((column, index) => (
+            <div className="gallery-column" key={index}>
+              {column.map((photo) => (
+                <Link className="gallery-photo" href={photo.href} key={photo.alt} aria-label={photo.alt}>
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="(max-width: 720px) 33vw, 224px"
+                    priority={index === 0}
+                    style={photo.position ? { objectPosition: photo.position } : undefined}
+                  />
+                </Link>
+              ))}
+            </div>
           ))}
         </div>
-      </Section>
 
-      <ContactCta />
+        <p className="home-copy">
+          2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip yönetiminde geçen
+          yıllardan sonra bugün ekrandaki ürünlere dönüştü. Ayrıca günlük küçük işler için{' '}
+          <Link className="text-link" href="/araclar">
+            ücretsiz araçlar
+          </Link>{' '}
+          hazırlıyorum.
+        </p>
+      </section>
+
+      <section id="deneyim" aria-labelledby="deneyim-baslik">
+        <h2 id="deneyim-baslik" className="home-heading">
+          Deneyim
+        </h2>
+        <div className="job-list">
+          {jobs.map((job) => (
+            <Link className="job" href="/hakkimda#deneyim" key={`${job.company}-${job.period}`}>
+              <div>
+                <h3>{job.company}</h3>
+                <p>{job.role}</p>
+              </div>
+              <span>{job.period.replace(' - ', ' — ')}</span>
+            </Link>
+          ))}
+        </div>
+        <Link href="/hakkimda#deneyim" className="more-link">
+          Tüm deneyim →
+        </Link>
+      </section>
+
+      <section id="projeler" aria-labelledby="projeler-baslik">
+        <h2 id="projeler-baslik" className="home-heading">
+          Projeler
+        </h2>
+        <div className="ref-grid">
+          {projects.map((project) => (
+            <Link className="ref-card" href={project.href} key={project.slug}>
+              <div className="ref-card-head">
+                <span className="ref-card-icon" aria-hidden="true">
+                  <ProjectLogo project={project} size={23} />
+                </span>
+                <h3>{project.name}</h3>
+                <ArrowRight className="ref-card-arrow" aria-hidden="true" />
+              </div>
+              <p>{project.description}</p>
+              <span className="ref-card-tech">{project.platform}</span>
+            </Link>
+          ))}
+        </div>
+        <Link href="/projeler" className="more-link">
+          Tüm projeler →
+        </Link>
+      </section>
+
+      <section id="araclar" aria-labelledby="araclar-baslik">
+        <h2 id="araclar-baslik" className="home-heading">
+          Araçlar
+        </h2>
+        <div className="post-list">
+          {latestTools.map((tool) => (
+            <Link className="post" href={tool.href} key={tool.slug}>
+              <h3>{tool.name}</h3>
+              <span className="post-meta">
+                <span>{tool.tags.join(' · ')}</span>
+                <span className="post-category">{categoryName(tool.category)}</span>
+              </span>
+              <p>{tool.description}</p>
+            </Link>
+          ))}
+        </div>
+        <Link href="/araclar" className="more-link">
+          Tüm araçlar ({tools.length}) →
+        </Link>
+      </section>
+
+      <section id="iletisim" aria-labelledby="iletisim-baslik">
+        <h2 id="iletisim-baslik" className="home-heading">
+          İletişim
+        </h2>
+        <p className="home-copy">
+          Bir fikrin mi var, ya da sadece merhaba mı demek istiyorsun?{' '}
+          <a className="text-link" href={`mailto:${site.email}`}>
+            Bana e-posta gönder
+          </a>
+          .
+        </p>
+        <div className="socials">
+          {socials.map((social) => (
+            <a href={social.href} key={social.label} target="_blank" rel="noopener noreferrer">
+              {social.label}
+              <ArrowUpRight aria-hidden="true" />
+            </a>
+          ))}
+          <Link href="/iletisim">
+            İletişim sayfası
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

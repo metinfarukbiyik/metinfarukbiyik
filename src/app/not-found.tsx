@@ -37,6 +37,8 @@ export default function NotFound() {
         </div>
       </main>
       <Footer />
+      <div className="scroll-fade scroll-fade-top" aria-hidden="true" />
+      <div className="scroll-fade scroll-fade-bottom" aria-hidden="true" />
     </div>
   );
 }

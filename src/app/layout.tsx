@@ -1,21 +1,26 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 import { site } from '@/lib/site';
 import { ogImage } from '@/lib/seo';
 import './globals.css';
 
-const inter = Inter({
+const sans = Geist({
   subsets: ['latin', 'latin-ext'],
-  variable: '--font-inter',
+  variable: '--font-geist-sans',
   display: 'swap',
 });
 
-const mono = JetBrains_Mono({
+const mono = Geist_Mono({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500'],
-  variable: '--font-jetbrains',
+  variable: '--font-geist-mono',
   display: 'swap',
 });
+
+/*
+ * Tema, ilk boyamadan önce uygulanır: kayıtlı tercih yoksa sistem ayarı.
+ * Böylece koyu temada beyaz bir an parlamaz.
+ */
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);var e=document.documentElement;e.classList.toggle('dark',d);e.style.colorScheme=d?'dark':'light'}catch(_){}})()`;
 
 const image = ogImage('/');
 
@@ -54,13 +59,28 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#f6f4ef',
-  colorScheme: 'light',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f0807' },
+  ],
+  colorScheme: 'light dark',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="tr" className={`${inter.variable} ${mono.variable}`} data-scroll-behavior="smooth">
+    <html
+      lang="tr"
+      className={`${sans.variable} ${mono.variable}`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          type={typeof window === 'undefined' ? 'text/javascript' : 'text/plain'}
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

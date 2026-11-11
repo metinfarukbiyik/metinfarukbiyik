@@ -1,92 +1,65 @@
 import Link from 'next/link';
-import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
-import { ButtonLink, Tooltip } from '@/components/ui';
-import { BrandMark } from '@/components/Navbar';
-import { appProjects } from '@/data/projects';
-import { tools } from '@/data/tools';
-import { navigation, site } from '@/lib/site';
+import BackToTop from '@/components/BackToTop';
+import ThemeToggle from '@/components/ThemeToggle';
+import { site } from '@/lib/site';
+import pkg from '../../package.json';
 
-const socials = [
-  { label: 'GitHub', href: site.github, icon: Github },
-  { label: 'LinkedIn', href: site.linkedin, icon: Linkedin },
-  { label: 'Instagram', href: site.instagram, icon: Instagram },
-  { label: `E-posta: ${site.email}`, href: `mailto:${site.email}`, icon: Mail },
-];
+/** Derleme anında donan tarih — "bu sayfa ne zaman üretildi". */
+const BUILD_DATE = new Date().toISOString().slice(0, 10);
+const NEXT_VERSION = (pkg.dependencies as Record<string, string>).next?.replace(/^[\^~]/, '');
 
-const columns = [
-  { title: 'sayfalar', links: navigation.map(({ name, href }) => ({ name, href })) },
-  { title: 'uygulamalar', links: appProjects.map(({ name, href }) => ({ name, href })) },
-  { title: 'araçlar', links: tools.map(({ name, href }) => ({ name, href })) },
-];
-
+/**
+ * İki satırlık altbilgi: üstte kimlik ve araçlar, altta telif ve teknik künye.
+ * Künyedeki değerler gerçek: sürüm package.json'dan, tarih derlemeden gelir.
+ */
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="container">
-        <div className="footer-grid">
-          <div className="footer-about">
-            <Link href="/" className="brand" aria-label={`${site.brand} ana sayfa`}>
-              <BrandMark />
-              <span>
-                biyik<span className="brand-tld">.dev</span>
+      <div className="footer-top">
+        <div className="footer-id">
+          <Link href="/" className="footer-domain">
+            {site.domain}
+          </Link>
+          <span className="footer-tagline">{site.tagline}</span>
+        </div>
+        <div className="footer-actions">
+          <ThemeToggle />
+          <BackToTop />
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <span>
+          © {new Date().getFullYear()} {site.name}
+        </span>
+        <span className="footer-meta">
+          <a href={site.github} target="_blank" rel="noopener noreferrer">
+            github
+          </a>
+          <span className="footer-sep" aria-hidden="true">
+            ·
+          </span>
+          <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+            linkedin
+          </a>
+          <span className="footer-sep" aria-hidden="true">
+            ·
+          </span>
+          <a href={site.cv} download>
+            cv
+          </a>
+          {NEXT_VERSION ? (
+            <>
+              <span className="footer-sep" aria-hidden="true">
+                ·
               </span>
-            </Link>
-            <p className="text-small">
-              {site.name}. {site.city}’dan web, mobil ve masaüstü için sade, kullanışlı
-              yazılımlar geliştiriyorum.
-            </p>
-            <div className="footer-socials">
-              {socials.map(({ label, href, icon: Icon }) => (
-                <Tooltip key={href} content={label}>
-                  <ButtonLink
-                    href={href}
-                    variant="ghost"
-                    size="sm"
-                    iconOnly
-                    aria-label={label}
-                    trailing={null}
-                    external={href.startsWith('http')}
-                  >
-                    <Icon aria-hidden="true" />
-                  </ButtonLink>
-                </Tooltip>
-              ))}
-            </div>
-            <p className="status">Yeni projelere açık</p>
-          </div>
-          {columns.map((column) => (
-            <nav className="footer-col" key={column.title} aria-label={column.title}>
-              <h2>{`// ${column.title}`}</h2>
-              <ul>
-                {column.links.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href}>{link.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
-        </div>
-        <div className="statusbar">
-          <span className="statusbar-ready">Hazır</span>
-          <span>
-            © {new Date().getFullYear()} {site.name}
+              <span>next {NEXT_VERSION}</span>
+            </>
+          ) : null}
+          <span className="footer-sep" aria-hidden="true">
+            ·
           </span>
-          <span className="statusbar-spacer" />
-          <span>
-            {site.uiName} v{site.uiVersion}
-          </span>
-          <span className="statusbar-progress" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
-            <i />
-          </span>
-          <span>
-            {site.city}, TR
-          </span>
-        </div>
+          <span className="tabular">build {BUILD_DATE}</span>
+        </span>
       </div>
     </footer>
   );

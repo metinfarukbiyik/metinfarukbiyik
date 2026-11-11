@@ -31,14 +31,15 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/metinbiyik/',
   instagram: 'https://instagram.com/_metinbiyik',
   cv: '/cv/metinfarukbiyik-cv.pdf',
+  tagline: 'Bir geliştiricinin defteri ve atölyesi.',
 };
 
 export const navigation = [
-  { name: 'Ana Sayfa', href: '/' },
-  { name: 'Hakkımda', href: '/hakkimda' },
-  { name: 'Projeler', href: '/projeler' },
-  { name: 'Araçlar', href: '/araclar' },
-  { name: 'İletişim', href: '/iletisim' },
+  { name: 'Ana Sayfa', href: '/', description: 'Kısaca ben, işlerim ve araçlar' },
+  { name: 'Hakkımda', href: '/hakkimda', description: 'Deneyim, eğitim, sertifikalar ve ekipman' },
+  { name: 'Projeler', href: '/projeler', description: 'Uygulamalar, oyunlar ve web siteleri' },
+  { name: 'Araçlar', href: '/araclar', description: 'Tarayıcıda çalışan ücretsiz araçlar' },
+  { name: 'İletişim', href: '/iletisim', description: 'Bir fikrin varsa birlikte konuşalım' },
 ];
 
 export function isActivePath(pathname: string, href: string) {

@@ -31,11 +31,11 @@ const color = {
 
 /** Reads the page's next/font family names so the card matches the site; falls back outside the browser. */
 function fontFamilies() {
-  const fallback = { sans: 'Inter, "Helvetica Neue", Arial, sans-serif', mono: 'ui-monospace, Menlo, Consolas, monospace' };
+  const fallback = { sans: 'Geist, "Helvetica Neue", Arial, sans-serif', mono: 'ui-monospace, Menlo, Consolas, monospace' };
   if (typeof getComputedStyle !== 'function' || !document.documentElement) return fallback;
   const styles = getComputedStyle(document.documentElement);
-  const sans = styles.getPropertyValue('--font-inter').trim();
-  const mono = styles.getPropertyValue('--font-jetbrains').trim();
+  const sans = styles.getPropertyValue('--font-geist-sans').trim();
+  const mono = styles.getPropertyValue('--font-geist-mono').trim();
   return {
     sans: sans ? `${sans}, ${fallback.sans}` : fallback.sans,
     mono: mono ? `${mono}, ${fallback.mono}` : fallback.mono,

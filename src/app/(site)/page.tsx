@@ -1,6 +1,5 @@
-import { Fragment } from "react";
-import Image, { type StaticImageData } from "next/image";
-import Link from "next/link";
+import { Fragment } from 'react';
+import Link from 'next/link';
 import {
   Antenna,
   ArrowRight,
@@ -21,22 +20,19 @@ import {
   UserRound,
   Wrench,
   type LucideIcon,
-} from "lucide-react";
-import { ProjectLogo } from "@/components/projects/ProjectIcon";
-import { toolIcons } from "@/components/tools/ToolCard";
-import { experiences } from "@/data/cvData";
-import {
-  getProject,
-  portfolioProjects,
-  type PortfolioProject,
-} from "@/data/projects";
-import { toolCategories, tools } from "@/data/tools";
-import { pageMetadata, seoPages } from "@/lib/seo";
-import { site } from "@/lib/site";
-import bust from "@/assets/images/galeri/bust.jpg";
-import cami from "@/assets/images/galeri/cami.jpg";
-import illustrasyon from "@/assets/images/galeri/illustrasyon.jpg";
-import portre from "@/assets/images/galeri/portre.jpg";
+} from 'lucide-react';
+import { ProjectLogo } from '@/components/projects/ProjectIcon';
+import { toolIcons } from '@/components/tools/ToolCard';
+import HomeGallery, { type GalleryPhoto } from '@/components/HomeGallery';
+import { experiences } from '@/data/cvData';
+import { getProject, portfolioProjects, type PortfolioProject } from '@/data/projects';
+import { toolCategories, tools } from '@/data/tools';
+import { pageMetadata, seoPages } from '@/lib/seo';
+import { site } from '@/lib/site';
+import bust from '@/assets/images/galeri/bust.jpg';
+import cami from '@/assets/images/galeri/cami.jpg';
+import illustrasyon from '@/assets/images/galeri/illustrasyon.jpg';
+import portre from '@/assets/images/galeri/portre.jpg';
 
 export const metadata = pageMetadata(seoPages.home);
 
@@ -53,55 +49,25 @@ const jobIcons: Record<string, LucideIcon> = {
   'ALP Telekomünikasyon': Antenna,
   'Sosyal Güvenlik Kurumu': CodeXml,
 };
-const featured = ["bizim-koy", "byk-music", "geocam", "byk-seri-baski-pro"]
+const featured = ['bizim-koy', 'byk-music', 'geocam', 'byk-seri-baski-pro']
   .map(getProject)
   .filter((project): project is PortfolioProject => Boolean(project));
-const projects = portfolioProjects.filter(
-  (project) => project.slug !== "biyik-dev",
-);
+const projects = portfolioProjects.filter((project) => project.slug !== 'biyik-dev');
 const latestTools = tools.slice(0, 4);
-const categoryName = (id: string) =>
-  toolCategories.find((category) => category.id === id)?.name ?? id;
+const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
 
-type Photo = {
-  src: StaticImageData;
-  alt: string;
-  href?: string;
-  position?: string;
-};
-
-/**
- * Galeri: iki sütun, her sütunda iki fotoğraf. Kare ve 4:5 oranlar çapraz dizilir,
- * iki sütunun boyu eşit kalır. Fotoğraflar src/assets/images/galeri/ altında.
- */
-const gallery: Photo[][] = [
-  [
-    {
-      src: portre,
-      alt: "Metin Faruk Bıyık, siyah beyaz portre",
-      href: "/hakkimda",
-      position: "50% 30%",
-    },
-    {
-      src: bust,
-      alt: "Metin Faruk Bıyık mermer büst çalışması",
-      position: "50% 20%",
-    },
-  ],
-  [
-    {
-      src: illustrasyon,
-      alt: "Metin Faruk Bıyık, alevler önünde illüstrasyon",
-      position: "50% 15%",
-    },
-    { src: cami, alt: "Gün batımında cami ve minareler", position: "50% 72%" },
-  ],
+/** Galeri: tek sırada dört küçük kare; tıklanınca fotoğraf tam boyutunda açılır. */
+const gallery: GalleryPhoto[] = [
+  { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', position: '55% 30%' },
+  { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', position: '50% 25%' },
+  { src: illustrasyon, alt: 'Metin Faruk Bıyık, alevler önünde illüstrasyon', position: '50% 20%' },
+  { src: cami, alt: 'Gün batımında cami ve minareler', position: '45% 70%' },
 ];
 
 const socials = [
-  { label: "GitHub", href: site.github, icon: Github },
-  { label: "LinkedIn", href: site.linkedin, icon: Linkedin },
-  { label: "Instagram", href: site.instagram, icon: Instagram },
+  { label: 'GitHub', href: site.github, icon: Github },
+  { label: 'LinkedIn', href: site.linkedin, icon: Linkedin },
+  { label: 'Instagram', href: site.instagram, icon: Instagram },
 ];
 
 /** Bölüm başlığı: alev rengi ikon kutusu, sıra numarası ve başlık. */
@@ -137,20 +103,15 @@ export default function HomePage() {
           Hakkımda
         </HomeHeading>
         <p className="home-copy">
-          {site.city}’da yaşayan bir yazılım geliştiriciyim. Şu anda{" "}
+          {site.city}’da yaşayan bir yazılım geliştiriciyim. Şu anda{' '}
           <Link className="text-link" href="/hakkimda#deneyim">
             {current.company}
           </Link>
-          ’de {current.role.toLocaleLowerCase("tr")} olarak çalışıyorum. Geri
-          kalan zamanımda web, mobil ve masaüstü için kendi ürünlerimi
-          geliştiriyorum:{" "}
+          ’de {current.role.toLocaleLowerCase('tr')} olarak çalışıyorum. Geri kalan zamanımda web, mobil ve masaüstü
+          için kendi ürünlerimi geliştiriyorum:{' '}
           {featured.map((project, index) => (
             <Fragment key={project.slug}>
-              {index > 0
-                ? index === featured.length - 1
-                  ? " ve "
-                  : ", "
-                : null}
+              {index > 0 ? (index === featured.length - 1 ? ' ve ' : ', ') : null}
               <Link className="inline-project" href={project.href}>
                 <ProjectLogo project={project} />
                 {project.name}
@@ -160,53 +121,14 @@ export default function HomePage() {
           . Hepsi sahada ve ofiste gördüğüm gerçek ihtiyaçlardan doğdu.
         </p>
 
-        {gallery.length > 0 ? (
-          <div className="gallery">
-            {gallery.map((column, index) => (
-              <div className="gallery-column" key={index}>
-                {column.map((photo) => {
-                  const image = (
-                    <Image
-                      src={photo.src}
-                      alt={photo.alt}
-                      fill
-                      sizes="(max-width: 800px) 50vw, 380px"
-                      placeholder="blur"
-                      priority={index === 0}
-                      style={
-                        photo.position
-                          ? { objectPosition: photo.position }
-                          : undefined
-                      }
-                    />
-                  );
-                  return photo.href ? (
-                    <Link
-                      className="gallery-photo"
-                      href={photo.href}
-                      key={photo.alt}
-                      aria-label={photo.alt}
-                    >
-                      {image}
-                    </Link>
-                  ) : (
-                    <figure className="gallery-photo" key={photo.alt}>
-                      {image}
-                    </figure>
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        ) : null}
+        <HomeGallery photos={gallery} />
 
         <p className="home-copy">
-          2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda
-          ve ekip yönetiminde geçen yıllardan sonra bugün ekrandaki ürünlere
-          dönüştü. Ayrıca günlük küçük işler için{" "}
+          2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip yönetiminde geçen yıllardan
+          sonra bugün ekrandaki ürünlere dönüştü. Ayrıca günlük küçük işler için{' '}
           <Link className="text-link" href="/araclar">
             ücretsiz araçlar
-          </Link>{" "}
+          </Link>{' '}
           hazırlıyorum.
         </p>
       </section>
@@ -224,7 +146,10 @@ export default function HomePage() {
                 href="/hakkimda#deneyim"
                 key={`${job.company}-${job.period}`}
               >
-                <span className={index === 0 ? 'icon-tile icon-tile-lg icon-tile-solid' : 'icon-tile icon-tile-lg'} aria-hidden="true">
+                <span
+                  className={index === 0 ? 'icon-tile icon-tile-lg icon-tile-solid' : 'icon-tile icon-tile-lg'}
+                  aria-hidden="true"
+                >
                   <Icon strokeWidth={1.75} />
                 </span>
                 <div>
@@ -280,9 +205,7 @@ export default function HomePage() {
                 <span className="tool-row-copy">
                   <span className="tool-row-head">
                     <h3>{tool.name}</h3>
-                    <span className="post-category">
-                      {categoryName(tool.category)}
-                    </span>
+                    <span className="post-category">{categoryName(tool.category)}</span>
                   </span>
                   <p>{tool.description}</p>
                 </span>
@@ -301,7 +224,7 @@ export default function HomePage() {
           İletişim
         </HomeHeading>
         <p className="home-copy">
-          Bir fikrin mi var, ya da sadece merhaba mı demek istiyorsun?{" "}
+          Bir fikrin mi var, ya da sadece merhaba mı demek istiyorsun?{' '}
           <a className="text-link" href={`mailto:${site.email}`}>
             Bana e-posta gönder
           </a>
@@ -309,28 +232,14 @@ export default function HomePage() {
         </p>
         <div className="socials">
           {socials.map((social) => (
-            <a
-              className="social"
-              href={social.href}
-              key={social.label}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <social.icon
-                className="social-icon"
-                strokeWidth={1.75}
-                aria-hidden="true"
-              />
+            <a className="social" href={social.href} key={social.label} target="_blank" rel="noopener noreferrer">
+              <social.icon className="social-icon" strokeWidth={1.75} aria-hidden="true" />
               {social.label}
               <ArrowUpRight className="social-arrow" aria-hidden="true" />
             </a>
           ))}
           <Link className="social" href="/iletisim">
-            <MessageCircle
-              className="social-icon"
-              strokeWidth={1.75}
-              aria-hidden="true"
-            />
+            <MessageCircle className="social-icon" strokeWidth={1.75} aria-hidden="true" />
             İletişim sayfası
             <ArrowRight className="social-arrow" aria-hidden="true" />
           </Link>

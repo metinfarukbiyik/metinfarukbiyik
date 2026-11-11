@@ -59,21 +59,20 @@ const latestTools = tools.slice(0, 4);
 const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
 
 /**
- * Galeri (sungur.dev düzeni): üç sütun; yatay 3:2 ve dikey 3:4 kutular sırayla.
- * Yatay kutulara kare ya da kareye yakın fotoğraflar kondu ki kırpma az olsun.
+ * Galeri: iki sıra, hiçbir fotoğraf kırpılmaz. Sıralar, oranlarının toplamı
+ * birbirine yakın olacak şekilde seçildi; böylece iki sıra da neredeyse aynı
+ * yükseklikte durur.
  */
 const gallery: GalleryPhoto[][] = [
   [
-    { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', ratio: '3 / 2', position: '60% 35%' },
-    { src: cizim, alt: 'Metin Faruk Bıyık ve köpeği, ormanda karakalem çizim', ratio: '3 / 4', position: '50% 40%' },
+    { src: cizim, alt: 'Metin Faruk Bıyık ve köpeği, ormanda karakalem çizim' },
+    { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre' },
+    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması' },
   ],
   [
-    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', ratio: '3 / 4', position: '50% 40%' },
-    { src: kamp, alt: 'Karlı ormanda kamp ateşi başında çay molası', ratio: '3 / 2', position: '50% 45%' },
-  ],
-  [
-    { src: cay, alt: 'Karlı dağlara bakarken çay içen Metin Faruk Bıyık', ratio: '3 / 2', position: '50% 50%' },
-    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri', ratio: '3 / 4', position: '50% 50%' },
+    { src: cay, alt: 'Karlı dağlara bakarken çay içen Metin Faruk Bıyık' },
+    { src: kamp, alt: 'Karlı ormanda kamp ateşi başında çay molası' },
+    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri' },
   ],
 ];
 
@@ -129,7 +128,7 @@ export default function HomePage() {
           . Hepsi sahada ve ofiste gördüğüm gerçek ihtiyaçlardan doğdu.
         </p>
 
-        <HomeGallery columns={gallery} />
+        <HomeGallery rows={gallery} />
 
         <p className="home-copy">
           2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip yönetiminde geçen yıllardan

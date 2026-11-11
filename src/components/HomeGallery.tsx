@@ -7,19 +7,16 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 export type GalleryPhoto = {
   src: StaticImageData;
   alt: string;
-  /** Küçük kutudaki kırpma noktası, ör. '50% 30%'. */
-  position?: string;
-  /** Kutu oranı: yatay '3 / 2' ya da dikey '3 / 4'. */
-  ratio: '3 / 2' | '3 / 4';
 };
 
 /**
- * Ana sayfa galerisi (sungur.dev düzeni): üç sütun, her sütunda bir yatay
- * ve bir dikey kutu; ortadaki sütunda sıra ters, böylece sütunlar aynı boyda
- * biter. Tıklanan fotoğraf sayfadan ayrılmadan ve kırpılmadan tam boyutunda açılır.
+ * Ana sayfa galerisi: sıralar halinde, hiçbir fotoğraf kırpılmaz. Her kutu
+ * fotoğrafın kendi oranındadır; genişliği de bu orandan gelir, böylece bir
+ * sıradaki fotoğraflar aynı yükseklikte durur ve sırayı tam doldurur.
+ * Tıklanan fotoğraf sayfadan ayrılmadan tam boyutunda açılır.
  */
-export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) {
-  const photos = columns.flat();
+export default function HomeGallery({ rows }: { rows: GalleryPhoto[][] }) {
+  const photos = rows.flat();
   const [active, setActive] = useState<number | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const isOpen = active !== null;
@@ -44,9 +41,9 @@ export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) 
   return (
     <>
       <div className="gallery">
-        {columns.map((column, columnIndex) => (
-          <div className="gallery-column" key={columnIndex}>
-            {column.map((photo) => {
+        {rows.map((row, rowIndex) => (
+          <div className="gallery-row" key={rowIndex}>
+            {row.map((photo) => {
               const index = photos.indexOf(photo);
               return (
                 <button
@@ -56,16 +53,18 @@ export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) 
                   onClick={() => setActive(index)}
                   aria-label={`Büyüt: ${photo.alt}`}
                   aria-haspopup="dialog"
-                  style={{ aspectRatio: photo.ratio }}
+                  style={{
+                    flexGrow: photo.src.width / photo.src.height,
+                    aspectRatio: `${photo.src.width} / ${photo.src.height}`,
+                  }}
                 >
                   <Image
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    sizes="(max-width: 600px) 30vw, 220px"
+                    sizes="(max-width: 600px) 34vw, 260px"
                     placeholder="blur"
                     priority={index < 3}
-                    style={photo.position ? { objectPosition: photo.position } : undefined}
                   />
                 </button>
               );

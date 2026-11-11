@@ -2,7 +2,6 @@ import { Fragment } from 'react';
 import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
-import myPhoto from '@/assets/images/my.png';
 import { ProjectLogo } from '@/components/projects/ProjectIcon';
 import { experiences } from '@/data/cvData';
 import { getProject, portfolioProjects, type PortfolioProject } from '@/data/projects';
@@ -21,23 +20,18 @@ const projects = portfolioProjects.filter((project) => project.slug !== 'biyik-d
 const latestTools = tools.slice(0, 4);
 const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
 
-type Photo = { src: string | StaticImageData; alt: string; href: string; position?: string };
+type Photo = {
+  src: string | StaticImageData;
+  alt: string;
+  href: string;
+  position?: string;
+};
 
-/** Üç sütun, iki satır: sütunlar dikey/yatay oranları sırayla değiştirir. */
-const gallery: Photo[][] = [
-  [
-    { src: myPhoto, alt: 'Metin Faruk Bıyık', href: '/hakkimda' },
-    { src: '/images/bizim-koy/shot-1.jpg', alt: 'Bizim Köy — köy görünümü', href: '/projeler/bizim-koy' },
-  ],
-  [
-    { src: '/images/bizim-koy/shot-2.jpg', alt: 'Bizim Köy — tüccar gemisi', href: '/projeler/bizim-koy' },
-    { src: '/images/geocam/shot-2.jpg', alt: 'GeoCam: Audit — konum damgalı fotoğraf', href: '/projeler/geocam', position: 'top' },
-  ],
-  [
-    { src: '/images/bizim-koy/shot-4.jpg', alt: 'Bizim Köy — liman', href: '/projeler/bizim-koy' },
-    { src: '/images/bizim-koy/shot-7.jpg', alt: 'Bizim Köy — mobil görünüm', href: '/projeler/bizim-koy', position: 'top' },
-  ],
-];
+/**
+ * Galeri: üç sütun, her sütunda iki fotoğraf; dikey/yatay oranlar sırayla değişir.
+ * Fotoğraflar public/images/galeri/ altına eklenecek. Boşken galeri gösterilmez.
+ */
+const gallery: Photo[][] = [];
 
 const socials = [
   { label: 'GitHub', href: site.github },
@@ -57,8 +51,8 @@ export default function HomePage() {
           <Link className="text-link" href="/hakkimda#deneyim">
             {current.company}
           </Link>
-          ’de {current.role.toLocaleLowerCase('tr')} olarak çalışıyorum. Geri kalan zamanımda web, mobil ve
-          masaüstü için kendi ürünlerimi geliştiriyorum:{' '}
+          ’de {current.role.toLocaleLowerCase('tr')} olarak çalışıyorum. Geri kalan zamanımda web, mobil ve masaüstü
+          için kendi ürünlerimi geliştiriyorum:{' '}
           {featured.map((project, index) => (
             <Fragment key={project.slug}>
               {index > 0 ? (index === featured.length - 1 ? ' ve ' : ', ') : null}
@@ -71,28 +65,30 @@ export default function HomePage() {
           . Hepsi sahada ve ofiste gördüğüm gerçek ihtiyaçlardan doğdu.
         </p>
 
-        <div className="gallery">
-          {gallery.map((column, index) => (
-            <div className="gallery-column" key={index}>
-              {column.map((photo) => (
-                <Link className="gallery-photo" href={photo.href} key={photo.alt} aria-label={photo.alt}>
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    fill
-                    sizes="(max-width: 800px) 33vw, 250px"
-                    priority={index === 0}
-                    style={photo.position ? { objectPosition: photo.position } : undefined}
-                  />
-                </Link>
-              ))}
-            </div>
-          ))}
-        </div>
+        {gallery.length > 0 ? (
+          <div className="gallery">
+            {gallery.map((column, index) => (
+              <div className="gallery-column" key={index}>
+                {column.map((photo) => (
+                  <Link className="gallery-photo" href={photo.href} key={photo.alt} aria-label={photo.alt}>
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      sizes="(max-width: 800px) 33vw, 250px"
+                      priority={index === 0}
+                      style={photo.position ? { objectPosition: photo.position } : undefined}
+                    />
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </div>
+        ) : null}
 
         <p className="home-copy">
-          2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip yönetiminde geçen
-          yıllardan sonra bugün ekrandaki ürünlere dönüştü. Ayrıca günlük küçük işler için{' '}
+          2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip yönetiminde geçen yıllardan
+          sonra bugün ekrandaki ürünlere dönüştü. Ayrıca günlük küçük işler için{' '}
           <Link className="text-link" href="/araclar">
             ücretsiz araçlar
           </Link>{' '}

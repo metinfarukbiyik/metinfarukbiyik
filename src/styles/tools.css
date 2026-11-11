@@ -4,6 +4,10 @@
  */
 
 .tool-stage { min-width: 0; }
+/* Araç sayfalarında kolon genişler: başlık, araç ve metinler aynı hizada kalır. */
+.shell:has(.tool-stage) { --container: 1080px; }
+.shell:has(.tool-stage) .section .prose,
+.shell:has(.tool-stage) .faq { max-width: 820px; }
 
 /* Shared states */
 .photo-status { margin-top: 12px; font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--accent-strong); }

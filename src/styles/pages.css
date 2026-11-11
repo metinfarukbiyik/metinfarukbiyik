@@ -25,12 +25,12 @@
 .inline-project:hover { background: var(--paper-sunken); }
 .inline-project img, .inline-project svg { width: 14px; height: 14px; border-radius: 24%; }
 
-.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-block: 16px; }
+.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-block: 24px; }
 .gallery-column { display: flex; flex-direction: column; gap: 16px; }
-.gallery-photo { position: relative; display: block; width: 100%; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 8px; background: var(--surface); }
-.gallery-photo:nth-child(2) { aspect-ratio: 3 / 4; }
-.gallery-column:first-child .gallery-photo:first-child { aspect-ratio: 3 / 4; }
-.gallery-column:first-child .gallery-photo:nth-child(2) { aspect-ratio: 3 / 2; }
+/* Çapraz dizilim: sol sütun kare + 4:5, sağ sütun 4:5 + kare; iki sütun aynı boyda biter. */
+.gallery-photo { position: relative; display: block; width: 100%; margin: 0; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 8px; background: var(--surface); }
+.gallery-column:first-child .gallery-photo:nth-child(2),
+.gallery-column:nth-child(2) .gallery-photo:first-child { aspect-ratio: 4 / 5; }
 .gallery-photo img { object-fit: cover; transition: transform 0.35s ease; }
 .gallery-photo:hover img { transform: scale(1.035); }
 

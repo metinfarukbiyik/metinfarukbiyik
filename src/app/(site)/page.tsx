@@ -8,6 +8,10 @@ import { getProject, portfolioProjects, type PortfolioProject } from '@/data/pro
 import { toolCategories, tools } from '@/data/tools';
 import { pageMetadata, seoPages } from '@/lib/seo';
 import { site } from '@/lib/site';
+import bust from '@/assets/images/galeri/bust.jpg';
+import cami from '@/assets/images/galeri/cami.jpg';
+import illustrasyon from '@/assets/images/galeri/illustrasyon.jpg';
+import portre from '@/assets/images/galeri/portre.jpg';
 
 export const metadata = pageMetadata(seoPages.home);
 
@@ -21,17 +25,26 @@ const latestTools = tools.slice(0, 4);
 const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
 
 type Photo = {
-  src: string | StaticImageData;
+  src: StaticImageData;
   alt: string;
-  href: string;
+  href?: string;
   position?: string;
 };
 
 /**
- * Galeri: üç sütun, her sütunda iki fotoğraf; dikey/yatay oranlar sırayla değişir.
- * Fotoğraflar public/images/galeri/ altına eklenecek. Boşken galeri gösterilmez.
+ * Galeri: iki sütun, her sütunda iki fotoğraf. Kare ve 4:5 oranlar çapraz dizilir,
+ * iki sütunun boyu eşit kalır. Fotoğraflar src/assets/images/galeri/ altında.
  */
-const gallery: Photo[][] = [];
+const gallery: Photo[][] = [
+  [
+    { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', href: '/hakkimda', position: '50% 30%' },
+    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', position: '50% 20%' },
+  ],
+  [
+    { src: illustrasyon, alt: 'Metin Faruk Bıyık, alevler önünde illüstrasyon', position: '50% 15%' },
+    { src: cami, alt: 'Gün batımında cami ve minareler', position: '50% 72%' },
+  ],
+];
 
 const socials = [
   { label: 'GitHub', href: site.github },
@@ -69,18 +82,28 @@ export default function HomePage() {
           <div className="gallery">
             {gallery.map((column, index) => (
               <div className="gallery-column" key={index}>
-                {column.map((photo) => (
-                  <Link className="gallery-photo" href={photo.href} key={photo.alt} aria-label={photo.alt}>
+                {column.map((photo) => {
+                  const image = (
                     <Image
                       src={photo.src}
                       alt={photo.alt}
                       fill
-                      sizes="(max-width: 680px) 33vw, 200px"
+                      sizes="(max-width: 680px) 50vw, 310px"
+                      placeholder="blur"
                       priority={index === 0}
                       style={photo.position ? { objectPosition: photo.position } : undefined}
                     />
-                  </Link>
-                ))}
+                  );
+                  return photo.href ? (
+                    <Link className="gallery-photo" href={photo.href} key={photo.alt} aria-label={photo.alt}>
+                      {image}
+                    </Link>
+                  ) : (
+                    <figure className="gallery-photo" key={photo.alt}>
+                      {image}
+                    </figure>
+                  );
+                })}
               </div>
             ))}
           </div>

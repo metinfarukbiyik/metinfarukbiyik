@@ -2,7 +2,14 @@ import { Fragment } from "react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import {
+  Antenna,
   ArrowRight,
+  Building2,
+  Cable,
+  ClipboardList,
+  CodeXml,
+  Headset,
+  RadioTower,
   ArrowUpRight,
   Briefcase,
   FolderGit2,
@@ -34,7 +41,18 @@ import portre from "@/assets/images/galeri/portre.jpg";
 export const metadata = pageMetadata(seoPages.home);
 
 const current = experiences[experiences.length - 1];
-const jobs = [...experiences].reverse().slice(0, 4);
+const jobs = [...experiences].reverse();
+
+/** Her deneyim için işin kendisini anlatan ikon; bilinmeyen şirketlerde çanta. */
+const jobIcons: Record<string, LucideIcon> = {
+  'CNL İletişim': Building2,
+  'Turkcell Superonline': Cable,
+  'AK İletişim': RadioTower,
+  'Turkcell Global Bilgi': Headset,
+  'NTM Elektrik & Elektronik A.Ş.': ClipboardList,
+  'ALP Telekomünikasyon': Antenna,
+  'Sosyal Güvenlik Kurumu': CodeXml,
+};
 const featured = ["bizim-koy", "byk-music", "geocam", "byk-seri-baski-pro"]
   .map(getProject)
   .filter((project): project is PortfolioProject => Boolean(project));
@@ -152,7 +170,7 @@ export default function HomePage() {
                       src={photo.src}
                       alt={photo.alt}
                       fill
-                      sizes="(max-width: 680px) 50vw, 310px"
+                      sizes="(max-width: 800px) 50vw, 380px"
                       placeholder="blur"
                       priority={index === 0}
                       style={
@@ -198,22 +216,25 @@ export default function HomePage() {
           Deneyim
         </HomeHeading>
         <div className="job-list">
-          {jobs.map((job) => (
-            <Link
-              className="job"
-              href="/hakkimda#deneyim"
-              key={`${job.company}-${job.period}`}
-            >
-              <span className="job-mark" aria-hidden="true">
-                {job.company.charAt(0)}
-              </span>
-              <div>
-                <h3>{job.company}</h3>
-                <p>{job.role}</p>
-              </div>
-              <span>{job.period.replace(" - ", " — ")}</span>
-            </Link>
-          ))}
+          {jobs.map((job, index) => {
+            const Icon = jobIcons[job.company] ?? Briefcase;
+            return (
+              <Link
+                className={index === 0 ? 'job job-current' : 'job'}
+                href="/hakkimda#deneyim"
+                key={`${job.company}-${job.period}`}
+              >
+                <span className={index === 0 ? 'icon-tile icon-tile-lg icon-tile-solid' : 'icon-tile icon-tile-lg'} aria-hidden="true">
+                  <Icon strokeWidth={1.75} />
+                </span>
+                <div>
+                  <h3>{job.company}</h3>
+                  <p>{job.role}</p>
+                  <span className="job-period">{job.period.replace(' - ', ' — ')}</span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
         <Link href="/hakkimda#deneyim" className="more-link">
           Tüm deneyim →

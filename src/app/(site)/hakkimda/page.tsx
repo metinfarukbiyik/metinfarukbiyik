@@ -136,7 +136,10 @@ export default function AboutPage() {
                 .slice()
                 .reverse()
                 .map((edu) => (
-                  <article key={`${edu.school}-${edu.department}`} className="card edu-card">
+                  <article
+                    key={`${edu.school}-${edu.department}`}
+                    className={edu.ongoing ? 'card edu-card edu-card-ongoing' : 'card edu-card'}
+                  >
                     <div className="edu-card-top">
                       <Badge tone={edu.ongoing ? 'accent' : 'neutral'} dot={edu.ongoing}>
                         {edu.level} · {edu.status}

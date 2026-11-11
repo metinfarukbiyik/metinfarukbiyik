@@ -35,31 +35,16 @@
 .gallery-photo img { object-fit: cover; transition: transform 0.35s ease; }
 .gallery-photo:hover img { transform: scale(1.035); }
 
-.job-list { display: flex; flex-direction: column; }
-.job { display: flex; align-items: center; gap: 14px; padding-block: 12px; }
+/* Deneyim: güncel iş tam genişlikte, geçmiş işler iki sütun */
+.job-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.job { display: flex; align-items: flex-start; gap: 14px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
 .job > div { flex: 1; min-width: 0; }
-.job-mark {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface-raised);
-  color: var(--ink);
-  font-size: 16px;
-  font-weight: 600;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
-}
-.job:first-child .job-mark { border-color: transparent; background: var(--tile-solid); color: var(--tile-solid-fg); }
-a.job:hover .job-mark { border-color: var(--accent-line); color: var(--accent-strong); }
-a.job:first-child:hover .job-mark { color: var(--tile-solid-fg); }
-.job:first-child { padding-top: 0; }
-.job h3 { color: var(--ink); font-size: 16px; font-weight: 400; letter-spacing: 0; }
-.job p { margin-top: 3px; font-size: 14px; color: var(--muted); }
-.job > span { flex-shrink: 0; color: var(--muted); font-size: 14px; white-space: nowrap; font-variant-numeric: tabular-nums; }
-a.job:hover h3 { color: var(--accent-strong); }
+.job h3 { color: var(--ink); font-size: 15px; font-weight: 500; line-height: 1.4; letter-spacing: 0; }
+.job p { margin-top: 2px; font-size: 14px; line-height: 1.45; color: var(--muted); }
+.job-period { display: block; margin-top: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--subtle); font-variant-numeric: tabular-nums; }
+.job-current { grid-column: 1 / -1; align-items: center; background: var(--surface-raised); box-shadow: var(--shadow-card); }
+.job-current .job-period { color: var(--ink); }
+a.job:hover { border-color: var(--line-strong); background: var(--surface-raised); box-shadow: var(--shadow-card); }
 
 .ref-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .ref-card { display: block; padding: 18px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease); }
@@ -117,10 +102,10 @@ a.job:hover h3 { color: var(--accent-strong); }
   .ref-card p { font-size: 13px; }
   .ref-card-tech { font-size: 11px; }
   .post-list { gap: 28px; }
+  .job-list, .edu-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 359px) {
   .ref-grid { grid-template-columns: minmax(0, 1fr); }
-  .job { flex-wrap: wrap; gap: 4px; }
 }
 
 /* ── Projects ───────────────────────────────────────────── */
@@ -341,7 +326,8 @@ a.job:hover h3 { color: var(--accent-strong); }
 .timeline-list li { position: relative; padding-left: 16px; font-size: var(--fs-small); color: var(--muted); line-height: 1.6; }
 .timeline-list li::before { content: ''; position: absolute; left: 0; top: 0.75em; width: 6px; height: 1px; background: var(--line-strong); }
 
-.edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.edu-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.edu-card-ongoing { grid-column: 1 / -1; }
 .edu-card { gap: 6px; }
 .edu-card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
 .edu-school { font-size: var(--fs-small); color: var(--muted); }

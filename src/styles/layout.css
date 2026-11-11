@@ -1,7 +1,7 @@
 /*
  * biyik.dev UI — page shell, header, footer and page scaffolding
  *
- * Tek, ortalanmış bir kolon (800px). Başlık bir künye: solda ad ve ünvan,
+ * Tek, ortalanmış bir kolon (960px). Başlık bir künye: solda ad ve ünvan,
  * sağda menü ve tema düğmesi. Sayfanın geri kalanı bu kolonun içinde akar.
  */
 
@@ -205,8 +205,8 @@
 
 /* ── Page header (iç sayfaların künyesi) ────────────────── */
 .page-header {
-  margin: 0 -12px 40px;
-  padding: 14px 12px 16px;
+  margin: 0 0 40px;
+  padding: 18px 20px 20px;
   border-radius: var(--radius-md);
   background: var(--surface);
 }

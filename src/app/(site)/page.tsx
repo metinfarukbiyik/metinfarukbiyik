@@ -75,7 +75,7 @@ export default function HomePage() {
                       src={photo.src}
                       alt={photo.alt}
                       fill
-                      sizes="(max-width: 800px) 33vw, 250px"
+                      sizes="(max-width: 960px) 33vw, 304px"
                       priority={index === 0}
                       style={photo.position ? { objectPosition: photo.position } : undefined}
                     />

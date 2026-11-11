@@ -31,6 +31,7 @@ import { pageMetadata, seoPages } from '@/lib/seo';
 import { site } from '@/lib/site';
 import bust from '@/assets/images/galeri/bust.jpg';
 import cami from '@/assets/images/galeri/cami.jpg';
+import ekipman from '@/assets/images/galeri/ekipman.jpg';
 import illustrasyon from '@/assets/images/galeri/illustrasyon.jpg';
 import portre from '@/assets/images/galeri/portre.jpg';
 
@@ -56,12 +57,20 @@ const projects = portfolioProjects.filter((project) => project.slug !== 'biyik-d
 const latestTools = tools.slice(0, 4);
 const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
 
-/** Galeri: tek sırada dört küçük kare; tıklanınca fotoğraf tam boyutunda açılır. */
-const gallery: GalleryPhoto[] = [
-  { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', position: '55% 30%' },
-  { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', position: '50% 25%' },
-  { src: illustrasyon, alt: 'Metin Faruk Bıyık, alevler önünde illüstrasyon', position: '50% 20%' },
-  { src: cami, alt: 'Gün batımında cami ve minareler', position: '45% 70%' },
+/**
+ * Galeri (sungur.dev düzeni): üç sütun. Kenar sütunlarda yatay + dikey kare,
+ * ortada dikey cami fotoğrafı sütunun tamamını kaplar; üç sütun aynı boyda biter.
+ */
+const gallery: GalleryPhoto[][] = [
+  [
+    { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', ratio: '3 / 2', position: '60% 35%' },
+    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', ratio: '3 / 4', position: '50% 30%' },
+  ],
+  [{ src: cami, alt: 'Gün batımında cami ve minareler', ratio: 'fill', position: '42% 60%' }],
+  [
+    { src: illustrasyon, alt: 'Metin Faruk Bıyık, alevler önünde illüstrasyon', ratio: '3 / 4', position: '50% 20%' },
+    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri', ratio: '3 / 2', position: '50% 50%' },
+  ],
 ];
 
 const socials = [
@@ -121,7 +130,7 @@ export default function HomePage() {
           . Hepsi sahada ve ofiste gördüğüm gerçek ihtiyaçlardan doğdu.
         </p>
 
-        <HomeGallery photos={gallery} />
+        <HomeGallery columns={gallery} />
 
         <p className="home-copy">
           2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip yönetiminde geçen yıllardan

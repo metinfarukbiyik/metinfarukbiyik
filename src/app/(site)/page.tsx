@@ -65,14 +65,14 @@ const categoryName = (id: string) => toolCategories.find((category) => category.
  */
 const gallery: GalleryPhoto[][] = [
   [
-    { src: cizim, alt: 'Metin Faruk Bıyık ve köpeği, ormanda karakalem çizim' },
-    { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre' },
-    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması' },
+    { src: cizim, alt: 'Ormanda, köpeğimle' },
+    { src: portre, alt: 'Sakin bir öğleden sonra' },
+    { src: bust, alt: 'Mermerden bir ben' },
   ],
   [
-    { src: cay, alt: 'Karlı dağlara bakarken çay içen Metin Faruk Bıyık' },
-    { src: kamp, alt: 'Karlı ormanda kamp ateşi başında çay molası' },
-    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri' },
+    { src: cay, alt: 'Karşıda dağlar, elimde çay' },
+    { src: kamp, alt: 'Karda, ateş başında' },
+    { src: ekipman, alt: 'Yanımdan ayırmadıklarım' },
   ],
 ];
 

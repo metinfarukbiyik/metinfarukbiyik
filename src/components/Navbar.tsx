@@ -54,7 +54,7 @@ export default function Navbar() {
         </span>
         <span className="site-id-copy">
           <span className="site-name">{site.name}</span>
-          <span className="site-role">{site.jobTitle}</span>
+          <span className="site-role">{site.roles.join(' · ')}</span>
         </span>
       </Link>
       <div className="header-controls" ref={controls}>

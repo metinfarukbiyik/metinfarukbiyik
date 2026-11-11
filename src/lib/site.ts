@@ -6,6 +6,8 @@ export const site = {
   uiName: 'biyik.dev UI',
   uiVersion: '1.0',
   jobTitle: 'Yazılım Geliştirici',
+  /** Künyede adın altında görünen alanlar. */
+  roles: ['Yazılım Geliştirici', 'İş Planlama', 'Müşteri İlişkileri'],
   locale: 'tr_TR',
   city: 'Trabzon',
   country: 'Türkiye',

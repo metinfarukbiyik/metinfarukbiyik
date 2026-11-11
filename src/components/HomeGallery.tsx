@@ -12,13 +12,12 @@ export type GalleryPhoto = {
 };
 
 /**
- * Ana sayfa galerisi: üç sütun. Her fotoğraf kendi oranında durur, sabit bir
- * kareye kırpılmaz; sütunlar aynı hizada bitsin diye kısa sütundaki kutular
- * yalnızca birkaç piksel uzar. Tıklanan fotoğraf sayfadan ayrılmadan, kırpılmadan ve tam
- * boyutunda bir pencerede açılır.
+ * Ana sayfa galerisi: eşit yükseklikte sıralar. Her fotoğraf sırada kendi
+ * oranı kadar yer kaplar, böylece sabit bir kareye kırpılmaz. Tıklanan
+ * fotoğraf sayfadan ayrılmadan, kırpılmadan ve tam boyutunda açılır.
  */
-export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) {
-  const photos = columns.flat();
+export default function HomeGallery({ rows }: { rows: GalleryPhoto[][] }) {
+  const photos = rows.flat();
   const [active, setActive] = useState<number | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const isOpen = active !== null;
@@ -43,9 +42,9 @@ export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) 
   return (
     <>
       <div className="gallery">
-        {columns.map((column, columnIndex) => (
-          <div className="gallery-column" key={columnIndex}>
-            {column.map((photo) => {
+        {rows.map((row, rowIndex) => (
+          <div className="gallery-row" key={rowIndex}>
+            {row.map((photo) => {
               const index = photos.indexOf(photo);
               return (
                 <button
@@ -55,13 +54,13 @@ export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) 
                   onClick={() => setActive(index)}
                   aria-label={`Büyüt: ${photo.alt}`}
                   aria-haspopup="dialog"
-                  style={{ aspectRatio: `${photo.src.width} / ${photo.src.height}` }}
+                  style={{ flexGrow: photo.src.width / photo.src.height }}
                 >
                   <Image
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    sizes="(max-width: 600px) 30vw, 245px"
+                    sizes="(max-width: 600px) 45vw, 380px"
                     placeholder="blur"
                     priority={index < 3}
                     style={photo.position ? { objectPosition: photo.position } : undefined}

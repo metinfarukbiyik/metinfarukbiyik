@@ -26,10 +26,10 @@
 .inline-project:hover { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent-strong); }
 .inline-project img, .inline-project svg { width: 14px; height: 14px; border-radius: 24%; }
 
-/* Galeri: üç sütun; fotoğraflar doğal oranında, kısa sütunlar hizayı tutturmak için hafifçe uzar */
-.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-block: 16px; }
-.gallery-column { display: flex; flex-direction: column; gap: 16px; }
-.gallery-photo { position: relative; display: block; flex: 1 1 auto; width: 100%; padding: 0; overflow: hidden; border: 0; border-radius: 8px; background: var(--surface); cursor: zoom-in; }
+/* Galeri: eşit yükseklikte sıralar; her kutu fotoğrafın oranı kadar genişler */
+.gallery { --gallery-row: min(330px, 42vw); display: flex; flex-direction: column; gap: 12px; margin-block: 16px; }
+.gallery-row { display: flex; gap: 12px; height: var(--gallery-row); }
+.gallery-photo { position: relative; display: block; flex: 1 1 0; min-width: 0; height: 100%; padding: 0; overflow: hidden; border: 0; border-radius: 8px; background: var(--surface); cursor: zoom-in; }
 .gallery-photo img { object-fit: cover; transition: transform 0.35s; }
 .gallery-photo:hover img { transform: scale(1.035); }
 .gallery-photo:focus-visible { outline: none; box-shadow: var(--focus); }
@@ -93,7 +93,8 @@ a.job:hover { border-color: var(--line-strong); background: var(--surface-raised
 
 @media (max-width: 600px) {
   .home { gap: 64px; }
-  .gallery, .gallery-column { gap: 10px; }
+  .gallery, .gallery-row { gap: 8px; }
+  .gallery { --gallery-row: 44vw; }
   .gallery-photo { border-radius: 6px; }
   .ref-grid { gap: 10px; }
   .ref-card { padding: 15px 12px; }

@@ -30,10 +30,9 @@ import { toolCategories, tools } from '@/data/tools';
 import { pageMetadata, seoPages } from '@/lib/seo';
 import { site } from '@/lib/site';
 import bust from '@/assets/images/galeri/bust.jpg';
-import cami from '@/assets/images/galeri/cami.jpg';
+import cay from '@/assets/images/galeri/cay.jpg';
 import cizim from '@/assets/images/galeri/cizim.jpg';
 import ekipman from '@/assets/images/galeri/ekipman.jpg';
-import illustrasyon from '@/assets/images/galeri/illustrasyon.jpg';
 import portre from '@/assets/images/galeri/portre.jpg';
 
 export const metadata = pageMetadata(seoPages.home);
@@ -59,22 +58,19 @@ const latestTools = tools.slice(0, 4);
 const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
 
 /**
- * Galeri: üç sütun, her fotoğraf kendi oranında (kırpılmadan) durur.
- * Sütunlar boyları birbirine yakın olacak şekilde eşleştirildi:
- * çizim + büst, portre + cami, illüstrasyon + ekipman.
+ * Galeri: iki sıra, ikisi de aynı yükseklikte. Her fotoğrafın genişliği kendi
+ * oranından gelir; dikeyler dar, kareye yakınlar geniş durur. Dar fotoğraflar
+ * üst sıraya, geniş olanlar alt sıraya kondu ki kırpma en az olsun.
  */
 const gallery: GalleryPhoto[][] = [
   [
     { src: cizim, alt: 'Metin Faruk Bıyık ve köpeği, ormanda karakalem çizim', position: '50% 30%' },
-    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', position: '50% 35%' },
+    { src: cay, alt: 'Karlı dağlara bakarken çay içen Metin Faruk Bıyık', position: '55% 45%' },
+    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri', position: '50% 50%' },
   ],
   [
     { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', position: '60% 40%' },
-    { src: cami, alt: 'Gün batımında cami ve minareler', position: '45% 60%' },
-  ],
-  [
-    { src: illustrasyon, alt: 'Metin Faruk Bıyık, alevler önünde illüstrasyon', position: '50% 30%' },
-    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri', position: '50% 50%' },
+    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', position: '50% 30%' },
   ],
 ];
 
@@ -135,7 +131,7 @@ export default function HomePage() {
           . Hepsi sahada ve ofiste gördüğüm gerçek ihtiyaçlardan doğdu.
         </p>
 
-        <HomeGallery columns={gallery} />
+        <HomeGallery rows={gallery} />
 
         <p className="home-copy">
           2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip yönetiminde geçen yıllardan

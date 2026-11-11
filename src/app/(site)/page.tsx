@@ -33,6 +33,7 @@ import bust from '@/assets/images/galeri/bust.jpg';
 import cay from '@/assets/images/galeri/cay.jpg';
 import cizim from '@/assets/images/galeri/cizim.jpg';
 import ekipman from '@/assets/images/galeri/ekipman.jpg';
+import kamp from '@/assets/images/galeri/kamp.jpg';
 import portre from '@/assets/images/galeri/portre.jpg';
 
 export const metadata = pageMetadata(seoPages.home);
@@ -58,19 +59,21 @@ const latestTools = tools.slice(0, 4);
 const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
 
 /**
- * Galeri: iki sıra, ikisi de aynı yükseklikte. Her fotoğrafın genişliği kendi
- * oranından gelir; dikeyler dar, kareye yakınlar geniş durur. Dar fotoğraflar
- * üst sıraya, geniş olanlar alt sıraya kondu ki kırpma en az olsun.
+ * Galeri (sungur.dev düzeni): üç sütun; yatay 3:2 ve dikey 3:4 kutular sırayla.
+ * Yatay kutulara kare ya da kareye yakın fotoğraflar kondu ki kırpma az olsun.
  */
 const gallery: GalleryPhoto[][] = [
   [
-    { src: cizim, alt: 'Metin Faruk Bıyık ve köpeği, ormanda karakalem çizim', position: '50% 30%' },
-    { src: cay, alt: 'Karlı dağlara bakarken çay içen Metin Faruk Bıyık', position: '55% 45%' },
-    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri', position: '50% 50%' },
+    { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', ratio: '3 / 2', position: '60% 35%' },
+    { src: cizim, alt: 'Metin Faruk Bıyık ve köpeği, ormanda karakalem çizim', ratio: '3 / 4', position: '50% 40%' },
   ],
   [
-    { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', position: '60% 40%' },
-    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', position: '50% 30%' },
+    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', ratio: '3 / 4', position: '50% 40%' },
+    { src: kamp, alt: 'Karlı ormanda kamp ateşi başında çay molası', ratio: '3 / 2', position: '50% 45%' },
+  ],
+  [
+    { src: cay, alt: 'Karlı dağlara bakarken çay içen Metin Faruk Bıyık', ratio: '3 / 2', position: '50% 50%' },
+    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri', ratio: '3 / 4', position: '50% 50%' },
   ],
 ];
 
@@ -126,7 +129,7 @@ export default function HomePage() {
           . Hepsi sahada ve ofiste gördüğüm gerçek ihtiyaçlardan doğdu.
         </p>
 
-        <HomeGallery rows={gallery} />
+        <HomeGallery columns={gallery} />
 
         <p className="home-copy">
           2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip yönetiminde geçen yıllardan

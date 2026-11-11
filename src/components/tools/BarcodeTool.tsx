@@ -234,7 +234,7 @@ export default function BarcodeTool() {
           </Step>
         </section>
 
-        <section className="photo-preview qr-preview" aria-labelledby="barcode-preview-title">
+        <section className="photo-preview qr-preview barcode-preview" aria-labelledby="barcode-preview-title">
           <div className="photo-preview-heading">
             <h2 id="barcode-preview-title">Önizleme</h2>
             <span>{barcode ? `${info.label} · ${barcode.modules.length} modül` : 'canlı'}</span>

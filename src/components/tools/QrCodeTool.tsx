@@ -485,7 +485,7 @@ export default function QrCodeTool() {
           </Step>
         </section>
 
-        <section className="photo-preview qr-preview" aria-labelledby="qr-preview-title">
+        <section className="photo-preview qr-preview qr-preview-split" aria-labelledby="qr-preview-title">
           <div className="photo-preview-heading">
             <h2 id="qr-preview-title">Önizleme</h2>
             <span>{rendered?.size ? `${rendered.size} × ${rendered.size} modül · ${style.errorLevel}` : 'canlı'}</span>

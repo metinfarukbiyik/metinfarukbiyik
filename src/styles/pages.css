@@ -4,7 +4,6 @@
 .home { display: flex; flex-direction: column; gap: 80px; }
 .home > section { scroll-margin-top: 32px; }
 .home-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; color: var(--ink); font-size: 17px; font-weight: 500; line-height: 24px; letter-spacing: -0.01em; }
-.home-heading-index { font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--subtle); }
 .home-copy { font-size: 16px; line-height: 1.65; color: var(--text); }
 .home-copy + .home-copy { margin-top: 14px; }
 
@@ -27,7 +26,7 @@
 .inline-project img, .inline-project svg { width: 14px; height: 14px; border-radius: 24%; }
 
 /* Galeri: eşit yükseklikte sıralar; her kutu fotoğrafın oranı kadar genişler */
-.gallery { --gallery-row: min(330px, 42vw); display: flex; flex-direction: column; gap: 12px; margin-block: 16px; }
+.gallery { --gallery-row: min(300px, 42vw); display: flex; flex-direction: column; gap: 12px; margin-block: 16px; }
 .gallery-row { display: flex; gap: 12px; height: var(--gallery-row); }
 .gallery-photo { position: relative; display: block; flex: 1 1 0; min-width: 0; height: 100%; padding: 0; overflow: hidden; border: 0; border-radius: 8px; background: var(--surface); cursor: zoom-in; }
 .gallery-photo img { object-fit: cover; transition: transform 0.35s; }

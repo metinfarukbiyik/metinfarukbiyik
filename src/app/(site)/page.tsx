@@ -80,15 +80,13 @@ const socials = [
   { label: 'Instagram', href: site.instagram, icon: Instagram },
 ];
 
-/** Bölüm başlığı: alev rengi ikon kutusu, sıra numarası ve başlık. */
+/** Bölüm başlığı: ikon kutusu ve başlık. */
 function HomeHeading({
   id,
-  index,
   icon: Icon,
   children,
 }: {
   id: string;
-  index: string;
   icon: LucideIcon;
   children: string;
 }) {
@@ -96,9 +94,6 @@ function HomeHeading({
     <h2 id={id} className="home-heading">
       <span className="icon-tile" aria-hidden="true">
         <Icon strokeWidth={1.9} />
-      </span>
-      <span className="home-heading-index" aria-hidden="true">
-        {index}
       </span>
       {children}
     </h2>
@@ -109,7 +104,7 @@ export default function HomePage() {
   return (
     <div className="home">
       <section id="hakkimda" aria-labelledby="hakkimda-baslik">
-        <HomeHeading id="hakkimda-baslik" index="01" icon={UserRound}>
+        <HomeHeading id="hakkimda-baslik" icon={UserRound}>
           Hakkımda
         </HomeHeading>
         <p className="home-copy">
@@ -144,7 +139,7 @@ export default function HomePage() {
       </section>
 
       <section id="deneyim" aria-labelledby="deneyim-baslik">
-        <HomeHeading id="deneyim-baslik" index="02" icon={Briefcase}>
+        <HomeHeading id="deneyim-baslik" icon={Briefcase}>
           Deneyim
         </HomeHeading>
         <div className="job-list">
@@ -177,7 +172,7 @@ export default function HomePage() {
       </section>
 
       <section id="projeler" aria-labelledby="projeler-baslik">
-        <HomeHeading id="projeler-baslik" index="03" icon={FolderGit2}>
+        <HomeHeading id="projeler-baslik" icon={FolderGit2}>
           Projeler
         </HomeHeading>
         <div className="ref-grid">
@@ -201,7 +196,7 @@ export default function HomePage() {
       </section>
 
       <section id="araclar" aria-labelledby="araclar-baslik">
-        <HomeHeading id="araclar-baslik" index="04" icon={Wrench}>
+        <HomeHeading id="araclar-baslik" icon={Wrench}>
           Araçlar
         </HomeHeading>
         <div className="tool-list">
@@ -230,7 +225,7 @@ export default function HomePage() {
       </section>
 
       <section id="iletisim" aria-labelledby="iletisim-baslik">
-        <HomeHeading id="iletisim-baslik" index="05" icon={Mail}>
+        <HomeHeading id="iletisim-baslik" icon={Mail}>
           İletişim
         </HomeHeading>
         <p className="home-copy">

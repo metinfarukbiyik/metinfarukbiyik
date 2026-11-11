@@ -1,4 +1,4 @@
-import { Check } from 'lucide-react';
+import { Check, Image as ImageIcon } from 'lucide-react';
 import ContactCta from '@/components/ContactCta';
 import JsonLd from '@/components/JsonLd';
 import { Badge, Breadcrumbs, DataList, Frame, Kicker, Section, TextLink } from '@/components/ui';
@@ -55,7 +55,14 @@ export default function ProjectDetail({ project }: { project: PortfolioProject }
       </header>
 
       {presentation.images.length > 0 && (
-        <Frame title={`${site.domain}${project.href}/gorseller`} meta={`${presentation.images.length} görsel`} sunken>
+        <Frame
+          tabs={presentation.images.map((image) => ({
+            label: image.src.split('/').pop() ?? image.src,
+            icon: <ImageIcon strokeWidth={1.75} />,
+          }))}
+          meta={`${presentation.images.length} görsel`}
+          sunken
+        >
           <ProjectGallery images={presentation.images} />
         </Frame>
       )}

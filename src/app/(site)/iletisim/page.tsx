@@ -64,7 +64,12 @@ export default function ContactPage() {
       />
 
       <div className="contact-grid">
-        <Frame title="yeni-mesaj.eml" meta="taslak" className="compose" aria-labelledby="compose-baslik">
+        <Frame
+          tabs={[{ label: 'yeni-mesaj.eml', icon: <Mail strokeWidth={1.75} />, modified: true }]}
+          meta="taslak"
+          className="compose"
+          aria-labelledby="compose-baslik"
+        >
           <dl className="compose-fields">
             <div>
               <dt>Kime</dt>

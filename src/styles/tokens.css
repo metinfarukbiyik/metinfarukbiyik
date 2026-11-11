@@ -132,7 +132,7 @@
   --dur: 200ms;
 
   /* Layout — tek kolon */
-  --container: 800px;
+  --container: 720px;
   --gutter: 24px;
   --header-h: 0px;
   --focus: 0 0 0 2px var(--paper), 0 0 0 4px var(--line-strong);

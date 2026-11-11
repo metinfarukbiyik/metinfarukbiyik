@@ -60,7 +60,7 @@ export default function HomeGallery({ rows }: { rows: GalleryPhoto[][] }) {
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    sizes="(max-width: 600px) 45vw, 380px"
+                    sizes="(max-width: 600px) 45vw, 340px"
                     placeholder="blur"
                     priority={index < 3}
                     style={photo.position ? { objectPosition: photo.position } : undefined}

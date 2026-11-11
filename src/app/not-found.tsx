@@ -1,4 +1,4 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, FileCode2 } from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { ButtonLink, Frame, Kicker } from '@/components/ui';
@@ -12,7 +12,11 @@ export default function NotFound() {
       <Navbar />
       <main id="icerik" className="main">
         <div className="container container-narrow not-found">
-          <Frame title="biyik.dev/???" meta="404" className="rise">
+          <Frame
+            tabs={[{ label: '404.html', icon: <FileCode2 strokeWidth={1.75} />, modified: true }]}
+            meta="kaydedilmemiş"
+            className="rise"
+          >
             <pre className="not-found-code mono" aria-hidden="true">
               {'HTTP/1.1 404 Not Found\nContent-Type: text/html; charset=utf-8\n\n<!-- Bu sayfa taşınmış ya da hiç var olmamış olabilir. -->'}
             </pre>

@@ -275,7 +275,49 @@
   color: var(--subtle);
   text-align: center;
 }
-.frame-meta { font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--subtle); }
+.frame-meta { flex-shrink: 0; font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--subtle); }
+
+/* Editör sekmeleri: aktif sekme gövdeyle birleşir, diğerleri soluk; taşan sekmeler sağda solar. */
+.frame-tabbed .frame-bar { align-items: flex-end; gap: 14px; min-height: 42px; padding-top: 8px; padding-bottom: 0; }
+.frame-tabbed .frame-dots, .frame-tabbed .frame-meta { align-self: center; margin-top: -8px; }
+.frame-tabs {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+}
+.frame-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  color: var(--subtle);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  white-space: nowrap;
+}
+.frame-tab + .frame-tab::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 1px; background: var(--line); }
+.frame-tab.is-active + .frame-tab::before, .frame-tab.is-active::before { display: none; }
+.frame-tab svg { width: 13px; height: 13px; flex-shrink: 0; }
+.frame-tab.is-active {
+  margin-bottom: -1px;
+  border-color: var(--line);
+  background: var(--surface-raised);
+  color: var(--ink);
+}
+.frame-tab.is-active svg { color: var(--ink); }
+/* Aktif sekmenin üstünde ince siyah çizgi: odaktaki dosya */
+.frame-tab.is-active::after { content: ''; position: absolute; inset: -1px -1px auto; height: 2px; border-radius: 8px 8px 0 0; background: var(--ink); }
+.frame-sunken .frame-tab.is-active { background: var(--surface); }
+.frame-tab-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink); }
 .frame-body { padding: var(--space-6); }
 .frame-flush .frame-body { padding: 0; }
 .frame-sunken { background: var(--surface); }

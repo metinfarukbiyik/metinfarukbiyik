@@ -3,7 +3,6 @@
 import Image, { type StaticImageData } from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { buttonClass } from '@/components/ui';
 
 export type GalleryPhoto = {
   src: StaticImageData;
@@ -76,11 +75,12 @@ export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) 
       </div>
       <dialog
         ref={dialogRef}
-        className="image-viewer"
-        aria-label="Fotoğraf"
+        className="photo-viewer"
+        aria-label={selected?.alt ?? 'Fotoğraf'}
         onClose={() => setActive(null)}
         onClick={(event) => {
-          if (event.target === event.currentTarget) dialogRef.current?.close();
+          // Fotoğrafın ve düğmelerin dışına (bulanık zemine) tıklamak kapatır.
+          if (!(event.target as HTMLElement).closest('img, button')) dialogRef.current?.close();
         }}
         onKeyDown={(event) => {
           if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
@@ -89,48 +89,49 @@ export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) 
           }
         }}
       >
-        <div className="image-viewer-panel">
-          <div className="image-viewer-header">
-            <p className="text-small">{selected?.alt}</p>
-            <button
-              type="button"
-              className={buttonClass({ iconOnly: true })}
-              aria-label="Fotoğrafı kapat"
-              onClick={() => dialogRef.current?.close()}
-              autoFocus
-            >
-              <X size={20} aria-hidden="true" />
-            </button>
-          </div>
-          <div className="image-viewer-stage">
-            {selected && (
-              <Image key={selected.alt} src={selected.src} alt={selected.alt} fill sizes="95vw" placeholder="blur" />
-            )}
-          </div>
-          <div className="image-viewer-footer">
-            <span className="mono">
-              {(active ?? 0) + 1} / {photos.length}
-            </span>
-            <div className="image-viewer-navigation">
-              <button
-                type="button"
-                className={buttonClass({ iconOnly: true })}
-                aria-label="Önceki fotoğraf"
-                onClick={() => move(-1)}
-              >
-                <ChevronLeft size={20} aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                className={buttonClass({ iconOnly: true })}
-                aria-label="Sonraki fotoğraf"
-                onClick={() => move(1)}
-              >
-                <ChevronRight size={20} aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </div>
+        {selected && (
+          <figure className="photo-viewer-figure">
+            <Image
+              key={selected.alt}
+              src={selected.src}
+              alt={selected.alt}
+              sizes="95vw"
+              placeholder="blur"
+              className="photo-viewer-image"
+            />
+            <figcaption>
+              <span className="mono">
+                {(active ?? 0) + 1} / {photos.length}
+              </span>
+              {selected.alt}
+            </figcaption>
+          </figure>
+        )}
+        <button
+          type="button"
+          className="photo-viewer-button photo-viewer-close"
+          aria-label="Fotoğrafı kapat"
+          onClick={() => dialogRef.current?.close()}
+          autoFocus
+        >
+          <X aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="photo-viewer-button photo-viewer-prev"
+          aria-label="Önceki fotoğraf"
+          onClick={() => move(-1)}
+        >
+          <ChevronLeft aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          className="photo-viewer-button photo-viewer-next"
+          aria-label="Sonraki fotoğraf"
+          onClick={() => move(1)}
+        >
+          <ChevronRight aria-hidden="true" />
+        </button>
       </dialog>
     </>
   );

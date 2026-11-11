@@ -1,11 +1,10 @@
 /*
  * biyik.dev UI — design tokens
  *
- * Tek kolonlu, sessiz bir defter: açık temada nötr gri tonlar, koyu temada
- * sıcak taş tonları. Ayrı bir vurgu rengi yok; vurgu, metnin kendisi.
- * Sitedeki her renk, ölçü ve hareket değeri buradan gelir. Değişken adları
- * önceki sistemle aynı tutuldu, böylece araçlar ve iç sayfalar yeni paleti
- * kendiliğinden alır.
+ * Beyaz bir defter: açık temada beyaz zemin ve nötr gri tonlar, koyu temada
+ * sıcak taş tonları. Renkli vurgu yok; fark, siyah dolgulu ikon kutuları,
+ * numaralı başlıklar ve kontrastla kurulur. Sitedeki her renk, ölçü ve hareket
+ * değeri buradan gelir.
  */
 :root {
   color-scheme: light;
@@ -33,6 +32,17 @@
   --accent-soft: #f5f5f5;
   --accent-line: #d4d4d4;
   --ink-hover: #404040;
+  --accent-hover: #404040;
+  --on-accent: #ffffff;
+  /* İkon kutuları: beyaz zeminde siyah dolgu */
+  --tile-bg: #f4f4f5;
+  --tile-line: #e4e4e7;
+  --tile-fg: #171717;
+  --tile-solid: linear-gradient(145deg, #2a2a2a 0%, #0a0a0a 100%);
+  --tile-solid-fg: #ffffff;
+  --tile-glow: 0 8px 18px -10px rgb(0 0 0 / 45%);
+  --ember-soft: #f4f4f5;
+  --ember-ink: #525252;
 
   /* Supporting tones (badges, states) */
   --success: #047857;
@@ -152,6 +162,16 @@
   --accent-soft: oklch(0.235 0.02 47);
   --accent-line: oklch(0.34 0.024 50);
   --ink-hover: oklch(0.87 0.02 68);
+  --accent-hover: oklch(0.87 0.02 68);
+  --on-accent: oklch(0.145 0.012 44);
+  --tile-bg: oklch(0.235 0.02 47);
+  --tile-line: oklch(0.34 0.024 50);
+  --tile-fg: oklch(0.955 0.016 72);
+  --tile-solid: linear-gradient(145deg, oklch(0.98 0.01 72) 0%, oklch(0.86 0.02 68) 100%);
+  --tile-solid-fg: oklch(0.145 0.012 44);
+  --tile-glow: 0 8px 18px -10px rgb(0 0 0 / 70%);
+  --ember-soft: oklch(0.235 0.02 47);
+  --ember-ink: oklch(0.78 0.026 64);
 
   --success: #6ee7b7;
   --clay: #f0b48f;

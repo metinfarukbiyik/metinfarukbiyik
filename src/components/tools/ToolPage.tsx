@@ -3,7 +3,7 @@ import JsonLd from '@/components/JsonLd';
 import { Badge, Faq, PageHeader, Section, TextLink, type FaqItem } from '@/components/ui';
 import { getTool, tools } from '@/data/tools';
 import { toolSchema, type SeoEntry } from '@/lib/seo';
-import ToolCard from './ToolCard';
+import ToolCard, { toolIcons } from './ToolCard';
 
 /** Shared scaffold for every tool: header, the tool itself, guidance, FAQ and siblings. */
 export default function ToolPage({
@@ -25,6 +25,7 @@ export default function ToolPage({
 }) {
   const tool = getTool(slug);
   const siblings = tools.filter((item) => item.slug !== slug);
+  const Icon = toolIcons[tool.icon];
   return (
     <div className="container">
       <PageHeader
@@ -33,6 +34,7 @@ export default function ToolPage({
           { name: tool.name, href: tool.href },
         ]}
         title={title}
+        icon={<Icon strokeWidth={1.75} />}
         description={description}
         meta={
           <>

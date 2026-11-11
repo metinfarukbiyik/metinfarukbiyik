@@ -44,9 +44,9 @@
   place-items: center;
   width: 24px;
   height: 24px;
-  border-radius: 6px;
-  background: var(--ink);
-  color: var(--on-ink);
+  border-radius: 7px;
+  background: var(--tile-solid);
+  color: var(--tile-solid-fg);
   font-family: var(--font-mono);
   font-size: var(--fs-micro);
 }

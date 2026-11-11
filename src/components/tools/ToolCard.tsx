@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowRight, Barcode, Gauge, Globe2, ImageOff, QrCode, ScanFace, ShieldCheck, Timer } from 'lucide-react';
 import type { ToolItem } from '@/data/tools';
 
-const icons = { ScanFace, Gauge, Globe2, QrCode, Barcode, ShieldCheck, ImageOff, Timer };
+export const toolIcons = { ScanFace, Gauge, Globe2, QrCode, Barcode, ShieldCheck, ImageOff, Timer };
 
 /** Compact, single-row tool entry: icon, name, two-line summary, path. */
 export default function ToolCard({
@@ -12,12 +12,12 @@ export default function ToolCard({
   tool: ToolItem;
   headingLevel?: 'h2' | 'h3';
 }) {
-  const Icon = icons[tool.icon];
+  const Icon = toolIcons[tool.icon];
   const Heading = headingLevel;
   return (
     <article className="tool-card">
       <span className="tool-card-icon" aria-hidden="true">
-        <Icon strokeWidth={1.6} />
+        <Icon strokeWidth={1.75} />
       </span>
       <div className="tool-card-copy">
         <Heading className="title-4">

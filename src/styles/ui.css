@@ -94,10 +94,10 @@
 }
 .btn-accent {
   --btn-bg: var(--accent);
-  --btn-fg: var(--on-ink);
+  --btn-fg: var(--on-accent);
   --btn-line: var(--accent);
-  --btn-hover-bg: var(--ink-hover);
-  --btn-hover-line: var(--ink-hover);
+  --btn-hover-bg: var(--accent-hover);
+  --btn-hover-line: var(--accent-hover);
 }
 .btn-soft {
   --btn-bg: var(--accent-soft);
@@ -148,7 +148,7 @@
 .link-underline:hover { text-decoration-color: currentColor; }
 
 /* Metin içi bağlantı — referans: altı ince, üstüne gelince koyulaşır */
-.text-link { color: var(--ink); text-decoration: underline; text-decoration-color: var(--decoration); text-underline-offset: 3px; transition: text-decoration-color var(--dur) var(--ease); }
+.text-link { color: var(--ink); text-decoration: underline; text-decoration-color: var(--decoration); text-decoration-thickness: 1.5px; text-underline-offset: 3px; transition: text-decoration-color var(--dur) var(--ease); }
 .text-link:hover { text-decoration-color: currentColor; }
 
 /* Inline prose links */
@@ -505,3 +505,29 @@ textarea.input { resize: vertical; min-height: 88px; }
 /* ── Divider with label ─────────────────────────────────── */
 .rule { display: flex; align-items: center; gap: 12px; color: var(--subtle); font-family: var(--font-mono); font-size: var(--fs-micro); }
 .rule::before, .rule::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+/* ── Icon tile — sitenin imzası: alev rengi zeminde ikon ── */
+.icon-tile {
+  --tile: 28px;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--tile);
+  height: var(--tile);
+  border-radius: calc(var(--tile) * 0.3);
+  background: var(--tile-bg);
+  color: var(--tile-fg);
+  box-shadow: inset 0 0 0 1px var(--tile-line);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.icon-tile svg { width: calc(var(--tile) * 0.54); height: calc(var(--tile) * 0.54); }
+.icon-tile-lg { --tile: 44px; }
+.icon-tile-xl { --tile: 52px; }
+/* Dolu alev: üzerine gelince ya da öne çıkarılınca */
+.icon-tile-solid,
+a:hover > .icon-tile,
+.tool-card:hover .tool-card-icon {
+  background: var(--tile-solid);
+  color: var(--tile-solid-fg);
+  box-shadow: var(--tile-glow);
+}

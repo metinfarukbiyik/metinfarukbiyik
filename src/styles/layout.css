@@ -26,15 +26,32 @@
 .site-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
+  align-items: center;
   gap: 16px 24px;
   margin-bottom: 64px;
 }
-.site-id { display: block; min-width: 0; color: var(--ink); }
+.site-id { display: flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink); }
+.site-id-copy { display: block; min-width: 0; }
+.site-mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--tile-solid);
+  color: var(--tile-solid-fg);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  box-shadow: var(--tile-glow);
+  transition: transform var(--dur) var(--ease);
+}
+.site-id:hover .site-mark { transform: rotate(-6deg); }
 .site-name { display: block; font-size: 16px; line-height: 20px; color: var(--ink); }
 .site-role { display: block; font-size: 16px; line-height: 24px; color: var(--muted); }
 
-.header-controls { position: relative; display: flex; align-items: center; gap: 12px; margin-top: -5px; margin-right: -4px; }
+.header-controls { position: relative; display: flex; align-items: center; gap: 12px; margin-right: -4px; }
 
 .nav-trigger {
   display: inline-flex;
@@ -125,13 +142,15 @@
   border-radius: 8px;
   transition: background-color 0.15s;
 }
-.nav-links a > span { min-width: 0; }
+.nav-links a > .nav-link-copy { flex: 1; min-width: 0; }
+.nav-links a { justify-content: flex-start; }
 .nav-link-name { display: block; font-size: 14px; line-height: 22px; color: var(--ink); }
 .nav-link-description { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; line-height: 18px; }
 .nav-links a > svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--subtle); }
 .nav-links a:hover,
 .nav-links a[aria-current='page'] { background: var(--paper-sunken); }
-.nav-links a[aria-current='page'] > svg { color: var(--ink); }
+.nav-links a[aria-current='page'] > svg { color: var(--accent-strong); }
+.nav-links a[aria-current='page'] .icon-tile { background: var(--tile-solid); color: var(--tile-solid-fg); box-shadow: none; }
 .nav-extra { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px; padding: 10px 12px 4px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
 .nav-extra a { display: inline-flex; align-items: center; gap: 4px; }
 .nav-extra a:hover { color: var(--ink); }
@@ -205,11 +224,15 @@
 
 /* ── Page header (iç sayfaların künyesi) ────────────────── */
 .page-header {
+  position: relative;
   margin: 0 0 40px;
-  padding: 18px 20px 20px;
+  padding: 20px 20px 20px;
+  overflow: hidden;
+  border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--surface);
 }
+.page-header-icon { margin: 4px 0 14px; background: var(--tile-solid); color: var(--tile-solid-fg); box-shadow: var(--tile-glow); }
 .page-header-grid { display: flex; flex-direction: column; gap: 14px; }
 .page-header-copy { min-width: 0; }
 .page-header .kicker { margin-bottom: 6px; }
@@ -234,6 +257,7 @@
 .breadcrumbs a { color: var(--muted); border-radius: 3px; transition: color var(--dur) var(--ease); }
 .breadcrumbs a:hover { color: var(--ink); }
 .breadcrumbs [aria-current='page'] { color: var(--ink); }
+.breadcrumbs a:hover { color: var(--accent-strong); }
 
 /* ── Sections ───────────────────────────────────────────── */
 .section { margin-top: var(--section-gap); scroll-margin-top: 32px; }

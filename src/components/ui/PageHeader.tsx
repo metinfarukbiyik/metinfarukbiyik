@@ -10,18 +10,26 @@ export default function PageHeader({
   description,
   actions,
   meta,
+  icon,
 }: {
   crumbs: Crumb[];
   title: ReactNode;
   description?: ReactNode;
   actions?: ReactNode;
   meta?: ReactNode;
+  /** Başlığın solunda duran büyük ikon (ör. araç ikonu). */
+  icon?: ReactNode;
 }) {
   return (
     <header className="page-header rise">
       <Breadcrumbs items={crumbs} />
       <div className="page-header-grid">
         <div className="page-header-copy">
+          {icon && (
+            <span className="icon-tile icon-tile-xl page-header-icon" aria-hidden="true">
+              {icon}
+            </span>
+          )}
           <Heading as="h1">{title}</Heading>
           {description && <p className="lead">{description}</p>}
           {meta && <div className="page-header-meta">{meta}</div>}

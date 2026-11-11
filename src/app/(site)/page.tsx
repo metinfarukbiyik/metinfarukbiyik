@@ -31,6 +31,7 @@ import { pageMetadata, seoPages } from '@/lib/seo';
 import { site } from '@/lib/site';
 import bust from '@/assets/images/galeri/bust.jpg';
 import cami from '@/assets/images/galeri/cami.jpg';
+import cizim from '@/assets/images/galeri/cizim.jpg';
 import ekipman from '@/assets/images/galeri/ekipman.jpg';
 import illustrasyon from '@/assets/images/galeri/illustrasyon.jpg';
 import portre from '@/assets/images/galeri/portre.jpg';
@@ -58,18 +59,22 @@ const latestTools = tools.slice(0, 4);
 const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
 
 /**
- * Galeri (sungur.dev düzeni): üç sütun. Kenar sütunlarda yatay + dikey kare,
- * ortada dikey cami fotoğrafı sütunun tamamını kaplar; üç sütun aynı boyda biter.
+ * Galeri: üç sütun, her fotoğraf kendi oranında (kırpılmadan) durur.
+ * Sütunlar boyları birbirine yakın olacak şekilde eşleştirildi:
+ * çizim + büst, portre + cami, illüstrasyon + ekipman.
  */
 const gallery: GalleryPhoto[][] = [
   [
-    { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', ratio: '3 / 2', position: '60% 35%' },
-    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', ratio: '3 / 4', position: '50% 30%' },
+    { src: cizim, alt: 'Metin Faruk Bıyık ve köpeği, ormanda karakalem çizim', position: '50% 30%' },
+    { src: bust, alt: 'Metin Faruk Bıyık mermer büst çalışması', position: '50% 35%' },
   ],
-  [{ src: cami, alt: 'Gün batımında cami ve minareler', ratio: 'fill', position: '42% 60%' }],
   [
-    { src: illustrasyon, alt: 'Metin Faruk Bıyık, alevler önünde illüstrasyon', ratio: '3 / 4', position: '50% 20%' },
-    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri', ratio: '3 / 2', position: '50% 50%' },
+    { src: portre, alt: 'Metin Faruk Bıyık, siyah beyaz portre', position: '60% 40%' },
+    { src: cami, alt: 'Gün batımında cami ve minareler', position: '45% 60%' },
+  ],
+  [
+    { src: illustrasyon, alt: 'Metin Faruk Bıyık, alevler önünde illüstrasyon', position: '50% 30%' },
+    { src: ekipman, alt: 'Kamp ateşi başında çok amaçlı pense ve el feneri', position: '50% 50%' },
   ],
 ];
 

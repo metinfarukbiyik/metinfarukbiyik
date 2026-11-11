@@ -26,11 +26,10 @@
 .inline-project:hover { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent-strong); }
 .inline-project img, .inline-project svg { width: 14px; height: 14px; border-radius: 24%; }
 
-/* Galeri (sungur.dev düzeni): üç sütun, yatay 3:2 ve dikey 3:4 kareler sırayla */
+/* Galeri: üç sütun; fotoğraflar doğal oranında, kısa sütunlar hizayı tutturmak için hafifçe uzar */
 .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-block: 16px; }
 .gallery-column { display: flex; flex-direction: column; gap: 16px; }
-.gallery-photo { position: relative; display: block; width: 100%; padding: 0; aspect-ratio: 3 / 2; overflow: hidden; border: 0; border-radius: 8px; background: var(--surface); cursor: zoom-in; }
-.gallery-photo-fill { flex: 1; aspect-ratio: auto; }
+.gallery-photo { position: relative; display: block; flex: 1 1 auto; width: 100%; padding: 0; overflow: hidden; border: 0; border-radius: 8px; background: var(--surface); cursor: zoom-in; }
 .gallery-photo img { object-fit: cover; transition: transform 0.35s; }
 .gallery-photo:hover img { transform: scale(1.035); }
 .gallery-photo:focus-visible { outline: none; box-shadow: var(--focus); }

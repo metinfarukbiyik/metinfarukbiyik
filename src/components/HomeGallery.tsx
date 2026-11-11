@@ -9,13 +9,12 @@ export type GalleryPhoto = {
   alt: string;
   /** Küçük kutudaki kırpma noktası, ör. '50% 30%'. */
   position?: string;
-  /** Kutu oranı: yatay '3 / 2', dikey '3 / 4'; 'fill' sütunun tüm boyunu kaplar. */
-  ratio?: '3 / 2' | '3 / 4' | 'fill';
 };
 
 /**
- * Ana sayfa galerisi: üç sütun; yatay ve dikey kareler sütundan sütuna yer
- * değiştirir. Tıklanan fotoğraf sayfadan ayrılmadan, kırpılmadan ve tam
+ * Ana sayfa galerisi: üç sütun. Her fotoğraf kendi oranında durur, sabit bir
+ * kareye kırpılmaz; sütunlar aynı hizada bitsin diye kısa sütundaki kutular
+ * yalnızca birkaç piksel uzar. Tıklanan fotoğraf sayfadan ayrılmadan, kırpılmadan ve tam
  * boyutunda bir pencerede açılır.
  */
 export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) {
@@ -51,12 +50,12 @@ export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) 
               return (
                 <button
                   type="button"
-                  className={photo.ratio === 'fill' ? 'gallery-photo gallery-photo-fill' : 'gallery-photo'}
+                  className="gallery-photo"
                   key={photo.alt}
                   onClick={() => setActive(index)}
                   aria-label={`Büyüt: ${photo.alt}`}
                   aria-haspopup="dialog"
-                  style={photo.ratio && photo.ratio !== 'fill' ? { aspectRatio: photo.ratio } : undefined}
+                  style={{ aspectRatio: `${photo.src.width} / ${photo.src.height}` }}
                 >
                   <Image
                     src={photo.src}

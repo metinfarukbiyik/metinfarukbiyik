@@ -32,7 +32,6 @@ export default function ToolPage({
           { name: 'Araçlar', href: '/araclar' },
           { name: tool.name, href: tool.href },
         ]}
-        kicker={`araçlar / ${tool.short.toLocaleLowerCase('tr')}`}
         title={title}
         description={description}
         meta={

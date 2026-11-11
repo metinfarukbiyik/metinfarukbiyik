@@ -8,13 +8,10 @@ export default function Breadcrumbs({ items }: { items: Crumb[] }) {
   return (
     <nav className="breadcrumbs" aria-label="Sayfa yolu">
       <ol>
-        {trail.map((crumb, index) => (
+        {/* Son halka sayfanın kendisi; başlıkta zaten yazdığı için gösterilmez (yapısal veride kalır). */}
+        {trail.slice(0, -1).map((crumb) => (
           <li key={crumb.href}>
-            {index === trail.length - 1 ? (
-              <span aria-current="page">{crumb.name}</span>
-            ) : (
-              <Link href={crumb.href}>{index === 0 ? '~' : crumb.name}</Link>
-            )}
+            <Link href={crumb.href}>{crumb.name}</Link>
           </li>
         ))}
       </ol>

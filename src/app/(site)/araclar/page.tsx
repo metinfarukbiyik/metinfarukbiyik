@@ -12,7 +12,6 @@ export default function ToolsPage() {
     <div className="container">
       <PageHeader
         crumbs={[{ name: 'Araçlar', href: '/araclar' }]}
-        kicker="araçlar"
         title="İşini kolaylaştıran küçük araçlar."
         description="Kurulum, hesap veya ücret yok. Doğrudan tarayıcında çalışan; fotoğraf, paylaşım ve ağ için pratik yardımcılar."
         meta={

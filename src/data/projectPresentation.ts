@@ -53,14 +53,14 @@ export function getProjectPresentation(project: PortfolioProject): ProjectPresen
   if (project.slug === 'bizim-koy') {
     return {
       actions: [{ label: 'Hemen oyna', url: project.url, kind: 'visit', external: true }],
-      note: 'İndirme yok · Masaüstü ve mobil tarayıcıda çalışır · Ücretsiz',
+      note: 'İndirme yok · Masaüstü ve mobil tarayıcıda çalışır',
       images: bizimKoyScreenshots,
     };
   }
   if (project.slug === 'geocam') {
     return {
       actions: [{ label: 'App Store’dan indir', url: project.url, kind: 'download', external: true }],
-      note: 'iPhone · iOS 17 ve sonrası · Ücretsiz',
+      note: 'iPhone · iOS 17 ve sonrası',
       images: screenshots.slice(0, 3),
     };
   }

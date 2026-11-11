@@ -13,7 +13,6 @@ export default function ProjectsPage() {
     <div className="container">
       <PageHeader
         crumbs={[{ name: 'Projeler', href: '/projeler' }]}
-        kicker="portföy"
         title="Projeler"
         description="Masaüstü ve mobil uygulamalar, kurumsal sistemler ve web siteleri. Uygulamaları indirebilir, web projelerini ziyaret edebilirsin."
       />

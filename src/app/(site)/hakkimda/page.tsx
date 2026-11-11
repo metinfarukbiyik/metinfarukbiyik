@@ -34,7 +34,6 @@ export default function AboutPage() {
     <div className="container">
       <PageHeader
         crumbs={[{ name: 'Hakkımda', href: '/hakkimda' }]}
-        kicker="hakkımda"
         title="İşin arkasındaki kişi."
         description="Sahada kablo çeken, ofiste süreç planlayan ve bu deneyimi yazılıma dönüştüren biri. Profil, deneyim, eğitim ve sertifikalarım."
         actions={

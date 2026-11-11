@@ -38,7 +38,6 @@ import portre from '@/assets/images/galeri/portre.jpg';
 
 export const metadata = pageMetadata(seoPages.home);
 
-const current = experiences[experiences.length - 1];
 const jobs = [...experiences].reverse();
 
 /** Her deneyim için işin kendisini anlatan ikon; bilinmeyen şirketlerde çanta. */
@@ -110,12 +109,10 @@ export default function HomePage() {
           Hakkımda
         </HomeHeading>
         <p className="home-copy">
-          {site.city}’da yaşayan bir yazılım geliştiriciyim. Şu anda{' '}
-          <Link className="text-link" href="/hakkimda#deneyim">
-            {current.company}
-          </Link>
-          ’de {current.role.toLocaleLowerCase('tr')} olarak çalışıyorum. Geri kalan zamanımda web, mobil ve masaüstü
-          için kendi ürünlerimi geliştiriyorum:{' '}
+          {site.city}’da yaşayan; telekomünikasyon saha operasyonları, iş emri planlama, envanter yönetimi ve müşteri
+          ilişkileri alanlarında deneyimli, çözüm odaklı bir profesyonelim. Saha ve ofis ekipleri arasındaki iş akışını
+          koordine ediyor, süreçleri belgeleyip raporluyor, kalite ve stok takibini yürütüyorum. Yazılım birikimimi de
+          bu işin içine katıyorum; web, mobil ve masaüstü için geliştirdiğim{' '}
           {featured.map((project, index) => (
             <Fragment key={project.slug}>
               {index > 0 ? (index === featured.length - 1 ? ' ve ' : ', ') : null}
@@ -125,18 +122,19 @@ export default function HomePage() {
               </Link>
             </Fragment>
           ))}
-          . Hepsi sahada ve ofiste gördüğüm gerçek ihtiyaçlardan doğdu.
+          {' '}doğrudan sahada ve ofiste karşılaştığım gerçek ihtiyaçlardan doğdu.
         </p>
 
         <HomeGallery rows={gallery} />
 
         <p className="home-copy">
-          2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip yönetiminde geçen yıllardan
-          sonra bugün ekrandaki ürünlere dönüştü. Ayrıca günlük küçük işler için{' '}
+          2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip koçluğunda geçen yıllarla
+          birleşti. Bugün web programcılığı altyapımı operasyonel verimliliğe dönüştürüyor, işi kolaylaştıran araçlar
+          üretiyorum. Günlük küçük işler için hazırladığım{' '}
           <Link className="text-link" href="/araclar">
             ücretsiz araçlar
           </Link>{' '}
-          hazırlıyorum.
+          da herkesin kullanımına açık.
         </p>
       </section>
 

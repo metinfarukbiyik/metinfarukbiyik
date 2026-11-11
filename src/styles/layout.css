@@ -32,22 +32,6 @@
 }
 .site-id { display: flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink); }
 .site-id-copy { display: block; min-width: 0; }
-.site-mark {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: var(--tile-solid);
-  color: var(--tile-solid-fg);
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  box-shadow: var(--tile-glow);
-  transition: transform var(--dur) var(--ease);
-}
-.site-id:hover .site-mark { transform: rotate(-6deg); }
 .site-name { display: block; font-size: 16px; line-height: 20px; color: var(--ink); }
 .site-role { display: block; font-size: 16px; line-height: 24px; color: var(--muted); }
 

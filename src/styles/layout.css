@@ -37,8 +37,6 @@
 }
 /* Künye: yuvarlak portre, ad ve ünvan */
 .site-id { display: flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink); }
-.site-avatar { position: relative; flex-shrink: 0; width: 40px; height: 40px; overflow: hidden; border-radius: 50%; background: var(--paper-sunken); box-shadow: 0 0 0 1px var(--line); }
-.site-avatar img { object-fit: cover; object-position: 38% 28%; }
 .site-id-copy { display: block; min-width: 0; }
 .site-name { display: block; font-size: 15px; font-weight: 500; line-height: 20px; letter-spacing: -0.01em; color: var(--ink); }
 .site-role { display: block; overflow: hidden; font-size: 13px; line-height: 18px; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
@@ -67,7 +65,6 @@
 
 @media (max-width: 600px) {
   .site-header { min-height: 68px; margin-bottom: 28px; gap: 12px; }
-  .site-avatar { width: 36px; height: 36px; }
   .site-name { font-size: 14px; }
   .site-role { font-size: 12px; }
 }

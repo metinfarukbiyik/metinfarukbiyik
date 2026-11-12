@@ -53,12 +53,13 @@
 
 .island[data-state='activity'] {
   --island-w: min(360px, calc(100vw - 80px));
-  --island-h: 52px;
-  --island-r: 26px;
+  /* Sakin hâlle aynı yükseklik: yalnızca genişler, aşağı taşmaz */
+  --island-h: 40px;
+  --island-r: 20px;
 }
 .island[data-state='expanded'] {
   --island-w: min(560px, calc(100vw - 2 * var(--gutter)));
-  --island-h: 184px;
+  --island-h: 148px;
   right: 0;
   --island-r: 34px;
   box-shadow: var(--island-edge-open);
@@ -221,21 +222,21 @@
 .island-activity {
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 0 18px 0 10px;
+  gap: 9px;
+  padding: 0 16px 0 6px;
 }
 .island-activity-icon {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   animation: island-pop 520ms var(--spring) both;
 }
-.island-activity-icon svg { width: 17px; height: 17px; color: var(--on-ink); }
-.island-activity-copy { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
-.island-activity-copy strong { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.island-activity-icon svg { width: 15px; height: 15px; color: var(--on-ink); }
+.island-activity-copy { display: flex; align-items: baseline; gap: 6px; min-width: 0; line-height: 1.2; white-space: nowrap; }
+.island-activity-copy strong { flex-shrink: 0; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
 .island-activity-copy span {
   overflow: hidden;
   font-size: 12px;
@@ -253,7 +254,7 @@
 .island-panel {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 12px;
   padding: 16px 16px 14px;
 }
 .island-panel-head { display: flex; align-items: center; gap: 12px; }
@@ -361,7 +362,7 @@
   .island-anchor { --island-compact-w: 104px; }
   .island-compact-nav, .island-compact-label { display: none; }
   .island-compact-open { flex: 1; justify-content: space-between; }
-  .island[data-state='expanded'] { --island-h: 196px; }
+  .island[data-state='expanded'] { --island-h: 144px; }
   .island-dock { gap: 0; }
   .island-dock-item { font-size: 9.5px; }
   .island-tile { width: 34px; height: 34px; border-radius: 9px; }
@@ -369,7 +370,7 @@
 }
 @media (max-width: 400px) {
   .island-dock-item > span:last-child { display: none; }
-  .island[data-state='expanded'] { --island-h: 168px; }
+  .island[data-state='expanded'] { --island-h: 128px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

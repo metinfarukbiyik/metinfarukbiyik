@@ -41,11 +41,11 @@ const categoryName = (id: string) => toolCategories.find((category) => category.
  */
 const gallery: GalleryPhoto[][] = [
   [
-    { src: portre, alt: 'Sakin bir öğleden sonra', shape: 'wide', focus: 'center 35%' },
+    { src: cadir, alt: 'Çam ormanında kamp', shape: 'wide', focus: 'center 58%' },
     { src: bust, alt: 'Mermerden bir ben', shape: 'portrait' },
   ],
   [
-    { src: cadir, alt: 'Çam ormanında kamp', shape: 'portrait' },
+    { src: portre, alt: 'Sakin bir öğleden sonra', shape: 'portrait', focus: 'center 35%' },
     { src: kamp, alt: 'Karda, ateş başında', shape: 'wide' },
   ],
   [

@@ -21,12 +21,12 @@ biyik.dev’in kendi tasarım sistemi. Görsel dil sungur.dev çizgisinde: beyaz
 | `Badge` | `tone`, `dot`, `live` (nabız), `code` (`<etiket>` görünümü), `outline` |
 | `Tooltip` | Yalnızca CSS; hover ve klavye odağında görünür, `aria-describedby` bağlar |
 | `Heading`, `Kicker` | Anlamsal seviye (`as`) ile görsel boyut (`size`) ayrıdır |
-| `PageHeader`, `Breadcrumbs` | sungur.dev kalıbı: açık gri kutu, küçük harfli başlık + mono sayaç (`count`), sağda küçük eylemler, gri açıklama, nokta ile ayrılmış mono etiketler. Sayfa yolu yalnızca BreadcrumbList şemasında |
+| `PageHeader`, `Breadcrumbs` | Sütunla hizalı, ince çerçeveli açık gri kutu: başlık + küçük sayaç etiketi (`count`), sağda eylemler, açıklama; etiketler ince ayraçla ayrılmış mono metin. Sayfa yolu yalnızca BreadcrumbList şemasında |
 | `Section`, `SectionHeader` | Bölüm ritmi ve başlıkları |
 | `Frame` | Tarayıcı penceresi çerçevesi |
 | `Segmented` | Filtre düğmeleri |
 | `DataList` | Anahtar / değer ızgarası |
 | `Faq` | Açılır SSS + FAQPage şeması |
-| `DynamicIsland` | Üstte açık, ince çerçeveli renksiz hap (kartlarla aynı yüzey): sayfa adı, hızlı gezinme, ilerleme halkası; tıklayınca panel. Yanında tema uydusu. Olay göstermek için `notifyIsland()` (`src/lib/island.ts`) |
+| `DynamicIsland` | Yapışık üst çubuğun sağında (solda portre, ad, ünvan); açık, ince çerçeveli renksiz hap. Genişleyince sola ve aşağı, içeriğin üstüne açılır: sayfa adı, hızlı gezinme, ilerleme halkası; tıklayınca panel. Yanında tema uydusu. Olay göstermek için `notifyIsland()` (`src/lib/island.ts`) |
 
 Sınıf adları Tailwind yardımcı sınıflarıyla çakışmamalıdır (ör. `h-1` yerine `title-1`).

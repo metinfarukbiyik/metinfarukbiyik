@@ -51,7 +51,7 @@ export default function ContactPage() {
     <div className="container">
       <PageHeader
         crumbs={[{ name: 'İletişim', href: '/iletisim' }]}
-        title="iletişim"
+        title="İletişim"
         count="yeni projelere açık"
         description="Bir web sitesi, uygulama ya da kurumsal sistem fikrin mi var? Konunu seç, e-postan hazır olsun. Telefon ve sosyal medya kanalları da hemen aşağıda."
         meta={

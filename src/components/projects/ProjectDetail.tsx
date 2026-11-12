@@ -30,7 +30,6 @@ export default function ProjectDetail({ project }: { project: PortfolioProject }
           { name: 'Projeler', href: '/projeler' },
           { name: project.name, href: project.href },
         ]}
-        keepCase
         leading={<ProjectIcon project={project} size="sm" priority />}
         title={project.name}
         count={kicker}

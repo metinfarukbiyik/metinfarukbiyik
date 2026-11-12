@@ -9,25 +9,29 @@
  *   expanded → hızlı gezinme paneli
  */
 
+/*
+ * Ada header'ın sağında durur. Çapa yalnızca sakin hâlin yerini ayırır;
+ * ada sağa yaslı ve mutlak konumludur, bu yüzden genişleyince sola ve aşağı
+ * doğru içeriğin üstüne açılır, header'ı itmez. Uydu (tema) en sağdadır.
+ */
 .island-anchor {
-  --island-edge: 0 0 0 1px var(--line), 0 8px 24px -12px rgb(0 0 0 / 14%);
+  --island-compact-w: 340px;
+  --island-edge: 0 0 0 1px var(--line), 0 1px 2px rgb(0 0 0 / 4%);
   --island-edge-open: 0 0 0 1px var(--line), 0 24px 56px -20px rgb(0 0 0 / 22%);
-  position: fixed;
-  top: max(10px, env(safe-area-inset-top));
-  left: 50%;
+  position: relative;
   z-index: 70;
-  /* Ada + uydu birlikte ortalanır; ada açılınca uydu gizlenir ve ada tam ortaya kayar. */
-  transform: translateX(calc(-50% - 24px));
-  pointer-events: none;
-  transition: transform 560ms var(--spring);
+  flex-shrink: 0;
+  width: calc(var(--island-compact-w) + 48px);
+  height: 40px;
 }
-.island-anchor:has(.island[data-state='expanded']) { transform: translateX(-50%); }
 
 .island {
-  --island-w: 340px;
+  --island-w: var(--island-compact-w);
   --island-h: 40px;
   --island-r: 20px;
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 48px;
   width: var(--island-w);
   height: var(--island-h);
   border-radius: var(--island-r);
@@ -38,6 +42,7 @@
   pointer-events: auto;
   font-family: var(--font-sans);
   transition:
+    right 420ms var(--spring),
     width 560ms var(--spring),
     height 560ms var(--spring),
     border-radius 560ms var(--spring),
@@ -45,7 +50,6 @@
     box-shadow 300ms var(--ease);
 }
 
-.island[data-state='compact']:hover { transform: scale(1.02); }
 
 .island[data-state='activity'] {
   --island-w: min(360px, calc(100vw - 80px));
@@ -53,8 +57,9 @@
   --island-r: 26px;
 }
 .island[data-state='expanded'] {
-  --island-w: min(560px, calc(100vw - 20px));
+  --island-w: min(560px, calc(100vw - 2 * var(--gutter)));
   --island-h: 184px;
+  right: 0;
   --island-r: 34px;
   box-shadow: var(--island-edge-open);
 }
@@ -171,12 +176,11 @@
 .island-satellite {
   position: absolute;
   top: 0;
-  left: 100%;
+  right: 0;
   display: grid;
   place-items: center;
   width: 40px;
   height: 40px;
-  margin-left: 8px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -352,10 +356,11 @@
 .island .island-tile[class*='tone-'] { background: var(--paper-sunken); }
 .island .island-activity-icon[class*='tone-'] { background: var(--ink); }
 
-/* Telefonda sakin hâl yalnızca sayfa adı + halka; gezinme ada açılınca. */
+/* Telefonda sakin hâl yalnızca sayfa ikonu, ok ve halka; gezinme ada açılınca. */
 @media (max-width: 640px) {
-  .island { --island-w: 176px; }
-  .island-compact-nav { display: none; }
+  .island-anchor { --island-compact-w: 104px; }
+  .island-compact-nav, .island-compact-label { display: none; }
+  .island-compact-open { flex: 1; justify-content: space-between; }
   .island[data-state='expanded'] { --island-h: 196px; }
   .island-dock { gap: 0; }
   .island-dock-item { font-size: 9.5px; }

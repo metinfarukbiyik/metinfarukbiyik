@@ -1,12 +1,11 @@
 import type { ReactNode } from 'react';
 import type { Crumb } from '@/lib/seo';
-import { cx } from './cx';
 import Breadcrumbs from './Breadcrumbs';
 
 /**
- * İç sayfaların başı (sungur.dev kalıbı): kenarlara hafifçe taşan açık gri bir
- * kutu; küçük harfli başlık, yanında mono bir sayaç ve sağda küçük eylemler,
- * altında gri bir açıklama satırı.
+ * İç sayfaların başı: sütunla aynı hizada, ince çerçeveli açık gri kutu.
+ * Başlık, yanında küçük bir sayaç etiketi ve sağda eylemler; altında açıklama,
+ * ince bir ayraçla ayrılmış etiketler ve (varsa) ek içerik.
  */
 export default function PageHeader({
   crumbs,
@@ -16,7 +15,6 @@ export default function PageHeader({
   actions,
   meta,
   leading,
-  keepCase,
   children,
 }: {
   crumbs: Crumb[];
@@ -30,12 +28,10 @@ export default function PageHeader({
   meta?: ReactNode;
   /** Başlığın solunda küçük bir ikon (ör. proje logosu). */
   leading?: ReactNode;
-  /** Özel adlar (ör. proje adı) küçük harfe çevrilmesin. */
-  keepCase?: boolean;
   children?: ReactNode;
 }) {
   return (
-    <header className={cx('page-header', keepCase && 'page-header-keepcase')}>
+    <header className="page-header">
       <Breadcrumbs items={crumbs} />
       <div className="page-header-title">
         {leading}

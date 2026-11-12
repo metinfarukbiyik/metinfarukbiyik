@@ -12,7 +12,7 @@ export default function ToolsPage() {
     <div className="container">
       <PageHeader
         crumbs={[{ name: 'Araçlar', href: '/araclar' }]}
-        title="araçlar"
+        title="Araçlar"
         count={`${String(tools.length).padStart(2, '0')} araç`}
         description="Kurulum, hesap veya ücret yok. Doğrudan tarayıcında çalışan; fotoğraf, paylaşım ve ağ için pratik yardımcılar."
         meta={

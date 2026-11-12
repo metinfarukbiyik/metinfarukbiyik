@@ -24,9 +24,9 @@ export default function AboutPage() {
     <div className="container">
       <PageHeader
         crumbs={[{ name: 'Hakkımda', href: '/hakkimda' }]}
-        title="hakkımda"
+        title="Hakkımda"
         count={`${String(experiences.length).padStart(2, '0')} pozisyon`}
-        description="Sahada kablo çeken, ofiste süreç planlayan ve bu deneyimi yazılıma dönüştüren biri. Profil, deneyim, eğitim ve sertifikalarım."
+        description="Telekomünikasyon saha operasyonları, iş planlama ve müşteri ilişkileri alanlarındaki deneyimimi yazılım geliştirme yetkinliğiyle bütünleştiriyorum. Bu sayfada profesyonel geçmişimi, eğitimimi, sertifikalarımı ve yetkinliklerimi bulabilirsiniz."
         actions={
           <ButtonLink href={site.cv} download variant="ghost" size="sm" icon={<Download aria-hidden="true" />}>
             Özgeçmiş

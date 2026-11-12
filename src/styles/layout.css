@@ -13,7 +13,7 @@
   min-height: 100vh;
   min-height: 100dvh;
   margin-inline: auto;
-  padding: 80px var(--gutter) 0;
+  padding: 0 var(--gutter);
 }
 
 /* Kolon zaten dar; eski geniş kapsayıcılar artık yalnızca akışı taşır. */
@@ -24,16 +24,25 @@
 
 /* ── Header ─────────────────────────────────────────────── */
 .site-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
   align-items: center;
-  gap: 16px 24px;
-  margin-bottom: 64px;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 80px;
+  margin-bottom: 40px;
+  padding-top: env(safe-area-inset-top);
 }
+/* Künye: yuvarlak portre, ad ve ünvan */
 .site-id { display: flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink); }
+.site-avatar { position: relative; flex-shrink: 0; width: 40px; height: 40px; overflow: hidden; border-radius: 50%; background: var(--paper-sunken); box-shadow: 0 0 0 1px var(--line); }
+.site-avatar img { object-fit: cover; object-position: 38% 28%; }
 .site-id-copy { display: block; min-width: 0; }
-.site-name { display: block; font-size: 16px; font-weight: 400; line-height: 20px; color: var(--ink); }
-.site-role { display: block; font-size: 16px; line-height: 24px; color: var(--muted); }
+.site-name { display: block; font-size: 15px; font-weight: 500; line-height: 20px; letter-spacing: -0.01em; color: var(--ink); }
+.site-role { display: block; overflow: hidden; font-size: 13px; line-height: 18px; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
+.site-id:hover .site-name { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 
 
 .theme-toggle {
@@ -57,9 +66,10 @@
 @keyframes fade-appear { from { opacity: 0; } to { opacity: 1; } }
 
 @media (max-width: 600px) {
-  .shell { padding-top: 72px; }
-  .site-header { gap: 14px 20px; margin-bottom: 40px; }
-  .site-role { font-size: 14px; }
+  .site-header { min-height: 68px; margin-bottom: 28px; gap: 12px; }
+  .site-avatar { width: 36px; height: 36px; }
+  .site-name { font-size: 14px; }
+  .site-role { font-size: 12px; }
 }
 
 /* ── Scroll overlays: içerik kenarda zemine süzülür ─────── */
@@ -93,29 +103,54 @@
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
 
-/* ── Page header (sungur.dev kalıbı) ────────────────────────
- * Kenarlara 12px taşan, çerçevesiz açık gri kutu. Küçük harfli başlık,
- * yanında mono sayaç, sağda küçük eylemler; altında gri açıklama.
+/* ── Page header ──────────────────────────────────────────
+ * İç sayfaların başı: sütunla aynı hizada, ince çerçeveli açık gri kutu.
+ * Başlık + küçük sayaç etiketi, altında açıklama; etiketler ve eylemler
+ * ince bir ayraçla ayrılır.
  */
 .page-header {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: 0 -12px 40px;
-  padding: 14px 12px;
-  border-radius: var(--radius-md);
+  margin: 0 0 48px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
   background: var(--surface);
 }
-.page-header-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; min-width: 0; }
-.page-header-title > .icon-tile { align-self: center; }
-.page-header h1 { font-size: 20px; line-height: 28px; font-weight: 500; letter-spacing: -0.01em; text-transform: lowercase; }
-.page-header-keepcase h1 { text-transform: none; }
-.page-header-count { font-family: var(--font-mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.page-header-actions { display: flex; gap: 4px; margin-left: auto; align-self: center; }
-.page-header-lead { font-size: var(--fs-small); line-height: 1.625; color: var(--muted); }
+.page-header-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-width: 0; }
+.page-header-title > .icon-tile { --tile: 36px; border-radius: 10px; }
+.page-header h1 { font-size: 24px; line-height: 32px; font-weight: 500; letter-spacing: -0.02em; }
+.page-header-count {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.page-header-actions { display: flex; gap: 6px; margin-left: auto; }
+.page-header-lead { max-width: 72ch; font-size: 15px; line-height: 1.65; color: var(--text); }
 
-/* Etiketler: rozet değil, nokta ile ayrılmış mono metin */
-.page-header-meta { display: flex; flex-wrap: wrap; align-items: center; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+/* Etiketler: ince ayraçla ayrılmış, nokta ile bölünmüş mono metin */
+.page-header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 0;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+}
 .page-header-meta .badge { min-height: 0; padding: 0; border: 0; background: none; color: inherit; font-size: inherit; text-transform: lowercase; }
 .page-header-meta .badge svg { display: none; }
 .page-header-meta .badge::before { display: none; }
@@ -124,15 +159,21 @@
   display: inline;
   width: auto;
   height: auto;
-  margin: 0 8px;
+  margin: 0 10px;
   border-radius: 0;
   background: none;
-  color: var(--line-strong);
+  color: var(--subtle);
   opacity: 1;
   animation: none;
 }
-.page-header .project-actions { margin-top: 8px; }
-.page-header .project-note { margin-top: 0; }
+.page-header .project-actions { margin-top: 14px; }
+.page-header .project-note { margin-top: 0; color: var(--subtle); }
+
+@media (max-width: 600px) {
+  .page-header { padding: 18px 16px; margin-bottom: 40px; }
+  .page-header h1 { font-size: 21px; line-height: 28px; }
+  .page-header-lead { font-size: 14px; }
+}
 
 /* ── Sections ───────────────────────────────────────────── */
 .section { margin-top: var(--section-gap); scroll-margin-top: 32px; }

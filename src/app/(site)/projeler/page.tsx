@@ -13,7 +13,7 @@ export default function ProjectsPage() {
     <div className="container">
       <PageHeader
         crumbs={[{ name: 'Projeler', href: '/projeler' }]}
-        title="projeler"
+        title="Projeler"
         count={`${String(portfolioProjects.length).padStart(2, '0')} proje`}
         description="Masaüstü ve mobil uygulamalar, kurumsal sistemler ve web siteleri. Uygulamaları indirebilir, web projelerini ziyaret edebilirsin."
       />

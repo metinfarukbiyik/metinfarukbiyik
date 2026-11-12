@@ -405,8 +405,11 @@
   border-radius: var(--radius-sm);
   background: var(--surface);
   color: var(--text);
-  font-size: var(--fs-small);
-  font-weight: var(--fw-medium);
+  /* Alttaki "Konu seçince…" notuyla aynı yazı: mono, 12px, normal ağırlık */
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tracking-mono);
   transition: border-color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 .compose-topic svg { width: 15px; height: 15px; color: var(--subtle); }

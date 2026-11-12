@@ -1,4 +1,4 @@
-import { Github, Instagram, Linkedin, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from 'lucide-react';
+import { Instagram, Linkedin, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from 'lucide-react';
 import JsonLd from '@/components/JsonLd';
 import { Badge, ButtonLink, Frame, PageHeader, Section, Tooltip } from '@/components/ui';
 import { personalInfo } from '@/data/cvData';
@@ -27,7 +27,6 @@ const channels: {
   hint: string;
 }[] = [
   { name: 'LinkedIn', value: 'in/metinbiyik', href: site.linkedin, icon: Linkedin, hint: 'Profesyonel ağ' },
-  { name: 'GitHub', value: 'metinfarukbiyik', href: site.github, icon: Github, hint: 'Açık kaynak projeler' },
   { name: 'Instagram', value: '@_metinbiyik', href: site.instagram, icon: Instagram, hint: 'Gündelik paylaşımlar' },
 ];
 

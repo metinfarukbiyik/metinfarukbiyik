@@ -13,6 +13,7 @@ import {
   type DnsRecord,
   type SiteCheckResult,
 } from '@/lib/site-check';
+import { notifyIsland } from '@/lib/island';
 
 type Dns = { records: DnsRecord[]; spf: string | null; dmarc: string | null; failed: boolean };
 
@@ -107,6 +108,7 @@ export default function SiteCheckTool() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setStatus('Sonuç bağlantısı kopyalandı.');
+      notifyIsland({ title: 'Bağlantı kopyalandı', detail: window.location.host, icon: 'link', tone: 'green' });
     } catch {
       setStatus('Bağlantı kopyalanamadı; adres çubuğundan kopyalayabilirsin.');
     }

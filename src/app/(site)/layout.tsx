@@ -1,4 +1,5 @@
 import Script from 'next/script';
+import DynamicIsland from '@/components/DynamicIsland';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/JsonLd';
@@ -10,6 +11,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <a href="#icerik" className="skip-link">
         İçeriğe geç
       </a>
+      <DynamicIsland />
       <Navbar />
       <main id="icerik" className="main">
         {children}

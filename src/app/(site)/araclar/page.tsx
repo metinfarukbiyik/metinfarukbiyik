@@ -12,26 +12,24 @@ export default function ToolsPage() {
     <div className="container">
       <PageHeader
         crumbs={[{ name: 'Araçlar', href: '/araclar' }]}
-        title="İşini kolaylaştıran küçük araçlar."
+        title="araçlar"
+        count={`${String(tools.length).padStart(2, '0')} araç`}
         description="Kurulum, hesap veya ücret yok. Doğrudan tarayıcında çalışan; fotoğraf, paylaşım ve ağ için pratik yardımcılar."
         meta={
           <>
-            <Badge tone="accent" dot>
-              {tools.length} araç · ücretsiz
-            </Badge>
-            <Badge>Reklamsız</Badge>
-            <Badge>Hesap gerektirmez</Badge>
+            <Badge>ücretsiz</Badge>
+            <Badge>reklamsız</Badge>
+            <Badge>hesap gerektirmez</Badge>
           </>
         }
       />
       <div className="tool-groups">
-        {toolCategories.map((category, index) => {
+        {toolCategories.map((category) => {
           const items = tools.filter((tool) => tool.category === category.id);
           return (
             <section key={category.id} id={category.id} className="tool-group" aria-labelledby={`${category.id}-baslik`}>
               <header className="tool-group-header">
-                <h2 id={`${category.id}-baslik`} className="tool-group-title mono">
-                  <span>{String(index + 1).padStart(2, '0')}</span>
+                <h2 id={`${category.id}-baslik`} className="tool-group-title">
                   {category.name}
                 </h2>
                 <p>{category.description}</p>

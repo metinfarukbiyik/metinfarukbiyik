@@ -68,7 +68,6 @@ export default function SiteCheckPage() {
     <ToolPage
       slug="web-sitesi-kontrol"
       seo={seoPages.siteCheck}
-      title="Web sitesi kontrolü: SSL, DNS ve yönlendirmeler."
       description="Bir alan adının SSL sertifikasını ve bitiş tarihini, DNS kayıtlarını, http → https yönlendirme zincirini ve güvenlik başlıklarını tek seferde kontrol et."
       faq={faq}
       guide={guide}

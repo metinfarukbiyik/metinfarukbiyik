@@ -68,7 +68,6 @@ export default function ExifCleanerPage() {
     <ToolPage
       slug="exif-temizleyici"
       seo={seoPages.exif}
-      title="Fotoğraf EXIF temizleyici: paylaşmadan önce gizliliğini koru."
       description="Fotoğrafının konum, tarih ve cihaz bilgilerini gör; istediklerini silip temiz bir kopya indir. Kalite kaybı olmaz, fotoğraf cihazından çıkmaz."
       faq={faq}
       guide={guide}

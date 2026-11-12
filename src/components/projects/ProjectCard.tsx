@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import type { PortfolioProject } from '@/data/projects';
-import { Badge } from '@/components/ui';
-import ProjectIcon from './ProjectIcon';
+import ProjectIcon, { ProjectLogo } from './ProjectIcon';
 
-/** Card for an application: icon, platforms, summary, whole-card link. */
+/** Proje kartı (sungur.dev): küçük logo, ad ve ok; altında özet ve platform. */
 export function ProjectCard({
   project,
   headingLevel = 'h3',
@@ -14,27 +13,17 @@ export function ProjectCard({
 }) {
   const Heading = headingLevel;
   return (
-    <article className="card card-interactive project-card">
-      <div className="project-card-top">
-        <ProjectIcon project={project} />
-        <div className="project-card-badges">
-          {project.platforms.map((platform) => (
-            <Badge key={platform} outline>
-              {platform}
-            </Badge>
-          ))}
-        </div>
+    <Link className="ref-card" href={project.href}>
+      <div className="ref-card-head">
+        <span className="ref-card-icon" aria-hidden="true">
+          <ProjectLogo project={project} size={23} />
+        </span>
+        <Heading>{project.name}</Heading>
+        <ArrowRight className="ref-card-arrow" aria-hidden="true" />
       </div>
-      <Heading className="title-3 project-card-title">
-        <Link href={project.href} className="card-link">
-          {project.name}
-        </Link>
-      </Heading>
-      <p className="text-small">{project.description}</p>
-      <span className="project-card-more" aria-hidden="true">
-        İncele <ArrowRight />
-      </span>
-    </article>
+      <p>{project.description}</p>
+      <span className="ref-card-tech">{project.platform}</span>
+    </Link>
   );
 }
 
@@ -73,7 +62,7 @@ export function ProjectGrid({
   headingLevel?: 'h2' | 'h3';
 }) {
   return (
-    <div className="project-grid">
+    <div className="ref-grid">
       {projects.map((project) => (
         <ProjectCard key={project.slug} project={project} headingLevel={headingLevel} />
       ))}

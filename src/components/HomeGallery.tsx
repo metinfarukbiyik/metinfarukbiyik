@@ -7,16 +7,20 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 export type GalleryPhoto = {
   src: StaticImageData;
   alt: string;
+  /** Çerçeve: yatay 3/2, dikey 3/4 ya da sütunun tamamı (1/2). */
+  shape: 'wide' | 'portrait' | 'tall';
+  /** Kırpmada odak noktası (object-position), ör. 'center 30%'. */
+  focus?: string;
 };
 
 /**
- * Ana sayfa galerisi: sıralar halinde, hiçbir fotoğraf kırpılmaz. Her kutu
- * fotoğrafın kendi oranındadır; genişliği de bu orandan gelir, böylece bir
- * sıradaki fotoğraflar aynı yükseklikte durur ve sırayı tam doldurur.
- * Tıklanan fotoğraf sayfadan ayrılmadan tam boyutunda açılır.
+ * Ana sayfa galerisi: eşit genişlikte sütunlar, her sütunda yatay (3/2) ve
+ * dikey (3/4) çerçeveler sırayla değişir; tek fotoğraflı sütunda fotoğraf
+ * sütunun tamamını kaplar. Sütun yükseklikleri böylece eşit kalır.
+ * Tıklanan fotoğraf sayfadan ayrılmadan kırpılmamış hâliyle açılır.
  */
-export default function HomeGallery({ rows }: { rows: GalleryPhoto[][] }) {
-  const photos = rows.flat();
+export default function HomeGallery({ columns }: { columns: GalleryPhoto[][] }) {
+  const photos = columns.flat();
   const [active, setActive] = useState<number | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const isOpen = active !== null;
@@ -41,9 +45,9 @@ export default function HomeGallery({ rows }: { rows: GalleryPhoto[][] }) {
   return (
     <>
       <div className="gallery">
-        {rows.map((row, rowIndex) => (
-          <div className="gallery-row" key={rowIndex}>
-            {row.map((photo) => {
+        {columns.map((column, columnIndex) => (
+          <div className="gallery-column" key={columnIndex}>
+            {column.map((photo) => {
               const index = photos.indexOf(photo);
               return (
                 <button
@@ -53,16 +57,14 @@ export default function HomeGallery({ rows }: { rows: GalleryPhoto[][] }) {
                   onClick={() => setActive(index)}
                   aria-label={`Büyüt: ${photo.alt}`}
                   aria-haspopup="dialog"
-                  style={{
-                    flexGrow: photo.src.width / photo.src.height,
-                    aspectRatio: `${photo.src.width} / ${photo.src.height}`,
-                  }}
+                  data-shape={photo.shape}
                 >
                   <Image
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    sizes="(max-width: 600px) 34vw, 260px"
+                    sizes="(max-width: 600px) 46vw, 220px"
+                    style={photo.focus ? { objectPosition: photo.focus } : undefined}
                     placeholder="blur"
                     priority={index < 3}
                   />

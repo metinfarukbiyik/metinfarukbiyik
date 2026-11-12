@@ -44,7 +44,6 @@ export default function PassportPhotoPage() {
     <ToolPage
       slug="vesikalik-fotograf"
       seo={seoPages.passport}
-      title="Vesikalık ve biyometrik fotoğraf oluştur, baskıya hazır indir."
       description="Vesikalık veya pasaport / kimlik için 50 × 60 mm biyometrik fotoğrafı seç, kadrajı ayarla. 1–8 adetlik A4 veya 10 × 15 cm şablonu PDF, PNG ya da JPEG olarak ücretsiz indir."
       faq={faq}
     >

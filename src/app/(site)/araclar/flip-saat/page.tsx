@@ -68,7 +68,6 @@ export default function FlipClockPage() {
     <ToolPage
       slug="flip-saat"
       seo={seoPages.flipClock}
-      title="Flip saat: pomodoro, kronometre ve tam ekran saat."
       description="Ders çalışırken masanda duracak sade bir flip saat. Pomodoro sayacı ve kronometreyle süreni takip et; tam ekran moduyla telefonunu ya da ikinci ekranını kilit ekranı saatine çevir."
       faq={faq}
       guide={guide}

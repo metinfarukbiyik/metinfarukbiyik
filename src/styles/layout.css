@@ -1,8 +1,8 @@
 /*
  * biyik.dev UI — page shell, header, footer and page scaffolding
  *
- * Tek, ortalanmış bir kolon (720px). Başlık bir künye: solda ad ve ünvan,
- * sağda menü ve tema düğmesi. Sayfanın geri kalanı bu kolonun içinde akar.
+ * Ortalanmış bir kolon (920px). Başlık bir künye: ad ve ünvan.
+ * Gezinme ve tema düğmesi sayfanın üstündeki Dinamik Ada'dadır.
  */
 
 .shell {
@@ -13,7 +13,7 @@
   min-height: 100vh;
   min-height: 100dvh;
   margin-inline: auto;
-  padding: 64px var(--gutter) 0;
+  padding: 80px var(--gutter) 0;
 }
 
 /* Kolon zaten dar; eski geniş kapsayıcılar artık yalnızca akışı taşır. */
@@ -25,35 +25,16 @@
 /* ── Header ─────────────────────────────────────────────── */
 .site-header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: 16px 24px;
   margin-bottom: 64px;
 }
 .site-id { display: flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink); }
 .site-id-copy { display: block; min-width: 0; }
-.site-name { display: block; font-size: 16px; line-height: 20px; color: var(--ink); }
+.site-name { display: block; font-size: 16px; font-weight: 400; line-height: 20px; color: var(--ink); }
 .site-role { display: block; font-size: 16px; line-height: 24px; color: var(--muted); }
 
-.header-controls { position: relative; display: flex; align-items: center; gap: 12px; margin-right: -4px; }
-
-.nav-trigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  min-height: 36px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: var(--muted);
-  font-size: 13px;
-  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
-}
-.nav-trigger svg { width: 16px; height: 16px; }
-.nav-trigger:hover,
-.nav-trigger[aria-expanded='true'] { color: var(--ink); background: var(--surface); }
 
 .theme-toggle {
   display: inline-grid;
@@ -66,113 +47,19 @@
   color: var(--ink);
   transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
 }
-.theme-toggle:hover { background: var(--surface); }
+.theme-toggle:hover { background: var(--paper-sunken); }
 .theme-toggle svg { width: 16px; height: 16px; }
 .theme-toggle .icon-sun { display: none; }
 .dark .theme-toggle .icon-sun { display: block; }
 .dark .theme-toggle .icon-moon { display: none; }
 
-/* Navigation panel — masaüstünde açılır kutu, telefonda alttan sayfa */
-.nav-panel {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
-  z-index: 60;
-  width: 280px;
-  max-width: calc(100vw - 32px);
-  padding: 8px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: var(--shadow-pop);
-  transform-origin: top right;
-  animation: nav-appear 0.16s ease-out;
-}
-.nav-panel[hidden] { display: none; }
-.nav-overlay { display: none; }
-.nav-handle { display: none; }
-.nav-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 3px 6px 10px 12px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 12px;
-}
-.nav-close {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 0;
-  border-radius: 7px;
-  background: transparent;
-  color: var(--muted);
-}
-.nav-close svg { width: 16px; height: 16px; }
-.nav-close:hover { color: var(--ink); background: var(--paper-sunken); }
-.nav-links { display: flex; flex-direction: column; gap: 3px; margin: 0; padding: 0; list-style: none; }
-.nav-links a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  min-height: 60px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  transition: background-color 0.15s;
-}
-.nav-links a > .nav-link-copy { flex: 1; min-width: 0; }
-.nav-links a { justify-content: flex-start; }
-.nav-link-name { display: block; font-size: 14px; line-height: 22px; color: var(--ink); }
-.nav-link-description { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; line-height: 18px; }
-.nav-links a > svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--subtle); }
-.nav-links a:hover,
-.nav-links a[aria-current='page'] { background: var(--paper-sunken); }
-.nav-links a[aria-current='page'] > svg { color: var(--accent-strong); }
-.nav-links a[aria-current='page'] .icon-tile { background: var(--tile-solid); color: var(--tile-solid-fg); box-shadow: none; }
-.nav-extra { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px; padding: 10px 12px 4px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
-.nav-extra a { display: inline-flex; align-items: center; gap: 4px; }
-.nav-extra a:hover { color: var(--ink); }
-.nav-extra svg { width: 12px; height: 12px; }
-
-@keyframes nav-appear { from { opacity: 0; } to { opacity: 1; } }
-@keyframes nav-sheet-appear { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes nav-appear { from { opacity: 0; transform: scale(0.96) translateY(-4px); } to { opacity: 1; transform: none; } }
+@keyframes fade-appear { from { opacity: 0; } to { opacity: 1; } }
 
 @media (max-width: 600px) {
-  .shell { padding-top: 40px; }
-  .site-header { gap: 14px 20px; margin-bottom: 48px; }
+  .shell { padding-top: 72px; }
+  .site-header { gap: 14px 20px; margin-bottom: 40px; }
   .site-role { font-size: 14px; }
-  .nav-overlay:not([hidden]) {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 59;
-    background: var(--overlay);
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px);
-    animation: nav-appear 0.18s ease-out;
-  }
-  .nav-panel {
-    position: fixed;
-    top: auto;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    width: auto;
-    max-width: none;
-    max-height: calc(100dvh - 24px);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    border-radius: 18px;
-    padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
-    animation: nav-sheet-appear 0.22s ease-out;
-  }
-  .nav-handle { display: block; width: 28px; height: 3px; margin: 0 auto 8px; border-radius: 4px; background: var(--line-strong); }
 }
 
 /* ── Scroll overlays: içerik kenarda zemine süzülür ─────── */
@@ -206,42 +93,46 @@
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
 
-/* ── Page header (iç sayfaların künyesi) ────────────────── */
+/* ── Page header (sungur.dev kalıbı) ────────────────────────
+ * Kenarlara 12px taşan, çerçevesiz açık gri kutu. Küçük harfli başlık,
+ * yanında mono sayaç, sağda küçük eylemler; altında gri açıklama.
+ */
 .page-header {
-  position: relative;
-  margin: 0 0 40px;
-  padding: 20px 20px 20px;
-  overflow: hidden;
-  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 -12px 40px;
+  padding: 14px 12px;
   border-radius: var(--radius-md);
   background: var(--surface);
 }
-.page-header-icon { margin: 4px 0 14px; background: var(--tile-solid); color: var(--tile-solid-fg); box-shadow: var(--tile-glow); }
-.page-header-grid { display: flex; flex-direction: column; gap: 14px; }
-.page-header-copy { min-width: 0; }
-.page-header .kicker { margin-bottom: 6px; }
-.page-header h1 { font-size: 22px; line-height: 31px; font-weight: var(--fw-medium); letter-spacing: -0.01em; }
-.page-header .lead { margin-top: 6px; font-size: var(--fs-small); line-height: 1.65; color: var(--muted); max-width: none; }
-.page-header-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.page-header-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.page-header-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; min-width: 0; }
+.page-header-title > .icon-tile { align-self: center; }
+.page-header h1 { font-size: 20px; line-height: 28px; font-weight: 500; letter-spacing: -0.01em; text-transform: lowercase; }
+.page-header-keepcase h1 { text-transform: none; }
+.page-header-count { font-family: var(--font-mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.page-header-actions { display: flex; gap: 4px; margin-left: auto; align-self: center; }
+.page-header-lead { font-size: var(--fs-small); line-height: 1.625; color: var(--muted); }
 
-.breadcrumbs ol {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 2px;
-  margin: 0 0 8px;
-  padding: 0;
-  list-style: none;
-  font-size: var(--fs-small);
-  color: var(--muted);
+/* Etiketler: rozet değil, nokta ile ayrılmış mono metin */
+.page-header-meta { display: flex; flex-wrap: wrap; align-items: center; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.page-header-meta .badge { min-height: 0; padding: 0; border: 0; background: none; color: inherit; font-size: inherit; text-transform: lowercase; }
+.page-header-meta .badge svg { display: none; }
+.page-header-meta .badge::before { display: none; }
+.page-header-meta .badge + .badge::before {
+  content: '·';
+  display: inline;
+  width: auto;
+  height: auto;
+  margin: 0 8px;
+  border-radius: 0;
+  background: none;
+  color: var(--line-strong);
+  opacity: 1;
+  animation: none;
 }
-.breadcrumbs li { display: inline-flex; align-items: center; gap: 2px; }
-.breadcrumbs li + li::before { content: '/'; margin: 0 8px; color: var(--subtle); }
-.breadcrumbs a { color: var(--muted); border-radius: 3px; transition: color var(--dur) var(--ease); }
-.breadcrumbs a:hover { color: var(--ink); }
-.breadcrumbs [aria-current='page'] { color: var(--ink); }
-.breadcrumbs a:hover { color: var(--accent-strong); }
+.page-header .project-actions { margin-top: 8px; }
+.page-header .project-note { margin-top: 0; }
 
 /* ── Sections ───────────────────────────────────────────── */
 .section { margin-top: var(--section-gap); scroll-margin-top: 32px; }
@@ -251,16 +142,19 @@
 .page-header + * > .section:first-child { margin-top: 0; }
 .section-header {
   display: flex;
-  align-items: flex-end;
+  align-items: baseline;
   justify-content: space-between;
   gap: 8px 24px;
   flex-wrap: wrap;
   margin-bottom: 18px;
 }
 .section-header-copy { min-width: 0; max-width: 100%; }
-.section-header .kicker { margin-bottom: 4px; }
-.section-header .text-small { margin-top: 6px; }
-.section-header-line { padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+/* Bölüm başlıkları — sungur.dev: gri, normal ağırlık, 16px; kicker ve çizgi yok */
+.section-header .kicker { display: none; }
+.section-header h2 { color: var(--muted); font-size: 16px; font-weight: 400; line-height: 24px; letter-spacing: 0; }
+.section-header h3 { font-size: 16px; font-weight: 500; }
+.section-header .text-small { margin-top: 4px; }
+.section-header-line { padding-bottom: 0; border-bottom: 0; }
 
 /* ── Footer ─────────────────────────────────────────────── */
 .footer {
@@ -289,7 +183,7 @@
 .footer-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
 .footer-meta a { transition: color var(--dur) var(--ease); }
 .footer-meta a:hover { color: var(--ink); }
-.footer-sep { color: var(--line-strong); }
+.footer-sep { color: var(--decoration); }
 
 @media (max-width: 359px) {
   .shell { padding-inline: 20px; }

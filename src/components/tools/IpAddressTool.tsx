@@ -9,6 +9,7 @@ import {
 } from 'react';
 import Link from 'next/link';
 import { Copy, RefreshCw, ArrowUpRight } from 'lucide-react';
+import { notifyIsland } from '@/lib/island';
 import { fetchNetworkJson } from '@/lib/network-tools';
 
 type IpInfo = {
@@ -110,6 +111,7 @@ export default function IpAddressTool() {
     try {
       await navigator.clipboard.writeText(value);
       setMessage('IP adresi panoya kopyalandı.');
+      notifyIsland({ title: 'Kopyalandı', detail: value, icon: 'copy', tone: 'green' });
     } catch {
       setMessage(
         'Panoya erişilemedi. IP adresini seçip elle kopyalayabilirsin.',

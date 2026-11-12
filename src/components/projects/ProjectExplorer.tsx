@@ -49,7 +49,7 @@ export default function ProjectExplorer() {
         </label>
       </div>
       {filtered.length ? (
-        <div className="project-grid">
+        <div className="ref-grid">
           {filtered.map((project) => (
             <ProjectCard key={project.slug} project={project} headingLevel="h2" />
           ))}

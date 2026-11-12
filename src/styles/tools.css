@@ -156,7 +156,7 @@
 .photo-download p { margin: 8px 0 0; font-size: var(--fs-meta); color: var(--muted); }
 .photo-print-note { margin-top: 24px; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); }
 .photo-print-note h2 { margin-bottom: 8px; font-size: var(--fs-h4); }
-.photo-print-note p { max-width: 76ch; margin-top: 8px; font-size: var(--fs-small); color: var(--muted); }
+.photo-print-note p { margin-top: 8px; font-size: var(--fs-small); color: var(--muted); }
 .photo-print-note strong { color: var(--ink); font-weight: var(--fw-medium); }
 
 @media (max-width: 640px) {
@@ -177,7 +177,7 @@
 .network-section-heading { margin: 0 0 16px; }
 .network-section-heading h2 { font-size: var(--fs-h3); }
 .network-section-heading h2 > span { margin-left: 8px; font-family: var(--font-mono); font-size: var(--fs-micro); font-weight: var(--fw-regular); color: var(--subtle); }
-.network-intro { max-width: 60ch; font-size: var(--fs-small); color: var(--muted); }
+.network-intro { font-size: var(--fs-small); color: var(--muted); }
 .network-chip {
   display: inline-flex;
   align-items: center;
@@ -219,7 +219,7 @@
 .speed-metric-small strong { font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem); margin-top: 14px; }
 .speed-metric small { margin-top: 6px; font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--subtle); }
 .speed-progress { height: 4px; margin: 16px 0; overflow: hidden; border-radius: 4px; background: var(--paper-sunken); }
-.speed-progress span { display: block; height: 100%; background: var(--accent); transition: width 0.2s; }
+.speed-progress span { display: block; height: 100%; background: var(--ink); transition: width 0.2s; }
 .speed-start { text-align: center; }
 .speed-start .btn { min-width: 220px; }
 .speed-start p { min-height: 18px; margin: 12px 0 0; font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--muted); }
@@ -259,7 +259,6 @@
 @media (pointer: coarse) { .speed-history-image { min-height: 40px; } }
 
 /* Long-form copy inside tool widgets */
-.network-prose { max-width: 76ch; }
 .network-prose h2 { margin: 26px 0 8px; font-size: var(--fs-h3); }
 .network-prose h2:first-child { margin-top: 0; }
 .network-prose p, .network-prose li { font-size: var(--fs-small); line-height: 1.75; color: var(--muted); }
@@ -291,7 +290,7 @@
 .recommendations { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .recommendations .card { gap: 8px; }
 .recommendation-link { margin-top: auto; padding-top: 8px; font-size: var(--fs-meta); }
-.recommendations-note { margin-top: 16px; max-width: 76ch; }
+.recommendations-note { margin-top: 16px; }
 
 @media (max-width: 640px) {
   .speed-metric { padding: 18px 14px; }
@@ -553,7 +552,7 @@
 .photo-quality-note svg, .photo-check-ok svg { flex: none; margin-top: 2px; }
 .photo-rules { margin-top: 16px; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); }
 .photo-rules h2 { margin-bottom: 8px; font-size: var(--fs-h4); }
-.photo-rules > p { max-width: 76ch; margin: 0 0 12px; font-size: var(--fs-small); color: var(--muted); }
+.photo-rules > p { margin: 0 0 12px; font-size: var(--fs-small); color: var(--muted); }
 .photo-rules ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 8px 20px; margin: 0 0 14px; padding: 0; list-style: none; }
 .photo-rules li { display: flex; align-items: flex-start; gap: 8px; font-size: var(--fs-small); color: var(--text); }
 .photo-rules li svg { flex: none; margin-top: 3px; color: var(--accent); }
@@ -891,4 +890,23 @@
   .flip-fold { display: none; }
   .flip-unfold { animation: none; transform: none; }
   .clock-chrome, .clock-progress span { transition: none; }
+}
+
+/* ── Geniş ekran: ayarlar solda, önizleme sağda ─────────── */
+@media (min-width: 900px) {
+  .photo-workspace { grid-template-columns: minmax(340px, 400px) minmax(0, 1fr); gap: 20px; align-items: start; }
+  /* Önizleme kaydırırken gözden kaybolmaz */
+  .photo-workspace > .photo-preview { position: sticky; top: 68px; min-height: min(560px, calc(100dvh - 88px)); }
+  .photo-workspace .photo-preview-content { max-width: 620px; }
+  .ip-address-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .recommendations { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .speed-metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .speed-metric:nth-child(odd) { border-left: 1px solid var(--line); padding-left: 20px; }
+  .speed-metric:first-child { border-left: 0; padding-left: 0; }
+  .speed-metric:nth-child(-n + 2) { border-bottom: 0; }
+  .site-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .site-summary-item:nth-child(odd) { border-left: 1px solid var(--line); }
+  .site-summary-item:first-child { border-left: 0; }
+  .site-summary-item:nth-child(-n + 2) { border-bottom: 0; }
+  .site-headers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

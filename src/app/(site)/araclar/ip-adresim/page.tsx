@@ -37,7 +37,6 @@ export default function IpAddressPage() {
     <ToolPage
       slug="ip-adresim"
       seo={seoPages.ip}
-      title="IP adresim ne? Hemen öğren."
       description="Genel IPv4 ve IPv6 adresini, internet servis sağlayıcını ve IP adresine bağlı yaklaşık konum bilgisini tek ekranda görüntüle."
       faq={faq}
     >

@@ -68,7 +68,6 @@ export default function QrCodePage() {
     <ToolPage
       slug="qr-kod-olusturucu"
       seo={seoPages.qr}
-      title="QR kod oluşturucu: bağlantı, Wi-Fi ve daha fazlası."
       description="Bağlantını QR koda çevir veya okutunca otomatik bağlanan bir Wi-Fi QR kodu oluştur. Renk, biçim, logo ve alt yazıyla özelleştir; PNG ya da SVG olarak ücretsiz indir."
       faq={faq}
       guide={guide}

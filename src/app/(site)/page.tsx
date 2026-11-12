@@ -1,25 +1,12 @@
 import { Fragment } from 'react';
 import Link from 'next/link';
 import {
-  Antenna,
   ArrowRight,
-  Building2,
-  Cable,
-  ClipboardList,
-  CodeXml,
-  Headset,
-  RadioTower,
   ArrowUpRight,
-  Briefcase,
-  FolderGit2,
   Github,
   Instagram,
   Linkedin,
-  Mail,
   MessageCircle,
-  UserRound,
-  Wrench,
-  type LucideIcon,
 } from 'lucide-react';
 import { ProjectLogo } from '@/components/projects/ProjectIcon';
 import { toolIcons } from '@/components/tools/ToolCard';
@@ -30,6 +17,7 @@ import { toolCategories, tools } from '@/data/tools';
 import { pageMetadata, seoPages } from '@/lib/seo';
 import { site } from '@/lib/site';
 import bust from '@/assets/images/galeri/bust.jpg';
+import cadir from '@/assets/images/galeri/cadir.jpg';
 import cay from '@/assets/images/galeri/cay.jpg';
 import cizim from '@/assets/images/galeri/cizim.jpg';
 import ekipman from '@/assets/images/galeri/ekipman.jpg';
@@ -40,16 +28,6 @@ export const metadata = pageMetadata(seoPages.home);
 
 const jobs = [...experiences].reverse();
 
-/** Her deneyim için işin kendisini anlatan ikon; bilinmeyen şirketlerde çanta. */
-const jobIcons: Record<string, LucideIcon> = {
-  'CNL İletişim': Building2,
-  'Turkcell Superonline': Cable,
-  'AK İletişim': RadioTower,
-  'Turkcell Global Bilgi': Headset,
-  'NTM Elektrik & Elektronik A.Ş.': ClipboardList,
-  'ALP Telekomünikasyon': Antenna,
-  'Sosyal Güvenlik Kurumu': CodeXml,
-};
 const featured = ['bizim-koy', 'byk-music', 'geocam', 'byk-seri-baski-pro']
   .map(getProject)
   .filter((project): project is PortfolioProject => Boolean(project));
@@ -58,21 +36,23 @@ const latestTools = tools.slice(0, 4);
 const categoryName = (id: string) => toolCategories.find((category) => category.id === id)?.name ?? id;
 
 /**
- * Galeri: iki sıra, hiçbir fotoğraf kırpılmaz. Sıralar, oranlarının toplamı
- * birbirine yakın olacak şekilde seçildi; böylece iki sıra da neredeyse aynı
- * yükseklikte durur.
+ * Galeri (sungur.dev düzeni): dört eşit sütun; yatay ve dikey çerçeveler
+ * sütundan sütuna yer değiştirir, son sütunda tek, boydan bir fotoğraf durur.
  */
 const gallery: GalleryPhoto[][] = [
   [
-    { src: cizim, alt: 'Ormanda, köpeğimle' },
-    { src: portre, alt: 'Sakin bir öğleden sonra' },
-    { src: bust, alt: 'Mermerden bir ben' },
+    { src: portre, alt: 'Sakin bir öğleden sonra', shape: 'wide', focus: 'center 35%' },
+    { src: bust, alt: 'Mermerden bir ben', shape: 'portrait' },
   ],
   [
-    { src: cay, alt: 'Karşıda dağlar, elimde çay' },
-    { src: kamp, alt: 'Karda, ateş başında' },
-    { src: ekipman, alt: 'Yanımdan ayırmadıklarım' },
+    { src: cadir, alt: 'Çam ormanında kamp', shape: 'portrait' },
+    { src: kamp, alt: 'Karda, ateş başında', shape: 'wide' },
   ],
+  [
+    { src: cay, alt: 'Karşıda dağlar, elimde çay', shape: 'wide', focus: 'center 15%' },
+    { src: ekipman, alt: 'Yanımdan ayırmadıklarım', shape: 'portrait' },
+  ],
+  [{ src: cizim, alt: 'Ormanda, köpeğimle', shape: 'tall' }],
 ];
 
 const socials = [
@@ -81,21 +61,10 @@ const socials = [
   { label: 'Instagram', href: site.instagram, icon: Instagram },
 ];
 
-/** Bölüm başlığı: ikon kutusu ve başlık. */
-function HomeHeading({
-  id,
-  icon: Icon,
-  children,
-}: {
-  id: string;
-  icon: LucideIcon;
-  children: string;
-}) {
+/** Bölüm başlığı: sungur.dev gibi sade, gri, ikonsuz. */
+function HomeHeading({ id, children }: { id: string; children: string }) {
   return (
     <h2 id={id} className="home-heading">
-      <span className="icon-tile" aria-hidden="true">
-        <Icon strokeWidth={1.9} />
-      </span>
       {children}
     </h2>
   );
@@ -105,7 +74,7 @@ export default function HomePage() {
   return (
     <div className="home">
       <section id="hakkimda" aria-labelledby="hakkimda-baslik">
-        <HomeHeading id="hakkimda-baslik" icon={UserRound}>
+        <HomeHeading id="hakkimda-baslik">
           Hakkımda
         </HomeHeading>
         <p className="home-copy">
@@ -125,7 +94,7 @@ export default function HomePage() {
           {' '}doğrudan sahada ve ofiste karşılaştığım gerçek ihtiyaçlardan doğdu.
         </p>
 
-        <HomeGallery rows={gallery} />
+        <HomeGallery columns={gallery} />
 
         <p className="home-copy">
           2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip koçluğunda geçen yıllarla
@@ -139,29 +108,26 @@ export default function HomePage() {
       </section>
 
       <section id="deneyim" aria-labelledby="deneyim-baslik">
-        <HomeHeading id="deneyim-baslik" icon={Briefcase}>
+        <HomeHeading id="deneyim-baslik">
           Deneyim
         </HomeHeading>
         <div className="job-list">
-          {jobs.map((job, index) => {
-            const Icon = jobIcons[job.company] ?? Briefcase;
+          {jobs.map((job) => {
+            const current = job.period.includes('Devam');
             return (
               <Link
-                className={index === 0 ? 'job job-current' : 'job'}
+                className={current ? 'job job-current' : 'job'}
                 href="/hakkimda#deneyim"
                 key={`${job.company}-${job.period}`}
               >
-                <span
-                  className={index === 0 ? 'icon-tile icon-tile-lg icon-tile-solid' : 'icon-tile icon-tile-lg'}
-                  aria-hidden="true"
-                >
-                  <Icon strokeWidth={1.75} />
-                </span>
                 <div>
-                  <h3>{job.company}</h3>
+                  <h3>
+                    {job.company}
+                    {current && <span className="job-now">şu an</span>}
+                  </h3>
                   <p>{job.role}</p>
-                  <span className="job-period">{job.period.replace(' - ', ' — ')}</span>
                 </div>
+                <span>{job.period.replace(' - ', ' — ')}</span>
               </Link>
             );
           })}
@@ -172,7 +138,7 @@ export default function HomePage() {
       </section>
 
       <section id="projeler" aria-labelledby="projeler-baslik">
-        <HomeHeading id="projeler-baslik" icon={FolderGit2}>
+        <HomeHeading id="projeler-baslik">
           Projeler
         </HomeHeading>
         <div className="ref-grid">
@@ -196,7 +162,7 @@ export default function HomePage() {
       </section>
 
       <section id="araclar" aria-labelledby="araclar-baslik">
-        <HomeHeading id="araclar-baslik" icon={Wrench}>
+        <HomeHeading id="araclar-baslik">
           Araçlar
         </HomeHeading>
         <div className="tool-list">
@@ -225,7 +191,7 @@ export default function HomePage() {
       </section>
 
       <section id="iletisim" aria-labelledby="iletisim-baslik">
-        <HomeHeading id="iletisim-baslik" icon={Mail}>
+        <HomeHeading id="iletisim-baslik">
           İletişim
         </HomeHeading>
         <p className="home-copy">

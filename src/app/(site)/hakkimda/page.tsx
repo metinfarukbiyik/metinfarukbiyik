@@ -1,5 +1,4 @@
-import { Download, Mail } from 'lucide-react';
-import AboutToc from '@/components/about/AboutToc';
+import { Download } from 'lucide-react';
 import CertificateList from '@/components/CertificateList';
 import ContactCta from '@/components/ContactCta';
 import EquipmentList from '@/components/EquipmentList';
@@ -17,15 +16,6 @@ import { site } from '@/lib/site';
 
 export const metadata = pageMetadata(seoPages.about);
 
-const toc = [
-  { id: 'profil', label: 'Profil' },
-  { id: 'deneyim', label: 'Deneyim' },
-  { id: 'egitim', label: 'Eğitim' },
-  { id: 'sertifikalar', label: 'Sertifikalar' },
-  { id: 'yetkinlikler', label: 'Yetkinlikler' },
-  { id: 'ekipmanlar', label: 'Çalışma alanı' },
-];
-
 const split = (value: string) => value.split(',').map((item) => item.trim().replace(/\.$/, ''));
 
 export default function AboutPage() {
@@ -34,28 +24,19 @@ export default function AboutPage() {
     <div className="container">
       <PageHeader
         crumbs={[{ name: 'Hakkımda', href: '/hakkimda' }]}
-        title="İşin arkasındaki kişi."
+        title="hakkımda"
+        count={`${String(experiences.length).padStart(2, '0')} pozisyon`}
         description="Sahada kablo çeken, ofiste süreç planlayan ve bu deneyimi yazılıma dönüştüren biri. Profil, deneyim, eğitim ve sertifikalarım."
         actions={
-          <>
-            <ButtonLink href={site.cv} download variant="primary" icon={<Download aria-hidden="true" />}>
-              Özgeçmişi indir
-            </ButtonLink>
-            <ButtonLink href="/iletisim" icon={<Mail aria-hidden="true" />}>
-              İletişim
-            </ButtonLink>
-          </>
+          <ButtonLink href={site.cv} download variant="ghost" size="sm" icon={<Download aria-hidden="true" />}>
+            Özgeçmiş
+          </ButtonLink>
         }
       />
 
-      <div className="about-layout">
-        <aside className="about-aside">
-          <AboutToc items={toc} />
-        </aside>
-
-        <div className="about-content">
+      <div className="about-content">
           <section id="profil" className="about-section" aria-labelledby="profil-baslik">
-            <SectionHeader id="profil-baslik" kicker="profil" index="01" title="Kısaca ben" line />
+            <SectionHeader id="profil-baslik" title="Profil" />
             <div className="prose about-summary">
               {personalInfo.summary.split('\n\n').map((paragraph) => (
                 <p key={paragraph.slice(0, 24)}>{paragraph}</p>
@@ -93,32 +74,36 @@ export default function AboutPage() {
           <section id="deneyim" className="about-section" aria-labelledby="deneyim-baslik">
             <SectionHeader
               id="deneyim-baslik"
-              kicker="deneyim"
-              index="02"
-              title="Kurumdan sahaya, sahadan yazılıma."
+             
+             
+              title="Deneyim"
               description={`${experiences.length} pozisyon · telekomünikasyon, operasyon, müşteri deneyimi ve yazılım.`}
-              line
             />
-            <ol className="timeline">
+            <ol className="entries">
               {timeline.map((exp, index) => {
                 const current = exp.period.includes('Devam');
                 return (
-                  <li key={`${exp.company}-${exp.period}`} className="timeline-item" data-current={current || undefined}>
-                    <span className="timeline-node" aria-hidden="true" />
-                    <div className="timeline-head">
-                      <h3 className="title-4">{exp.role}</h3>
-                      <span className="text-meta">{exp.period.replace(' - ', ' — ')}</span>
+                  <li
+                    key={`${exp.company}-${exp.period}`}
+                    id={`is-${index}`}
+                    className={current ? 'entry entry-current' : 'entry'}
+                  >
+                    <div className="entry-head">
+                      <h3>
+                        {exp.company}
+                        {current && <span className="job-now">şu an</span>}
+                      </h3>
+                      <span className="entry-date">{exp.period.replace(' - ', ' — ')}</span>
                     </div>
-                    <p className="timeline-org">
-                      {exp.company}
-                      {current && (
-                        <Badge tone="accent" live>
-                          Şu an
-                        </Badge>
+                    <p className="entry-meta">
+                      {exp.role}
+                      {index === timeline.length - 1 && (
+                        <>
+                          <span className="entry-sep" aria-hidden="true"> · </span>ilk adım
+                        </>
                       )}
-                      {index === timeline.length - 1 && <Badge code>ilk adım</Badge>}
                     </p>
-                    <ul className="timeline-list">
+                    <ul className="entry-list">
                       {exp.responsibilities.map((item) => (
                         <li key={item}>{item}</li>
                       ))}
@@ -130,48 +115,45 @@ export default function AboutPage() {
           </section>
 
           <section id="egitim" className="about-section" aria-labelledby="egitim-baslik">
-            <SectionHeader id="egitim-baslik" kicker="eğitim" index="03" title="Web programcılığından kamu yönetimine." line />
-            <div className="edu-grid">
+            <SectionHeader id="egitim-baslik" title="Eğitim" />
+            <ol className="entries">
               {educations
                 .slice()
                 .reverse()
                 .map((edu) => (
-                  <article
-                    key={`${edu.school}-${edu.department}`}
-                    className={edu.ongoing ? 'card edu-card edu-card-ongoing' : 'card edu-card'}
-                  >
-                    <div className="edu-card-top">
-                      <Badge tone={edu.ongoing ? 'accent' : 'neutral'} dot={edu.ongoing}>
-                        {edu.level} · {edu.status}
-                      </Badge>
-                      <span className="text-meta">{edu.ongoing ? `${edu.period}’dan beri` : edu.period}</span>
+                  <li key={`${edu.school}-${edu.department}`} className="entry">
+                    <div className="entry-head">
+                      <h3>{edu.department}</h3>
+                      <span className="entry-date">{edu.ongoing ? `${edu.period} — Devam` : edu.period}</span>
                     </div>
-                    <h3 className="title-4">{edu.department}</h3>
-                    <p className="edu-school">{edu.school.toLocaleLowerCase('tr').replace(/(^|\s)\S/g, (c) => c.toLocaleUpperCase('tr'))}</p>
-                    <ul className="timeline-list">
+                    <p className="entry-meta">
+                      {edu.school.toLocaleLowerCase('tr')}
+                      <span className="entry-sep" aria-hidden="true"> · </span>
+                      {edu.level} · {edu.status}
+                    </p>
+                    <ul className="entry-list">
                       {edu.details.map((item) => (
                         <li key={item}>{item}</li>
                       ))}
                     </ul>
-                  </article>
+                  </li>
                 ))}
-            </div>
+            </ol>
           </section>
 
           <section id="sertifikalar" className="about-section" aria-labelledby="sertifikalar-baslik">
             <SectionHeader
               id="sertifikalar-baslik"
-              kicker="sertifikalar"
-              index="04"
-              title="Öğrenmeye devam."
+             
+             
+              title="Sertifikalar"
               description={`${certificates.length} sertifika · Turkcell Akademi, BTK Akademi ve LinkedIn Learning.`}
-              line
             />
             <CertificateList />
           </section>
 
           <section id="yetkinlikler" className="about-section" aria-labelledby="yetkinlikler-baslik">
-            <SectionHeader id="yetkinlikler-baslik" kicker="yetkinlikler" index="05" title="Teknik olmayan taraf da önemli." line />
+            <SectionHeader id="yetkinlikler-baslik" title="Yetkinlikler" />
             <div className="skill-groups">
               <div>
                 <h3 className="title-4">Yetenekler</h3>
@@ -207,15 +189,13 @@ export default function AboutPage() {
           <section id="ekipmanlar" className="about-section" aria-labelledby="ekipmanlar-baslik">
             <SectionHeader
               id="ekipmanlar-baslik"
-              kicker="çalışma alanı"
-              index="06"
-              title="Masamdaki ekipmanlar."
+             
+             
+              title="Çalışma alanı"
               description={`${equipments.length} parça · her gün kullandığım donanımlar.`}
-              line
             />
             <EquipmentList />
           </section>
-        </div>
       </div>
 
       <ContactCta />

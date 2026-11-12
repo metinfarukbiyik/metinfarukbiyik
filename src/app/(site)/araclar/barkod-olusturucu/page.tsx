@@ -68,7 +68,6 @@ export default function BarcodePage() {
     <ToolPage
       slug="barkod-olusturucu"
       seo={seoPages.barcode}
-      title="Barkod oluşturucu: EAN-13, Code 128 ve daha fazlası."
       description="Ürün, stok veya koli için barkod oluştur. Kontrol hanesi otomatik hesaplanır; rengi, yüksekliği ve kenar boşluğunu ayarla, PNG ya da SVG olarak ücretsiz indir."
       faq={faq}
       guide={guide}

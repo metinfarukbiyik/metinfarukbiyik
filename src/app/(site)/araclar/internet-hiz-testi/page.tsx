@@ -157,7 +157,6 @@ export default function SpeedTestPage() {
     <ToolPage
       slug="internet-hiz-testi"
       seo={seoPages.speed}
-      title="İnternet hız testi: bağlantın ne kadar hızlı?"
       description="İndirme, yükleme, gecikme ve jitter değerlerini ölç. Sonuçlarını takip et, görsel olarak indir ve paylaş."
       faq={faq}
       guide={guide}

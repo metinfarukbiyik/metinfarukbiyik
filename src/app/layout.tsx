@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { site } from '@/lib/site';
 import { ogImage } from '@/lib/seo';
+import Analytics from '@/components/Analytics';
 import './globals.css';
 
 const sans = Geist({
@@ -81,7 +82,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: themeScript }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

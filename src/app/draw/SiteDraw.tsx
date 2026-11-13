@@ -5,6 +5,7 @@ import { House } from 'lucide-react';
 import { Draw, Wordmark, type Lang } from '@/lib/sketch-react';
 import type { Theme } from '@/lib/sketch';
 import { drawAbout } from './about';
+import { trackEvent } from '@/components/Analytics';
 
 /** Sitenin tema tercihi (biyik.dev ile ortak). */
 const siteTheme = (): Theme => (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
@@ -78,6 +79,7 @@ export default function SiteDraw({ handFont }: { handFont: string }) {
       docsUrl={lang === 'en' ? `${docsBase}/en` : docsBase}
       about={drawAbout(lang)}
       links={[{ label: 'biyik.dev', href: 'https://biyik.dev', icon: <House size={16} /> }]}
+      onEvent={(name, params) => trackEvent(`draw_${name}`, params)}
     />
   );
 }

@@ -1,7 +1,7 @@
 import type { AboutInfo, Lang } from '@/lib/sketch-react';
 
 export const DRAW_REPO = 'https://github.com/metinfarukbiyik/biyik-draw';
-export const DRAW_VERSION = '1.2.0';
+export const DRAW_VERSION = '1.2.1';
 
 const descriptions: Record<Lang, string> = {
   tr: 'Tarayıcıda çalışan, el çizimi görünümlü beyaz tahta. Çizim motoru ve arayüzü sıfırdan yazıldı; harici çizim kütüphanesi kullanmaz.',

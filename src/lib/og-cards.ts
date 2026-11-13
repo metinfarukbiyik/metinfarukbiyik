@@ -6,6 +6,15 @@ import { encodeBarcode, defaultStyle as barcodeStyle, renderBarcodeSvg } from '.
 import { createMatrix, defaultStyle, renderQrSvg } from './qr-code';
 import { ogKey } from './seo';
 import { site } from './site';
+import {
+  contactVisual,
+  drawBoardVisual,
+  drawLessonVisual,
+  projectsGridVisual,
+  resumeVisual,
+  toolsGridVisual,
+  webProjectVisual,
+} from './og-visuals';
 
 /** Content of one social preview card (1200 × 630). Build-time only: reads files from disk. */
 export interface OgCard {
@@ -16,6 +25,10 @@ export interface OgCard {
   description: string;
   chips: string[];
   visual: OgVisual;
+  /** Adres çubuğunda gösterilecek adres (varsayılan: biyik.dev + yol). */
+  address?: string;
+  /** Sağ alttaki durum etiketi (varsayılan: Hazır). */
+  status?: string;
 }
 
 /** Right-hand visual: an image (illustration, photo or app icon) or a typographic mark. */
@@ -124,7 +137,6 @@ const flipClockVisual = () => {
 </svg>`);
 };
 
-const brand: OgVisual = { kind: 'mark', text: 'b', accent: '/' };
 
 const toolVisuals: Record<string, () => OgVisual> = {
   'qr-kod-olusturucu': () => ({ kind: 'illustration', src: qrVisual(), caption: 'okut → araç açılır' }),
@@ -146,6 +158,19 @@ const projectIcons: Record<string, string> = {
 
 const capitalize = (value: string) => value.charAt(0).toLocaleUpperCase('tr') + value.slice(1);
 
+/** Kart açıklaması iki satıra sığsın: ilk cümle. */
+const firstSentence = (text: string) => {
+  const cut = text.search(/[.;!?](\s|$)/);
+  return cut > 0 ? text.slice(0, cut + 1) : text;
+};
+
+function projectVisual(project: (typeof portfolioProjects)[number]): OgVisual {
+  if (project.slug === 'draw') return { kind: 'illustration', src: drawBoardVisual(), caption: 'draw.biyik.dev' };
+  if (projectIcons[project.slug]) return { kind: 'icon', src: png(projectIcons[project.slug]) };
+  const host = new URL(project.url).host.replace(/^www\./, '');
+  return { kind: 'illustration', src: webProjectVisual(project.icon), caption: host };
+}
+
 function buildCards(): OgCard[] {
   const page = (
     path: string,
@@ -154,7 +179,8 @@ function buildCards(): OgCard[] {
     description: string,
     chips: string[],
     visual: OgVisual,
-  ): OgCard => ({ key: ogKey(path), path, kicker, title, description, chips, visual });
+    extra: Partial<OgCard> = {},
+  ): OgCard => ({ key: ogKey(path), path, kicker, title, description, chips, visual, ...extra });
 
   return [
     page(
@@ -171,15 +197,19 @@ function buildCards(): OgCard[] {
       'Özgeçmiş, deneyim ve eğitim',
       'Sahadan ofise, ofisten yazılıma: telekomünikasyon, operasyon ve yazılım deneyimim.',
       ['7 pozisyon', '8 sertifika', 'CV (PDF)'],
-      { kind: 'photo', src: png('og/portrait.png') },
+      { kind: 'illustration', src: resumeVisual(png('og/portrait.png')), caption: 'özgeçmiş · CV' },
     ),
     page(
       '/projeler',
       'portföy',
       'Masaüstü, mobil ve web projeleri',
-      'BYK Music, GeoCam: Audit, BYK Seri Baskı Pro, Creda System ve kurumsal web siteleri.',
+      'draw.biyik.dev, BYK Music, GeoCam: Audit, BYK Seri Baskı Pro, Bizim Köy ve kurumsal web siteleri.',
       [`${portfolioProjects.length} proje`, 'Windows · macOS · iOS', 'Web'],
-      brand,
+      {
+        kind: 'illustration',
+        src: projectsGridVisual(['og/icon-music.png', 'og/icon-geocam.png', 'og/icon-byk.png', 'og/icon-bizim-koy.png'].map(png)),
+        caption: `${portfolioProjects.length} proje`,
+      },
     ),
     page(
       '/iletisim',
@@ -187,15 +217,19 @@ function buildCards(): OgCard[] {
       'Bir fikrin mi var? Konuşalım.',
       'Web sitesi, kurumsal sistem, mobil veya masaüstü uygulama projen için bana ulaş.',
       ['E-posta', 'WhatsApp', 'LinkedIn'],
-      brand,
+      { kind: 'illustration', src: contactVisual(), caption: site.email },
     ),
     page(
       '/araclar',
       'ücretsiz araçlar',
       'İşini kolaylaştıran küçük araçlar',
-      'Fotoğraf, QR kod ve barkod araçları; hız testi, IP adresi ve site kontrolü. Kurulum, hesap veya ücret yok.',
+      'Fotoğraf, QR kod, barkod, hız testi, IP adresi ve site kontrolü. Kurulum ve hesap yok.',
       tools.map((tool) => capitalize(tool.short)).slice(0, 4),
-      { kind: 'illustration', src: qrVisual(), caption: `${tools.length} araç · ücretsiz` },
+      {
+        kind: 'illustration',
+        src: toolsGridVisual([qrVisual(), speedVisual(), passportVisual(), exifVisual()]),
+        caption: `${tools.length} araç · ücretsiz`,
+      },
     ),
     ...tools.map((tool) =>
       page(
@@ -212,14 +246,42 @@ function buildCards(): OgCard[] {
         project.href,
         isGame(project)
           ? 'oyun · tarayıcı'
-          : project.category === 'Uygulama' ? `uygulama · ${project.platform.toLocaleLowerCase('tr')}` : 'web projesi',
+          : project.category === 'Uygulama'
+            ? `uygulama · ${project.platforms.slice(0, 2).join(' · ').toLocaleLowerCase('tr')}`
+            : 'web projesi',
         project.name,
-        project.description,
+        firstSentence(project.description),
         [...project.platforms, project.category === 'Uygulama' ? 'Ücretsiz' : 'Yayında'],
-        projectIcons[project.slug]
-          ? { kind: 'icon', src: png(projectIcons[project.slug]) }
-          : { kind: 'mark', text: project.name.charAt(0).toLocaleUpperCase('tr') },
+        projectVisual(project),
       ),
+    ),
+    // draw.biyik.dev (alt alan adı): tahta ve dokümantasyon
+    page(
+      '/draw',
+      'ücretsiz · üyelik yok · açık kaynak',
+      'El çizimi beyaz tahta',
+      'Akış şeması, diyagram ve eskiz çiz; bağlantıyla paylaş. Tarayıcıda çalışır, internetsiz de açılır.',
+      ['Ders modu', 'Bağlantıyla paylaş', 'TR · EN'],
+      { kind: 'illustration', src: drawBoardVisual(), caption: 'draw.biyik.dev' },
+      { address: 'draw.biyik.dev' },
+    ),
+    page(
+      '/draw/docs',
+      'dokümantasyon · ekran görüntülü',
+      'draw.biyik.dev nasıl kullanılır?',
+      'Şekiller, oklar, katmanlar, paylaşma ve öğretmenler için ders modu: 14 adımlık kısa eğitim.',
+      ['14 adım', 'Öğretmenler için', 'React paketi'],
+      { kind: 'illustration', src: drawLessonVisual(), caption: 'kılavuz çizgili kâğıt' },
+      { address: 'draw.biyik.dev/docs' },
+    ),
+    page(
+      '/draw/docs/en',
+      'documentation · with screenshots',
+      'How to use draw.biyik.dev',
+      'Shapes, arrows, layers, sharing and a teaching mode for tablets: a short 14-step tutorial.',
+      ['14 steps', 'For teachers', 'React package'],
+      { kind: 'illustration', src: drawLessonVisual(), caption: 'handwriting paper' },
+      { address: 'draw.biyik.dev/docs/en', status: 'Ready' },
     ),
   ];
 }

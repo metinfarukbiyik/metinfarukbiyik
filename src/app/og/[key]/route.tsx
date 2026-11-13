@@ -76,7 +76,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ key
   const { key } = await params;
   const card = getOgCard(key);
   if (!card) return new Response('Not found', { status: 404 });
-  const address = `${site.domain}${card.path === '/' ? '' : card.path}`;
+  const address = card.address ?? `${site.domain}${card.path === '/' ? '' : card.path}`;
   const titleSize = card.title.length > 22 ? 52 : 62;
 
   return new ImageResponse(
@@ -216,7 +216,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ key
             <div style={{ display: 'flex', fontSize: 20, color: c.subtle }}>· {site.name}</div>
             <div style={{ display: 'flex', marginLeft: 'auto', alignItems: 'center', gap: 10, fontFamily: 'Mono', fontSize: 18, color: c.muted }}>
               <div style={{ width: 11, height: 11, borderRadius: 2, background: c.accent }} />
-              Hazır
+              {card.status ?? 'Hazır'}
             </div>
           </div>
         </div>

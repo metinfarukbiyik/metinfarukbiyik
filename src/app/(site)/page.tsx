@@ -28,7 +28,7 @@ export const metadata = pageMetadata(seoPages.home);
 
 const jobs = [...experiences].reverse();
 
-const featured = ['bizim-koy', 'byk-music', 'geocam', 'byk-seri-baski-pro']
+const featured = ['draw', 'byk-music', 'geocam', 'byk-seri-baski-pro']
   .map(getProject)
   .filter((project): project is PortfolioProject => Boolean(project));
 const projects = portfolioProjects.filter((project) => project.slug !== 'biyik-dev');
@@ -78,10 +78,8 @@ export default function HomePage() {
           Hakkımda
         </HomeHeading>
         <p className="home-copy">
-          {site.city}’da yaşayan; telekomünikasyon saha operasyonları, iş emri planlama, envanter yönetimi ve müşteri
-          ilişkileri alanlarında deneyimli, çözüm odaklı bir profesyonelim. Saha ve ofis ekipleri arasındaki iş akışını
-          koordine ediyor, süreçleri belgeleyip raporluyor, kalite ve stok takibini yürütüyorum. Yazılım birikimimi de
-          bu işin içine katıyorum; web, mobil ve masaüstü için geliştirdiğim{' '}
+          {site.city}’da yaşıyorum. Telekomünikasyon saha operasyonları, iş emri planlama ve müşteri ilişkileri
+          alanında çalışıyor, yazılımla bu işleri kolaylaştırıyorum. Geliştirdiğim{' '}
           {featured.map((project, index) => (
             <Fragment key={project.slug}>
               {index > 0 ? (index === featured.length - 1 ? ' ve ' : ', ') : null}
@@ -91,19 +89,18 @@ export default function HomePage() {
               </Link>
             </Fragment>
           ))}
-          {' '}doğrudan sahada ve ofiste karşılaştığım gerçek ihtiyaçlardan doğdu.
+          {' '}gerçek ihtiyaçlardan doğdu.
         </p>
 
         <HomeGallery columns={gallery} />
 
         <p className="home-copy">
-          2015’te HTML ile başlayan merak; baz istasyonlarında, fiber altyapıda ve ekip koçluğunda geçen yıllarla
-          birleşti. Bugün web programcılığı altyapımı operasyonel verimliliğe dönüştürüyor, işi kolaylaştıran araçlar
-          üretiyorum. Günlük küçük işler için hazırladığım{' '}
+          2015’te HTML ile başlayan merakım, baz istasyonu ve fiber sahasında geçen yıllarla birleşti. Günlük işler
+          için hazırladığım{' '}
           <Link className="text-link" href="/araclar">
             ücretsiz araçlar
           </Link>{' '}
-          da herkesin kullanımına açık.
+          herkese açık.
         </p>
       </section>
 

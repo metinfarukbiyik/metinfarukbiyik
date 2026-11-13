@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Caveat } from 'next/font/google';
 import DrawLoader from './DrawLoader';
+import { ogImage } from '@/lib/seo';
 import '@/lib/sketch-react/styles.css';
 import './page.css';
 
@@ -17,8 +18,16 @@ export const metadata: Metadata = {
   description,
   applicationName: 'biyik.dev Draw',
   alternates: { canonical: url },
-  openGraph: { type: 'website', url, title, description, siteName: 'biyik.dev' },
-  twitter: { card: 'summary', title, description },
+  openGraph: {
+    type: 'website',
+    url,
+    title,
+    description,
+    siteName: 'biyik.dev',
+    locale: 'tr_TR',
+    images: [{ url: ogImage('/draw'), width: 1200, height: 630, alt: 'draw.biyik.dev — el çizimi beyaz tahta' }],
+  },
+  twitter: { card: 'summary_large_image', title, description, images: [ogImage('/draw')] },
 };
 
 export const viewport: Viewport = {

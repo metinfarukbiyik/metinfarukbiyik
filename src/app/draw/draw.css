@@ -1,0 +1,132 @@
+/* draw.biyik.dev — çizim tahtası, biyik.dev UI çizgisinde (Geist, siyah-beyaz vurgu) */
+
+html:has(.draw-root),
+html:has(.draw-loading) {
+  overflow: hidden;
+  scrollbar-gutter: auto;
+  overscroll-behavior: none;
+}
+
+.draw-root {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+}
+
+.draw-loading {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+
+.draw-root .excalidraw {
+  --ui-font: var(--font-geist-sans), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Mor vurgu yerine biyik.dev'in mürekkep tonları */
+  --color-primary: #18181b;
+  --color-primary-darker: #09090b;
+  --color-primary-darkest: #000000;
+  --color-primary-hover: #27272a;
+  --color-primary-light: #e4e4e7;
+  --color-primary-light-darker: #d4d4d8;
+  --color-surface-primary-container: #e4e4e7;
+  --color-on-primary-container: #09090b;
+  --color-selection: #18181b;
+  --color-surface-high: #f4f4f5;
+  --color-surface-mid: #f4f4f5;
+  --color-surface-low: #ececee;
+  --color-brand-hover: #27272a;
+  --color-brand-active: #09090b;
+  --focus-highlight-color: #a1a1aa;
+  --color-slider-track: #d4d4d8;
+}
+
+.draw-root .excalidraw.theme--dark {
+  --color-primary: #e4e4e7;
+  --color-primary-darker: #f4f4f5;
+  --color-primary-darkest: #ffffff;
+  --color-primary-hover: #f4f4f5;
+  --color-primary-light: #3f3f46;
+  --color-primary-light-darker: #52525b;
+  --color-surface-primary-container: #3f3f46;
+  --color-on-primary-container: #fafafa;
+  --color-selection: #e4e4e7;
+  --color-surface-high: hsl(240 4% 20%);
+  --color-surface-mid: hsl(240 4% 10%);
+  --color-surface-low: hsl(240 4% 15%);
+  --color-brand-hover: #f4f4f5;
+  --color-brand-active: #ffffff;
+  --focus-highlight-color: #71717a;
+  --color-slider-track: #52525b;
+}
+
+/* Site genelindeki taban stiller çizim arayüzünü etkilemesin */
+.draw-root .excalidraw svg,
+.draw-root .excalidraw img {
+  max-width: none;
+}
+.draw-root .excalidraw h1,
+.draw-root .excalidraw h2,
+.draw-root .excalidraw h3,
+.draw-root .excalidraw h4 {
+  letter-spacing: normal;
+  text-wrap: wrap;
+}
+.draw-root .excalidraw :focus-visible {
+  border-radius: revert;
+}
+
+/* Hoş geldin ekranı logosu */
+.draw-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-gray-90, #1b1b1f);
+}
+.excalidraw.theme--dark .draw-wordmark {
+  color: var(--color-gray-10, #f5f5f5);
+}
+.draw-wordmark-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid currentColor;
+  opacity: 0.9;
+}
+.draw-wordmark-mark svg {
+  width: 24px;
+  height: 24px;
+}
+.draw-wordmark-text {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.draw-wordmark-domain {
+  font-weight: 400;
+  opacity: 0.45;
+}
+
+/* Menüdeki dil seçici */
+.draw-lang-select {
+  width: 100%;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--default-border-color, #d4d4d8);
+  border-radius: var(--border-radius-md, 6px);
+  background: var(--input-bg-color, transparent);
+  color: var(--text-primary-color, inherit);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 600px) {
+  .draw-wordmark-text { font-size: 1.8rem; }
+  .draw-wordmark-mark { width: 36px; height: 36px; }
+}

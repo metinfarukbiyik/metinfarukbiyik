@@ -15,6 +15,7 @@ import {
   sketchCurve,
   sketchEllipsePoints,
   sketchLine,
+  sketchPolygon,
   sketchRoundedPolygon,
   sketchSegment,
 } from './rough';
@@ -41,20 +42,24 @@ export interface DrawOp {
 const SHAPE_RADIUS = 24;
 
 export const isShape = (el: Pick<SketchElement, 'type'>) =>
-  el.type === 'rectangle' || el.type === 'diamond' || el.type === 'ellipse';
+  el.type === 'rectangle' || el.type === 'diamond' || el.type === 'ellipse' || el.type === 'triangle';
+/** Köşeli şekiller (köşe stili seçilebilir). */
+export const isPolygon = (el: Pick<SketchElement, 'type'>) =>
+  el.type === 'rectangle' || el.type === 'diamond' || el.type === 'triangle';
 export const isLinear = (el: Pick<SketchElement, 'type'>) => el.type === 'line' || el.type === 'arrow';
 export const hasPoints = (el: Pick<SketchElement, 'type'>) => isLinear(el) || el.type === 'freedraw';
 
 function corners(el: SketchElement): Point[] {
   const { width: w, height: h } = el;
   if (el.type === 'diamond') return [[w / 2, 0], [w, h / 2], [w / 2, h], [0, h / 2]];
+  if (el.type === 'triangle') return [[w / 2, 0], [w, h], [0, h]];
   return [[0, 0], [w, 0], [w, h], [0, h]];
 }
 
 /** Şeklin kapalı dış çizgisi (dolgu, tarama ve isabet testi için). */
 export function outlinePolygon(el: SketchElement): Point[] | null {
   if (el.type === 'ellipse') return ellipseOutline(el.width, el.height);
-  if (el.type === 'rectangle' || el.type === 'diamond') {
+  if (isPolygon(el)) {
     const c = corners(el);
     return el.edges === 'round' ? roundedPolygonOutline(c, radiusFor(el)) : c;
   }
@@ -62,7 +67,7 @@ export function outlinePolygon(el: SketchElement): Point[] | null {
 }
 
 function radiusFor(el: SketchElement) {
-  return el.type === 'diamond' ? SHAPE_RADIUS * 0.8 : SHAPE_RADIUS;
+  return el.type === 'rectangle' ? SHAPE_RADIUS : SHAPE_RADIUS * 0.75;
 }
 
 function fillOps(el: SketchElement, r: Rng): DrawOp[] {
@@ -81,7 +86,7 @@ function fillOps(el: SketchElement, r: Rng): DrawOp[] {
   let d = '';
   for (const angle of angles) {
     for (const [a, b] of hatchSegments(outline, gap, angle)) {
-      d += sketchSegment(a, b, el.roughness * 0.6, r);
+      d += sketchSegment(a, b, el.roughness * 0.4, r);
     }
   }
   return d ? [{ d, mode: 'hatch' }] : [];
@@ -93,19 +98,17 @@ function shapeStroke(el: SketchElement, r: Rng): string {
   if (el.type === 'ellipse') {
     if (roughness <= 0) return ellipsePath(el.width, el.height);
     let d = sketchCurve(sketchEllipsePoints(el.width, el.height, roughness, r), false, 0, r);
-    if (double) d += sketchCurve(sketchEllipsePoints(el.width, el.height, roughness * 0.7, r), false, 0, r);
+    if (double) d += sketchCurve(sketchEllipsePoints(el.width, el.height, roughness * 0.55, r), false, 0, r);
     return d;
   }
   const c = corners(el);
   if (el.edges === 'round') {
-    if (roughness <= 0) return roundedPolygonPath(c, radiusFor(el));
     let d = sketchRoundedPolygon(c, radiusFor(el), roughness, r);
-    if (double) d += sketchRoundedPolygon(c, radiusFor(el), roughness * 0.7, r);
+    if (double && roughness > 0) d += sketchRoundedPolygon(c, radiusFor(el), roughness * 0.55, r);
     return d;
   }
-  if (roughness <= 0) return polylinePath(c, true);
-  let d = '';
-  for (let i = 0; i < c.length; i++) d += sketchLine(c[i], c[(i + 1) % c.length], roughness, r, double);
+  let d = sketchPolygon(c, roughness, r);
+  if (double && roughness > 0) d += sketchPolygon(c, roughness * 0.55, r);
   return d;
 }
 
@@ -185,6 +188,7 @@ export function generateOps(el: SketchElement): DrawOp[] {
   switch (el.type) {
     case 'rectangle':
     case 'diamond':
+    case 'triangle':
     case 'ellipse':
       return [...fillOps(el, r), { d: shapeStroke(el, r), mode: 'stroke' }];
     case 'line':

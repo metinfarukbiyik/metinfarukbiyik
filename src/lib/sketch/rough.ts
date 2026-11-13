@@ -2,53 +2,65 @@
  * El çizimi görünümü üreten geometri. Çıktılar SVG yol (path `d`) metinleridir; aynı metin hem
  * tuvalde (Path2D) hem SVG dışa aktarımında kullanılır.
  *
- * Yaklaşım: her doğru, uçları hafifçe kaydırılmış ve ortası hafifçe bükülmüş kübik bir Bézier
- * eğrisi olarak çizilir. "Doğal" ve "serbest" düzeylerde her çizgi iki kez, farklı titreşimle
- * geçilir; kalemle iki kez üzerinden gidilmiş gibi görünür.
+ * İlkeler:
+ * - Şekiller tek, sürekli bir yoldur: köşelerde kopukluk ya da taşma olmaz.
+ * - Kenarlar hafifçe bükülmüş kübik Bézier eğrileridir; bükülme uzunlukla büyür ama sınırlıdır,
+ *   böylece küçük şekiller titrek, büyük şekiller çarpık görünmez.
+ * - Elips çevresindeki sapma rastgele gürültü değil, düşük frekanslı dalgadır: eğri pürüzsüz kalır.
+ * - "Doğal" ve "serbest" düzeylerde şekil ikinci kez, daha hafif titreşimle geçilir.
  */
 import type { Point } from './types';
 import type { Rng } from './random';
 
 const n = (v: number) => Math.round(v * 100) / 100;
 const jitter = (r: Rng, amount: number) => (r() * 2 - 1) * amount;
+const pt = (p: Point) => `${n(p[0])} ${n(p[1])}`;
 
 export function polylinePath(points: Point[], closed = false): string {
   if (!points.length) return '';
-  let d = `M${n(points[0][0])} ${n(points[0][1])}`;
-  for (let i = 1; i < points.length; i++) d += `L${n(points[i][0])} ${n(points[i][1])}`;
+  let d = `M${pt(points[0])}`;
+  for (let i = 1; i < points.length; i++) d += `L${pt(points[i])}`;
   return closed ? `${d}Z` : d;
 }
 
-/** Tek bir el çizimi doğru parçası. */
-export function sketchSegment(a: Point, b: Point, roughness: number, r: Rng): string {
-  const [x1, y1] = a;
-  const [x2, y2] = b;
-  const len = Math.hypot(x2 - x1, y2 - y1);
-  if (roughness <= 0 || len < 1) return `M${n(x1)} ${n(y1)}L${n(x2)} ${n(y2)}`;
-
-  const nx = -(y2 - y1) / len;
-  const ny = (x2 - x1) / len;
-  // Uçlardaki kayma ve ortadaki bükülme uzunlukla büyür ama sınırlıdır
-  const endShift = roughness * Math.min(1.5, 0.35 + len / 140);
-  const bow = jitter(r, roughness * Math.min(len * 0.012, 3));
-  const wobble = roughness * Math.min(1.1, 0.25 + len / 260);
-
-  const sx = x1 + jitter(r, endShift);
-  const sy = y1 + jitter(r, endShift);
-  const ex = x2 + jitter(r, endShift);
-  const ey = y2 + jitter(r, endShift);
+/** a'dan b'ye hafif bükülmüş kübik eğri komutu (başlangıç noktası yazılmaz). */
+function bowedCurve(a: Point, b: Point, roughness: number, r: Rng): string {
+  const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+  if (roughness <= 0 || len < 2) return `L${pt(b)}`;
+  const nx = -(b[1] - a[1]) / len;
+  const ny = (b[0] - a[0]) / len;
+  const bow = jitter(r, roughness * Math.min(len * 0.005, 1.6));
+  const wobble = roughness * Math.min(0.5, 0.12 + len / 600);
   const control = (t: number): Point => [
-    x1 + (x2 - x1) * t + nx * bow + jitter(r, wobble),
-    y1 + (y2 - y1) * t + ny * bow + jitter(r, wobble),
+    a[0] + (b[0] - a[0]) * t + nx * bow + jitter(r, wobble),
+    a[1] + (b[1] - a[1]) * t + ny * bow + jitter(r, wobble),
   ];
-  const [c1x, c1y] = control(0.3 + jitter(r, 0.06));
-  const [c2x, c2y] = control(0.7 + jitter(r, 0.06));
-  return `M${n(sx)} ${n(sy)}C${n(c1x)} ${n(c1y)} ${n(c2x)} ${n(c2y)} ${n(ex)} ${n(ey)}`;
+  return `C${pt(control(0.33 + jitter(r, 0.03)))} ${pt(control(0.67 + jitter(r, 0.03)))} ${pt(b)}`;
+}
+
+/** Tek bir el çizimi doğru parçası (uçlar çok hafif kayar). */
+export function sketchSegment(a: Point, b: Point, roughness: number, r: Rng): string {
+  if (roughness <= 0) return `M${pt(a)}L${pt(b)}`;
+  const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+  const shift = roughness * Math.min(0.8, 0.2 + len / 320);
+  const s: Point = [a[0] + jitter(r, shift), a[1] + jitter(r, shift)];
+  const e: Point = [b[0] + jitter(r, shift), b[1] + jitter(r, shift)];
+  return `M${pt(s)}${bowedCurve(s, e, roughness, r)}`;
 }
 
 export function sketchLine(a: Point, b: Point, roughness: number, r: Rng, double: boolean): string {
   const first = sketchSegment(a, b, roughness, r);
-  return double && roughness > 0 ? first + sketchSegment(a, b, roughness * 0.75, r) : first;
+  return double && roughness > 0 ? first + sketchSegment(a, b, roughness * 0.55, r) : first;
+}
+
+/** Keskin köşeli kapalı çokgen: köşeler hafifçe kayar, kenarlar bükülür, yol kesintisizdir. */
+export function sketchPolygon(corners: Point[], roughness: number, r: Rng): string {
+  if (roughness <= 0) return polylinePath(corners, true);
+  const shift = roughness * 0.6;
+  const pts = corners.map((p) => [p[0] + jitter(r, shift), p[1] + jitter(r, shift)] as Point);
+  let d = `M${pt(pts[0])}`;
+  for (let i = 0; i < pts.length; i++) d += bowedCurve(pts[i], pts[(i + 1) % pts.length], roughness, r);
+  return d;
 }
 
 /** Noktalardan geçen yumuşak eğri (Catmull-Rom → kübik Bézier). */
@@ -57,7 +69,7 @@ export function smoothPath(points: Point[], closed: boolean): string {
   if (count < 3) return polylinePath(points, closed);
   const at = (i: number): Point =>
     closed ? points[(i + count) % count] : points[Math.max(0, Math.min(count - 1, i))];
-  let d = `M${n(points[0][0])} ${n(points[0][1])}`;
+  let d = `M${pt(points[0])}`;
   const last = closed ? count : count - 1;
   for (let i = 0; i < last; i++) {
     const p0 = at(i - 1);
@@ -66,15 +78,15 @@ export function smoothPath(points: Point[], closed: boolean): string {
     const p3 = at(i + 2);
     const c1: Point = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
     const c2: Point = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
-    d += `C${n(c1[0])} ${n(c1[1])} ${n(c2[0])} ${n(c2[1])} ${n(p2[0])} ${n(p2[1])}`;
+    d += `C${pt(c1)} ${pt(c2)} ${pt(p2)}`;
   }
   return closed ? `${d}Z` : d;
 }
 
-/** Noktaları titreştirip yumuşak eğriyle birleştirir. */
+/** Noktaları çok hafif kaydırıp yumuşak eğriyle birleştirir (çok noktalı eğri çizgiler). */
 export function sketchCurve(points: Point[], closed: boolean, roughness: number, r: Rng): string {
   if (roughness <= 0) return smoothPath(points, closed);
-  const amount = roughness * 1.1;
+  const amount = roughness * 0.45;
   return smoothPath(
     points.map(([x, y]) => [x + jitter(r, amount), y + jitter(r, amount)] as Point),
     closed,
@@ -82,26 +94,29 @@ export function sketchCurve(points: Point[], closed: boolean, roughness: number,
 }
 
 /**
- * Elips çevresinde, başlangıcı rastgele ve ucu biraz taşan (kalemin kapanırken üst üste
- * binmesi gibi) noktalar.
+ * Elips çevresi. Yarıçaptaki sapma düşük frekanslı iki dalganın toplamıdır; başlangıç açısı
+ * rastgeledir ve kalem kapanırken başlangıcın biraz üstüne biner.
  */
 export function sketchEllipsePoints(w: number, h: number, roughness: number, r: Rng): Point[] {
-  const cx = w / 2;
-  const cy = h / 2;
   const rx = w / 2;
   const ry = h / 2;
-  const steps = Math.max(12, Math.min(40, Math.round((w + h) / 16)));
+  const steps = Math.max(16, Math.min(64, Math.round((w + h) / 9)));
   const start = r() * Math.PI * 2;
-  const overlap = 0.25 + r() * 0.35;
-  const end = start + Math.PI * 2 + overlap;
-  const step = (Math.PI * 2) / steps;
-  const wobble = roughness * Math.min(0.03, 4 / Math.max(rx, ry, 1));
-  const shiftX = jitter(r, roughness * 0.8);
-  const shiftY = jitter(r, roughness * 0.8);
+  const overlap = roughness > 0 ? 0.05 + r() * 0.08 : 0;
+  const amp = roughness * Math.min(0.014, 1.4 / Math.max(rx, ry, 1));
+  const phase1 = r() * Math.PI * 2;
+  const phase2 = r() * Math.PI * 2;
+  const cx = rx + jitter(r, roughness * 0.35);
+  const cy = ry + jitter(r, roughness * 0.35);
   const pts: Point[] = [];
-  for (let a = start; a <= end + 1e-6; a += step) {
-    const k = 1 + jitter(r, wobble);
-    pts.push([cx + shiftX + Math.cos(a) * rx * k, cy + shiftY + Math.sin(a) * ry * k]);
+  const total = Math.PI * 2 + overlap;
+  const count = Math.ceil((total / (Math.PI * 2)) * steps);
+  for (let i = 0; i <= count; i++) {
+    const a = start + (total * i) / count;
+    // Taşan kısım içe doğru hafifçe kayar; uç uca binme doğal görünür
+    const tail = Math.max(0, (a - start - Math.PI * 2) / Math.max(overlap, 1e-6));
+    const k = 1 + amp * Math.sin(2 * a + phase1) + amp * 0.5 * Math.sin(3 * a + phase2) - tail * amp * 0.6;
+    pts.push([cx + Math.cos(a) * rx * k, cy + Math.sin(a) * ry * k]);
   }
   return pts;
 }
@@ -113,12 +128,12 @@ export function ellipsePath(w: number, h: number): string {
 }
 
 export function ellipseOutline(w: number, h: number, steps = 48): Point[] {
-  const pts: Point[] = [];
+  const out: Point[] = [];
   for (let i = 0; i < steps; i++) {
     const a = (i / steps) * Math.PI * 2;
-    pts.push([w / 2 + (Math.cos(a) * w) / 2, h / 2 + (Math.sin(a) * h) / 2]);
+    out.push([w / 2 + (Math.cos(a) * w) / 2, h / 2 + (Math.sin(a) * h) / 2]);
   }
-  return pts;
+  return out;
 }
 
 /** Köşeleri yuvarlatılmış çokgenin köşe yarıçapı, kenar uzunluğuna göre sınırlanır. */
@@ -148,11 +163,10 @@ function cornerPoints(corners: Point[], i: number, rad: number): [Point, Point, 
 export function roundedPolygonPath(corners: Point[], radius: number): string {
   const rad = cornerRadius(corners, radius);
   const parts = corners.map((_, i) => cornerPoints(corners, i, rad));
-  const [, , firstOut] = parts[0];
-  let d = `M${n(firstOut[0])} ${n(firstOut[1])}`;
+  let d = `M${pt(parts[0][2])}`;
   for (let k = 1; k <= parts.length; k++) {
     const [pin, c, pout] = parts[k % parts.length];
-    d += `L${n(pin[0])} ${n(pin[1])}Q${n(c[0])} ${n(c[1])} ${n(pout[0])} ${n(pout[1])}`;
+    d += `L${pt(pin)}Q${pt(c)} ${pt(pout)}`;
   }
   return `${d}Z`;
 }
@@ -175,20 +189,18 @@ export function roundedPolygonOutline(corners: Point[], radius: number, samples 
   return out;
 }
 
-/** Yuvarlak köşeli çokgenin el çizimi kenarları: düz kenarlar doğru, köşeler kısa eğri. */
+/** Yuvarlak köşeli çokgenin el çizimi hâli: tek parça yol, bükülmüş kenarlar, yumuşak köşeler. */
 export function sketchRoundedPolygon(corners: Point[], radius: number, roughness: number, r: Rng): string {
+  if (roughness <= 0) return roundedPolygonPath(corners, radius);
   const rad = cornerRadius(corners, radius);
-  const parts = corners.map((_, i) => cornerPoints(corners, i, rad));
-  let d = '';
+  const shift = roughness * 0.45;
+  const J = (p: Point): Point => [p[0] + jitter(r, shift), p[1] + jitter(r, shift)];
+  const parts = corners.map((_, i) => cornerPoints(corners, i, rad).map(J) as [Point, Point, Point]);
+  let d = `M${pt(parts[0][2])}`;
   for (let i = 0; i < parts.length; i++) {
-    const [, c, pout] = parts[i];
-    const [nextIn] = parts[(i + 1) % parts.length];
-    d += sketchSegment(pout, nextIn, roughness, r);
-    const [pin] = parts[i];
-    const j = roughness * 0.6;
-    d += `M${n(pin[0] + jitter(r, j))} ${n(pin[1] + jitter(r, j))}Q${n(c[0] + jitter(r, j))} ${n(
-      c[1] + jitter(r, j),
-    )} ${n(pout[0] + jitter(r, j))} ${n(pout[1] + jitter(r, j))}`;
+    const [nextIn, nextCorner, nextOut] = parts[(i + 1) % parts.length];
+    d += bowedCurve(parts[i][2], nextIn, roughness, r);
+    d += `Q${pt(nextCorner)} ${pt(nextOut)}`;
   }
   return d;
 }
@@ -202,7 +214,6 @@ export function hatchSegments(polygon: Point[], gap: number, angleDeg: number): 
   const a = (angleDeg * Math.PI) / 180;
   const cos = Math.cos(a);
   const sin = Math.sin(a);
-  // Döndür (−a)
   const pts = polygon.map(([x, y]) => [x * cos + y * sin, -x * sin + y * cos] as Point);
   let minY = Infinity;
   let maxY = -Infinity;
@@ -223,8 +234,10 @@ export function hatchSegments(polygon: Point[], gap: number, angleDeg: number): 
     }
     xs.sort((m, k) => m - k);
     for (let i = 0; i + 1 < xs.length; i += 2) {
-      if (xs[i + 1] - xs[i] < 1) continue;
-      segments.push([back([xs[i], y]), back([xs[i + 1], y])]);
+      // Uçları kenardan biraz içeride bırak: tarama konturun dışına taşmasın
+      const inset = Math.min(1.5, (xs[i + 1] - xs[i]) / 4);
+      if (xs[i + 1] - xs[i] < 2) continue;
+      segments.push([back([xs[i] + inset, y]), back([xs[i + 1] - inset, y])]);
     }
   }
   return segments;
@@ -236,15 +249,13 @@ export function freehandPath(points: Point[]): string {
   if (points.length < 3) {
     const [a] = points;
     const b = points[points.length - 1];
-    // Tek noktalık dokunuş da görünsün diye çok kısa bir çizgi
-    return `M${n(a[0])} ${n(a[1])}L${n(b[0] + 0.01)} ${n(b[1] + 0.01)}`;
+    return `M${pt(a)}L${n(b[0] + 0.01)} ${n(b[1] + 0.01)}`;
   }
-  let d = `M${n(points[0][0])} ${n(points[0][1])}`;
+  let d = `M${pt(points[0])}`;
   for (let i = 1; i < points.length - 1; i++) {
     const [x, y] = points[i];
     const [nx2, ny2] = points[i + 1];
     d += `Q${n(x)} ${n(y)} ${n((x + nx2) / 2)} ${n((y + ny2) / 2)}`;
   }
-  const lastPt = points[points.length - 1];
-  return `${d}L${n(lastPt[0])} ${n(lastPt[1])}`;
+  return `${d}L${pt(points[points.length - 1])}`;
 }

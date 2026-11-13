@@ -12,6 +12,7 @@ export type Point = [number, number];
 export type ElementType =
   | 'rectangle'
   | 'diamond'
+  | 'triangle'
   | 'ellipse'
   | 'line'
   | 'arrow'
@@ -24,6 +25,7 @@ export type Tool =
   | 'hand'
   | 'rectangle'
   | 'diamond'
+  | 'triangle'
   | 'ellipse'
   | 'arrow'
   | 'line'
@@ -79,6 +81,15 @@ export interface SketchElement extends StyleProps {
   /** Görsel öğesinin dosya kimliği (`Scene.files`). */
   fileId?: string;
   groupId?: string | null;
+  /** Okun başlangıç / bitiş ucunun bağlı olduğu öğe. Öğe taşınınca ok onu izler. */
+  startBinding?: string | null;
+  endBinding?: string | null;
+  /** Katmanlar panelinde verilen ad. */
+  name?: string;
+  /** Gizli öğeler çizilmez, seçilemez ve dışa aktarılmaz. */
+  hidden?: boolean;
+  /** Kilitli öğeler tuvalde seçilemez, taşınamaz ve silinemez. */
+  locked?: boolean;
 }
 
 export type Files = Record<string, string>;

@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ClipboardCopy, Download, X } from 'lucide-react';
-import { exportToCanvas, exportToSvg, type Editor } from '@/lib/sketch';
+import { BookOpen, ClipboardCopy, Download, Github, X } from 'lucide-react';
+import { exportToCanvas, exportToSvg, type Editor } from '../sketch';
+import { useI18n, type T } from './i18n';
 
 export function Dialog({
   title,
@@ -16,6 +17,7 @@ export function Dialog({
   wide?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const { t } = useI18n();
   const closeRef = useRef(onClose);
   useEffect(() => {
     closeRef.current = onClose;
@@ -48,7 +50,7 @@ export function Dialog({
       >
         <header className="sk-dialog-head">
           <h2>{title}</h2>
-          <button type="button" className="sk-icon-btn" onClick={onClose} aria-label="Kapat">
+          <button type="button" className="sk-icon-btn" onClick={onClose} aria-label={t('close')}>
             <X size={16} />
           </button>
         </header>
@@ -65,13 +67,14 @@ function download(href: string, name: string) {
   a.click();
 }
 
-const fileStamp = () => {
+const fileStamp = (prefix: string) => {
   const d = new Date();
   const p = (v: number) => String(v).padStart(2, '0');
-  return `cizim-${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+  return `${prefix}-${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
 };
 
 export function ExportDialog({ editor, onClose }: { editor: Editor; onClose: () => void }) {
+  const { t } = useI18n();
   const hasSelection = editor.state.selectedIds.length > 0;
   const [onlySelected, setOnlySelected] = useState(hasSelection);
   const [withBackground, setWithBackground] = useState(true);
@@ -80,7 +83,7 @@ export function ExportDialog({ editor, onClose }: { editor: Editor; onClose: () 
   const [preview, setPreview] = useState<string | null>(null);
   const [status, setStatus] = useState('');
 
-  const elements = onlySelected && hasSelection ? editor.selectedElements() : editor.elements;
+  const elements = onlySelected && hasSelection ? editor.selectedElements() : editor.visibleElements();
   const options = { background: withBackground ? editor.state.background : null, theme: dark ? 'dark' : 'light', scale } as const;
 
   useEffect(() => {
@@ -97,12 +100,12 @@ export function ExportDialog({ editor, onClose }: { editor: Editor; onClose: () 
 
   const png = async () => {
     const canvas = await exportToCanvas(elements, editor.files, options);
-    download(canvas.toDataURL('image/png'), `${fileStamp()}.png`);
+    download(canvas.toDataURL('image/png'), `${fileStamp(t('file.name'))}.png`);
   };
   const svg = () => {
     const blob = new Blob([exportToSvg(elements, editor.files, options)], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
-    download(url, `${fileStamp()}.svg`);
+    download(url, `${fileStamp(t('file.name'))}.svg`);
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
   const copy = async () => {
@@ -111,43 +114,43 @@ export function ExportDialog({ editor, onClose }: { editor: Editor; onClose: () 
       const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, 'image/png'));
       if (!blob) throw new Error('blob');
       await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-      setStatus('Panoya kopyalandı');
+      setStatus(t('export.copied'));
     } catch {
-      setStatus('Bu tarayıcı görseli panoya kopyalamaya izin vermedi');
+      setStatus(t('export.copyFailed'));
     }
   };
 
   return (
-    <Dialog title="Görsel olarak dışa aktar" onClose={onClose} wide>
+    <Dialog title={t('export.title')} onClose={onClose} wide>
       {!elements.length ? (
-        <p className="sk-muted">Dışa aktarılacak bir şey yok. Önce bir şeyler çiz.</p>
+        <p className="sk-muted">{t('export.empty')}</p>
       ) : (
         <div className="sk-export">
           <div className={`sk-export-preview${withBackground ? '' : ' is-checker'}`}>
             {preview ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={preview} alt="Dışa aktarma önizlemesi" />
+              <img src={preview} alt={t('export.preview')} />
             ) : (
-              <span className="sk-muted">Hazırlanıyor…</span>
+              <span className="sk-muted">{t('export.preparing')}</span>
             )}
           </div>
           <div className="sk-export-options">
             {hasSelection && (
               <label className="sk-check">
                 <input type="checkbox" checked={onlySelected} onChange={(e) => setOnlySelected(e.target.checked)} />
-                Yalnızca seçili öğeler
+                {t('export.onlySelected')}
               </label>
             )}
             <label className="sk-check">
               <input type="checkbox" checked={withBackground} onChange={(e) => setWithBackground(e.target.checked)} />
-              Arka planı dahil et
+              {t('export.background')}
             </label>
             <label className="sk-check">
               <input type="checkbox" checked={dark} onChange={(e) => setDark(e.target.checked)} />
-              Koyu tema
+              {t('export.dark')}
             </label>
-            <div className="sk-scale" role="group" aria-label="Ölçek">
-              <span>Ölçek</span>
+            <div className="sk-scale" role="group" aria-label={t('export.scale')}>
+              <span>{t('export.scale')}</span>
               {[1, 2, 3].map((s) => (
                 <button key={s} type="button" className="sk-opt" aria-pressed={scale === s} onClick={() => setScale(s)}>
                   {s}×
@@ -162,7 +165,7 @@ export function ExportDialog({ editor, onClose }: { editor: Editor; onClose: () 
                 <Download size={15} /> SVG
               </button>
               <button type="button" className="sk-btn" onClick={copy}>
-                <ClipboardCopy size={15} /> Kopyala
+                <ClipboardCopy size={15} /> {t('export.copy')}
               </button>
             </div>
             {status && (
@@ -179,61 +182,68 @@ export function ExportDialog({ editor, onClose }: { editor: Editor; onClose: () 
 
 const mod = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘' : 'Ctrl';
 
-const SHORTCUTS: [string, [string, string][]][] = [
+const shortcuts = (t: T): [string, [string, string][]][] => [
   [
-    'Araçlar',
+    t('help.tools'),
     [
-      ['Seç', 'V · 1'],
-      ['El (kaydır)', 'H · Boşluk'],
-      ['Dikdörtgen', 'R · 2'],
-      ['Eşkenar dörtgen', 'D · 3'],
-      ['Elips', 'O · 4'],
-      ['Ok', 'A · 5'],
-      ['Çizgi', 'L · 6'],
-      ['Kalem', 'P · 7'],
-      ['Metin', 'T · 8'],
-      ['Görsel', '9'],
-      ['Silgi', 'E · 0'],
-      ['Aracı kilitle', 'Q'],
+      [t('tool.select'), 'V · 1'],
+      [t('tool.hand'), `H · ${t('help.space')}`],
+      [t('tool.rectangle'), 'R · 2'],
+      [t('tool.diamond'), 'D · 3'],
+      [t('tool.triangle'), 'U'],
+      [t('tool.ellipse'), 'O · 4'],
+      [t('tool.arrow'), 'A · 5'],
+      [t('tool.line'), 'L · 6'],
+      [t('tool.freedraw'), 'P · 7'],
+      [t('tool.text'), 'T · 8'],
+      [t('type.image'), '9'],
+      [t('tool.eraser'), 'E · 0'],
+      [t('help.lockTool'), 'Q'],
     ],
   ],
   [
-    'Düzenleme',
+    t('help.editing'),
     [
-      ['Geri al', `${mod} Z`],
-      ['Yinele', `${mod} ⇧ Z`],
-      ['Kopyala / Kes / Yapıştır', `${mod} C / X / V`],
-      ['Çoğalt', `${mod} D`],
-      ['Tümünü seç', `${mod} A`],
-      ['Sil', 'Delete'],
-      ['Grupla / Çöz', `${mod} G / ${mod} ⇧ G`],
-      ['Öne / arkaya al', `${mod} ] / ${mod} [`],
-      ['Kopyalayarak taşı', 'Alt + sürükle'],
-      ['Oranı koru · 15° adım', 'Shift'],
-      ['Metni düzenle', 'Çift tık · Enter'],
-      ['Çok noktalı çizgi', 'Tıkla, tıkla… · Enter'],
+      [t('history.undo'), `${mod} Z`],
+      [t('history.redo'), `${mod} ⇧ Z`],
+      [t('help.cutPaste'), `${mod} C / X / V`],
+      [t('action.duplicate'), `${mod} D`],
+      [t('help.selectAll'), `${mod} A`],
+      [t('action.delete'), 'Delete'],
+      [t('help.groupUngroup'), `${mod} G / ${mod} ⇧ G`],
+      [t('help.order'), `${mod} ] / ${mod} [`],
+      [t('help.flip'), '⇧ H / ⇧ V'],
+      [t('help.styleCopy'), `${mod} ⌥ C / V`],
+      [t('action.lock'), `${mod} ⇧ L`],
+      [t('help.bind'), t('help.bindKeys')],
+      [t('help.altDrag'), t('help.altDragKeys')],
+      [t('help.shift'), 'Shift'],
+      [t('help.editText'), t('help.editTextKeys')],
+      [t('help.polyline'), t('help.polylineKeys')],
     ],
   ],
   [
-    'Görünüm',
+    t('help.view'),
     [
-      ['Yakınlaştır / uzaklaştır', `${mod} + / ${mod} −`],
-      ['%100', `${mod} 0`],
-      ['Tümünü sığdır', '⇧ 1'],
-      ['Seçimi sığdır', '⇧ 2'],
-      ['Izgara', `${mod} '`],
-      ['Kaydet / Aç', `${mod} S / ${mod} O`],
-      ['Dışa aktar', `${mod} ⇧ E`],
-      ['Kısayollar', '?'],
+      [t('help.zoom'), `${mod} + / ${mod} −`],
+      ['100%', `${mod} 0`],
+      [t('help.fit'), '⇧ 1'],
+      [t('help.fitSel'), '⇧ 2'],
+      [t('menu.grid'), `${mod} '`],
+      [t('menu.layers'), '⌥ L'],
+      [t('help.saveOpen'), `${mod} S / ${mod} O`],
+      [t('top.export'), `${mod} ⇧ E`],
+      [t('menu.shortcuts'), '?'],
     ],
   ],
 ];
 
 export function HelpDialog({ onClose }: { onClose: () => void }) {
+  const { t } = useI18n();
   return (
-    <Dialog title="Klavye kısayolları" onClose={onClose} wide>
+    <Dialog title={t('help.title')} onClose={onClose} wide>
       <div className="sk-help">
-        {SHORTCUTS.map(([group, rows]) => (
+        {shortcuts(t).map(([group, rows]) => (
           <section key={group}>
             <h3>{group}</h3>
             <dl>
@@ -249,10 +259,7 @@ export function HelpDialog({ onClose }: { onClose: () => void }) {
           </section>
         ))}
       </div>
-      <p className="sk-muted sk-help-foot">
-        Çizimlerin yalnızca bu tarayıcıda saklanır; hiçbir şey sunucuya gönderilmez. Başka bir cihaza taşımak için
-        menüden <strong>Kaydet</strong> ile dosya olarak indir.
-      </p>
+      <p className="sk-muted sk-help-foot">{t('help.foot')}</p>
     </Dialog>
   );
 }
@@ -270,12 +277,13 @@ export function ConfirmDialog({
   onConfirm: () => void;
   onClose: () => void;
 }) {
+  const { t } = useI18n();
   return (
     <Dialog title={title} onClose={onClose}>
       <p className="sk-muted">{message}</p>
       <div className="sk-dialog-actions">
         <button type="button" className="sk-btn" onClick={onClose}>
-          Vazgeç
+          {t('cancel')}
         </button>
         <button
           type="button"
@@ -287,6 +295,62 @@ export function ConfirmDialog({
         >
           {confirmLabel}
         </button>
+      </div>
+    </Dialog>
+  );
+}
+
+export interface AboutInfo {
+  name: string;
+  version: string;
+  description: string;
+  author?: { name: string; url?: string };
+  repoUrl?: string;
+  license?: string;
+}
+
+export function AboutDialog({ info, docsUrl, onClose }: { info: AboutInfo; docsUrl?: string; onClose: () => void }) {
+  const { t } = useI18n();
+  return (
+    <Dialog title={t('about.title')} onClose={onClose}>
+      <div className="sk-about">
+        <div className="sk-about-head">
+          <strong>{info.name}</strong>
+          <span className="sk-about-version">v{info.version}</span>
+        </div>
+        <p className="sk-muted">{info.description}</p>
+        <dl className="sk-about-list">
+          {info.author && (
+            <div>
+              <dt>{t('about.author')}</dt>
+              <dd>{info.author.url ? <a href={info.author.url}>{info.author.name}</a> : info.author.name}</dd>
+            </div>
+          )}
+          {info.license && (
+            <div>
+              <dt>{t('about.license')}</dt>
+              <dd>
+                {info.license} · {t('about.openSource')}
+              </dd>
+            </div>
+          )}
+          <div>
+            <dt>{t('about.privacy')}</dt>
+            <dd>{t('about.privacyText')}</dd>
+          </div>
+        </dl>
+        <div className="sk-dialog-actions is-start">
+          {info.repoUrl && (
+            <a className="sk-btn is-primary" href={info.repoUrl} target="_blank" rel="noopener">
+              <Github size={15} /> GitHub
+            </a>
+          )}
+          {docsUrl && (
+            <a className="sk-btn" href={docsUrl} target="_blank" rel="noopener">
+              <BookOpen size={15} /> {t('menu.docs')}
+            </a>
+          )}
+        </div>
       </div>
     </Dialog>
   );

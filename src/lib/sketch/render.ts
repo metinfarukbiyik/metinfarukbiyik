@@ -3,6 +3,7 @@ import type { Files, Point, SketchElement, Theme, View } from './types';
 import { generateOps, isShape, type DrawOp } from './shapes';
 import { themed, SELECTION_COLOR } from './colors';
 import { boundsIntersect, commonBounds, elementBounds, type Bounds } from './geometry';
+import { worldOutline } from './binding';
 import { fontFamilyCss, fontString, LABEL_PADDING, LINE_HEIGHT, wrapText } from './text';
 
 /* ───────────── Önbellekler ───────────── */
@@ -97,8 +98,13 @@ function labelLines(el: SketchElement) {
 
 /** Şekil etiketinin sığacağı genişlik (elips ve eşkenar dörtgende iç kutu daha dar). */
 export function labelWidth(el: SketchElement) {
-  const factor = el.type === 'rectangle' ? 1 : el.type === 'ellipse' ? 0.72 : 0.56;
+  const factor = el.type === 'rectangle' ? 1 : el.type === 'ellipse' ? 0.72 : el.type === 'triangle' ? 0.5 : 0.56;
   return el.width * factor - LABEL_PADDING * 2;
+}
+
+/** Şekil etiketinin dikey merkezi (üçgende geniş tabana yakın). */
+export function labelCenterY(el: SketchElement) {
+  return el.type === 'triangle' ? el.height * 0.64 : el.height / 2;
 }
 
 function drawTextLines(
@@ -196,7 +202,7 @@ export function drawElement(
       const lh = el.fontSize * LINE_HEIGHT;
       const inner = labelWidth(el);
       ctx.fillStyle = stroke;
-      drawTextLines(ctx, lines, el, font, inner, el.height / 2 - (lines.length * lh) / 2, (el.width - inner) / 2);
+      drawTextLines(ctx, lines, el, font, inner, labelCenterY(el) - (lines.length * lh) / 2, (el.width - inner) / 2);
     }
   }
   ctx.restore();
@@ -214,6 +220,8 @@ export interface Overlay {
   hovered: SketchElement | null;
   erasing: Set<string>;
   editingId: string | null;
+  /** Ok ucunun bağlanacağı öğe: kalın, yarı saydam kenarla vurgulanır. */
+  bindTarget: SketchElement | null;
 }
 
 export interface SceneRenderOptions {
@@ -274,6 +282,19 @@ function drawOverlay(ctx: CanvasRenderingContext2D, overlay: Overlay, zoom: numb
     ctx.lineWidth = px;
     const pad = 4 * px;
     ctx.strokeRect(-el.width / 2 - pad, -el.height / 2 - pad, el.width + pad * 2, el.height + pad * 2);
+    ctx.restore();
+  }
+
+  if (overlay.bindTarget) {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(59,130,246,0.45)';
+    ctx.lineWidth = 5 * px;
+    ctx.lineJoin = 'round';
+    const outline = worldOutline(overlay.bindTarget);
+    ctx.beginPath();
+    outline.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+    ctx.closePath();
+    ctx.stroke();
     ctx.restore();
   }
 
@@ -338,7 +359,7 @@ export function renderScene(
 
   const viewport: Bounds = [-scrollX, -scrollY, -scrollX + opts.width / zoom, -scrollY + opts.height / zoom];
   for (const el of elements) {
-    if (el.id === overlay.editingId && el.type === 'text') continue;
+    if (el.hidden || (el.id === overlay.editingId && el.type === 'text')) continue;
     if (!boundsIntersect(elementBounds(el), viewport)) continue;
     const editingLabel = el.id === overlay.editingId && el.text;
     const shown = editingLabel ? { ...el, text: '' } : el;
@@ -452,7 +473,7 @@ export function exportToSvg(
         const { lines } = labelLines(el);
         const lh = el.fontSize * LINE_HEIGHT;
         const w = labelWidth(el);
-        inner += svgTextLines(lines, el, stroke, w, el.height / 2 - (lines.length * lh) / 2, (el.width - w) / 2);
+        inner += svgTextLines(lines, el, stroke, w, labelCenterY(el) - (lines.length * lh) / 2, (el.width - w) / 2);
       }
     }
     parts.push(`<g transform="${tf}" opacity="${el.opacity / 100}">${inner}</g>`);

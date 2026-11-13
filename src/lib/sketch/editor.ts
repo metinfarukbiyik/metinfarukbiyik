@@ -28,6 +28,7 @@ import {
   toWorld,
 } from './geometry';
 import { hasPoints, isLinear, isShape, outlinePolygon } from './shapes';
+import { bindableAt, recomputeArrow, syncBindings } from './binding';
 import { LINE_HEIGHT, measureText } from './text';
 import { GRID_SIZE, type Overlay } from './render';
 
@@ -86,7 +87,7 @@ type HandleHit = { kind: 'resize'; handle: ResizeHandle } | { kind: 'rotate' } |
 type Drag =
   | { kind: 'pan'; sx: number; sy: number; scrollX: number; scrollY: number }
   | { kind: 'create'; id: string; origin: Point }
-  | { kind: 'linear'; id: string; origin: Point; startScreen: Point }
+  | { kind: 'linear'; id: string; origin: Point; startScreen: Point; startBind: string | null }
   | { kind: 'freedraw'; id: string; world: Point[] }
   | { kind: 'move'; start: Point; originals: Map<string, SketchElement>; duplicate: boolean; moved: boolean }
   | { kind: 'resize'; handle: ResizeHandle; frame: Frame; originals: SketchElement[]; keepAspect: boolean }
@@ -148,6 +149,8 @@ export class Editor {
   private spaceDown = false;
   private pointerWorld: Point | null = null;
   private pointerType = 'mouse';
+  /** Ok çizerken ya da ucunu sürüklerken bağlanacak öğe (vurgulanır). */
+  private bindTarget: string | null = null;
 
   /* ───────────── Abonelik ───────────── */
 
@@ -283,7 +286,7 @@ export class Editor {
     if (!merge) this.record(this.elements);
     this.coalesceKey = coalesce ?? '';
     this.coalesceAt = now;
-    this.elements = next;
+    this.elements = syncBindings(this.elements, next);
     this.emit(true);
   }
 
@@ -294,8 +297,24 @@ export class Editor {
   }
 
   private setElementsLive(next: SketchElement[]) {
-    this.elements = next;
+    this.elements = syncBindings(this.elements, next);
     this.emit(true);
+  }
+
+  private byId() {
+    return new Map(this.elements.map((el) => [el.id, el]));
+  }
+
+  /** Ok ucunun bağlanabileceği öğe (oklar dışında, başka öğelere bağlanmaz). */
+  private bindCandidate(arrow: SketchElement, at: Point, other: string | null | undefined): string | null {
+    if (arrow.type !== 'arrow') return null;
+    const target = bindableAt(
+      this.elements.filter((el) => !el.hidden),
+      at,
+      10 / this.state.view.zoom,
+      arrow.id,
+    );
+    return target && target.id !== other ? target.id : null;
   }
 
   private replace(updated: SketchElement[]) {
@@ -381,7 +400,7 @@ export class Editor {
       changed = true;
       return { ...el, ...fit };
     });
-    if (changed) this.elements = next;
+    if (changed) this.elements = syncBindings(this.elements, next);
     this.emit(changed);
   }
 
@@ -402,15 +421,169 @@ export class Editor {
       this.elements.filter((el) => set.has(el.id) && el.groupId).map((el) => el.groupId as string),
     );
     if (groups.size) for (const el of this.elements) if (el.groupId && groups.has(el.groupId)) set.add(el.id);
-    return [...set];
+    return this.elements.filter((el) => set.has(el.id) && interactive(el)).map((el) => el.id);
   }
 
   select(ids: string[]) {
-    this.setState({ selectedIds: this.expandGroups(ids) });
+    this.setState({ selectedIds: this.expandGroups(ids).filter((id) => interactive(this.getElement(id))) });
+  }
+
+  /** Grupları genişletmeden seç (katmanlar panelinden tek öğe seçimi). */
+  selectExact(ids: string[]) {
+    this.setState({ tool: 'select', selectedIds: ids.filter((id) => interactive(this.getElement(id))) });
+  }
+
+  visibleElements() {
+    return this.elements.filter((el) => !el.hidden);
+  }
+
+  /* ───────────── Katmanlar ───────────── */
+
+  setHidden(ids: string[], hidden: boolean) {
+    const set = new Set(ids);
+    this.commit(this.elements.map((el) => (set.has(el.id) ? bump(el, { hidden }) : el)));
+    if (hidden) this.setState({ selectedIds: this.state.selectedIds.filter((id) => !set.has(id)) });
+  }
+
+  setLocked(ids: string[], locked: boolean) {
+    const set = new Set(ids);
+    this.commit(this.elements.map((el) => (set.has(el.id) ? bump(el, { locked }) : el)));
+    if (locked) this.setState({ selectedIds: this.state.selectedIds.filter((id) => !set.has(id)) });
+  }
+
+  /** Seçimi kilitle / kilidi aç (seçim kilitli öğe içeremeyeceği için yalnız kilitler). */
+  lockSelected() {
+    if (this.state.selectedIds.length) this.setLocked(this.state.selectedIds, true);
+  }
+
+  rename(id: string, name: string) {
+    const el = this.getElement(id);
+    if (!el || (el.name ?? '') === name) return;
+    this.commit(this.replace([bump(el, { name: name.trim() || undefined })]));
+  }
+
+  /** Öğeleri (göreli sıralarını koruyarak) hedef öğenin üstüne ya da altına taşır. */
+  placeLayers(ids: string[], targetId: string, where: 'above' | 'below') {
+    const set = new Set(ids);
+    if (set.has(targetId)) return;
+    const moving = this.elements.filter((el) => set.has(el.id));
+    const rest = this.elements.filter((el) => !set.has(el.id));
+    const idx = rest.findIndex((el) => el.id === targetId);
+    if (idx < 0 || !moving.length) return;
+    const at = where === 'above' ? idx + 1 : idx;
+    this.commit([...rest.slice(0, at), ...moving, ...rest.slice(at)]);
+  }
+
+  /* ───────────── Hizalama, dağıtma, çevirme ───────────── */
+
+  /** Seçimi birimlere ayırır: grup tek birim, diğerleri tek tek. */
+  private selectionUnits(): SketchElement[][] {
+    const units = new Map<string, SketchElement[]>();
+    for (const el of this.selectedElements()) {
+      const key = el.groupId ?? el.id;
+      if (!units.has(key)) units.set(key, []);
+      units.get(key)!.push(el);
+    }
+    return [...units.values()];
+  }
+
+  private moveUnits(moves: Map<SketchElement[], Point>) {
+    const delta = new Map<string, Point>();
+    for (const [unit, d] of moves) for (const el of unit) delta.set(el.id, d);
+    const ids = new Set(this.state.selectedIds);
+    this.commit(
+      this.elements.map((el) => {
+        const d = delta.get(el.id);
+        return d && (d[0] || d[1]) ? bump(el, { x: el.x + d[0], y: el.y + d[1], ...keepBindings(el, ids) }) : el;
+      }),
+    );
+  }
+
+  align(kind: 'left' | 'hcenter' | 'right' | 'top' | 'vcenter' | 'bottom') {
+    const units = this.selectionUnits();
+    if (units.length < 2) return;
+    const all = commonBounds(units.flat())!;
+    const moves = new Map<SketchElement[], Point>();
+    for (const unit of units) {
+      const b = commonBounds(unit)!;
+      let dx = 0;
+      let dy = 0;
+      if (kind === 'left') dx = all[0] - b[0];
+      if (kind === 'right') dx = all[2] - b[2];
+      if (kind === 'hcenter') dx = (all[0] + all[2]) / 2 - (b[0] + b[2]) / 2;
+      if (kind === 'top') dy = all[1] - b[1];
+      if (kind === 'bottom') dy = all[3] - b[3];
+      if (kind === 'vcenter') dy = (all[1] + all[3]) / 2 - (b[1] + b[3]) / 2;
+      moves.set(unit, [dx, dy]);
+    }
+    this.moveUnits(moves);
+  }
+
+  /** Birimleri aralarındaki boşluklar eşit olacak şekilde dağıtır. */
+  distribute(axis: 'x' | 'y') {
+    const units = this.selectionUnits();
+    if (units.length < 3) return;
+    const lo = axis === 'x' ? 0 : 1;
+    const hi = axis === 'x' ? 2 : 3;
+    const items = units
+      .map((unit) => ({ unit, b: commonBounds(unit)! }))
+      .sort((a, b) => a.b[lo] + a.b[hi] - (b.b[lo] + b.b[hi]));
+    const span = items[items.length - 1].b[hi] - items[0].b[lo];
+    const sizes = items.reduce((sum, it) => sum + (it.b[hi] - it.b[lo]), 0);
+    const gap = (span - sizes) / (items.length - 1);
+    let cursor = items[0].b[lo];
+    const moves = new Map<SketchElement[], Point>();
+    for (const it of items) {
+      const d = cursor - it.b[lo];
+      moves.set(it.unit, axis === 'x' ? [d, 0] : [0, d]);
+      cursor += it.b[hi] - it.b[lo] + gap;
+    }
+    this.moveUnits(moves);
+  }
+
+  /** Seçimi yatay ya da dikey eksende aynalar. */
+  flip(axis: 'x' | 'y') {
+    const sel = this.selectedElements();
+    const b = commonBounds(sel);
+    if (!b) return;
+    const fx = (b[0] + b[2]) / 2;
+    const fy = (b[1] + b[3]) / 2;
+    const ids = new Set(sel.map((el) => el.id));
+    this.commit(
+      this.elements.map((el) => {
+        if (!ids.has(el.id)) return el;
+        const [cx, cy] = center(el);
+        const nc: Point = axis === 'x' ? [2 * fx - cx, cy] : [cx, 2 * fy - cy];
+        const patch: Partial<SketchElement> = { x: nc[0] - el.width / 2, y: nc[1] - el.height / 2 };
+        if (hasPoints(el) && el.points) {
+          patch.points = el.points.map(([px, py]) => (axis === 'x' ? [el.width - px, py] : [px, el.height - py]));
+          patch.angle = normalizeAngle(-el.angle);
+        } else if (el.type === 'triangle' && axis === 'y') {
+          // Üçgen yalnızca dikey eksene göre simetrik: dikey aynalama = 180° döndürme
+          patch.angle = normalizeAngle(Math.PI - el.angle);
+        } else {
+          patch.angle = normalizeAngle(-el.angle);
+        }
+        return bump(el, patch);
+      }),
+    );
+  }
+
+  private copiedStyle: Partial<StyleProps> | null = null;
+
+  copyStyle() {
+    const el = this.selectedElements()[0];
+    if (!el) return;
+    const keys = Object.keys(DEFAULT_STYLE) as (keyof StyleProps)[];
+    this.copiedStyle = Object.fromEntries(keys.map((k) => [k, el[k]])) as Partial<StyleProps>;
+  }
+
+  pasteStyle() {
+    if (this.copiedStyle && this.state.selectedIds.length) this.setStyle(this.copiedStyle);
   }
 
   selectAll() {
-    this.setState({ tool: 'select', selectedIds: this.elements.map((el) => el.id) });
+    this.setState({ tool: 'select', selectedIds: this.elements.filter(interactive).map((el) => el.id) });
   }
 
   deleteSelected() {
@@ -422,6 +595,7 @@ export class Editor {
 
   private cloneElements(els: SketchElement[], offset: Point): SketchElement[] {
     const groupMap = new Map<string, string>();
+    const idMap = new Map(els.map((el) => [el.id, randomId()]));
     return els.map((el) => {
       let groupId = el.groupId ?? null;
       if (groupId) {
@@ -430,9 +604,11 @@ export class Editor {
       }
       return {
         ...el,
-        id: randomId(),
+        id: idMap.get(el.id)!,
         seed: randomSeed(),
         version: 1,
+        startBinding: el.startBinding ? idMap.get(el.startBinding) ?? null : null,
+        endBinding: el.endBinding ? idMap.get(el.endBinding) ?? null : null,
         x: el.x + offset[0],
         y: el.y + offset[1],
         groupId,
@@ -483,7 +659,7 @@ export class Editor {
     const ids = new Set(this.state.selectedIds);
     if (!ids.size) return;
     this.commit(
-      this.elements.map((el) => (ids.has(el.id) ? bump(el, { x: el.x + dx, y: el.y + dy }) : el)),
+      this.elements.map((el) => (ids.has(el.id) ? bump(el, { x: el.x + dx, y: el.y + dy, ...keepBindings(el, ids) }) : el)),
       'nudge',
     );
   }
@@ -698,6 +874,10 @@ export class Editor {
   }
 
   private hitElement(world: Point): SketchElement | null {
+    return this.hitInteractive(world);
+  }
+
+  private hitInteractive(world: Point): SketchElement | null {
     const tol = (this.pointerType === 'touch' ? 14 : 8) / this.state.view.zoom;
     const selected = new Set(this.state.selectedIds);
     // Seçili öğenin kutusu içindeyse, sürüklemeye o öğe öncelikli
@@ -708,7 +888,8 @@ export class Editor {
       if (lx >= -tol && ly >= -tol && lx <= el.width + tol && ly <= el.height + tol) return el;
     }
     for (let i = this.elements.length - 1; i >= 0; i--) {
-      if (hitTest(this.elements[i], world, tol)) return this.elements[i];
+      const el = this.elements[i];
+      if (interactive(el) && hitTest(el, world, tol)) return el;
     }
     return null;
   }
@@ -720,7 +901,7 @@ export class Editor {
     if (hit) return null;
     for (let i = this.elements.length - 1; i >= 0; i--) {
       const el = this.elements[i];
-      if (!isShape(el)) continue;
+      if (!isShape(el) || !interactive(el)) continue;
       const poly = outlinePolygon(el);
       if (poly && pointInPolygon(toLocal(el, world), poly)) return el;
     }
@@ -747,6 +928,7 @@ export class Editor {
       marquee: d?.kind === 'marquee' ? [d.start, d.current] : null,
       hovered: !d && this.hoverId && !this.state.selectedIds.includes(this.hoverId) ? this.getElement(this.hoverId) : null,
       erasing: this.erasing,
+      bindTarget: this.getElement(this.bindTarget),
       editingId: this.state.editingId,
     };
   }
@@ -791,6 +973,7 @@ export class Editor {
         return this.startSelect(p, world);
       case 'rectangle':
       case 'diamond':
+      case 'triangle':
       case 'ellipse': {
         const origin = this.snap(world);
         const el = this.newElement(tool, origin);
@@ -901,13 +1084,14 @@ export class Editor {
         const at = this.snap(world);
         pts[pts.length - 1] = at;
         pts.push(at);
-        this.setElementsLive(this.replace([bump(el, rebuildFromWorldPoints(el, pts))]));
+        this.setElementsLive(this.replace([recomputeArrow(bump(el, rebuildFromWorldPoints(el, pts)), this.byId())]));
         return;
       }
     }
     const origin = this.snap(world);
     const el = this.newElement(tool, origin, { points: [[0, 0], [0, 0]] });
-    this.drag = { kind: 'linear', id: el.id, origin, startScreen: [p.x, p.y] };
+    const startBind = this.bindCandidate(el, world, null);
+    this.drag = { kind: 'linear', id: el.id, origin, startScreen: [p.x, p.y], startBind };
     this.setElementsLive([...this.elements, el]);
     this.setState({ selectedIds: [] });
   }
@@ -919,10 +1103,14 @@ export class Editor {
     const el = this.getElement(id);
     if (!el) return;
     const pts = (el.points ?? []).map((pt) => toWorld(el, pt)).slice(0, -1);
+    this.bindTarget = null;
     let next: SketchElement[];
     if (pts.length < 2) next = this.elements.filter((e) => e.id !== id);
-    else next = this.replace([bump(el, rebuildFromWorldPoints(el, pts))]);
-    this.elements = next;
+    else {
+      const endBinding = this.bindCandidate(el, pts[pts.length - 1], el.startBinding);
+      next = this.replace([recomputeArrow(bump(el, { ...rebuildFromWorldPoints(el, pts), endBinding }), this.byId())]);
+    }
+    this.elements = syncBindings(this.elements, next);
     this.record(snapshot);
     const kept = next.some((e) => e.id === id);
     this.state = {
@@ -948,7 +1136,11 @@ export class Editor {
           let at = this.snap(world);
           if (p.shift && pts.length > 1) at = this.constrainAngle(pts[pts.length - 2], at);
           pts[pts.length - 1] = at;
-          this.elements = this.replace([bump(el, rebuildFromWorldPoints(el, pts))]);
+          const endBinding = this.bindCandidate(el, at, el.startBinding);
+          this.bindTarget = endBinding;
+          this.elements = this.replace([
+            recomputeArrow(bump(el, { ...rebuildFromWorldPoints(el, pts), endBinding }), this.byId()),
+          ]);
           this.emit();
         }
         return;
@@ -1006,7 +1198,14 @@ export class Editor {
         if (!el) return;
         let at = this.snap(world);
         if (p.shift) at = this.constrainAngle(d.origin, at);
-        this.setElementsLive(this.replace([bump(el, rebuildFromWorldPoints({ ...el, angle: 0 }, [d.origin, at]))]));
+        const endBinding = this.bindCandidate(el, at, d.startBind);
+        this.bindTarget = endBinding;
+        const next = bump(el, {
+          ...rebuildFromWorldPoints({ ...el, angle: 0 }, [d.origin, at]),
+          startBinding: d.startBind,
+          endBinding,
+        });
+        this.setElementsLive(this.replace([recomputeArrow(next, this.byId())]));
         return;
       }
       case 'freedraw': {
@@ -1044,7 +1243,7 @@ export class Editor {
         this.setElementsLive(
           this.elements.map((el) => {
             const o = d.originals.get(el.id);
-            return o ? bump(o, { x: o.x + dx, y: o.y + dy }) : el;
+            return o ? bump(o, { x: o.x + dx, y: o.y + dy, ...keepBindings(o, d.originals) }) : el;
           }),
         );
         return;
@@ -1084,7 +1283,11 @@ export class Editor {
         const neighbor = pts[d.index === 0 ? 1 : d.index - 1];
         if (p.shift && neighbor) at = this.constrainAngle(neighbor, at);
         pts[d.index] = at;
-        this.setElementsLive(this.replace([bump(o, rebuildFromWorldPoints(o, pts))]));
+        const patch: Partial<SketchElement> = rebuildFromWorldPoints(o, pts);
+        if (d.index === 0) patch.startBinding = this.bindCandidate(o, at, o.endBinding);
+        else if (d.index === pts.length - 1) patch.endBinding = this.bindCandidate(o, at, o.startBinding);
+        this.bindTarget = d.index === 0 ? patch.startBinding ?? null : d.index === pts.length - 1 ? patch.endBinding ?? null : null;
+        this.setElementsLive(this.replace([recomputeArrow(bump(o, patch), this.byId())]));
         return;
       }
       case 'marquee': {
@@ -1095,7 +1298,9 @@ export class Editor {
           Math.max(d.start[0], world[0]),
           Math.max(d.start[1], world[1]),
         ];
-        const inside = this.elements.filter((el) => boundsContain(box, elementBounds(el))).map((el) => el.id);
+        const inside = this.elements
+          .filter((el) => interactive(el) && boundsContain(box, elementBounds(el)))
+          .map((el) => el.id);
         this.setState({ selectedIds: this.expandGroups([...d.base, ...inside]) });
         return;
       }
@@ -1115,6 +1320,7 @@ export class Editor {
       return;
     }
     this.drag = null;
+    this.bindTarget = null;
 
     switch (d.kind) {
       case 'pan':
@@ -1138,7 +1344,9 @@ export class Editor {
         if (moved < 5) {
           // Tıklayarak çok noktalı çizgi: sonraki tıklamalar nokta ekler
           const pts: Point[] = [d.origin, d.origin];
-          this.elements = this.replace([bump(el, rebuildFromWorldPoints({ ...el, angle: 0 }, pts))]);
+          this.elements = this.replace([
+            bump(el, { ...rebuildFromWorldPoints({ ...el, angle: 0 }, pts), startBinding: d.startBind, endBinding: null }),
+          ]);
           this.pending = { id: el.id, snapshot: this.dragSnapshot ?? this.elements };
           this.dragSnapshot = null;
           this.emit(true);
@@ -1153,7 +1361,7 @@ export class Editor {
       case 'erase': {
         if (this.erasing.size) {
           const ids = this.erasing;
-          this.elements = this.elements.filter((el) => !ids.has(el.id));
+          this.elements = syncBindings(this.elements, this.elements.filter((el) => !ids.has(el.id)));
           this.erasing = new Set();
           this.state = { ...this.state, selectedIds: this.state.selectedIds.filter((id) => !ids.has(id)) };
         }
@@ -1215,7 +1423,7 @@ export class Editor {
       const t = s / steps;
       const pt: Point = [from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t];
       for (const el of this.elements) {
-        if (this.erasing.has(el.id) || !hitTest(el, pt, tol)) continue;
+        if (this.erasing.has(el.id) || !interactive(el) || !hitTest(el, pt, tol)) continue;
         for (const id of this.expandGroups([el.id])) this.erasing.add(id);
         changed = true;
       }
@@ -1376,6 +1584,9 @@ export class Editor {
       return true;
     }
     if (mod && key === 'y') return this.redo(), true;
+    if (mod && e.altKey && e.code === 'KeyC') return this.copyStyle(), true;
+    if (mod && e.altKey && e.code === 'KeyV') return this.pasteStyle(), true;
+    if (mod && e.shiftKey && e.code === 'KeyL') return this.lockSelected(), true;
     if (mod && key === 'a') return this.selectAll(), true;
     if (mod && key === 'd') return this.duplicateSelected(), true;
     if (mod && key === 'g') {
@@ -1394,6 +1605,8 @@ export class Editor {
     if (mod && (key === "'" || e.code === 'Quote')) return this.toggleGrid(), true;
     if (e.shiftKey && e.code === 'Digit1') return this.zoomToFit(), true;
     if (e.shiftKey && e.code === 'Digit2') return this.zoomToFit(true), true;
+    if (!mod && e.shiftKey && e.code === 'KeyH') return this.flip('x'), true;
+    if (!mod && e.shiftKey && e.code === 'KeyV') return this.flip('y'), true;
     if (mod) return false;
 
     if (e.key === 'Delete' || e.key === 'Backspace') return this.deleteSelected(), true;
@@ -1429,6 +1642,7 @@ export class Editor {
       '2': 'rectangle',
       d: 'diamond',
       '3': 'diamond',
+      u: 'triangle',
       o: 'ellipse',
       '4': 'ellipse',
       a: 'arrow',
@@ -1451,6 +1665,20 @@ export class Editor {
 }
 
 /* ───────────── Yardımcılar ───────────── */
+
+/** Tuvalde seçilebilir ve düzenlenebilir mi? */
+const interactive = (el: SketchElement | null | undefined) => !!el && !el.hidden && !el.locked;
+
+/**
+ * Ok kendi başına taşınınca bağları çözülür; bağlı olduğu öğe de birlikte taşınıyorsa korunur.
+ */
+function keepBindings(el: SketchElement, moving: { has(id: string): boolean }): Partial<SketchElement> {
+  if (el.type !== 'arrow') return {};
+  return {
+    startBinding: el.startBinding && moving.has(el.startBinding) ? el.startBinding : null,
+    endBinding: el.endBinding && moving.has(el.endBinding) ? el.endBinding : null,
+  };
+}
 
 function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {

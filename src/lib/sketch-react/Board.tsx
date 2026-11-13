@@ -8,13 +8,15 @@ import {
   fontString,
   ImageCache,
   isShape,
+  labelCenterY,
   labelWidth,
   LINE_HEIGHT,
   renderScene,
   themed,
   wrapText,
-} from '@/lib/sketch';
+} from '../sketch';
 import { useEditor } from './useEditor';
+import { useI18n } from './i18n';
 
 const toInput = (e: PointerEvent | ReactPointerEvent, rect: DOMRect): PointerInput => ({
   id: e.pointerId,
@@ -35,6 +37,7 @@ export default function Board({
   onDropFile: (file: File, at: [number, number]) => void;
 }) {
   const state = useEditor(editor);
+  const { t } = useI18n();
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frame = useRef(0);
@@ -129,7 +132,7 @@ export default function Board({
       <canvas
         ref={canvasRef}
         className="sk-canvas"
-        aria-label="Çizim alanı"
+        aria-label={t('board.aria')}
         onPointerDown={(e) => {
           // Varsayılan odak değişimini engelle: yeni açılan metin kutusu odağını kaybetmesin
           e.preventDefault();
@@ -171,9 +174,11 @@ function TextEditor({ editor, element: el }: { editor: Editor; element: SketchEl
     const lines = wrapText(el.text || ' ', fontString(el.fontSize, el.fontFamily), width);
     height = lines.length * lh;
   }
-  // Ekran koordinatında öğenin merkezi
+  // Ekran koordinatında metnin merkezi (döndürme öğe merkezi etrafında)
   const cx = (el.x + el.width / 2 + view.scrollX) * view.zoom;
   const cy = (el.y + el.height / 2 + view.scrollY) * view.zoom;
+  // Etiket şeklin ortasında değilse (üçgen) metin kutusunu öğe merkezine göre kaydır
+  const labelShift = label ? labelCenterY(el) - el.height / 2 : 0;
   // Yazarken genişleyen metin titremesin diye biraz pay
   const boxWidth = label ? width : width + el.fontSize;
   // Dönüşüm noktası öğenin merkezine denk gelir; metnin hizalı kenarı öğeninkiyle çakışır
@@ -188,7 +193,7 @@ function TextEditor({ editor, element: el }: { editor: Editor; element: SketchEl
       wrap={label ? 'soft' : 'off'}
       style={{
         left: cx - originX,
-        top: cy - height / 2,
+        top: cy - height / 2 + labelShift,
         width: boxWidth,
         height,
         font: fontString(el.fontSize, el.fontFamily),
@@ -198,7 +203,7 @@ function TextEditor({ editor, element: el }: { editor: Editor; element: SketchEl
         textAlign: el.textAlign,
         whiteSpace: label ? 'pre-wrap' : 'pre',
         transform: `scale(${view.zoom}) rotate(${el.angle}rad)`,
-        transformOrigin: `${originX}px ${height / 2}px`,
+        transformOrigin: `${originX}px ${height / 2 - labelShift}px`,
       }}
       onChange={(e) => editor.updateText(el.id, e.target.value)}
       onBlur={() => editor.finishEditing()}

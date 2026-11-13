@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Caveat } from 'next/font/google';
 import DrawLoader from './DrawLoader';
-import './draw.css';
+import '@/lib/sketch-react/styles.css';
+import './page.css';
 
 /** Tuvaldeki el yazısı. Kendi alan adımızdan sunulur (next/font). */
 const hand = Caveat({ subsets: ['latin', 'latin-ext'], display: 'swap', variable: '--font-hand' });

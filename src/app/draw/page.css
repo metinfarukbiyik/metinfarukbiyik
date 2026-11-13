@@ -1,0 +1,10 @@
+/* draw.biyik.dev: tahta tüm pencereyi kaplar, sayfa kaymaz */
+html:has(.sk-page) {
+  overflow: hidden;
+  overscroll-behavior: none;
+  scrollbar-gutter: auto;
+}
+.sk-page {
+  position: fixed;
+  inset: 0;
+}

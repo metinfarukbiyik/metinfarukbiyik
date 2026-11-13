@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import type { Editor } from '@/lib/sketch';
+import type { Editor } from '../sketch';
 
 /** Düzenleyici her değiştiğinde bileşeni yeniden çizer; güncel durumu döndürür. */
 export function useEditor(editor: Editor) {

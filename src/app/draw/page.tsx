@@ -1,10 +1,15 @@
 import type { Metadata, Viewport } from 'next';
+import { Caveat } from 'next/font/google';
 import DrawLoader from './DrawLoader';
+import './draw.css';
+
+/** Tuvaldeki el yazısı. Kendi alan adımızdan sunulur (next/font). */
+const hand = Caveat({ subsets: ['latin', 'latin-ext'], display: 'swap', variable: '--font-hand' });
 
 const url = 'https://draw.biyik.dev';
 const title = 'Draw — biyik.dev';
 const description =
-  'Tarayıcıda çalışan, el çizimi görünümlü sanal beyaz tahta. Diyagram, akış şeması ve eskizleri hızlıca çizin; PNG, SVG ya da dosya olarak dışa aktarın.';
+  'Tarayıcıda çalışan, el çizimi görünümlü beyaz tahta. Diyagram, akış şeması ve eskizleri hızlıca çizin; PNG, SVG ya da dosya olarak dışa aktarın. Çizimler yalnızca tarayıcınızda saklanır.';
 
 export const metadata: Metadata = {
   title: { absolute: title },
@@ -24,5 +29,10 @@ export const viewport: Viewport = {
 };
 
 export default function DrawPage() {
-  return <DrawLoader />;
+  return (
+    <main className={`sk-page ${hand.variable}`}>
+      <h1 className="sr-only">draw.biyik.dev — çizim tahtası</h1>
+      <DrawLoader handFont={hand.style.fontFamily} />
+    </main>
+  );
 }

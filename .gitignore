@@ -33,6 +33,3 @@ next-env.d.ts
 *.sln
 *.sw?
 .vercel
-
-# Çizim tahtası fontları (npm run build/dev sırasında kopyalanır)
-public/draw-assets/

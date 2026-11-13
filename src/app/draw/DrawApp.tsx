@@ -1,83 +1,58 @@
 'use client';
 
-import '@excalidraw/excalidraw/index.css';
-import './draw.css';
-
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  Excalidraw,
-  MainMenu,
-  WelcomeScreen,
-  languages,
-  restoreAppState,
-  restoreElements,
-  useHandleLibrary,
-} from '@excalidraw/excalidraw';
-import type {
-  AppState,
-  BinaryFiles,
-  ExcalidrawImperativeAPI,
-  ExcalidrawInitialDataState,
-} from '@excalidraw/excalidraw/types';
+  Check,
+  CircleHelp,
+  FolderOpen,
+  Grid3x3,
+  House,
+  ImageDown,
+  Menu,
+  Minus,
+  Moon,
+  Plus,
+  Redo2,
+  Save,
+  Share2,
+  SlidersHorizontal,
+  Sun,
+  Trash2,
+  Undo2,
+} from 'lucide-react';
+import {
+  CANVAS_COLORS,
+  configureFonts,
+  DEFAULT_STYLE,
+  Editor,
+  type SceneFile,
+  type SketchElement,
+  type StyleProps,
+  type Theme,
+  type View,
+} from '@/lib/sketch';
+import Board from './Board';
+import Toolbar from './Toolbar';
+import StylePanel from './StylePanel';
+import { ConfirmDialog, ExportDialog, HelpDialog } from './Dialogs';
 import { getItem, setItem } from './storage';
+import { useEditor } from './useEditor';
 
-declare global {
-  interface Window {
-    EXCALIDRAW_ASSET_PATH?: string | string[];
-  }
-}
+const SCENE_KEY = 'sketch-scene';
+const PREFS_KEY = 'sketch-prefs';
 
-const SCENE_KEY = 'scene';
-const LIBRARY_KEY = 'library';
-const LANG_KEY = 'draw-lang';
-const SAVE_DELAY = 300;
-
-type StoredScene = {
-  elements: unknown[];
-  appState: Partial<AppState>;
-  files: BinaryFiles;
-};
-
-/** Saklanacak görünüm ayarları; seçim, imleç gibi geçici durumlar saklanmaz. */
-const persistedAppStateKeys = [
-  'theme',
-  'viewBackgroundColor',
-  'gridSize',
-  'gridModeEnabled',
-  'zenModeEnabled',
-  'objectsSnapModeEnabled',
-  'scrollX',
-  'scrollY',
-  'zoom',
-  'name',
-  'currentItemStrokeColor',
-  'currentItemBackgroundColor',
-  'currentItemFillStyle',
-  'currentItemStrokeWidth',
-  'currentItemStrokeStyle',
-  'currentItemRoughness',
-  'currentItemOpacity',
-  'currentItemFontFamily',
-  'currentItemFontSize',
-  'currentItemTextAlign',
-  'currentItemRoundness',
-  'currentItemStartArrowhead',
-  'currentItemEndArrowhead',
-  'currentItemArrowType',
-] as const satisfies readonly (keyof AppState)[];
-
-function pickAppState(appState: AppState): Partial<AppState> {
-  const out: Record<string, unknown> = {};
-  for (const key of persistedAppStateKeys) out[key] = appState[key];
-  return out as Partial<AppState>;
+interface Prefs {
+  background: string;
+  grid: boolean;
+  view: View;
+  style: StyleProps;
+  toolLocked: boolean;
 }
 
 /** Sitenin tema tercihi (biyik.dev ile ortak). */
-function siteTheme(): 'light' | 'dark' {
-  return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-}
+const siteTheme = (): Theme => (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 
-function applySiteTheme(theme: 'light' | 'dark') {
+function applySiteTheme(theme: Theme) {
   const root = document.documentElement;
   root.classList.toggle('dark', theme === 'dark');
   root.style.colorScheme = theme;
@@ -88,219 +63,427 @@ function applySiteTheme(theme: 'light' | 'dark') {
   }
 }
 
-function initialLang(): string {
-  try {
-    const saved = localStorage.getItem(LANG_KEY);
-    if (saved && languages.some((l) => l.code === saved)) return saved;
-  } catch {
-    /* varsayılan dile düş */
-  }
-  const nav = navigator.language;
-  return (
-    languages.find((l) => l.code === nav)?.code ??
-    languages.find((l) => l.code.split('-')[0] === nav.split('-')[0])?.code ??
-    'tr-TR'
-  );
-}
+const isField = (t: EventTarget | null) =>
+  t instanceof HTMLElement && (t.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName));
 
-async function loadInitialData(): Promise<ExcalidrawInitialDataState> {
-  const stored = await getItem<StoredScene>(SCENE_KEY);
-  const theme = siteTheme();
-  if (!stored) return { appState: { theme } };
-  return {
-    elements: restoreElements(stored.elements as never, null, { repairBindings: true }),
-    appState: { ...restoreAppState(stored.appState, null), theme },
-    files: stored.files ?? {},
-    scrollToContent: false,
-  };
+function isSceneFile(data: unknown): data is SceneFile {
+  return !!data && typeof data === 'object' && (data as SceneFile).type === 'biyik-draw' && Array.isArray((data as SceneFile).elements);
 }
 
 function Wordmark() {
   return (
-    <span className="draw-wordmark">
-      <span className="draw-wordmark-mark" aria-hidden>
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 20c2.5-.4 4-1.6 5.4-3l9.2-9.2a2.1 2.1 0 0 0-3-3L6.4 14c-1.4 1.4-2.6 2.9-3 5.4" />
-          <path d="M14 6.5l3.5 3.5" />
-        </svg>
-      </span>
-      <span className="draw-wordmark-text">
-        draw<span className="draw-wordmark-domain">.biyik.dev</span>
+    <span className="sk-wordmark">
+      <svg viewBox="0 0 32 32" width="34" height="34" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <rect x="2.5" y="2.5" width="27" height="27" rx="8" strokeWidth="1.5" />
+        <path d="M9 21.5c2.2-.3 3.4-1.2 4.6-2.5l7.6-7.7a1.9 1.9 0 0 0-2.7-2.7l-7.7 7.6c-1.2 1.2-2.1 2.4-2.5 4.6" strokeWidth="1.6" />
+        <path d="M17.3 10.6l2.9 2.9" strokeWidth="1.6" />
+        <path d="M8 25.2c3.4-1 6.5-.6 9 .2s5 1 7-.6" strokeWidth="1.4" />
+      </svg>
+      <span>
+        draw<span className="sk-wordmark-domain">.biyik.dev</span>
       </span>
     </span>
   );
 }
 
-const GitHubIcon = (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden>
-    <path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5Z" />
-  </svg>
-);
+export default function DrawApp({ handFont }: { handFont: string }) {
+  const [editor] = useState(() => new Editor());
+  const state = useEditor(editor);
+  const [ready, setReady] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dialog, setDialog] = useState<'export' | 'help' | 'clear' | null>(null);
+  const [panelOpen, setPanelOpen] = useState(false);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const imageInput = useRef<HTMLInputElement>(null);
+  const imageAt = useRef<[number, number] | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-const HomeIcon = (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-    <path d="M3 10.5 12 3l9 7.5" />
-    <path d="M5 9.5V21h14V9.5" />
-  </svg>
-);
-
-const InfoIcon = (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
-    <circle cx="12" cy="12" r="9" />
-    <path d="M12 11v6M12 7.5v.01" />
-  </svg>
-);
-
-export default function DrawApp() {
-  const [api, setApi] = useState<ExcalidrawImperativeAPI | null>(null);
-  const [langCode, setLangCode] = useState<string>(() => initialLang());
-  const initialData = useMemo(() => loadInitialData(), []);
-  const saveTimer = useRef<number | undefined>(undefined);
-  const lastTheme = useRef<string | null>(null);
-
-  // Kütüphane: kalıcı saklama ve libraries sitesinden "Ekle" bağlantıları
-  const libraryAdapter = useMemo(
-    () => ({
-      load: async () => {
-        const items = await getItem<unknown[]>(LIBRARY_KEY);
-        return items ? { libraryItems: items as never } : null;
-      },
-      save: async ({ libraryItems }: { libraryItems: unknown }) => {
-        await setItem(LIBRARY_KEY, libraryItems);
-      },
-    }),
-    [],
-  );
-  useHandleLibrary({ excalidrawAPI: api, adapter: libraryAdapter });
-
-  const onChange = useCallback(
-    (elements: readonly unknown[], appState: AppState, files: BinaryFiles) => {
-      if (appState.theme !== lastTheme.current) {
-        if (lastTheme.current !== null) applySiteTheme(appState.theme);
-        lastTheme.current = appState.theme;
-      }
-      window.clearTimeout(saveTimer.current);
-      saveTimer.current = window.setTimeout(() => {
-        // Sahnede artık kullanılmayan görselleri saklamaya gerek yok
-        const used = new Set<string>();
-        for (const el of elements as { type: string; fileId?: string; isDeleted?: boolean }[]) {
-          if (el.type === 'image' && el.fileId && !el.isDeleted) used.add(el.fileId);
-        }
-        const keptFiles: BinaryFiles = {};
-        for (const id of used) if (files[id]) keptFiles[id] = files[id];
-        void setItem(SCENE_KEY, {
-          elements: elements as unknown[],
-          appState: pickAppState(appState),
-          files: keptFiles,
-        } satisfies StoredScene);
-      }, SAVE_DELAY);
-    },
-    [],
-  );
-
-  // Sekme kapanırken bekleyen kaydı hemen yaz
+  /* ── Yazı tipleri ve kayıtlı sahne ── */
   useEffect(() => {
-    if (!api) return;
-    const flush = () => {
-      if (saveTimer.current === undefined) return;
-      window.clearTimeout(saveTimer.current);
-      void setItem(SCENE_KEY, {
-        elements: api.getSceneElementsIncludingDeleted() as unknown as unknown[],
-        appState: pickAppState(api.getAppState()),
-        files: api.getFiles(),
-      } satisfies StoredScene);
-    };
-    const onHide = () => document.visibilityState === 'hidden' && flush();
-    window.addEventListener('pagehide', flush);
-    document.addEventListener('visibilitychange', onHide);
-    return () => {
-      window.removeEventListener('pagehide', flush);
-      document.removeEventListener('visibilitychange', onHide);
-    };
-  }, [api]);
+    const css = getComputedStyle(document.documentElement);
+    configureFonts({
+      hand: `${handFont}, cursive`,
+      sans: `${css.getPropertyValue('--font-geist-sans').trim() || 'system-ui'}, system-ui, sans-serif`,
+      mono: `${css.getPropertyValue('--font-geist-mono').trim() || 'ui-monospace'}, ui-monospace, monospace`,
+    });
 
-  const changeLang = (code: string) => {
-    setLangCode(code);
-    try {
-      localStorage.setItem(LANG_KEY, code);
-    } catch {
-      /* tercih bu oturumla sınırlı kalır */
-    }
+    let cancelled = false;
+    (async () => {
+      const [scene, prefs] = await Promise.all([
+        getItem<{ elements: SketchElement[]; files: Record<string, string> }>(SCENE_KEY),
+        getItem<Prefs>(PREFS_KEY),
+      ]);
+      if (cancelled) return;
+      editor.state = {
+        ...editor.state,
+        theme: siteTheme(),
+        background: prefs?.background ?? editor.state.background,
+        grid: prefs?.grid ?? false,
+        view: prefs?.view ?? editor.state.view,
+        style: { ...DEFAULT_STYLE, ...prefs?.style },
+        toolLocked: prefs?.toolLocked ?? false,
+      };
+      if (scene?.elements?.length) editor.load(scene, { resetHistory: true });
+      else editor.remeasureText();
+      setReady(true);
+      // El yazısı yüklenince metin ölçüleri değişir
+      await Promise.all(
+        ['hand', 'sans', 'mono'].map((f) =>
+          document.fonts.load(`24px ${f === 'hand' ? handFont : css.getPropertyValue(`--font-geist-${f}`)}`).catch(() => null),
+        ),
+      );
+      if (!cancelled) editor.remeasureText();
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [editor, handFont]);
+
+  /* ── Otomatik kayıt ── */
+  useEffect(() => {
+    if (!ready) return;
+    let sceneTimer: number | undefined;
+    let prefsTimer: number | undefined;
+    let lastScene = editor.sceneVersion;
+    let lastTheme = editor.state.theme;
+    const saveScene = () => {
+      const used = new Set(editor.elements.flatMap((el) => (el.fileId ? [el.fileId] : [])));
+      const files: Record<string, string> = {};
+      for (const id of used) if (editor.files[id]) files[id] = editor.files[id];
+      void setItem(SCENE_KEY, { elements: editor.elements, files });
+    };
+    const savePrefs = () => {
+      const { background, grid, view, style, toolLocked } = editor.state;
+      void setItem(PREFS_KEY, { background, grid, view, style, toolLocked } satisfies Prefs);
+    };
+    const unsub = editor.subscribe(() => {
+      if (editor.state.theme !== lastTheme) {
+        lastTheme = editor.state.theme;
+        applySiteTheme(lastTheme);
+      }
+      if (editor.sceneVersion !== lastScene) {
+        lastScene = editor.sceneVersion;
+        clearTimeout(sceneTimer);
+        sceneTimer = window.setTimeout(saveScene, 400);
+      }
+      clearTimeout(prefsTimer);
+      prefsTimer = window.setTimeout(savePrefs, 600);
+    });
+    const flush = () => {
+      saveScene();
+      savePrefs();
+    };
+    window.addEventListener('pagehide', flush);
+    return () => {
+      unsub();
+      window.removeEventListener('pagehide', flush);
+      clearTimeout(sceneTimer);
+      clearTimeout(prefsTimer);
+    };
+  }, [editor, ready]);
+
+  /* ── Dosya işlemleri ── */
+  const saveFile = useCallback(() => {
+    const blob = new Blob([JSON.stringify(editor.toSceneFile())], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `cizim.biyikdraw`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }, [editor]);
+
+  const loadFile = useCallback(
+    async (file: File) => {
+      try {
+        const data = JSON.parse(await file.text());
+        if (!isSceneFile(data)) throw new Error('format');
+        editor.load(data);
+        if (data.background) editor.setBackground(data.background);
+        editor.zoomToFit();
+      } catch {
+        window.alert('Bu dosya açılamadı. Yalnızca draw.biyik.dev ile kaydedilmiş .biyikdraw dosyaları açılabilir.');
+      }
+    },
+    [editor],
+  );
+
+  const handleFile = useCallback(
+    (file: File, at: [number, number] | null) => {
+      if (file.type.startsWith('image/')) void editor.insertImageFile(file, at);
+      else void loadFile(file);
+    },
+    [editor, loadFile],
+  );
+
+  useEffect(() => {
+    editor.onRequestImage = (at) => {
+      imageAt.current = at;
+      imageInput.current?.click();
+    };
+    return () => {
+      editor.onRequestImage = null;
+    };
+  }, [editor]);
+
+  /* ── Klavye ve pano ── */
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (isField(e.target) || dialog) return;
+      const mod = e.metaKey || e.ctrlKey;
+      const key = e.key.toLowerCase();
+      if (mod && key === 's') {
+        e.preventDefault();
+        saveFile();
+        return;
+      }
+      if (mod && key === 'o') {
+        e.preventDefault();
+        fileInput.current?.click();
+        return;
+      }
+      if (mod && e.shiftKey && key === 'e') {
+        e.preventDefault();
+        setDialog('export');
+        return;
+      }
+      if (e.key === '?') {
+        setDialog('help');
+        return;
+      }
+      if (e.key === 'Escape' && menuOpen) {
+        setMenuOpen(false);
+        return;
+      }
+      if (editor.keyDown(e)) e.preventDefault();
+    };
+    const onKeyUp = (e: KeyboardEvent) => editor.keyUp(e);
+    const onCopy = (e: ClipboardEvent) => {
+      if (isField(e.target)) return;
+      const data = editor.copySelection();
+      if (data && e.clipboardData) {
+        e.clipboardData.setData('text/plain', data);
+        e.preventDefault();
+      }
+    };
+    const onCut = (e: ClipboardEvent) => {
+      if (isField(e.target)) return;
+      const data = editor.cutSelection();
+      if (data && e.clipboardData) {
+        e.clipboardData.setData('text/plain', data);
+        e.preventDefault();
+      }
+    };
+    const onPaste = (e: ClipboardEvent) => {
+      if (isField(e.target) || !e.clipboardData) return;
+      const file = [...e.clipboardData.files].find((f) => f.type.startsWith('image/'));
+      e.preventDefault();
+      if (file) void editor.insertImageFile(file);
+      else editor.pasteText(e.clipboardData.getData('text/plain'));
+    };
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onKeyUp);
+    document.addEventListener('copy', onCopy);
+    document.addEventListener('cut', onCut);
+    document.addEventListener('paste', onPaste);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keyup', onKeyUp);
+      document.removeEventListener('copy', onCopy);
+      document.removeEventListener('cut', onCut);
+      document.removeEventListener('paste', onPaste);
+    };
+  }, [editor, dialog, menuOpen, saveFile]);
+
+  /* ── Menü dışına tıklayınca kapan ── */
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDown = (e: PointerEvent) => {
+      if (!menuRef.current?.contains(e.target as Node)) setMenuOpen(false);
+    };
+    window.addEventListener('pointerdown', onDown);
+    return () => window.removeEventListener('pointerdown', onDown);
+  }, [menuOpen]);
+
+  const empty = ready && editor.elements.length === 0 && !state.editingId;
+  const hasPanel = editor.selectedElements().length > 0 || !!state.editingId || !['select', 'hand', 'eraser', 'image'].includes(state.tool);
+  const closeMenuThen = (fn: () => void) => () => {
+    setMenuOpen(false);
+    fn();
   };
 
   return (
-    <div className="draw-root">
-      <Excalidraw
-        excalidrawAPI={setApi}
-        initialData={initialData}
-        onChange={onChange as never}
-        langCode={langCode}
-        name="draw.biyik.dev"
-        libraryReturnUrl={typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : undefined}
-        UIOptions={{ canvasActions: { toggleTheme: true } }}
-      >
-        <MainMenu>
-          <MainMenu.DefaultItems.LoadScene />
-          <MainMenu.DefaultItems.SaveToActiveFile />
-          <MainMenu.DefaultItems.Export />
-          <MainMenu.DefaultItems.SaveAsImage />
-          <MainMenu.DefaultItems.CommandPalette />
-          <MainMenu.DefaultItems.SearchMenu />
-          <MainMenu.DefaultItems.Help />
-          <MainMenu.DefaultItems.ClearCanvas />
-          <MainMenu.Separator />
-          <MainMenu.ItemLink href="https://biyik.dev" icon={HomeIcon}>
-            biyik.dev
-          </MainMenu.ItemLink>
-          <MainMenu.ItemLink href="https://github.com/metinfarukbiyik" icon={GitHubIcon}>
-            GitHub
-          </MainMenu.ItemLink>
-          <MainMenu.ItemLink
-            href="https://github.com/excalidraw/excalidraw/blob/master/LICENSE"
-            icon={InfoIcon}
-          >
-            Açık kaynak lisansları
-          </MainMenu.ItemLink>
-          <MainMenu.Separator />
-          <MainMenu.DefaultItems.ToggleTheme />
-          <MainMenu.ItemCustom>
-            <select
-              className="draw-lang-select"
-              aria-label="Dil"
-              value={langCode}
-              onChange={(e) => changeLang(e.target.value)}
-            >
-              {languages.map((l) => (
-                <option key={l.code} value={l.code}>
-                  {l.label}
-                </option>
-              ))}
-            </select>
-          </MainMenu.ItemCustom>
-          <MainMenu.DefaultItems.ChangeCanvasBackground />
-        </MainMenu>
+    <div className={`sk-app${state.theme === 'dark' ? ' is-dark' : ''}`}>
+      <Board editor={editor} onDropFile={(file, at) => handleFile(file, at)} />
 
-        <WelcomeScreen>
-          <WelcomeScreen.Hints.MenuHint />
-          <WelcomeScreen.Hints.ToolbarHint />
-          <WelcomeScreen.Hints.HelpHint />
-          <WelcomeScreen.Center>
-            <WelcomeScreen.Center.Logo>
-              <Wordmark />
-            </WelcomeScreen.Center.Logo>
-            <WelcomeScreen.Center.Heading>
-              Çizimleriniz yalnızca bu tarayıcıda saklanır.
-            </WelcomeScreen.Center.Heading>
-            <WelcomeScreen.Center.Menu>
-              <WelcomeScreen.Center.MenuItemLoadScene />
-              <WelcomeScreen.Center.MenuItemHelp />
-              <WelcomeScreen.Center.MenuItemLink href="https://biyik.dev" icon={HomeIcon}>
-                biyik.dev
-              </WelcomeScreen.Center.MenuItemLink>
-            </WelcomeScreen.Center.Menu>
-          </WelcomeScreen.Center>
-        </WelcomeScreen>
-      </Excalidraw>
+      <div className="sk-top">
+        <div className="sk-top-left" ref={menuRef}>
+          <button
+            type="button"
+            className="sk-icon-btn sk-glass"
+            aria-label="Menü"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            <Menu size={18} />
+          </button>
+          {menuOpen && (
+            <div className="sk-menu sk-glass" role="menu">
+              <button type="button" role="menuitem" onClick={closeMenuThen(() => fileInput.current?.click())}>
+                <FolderOpen size={16} /> Aç <kbd>⌘O</kbd>
+              </button>
+              <button type="button" role="menuitem" onClick={closeMenuThen(saveFile)}>
+                <Save size={16} /> Kaydet <kbd>⌘S</kbd>
+              </button>
+              <button type="button" role="menuitem" onClick={closeMenuThen(() => setDialog('export'))}>
+                <ImageDown size={16} /> Görsel olarak dışa aktar <kbd>⌘⇧E</kbd>
+              </button>
+              <button type="button" role="menuitem" onClick={closeMenuThen(() => setDialog('clear'))}>
+                <Trash2 size={16} /> Tuvali temizle
+              </button>
+              <hr />
+              <button type="button" role="menuitemcheckbox" aria-checked={state.grid} onClick={() => editor.toggleGrid()}>
+                <Grid3x3 size={16} /> Izgara {state.grid && <Check size={15} className="sk-menu-check" />}
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => editor.setTheme(state.theme === 'dark' ? 'light' : 'dark')}
+              >
+                {state.theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                {state.theme === 'dark' ? 'Açık tema' : 'Koyu tema'}
+              </button>
+              <div className="sk-menu-section">
+                <span>Tuval</span>
+                <div className="sk-menu-swatches">
+                  {CANVAS_COLORS.map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      className="sk-swatch"
+                      style={{ background: c }}
+                      aria-pressed={state.background === c}
+                      aria-label={`Tuval rengi ${c}`}
+                      onClick={() => editor.setBackground(c)}
+                    />
+                  ))}
+                </div>
+              </div>
+              <hr />
+              <button type="button" role="menuitem" onClick={closeMenuThen(() => setDialog('help'))}>
+                <CircleHelp size={16} /> Klavye kısayolları <kbd>?</kbd>
+              </button>
+              <a role="menuitem" href="https://biyik.dev">
+                <House size={16} /> biyik.dev
+              </a>
+            </div>
+          )}
+        </div>
+
+        <Toolbar editor={editor} />
+
+        <div className="sk-top-right">
+          <button type="button" className="sk-btn is-primary" onClick={() => setDialog('export')}>
+            <Share2 size={15} /> <span className="sk-hide-sm">Dışa aktar</span>
+          </button>
+        </div>
+      </div>
+
+      {hasPanel && (
+        <>
+          <button
+            type="button"
+            className="sk-panel-toggle sk-icon-btn sk-glass"
+            aria-label="Stil ayarları"
+            aria-expanded={panelOpen}
+            onClick={() => setPanelOpen((v) => !v)}
+          >
+            <SlidersHorizontal size={17} />
+          </button>
+          <div className={`sk-panel-wrap${panelOpen ? ' is-open' : ''}`}>
+            <StylePanel editor={editor} />
+          </div>
+        </>
+      )}
+
+      <div className="sk-bottom-left">
+        <div className="sk-group sk-glass">
+          <button type="button" className="sk-icon-btn" aria-label="Uzaklaştır" onClick={() => editor.zoomBy(1 / 1.2)}>
+            <Minus size={16} />
+          </button>
+          <button type="button" className="sk-zoom" title="%100'e dön" onClick={() => editor.resetZoom()}>
+            {Math.round(state.view.zoom * 100)}%
+          </button>
+          <button type="button" className="sk-icon-btn" aria-label="Yakınlaştır" onClick={() => editor.zoomBy(1.2)}>
+            <Plus size={16} />
+          </button>
+        </div>
+        <div className="sk-group sk-glass">
+          <button type="button" className="sk-icon-btn" aria-label="Geri al" disabled={!editor.canUndo} onClick={() => editor.undo()}>
+            <Undo2 size={16} />
+          </button>
+          <button type="button" className="sk-icon-btn" aria-label="Yinele" disabled={!editor.canRedo} onClick={() => editor.redo()}>
+            <Redo2 size={16} />
+          </button>
+        </div>
+      </div>
+
+      <div className="sk-bottom-right">
+        <button type="button" className="sk-icon-btn sk-glass" aria-label="Klavye kısayolları" onClick={() => setDialog('help')}>
+          <CircleHelp size={17} />
+        </button>
+      </div>
+
+      {empty && (
+        <div className="sk-welcome" aria-hidden={false}>
+          <Wordmark />
+          <p>El çizimi diyagramlar, eskizler ve akış şemaları. Çizimlerin yalnızca bu tarayıcıda saklanır.</p>
+          <div className="sk-welcome-actions">
+            <button type="button" className="sk-btn" onClick={() => fileInput.current?.click()}>
+              <FolderOpen size={15} /> Dosya aç
+            </button>
+            <button type="button" className="sk-btn" onClick={() => setDialog('help')}>
+              <CircleHelp size={15} /> Kısayollar
+            </button>
+          </div>
+          <p className="sk-welcome-hint">Yukarıdan bir araç seç ya da tuvale çift tıklayıp yazmaya başla.</p>
+        </div>
+      )}
+
+      <input
+        ref={fileInput}
+        type="file"
+        accept=".biyikdraw,.json,application/json,image/*"
+        hidden
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) handleFile(file, null);
+          e.target.value = '';
+        }}
+      />
+      <input
+        ref={imageInput}
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) void editor.insertImageFile(file, imageAt.current);
+          e.target.value = '';
+        }}
+      />
+
+      {dialog === 'export' && <ExportDialog editor={editor} onClose={() => setDialog(null)} />}
+      {dialog === 'help' && <HelpDialog onClose={() => setDialog(null)} />}
+      {dialog === 'clear' && (
+        <ConfirmDialog
+          title="Tuvali temizle"
+          message="Tuvaldeki her şey silinecek. Geri al ile geri getirebilirsin."
+          confirmLabel="Temizle"
+          onConfirm={() => editor.clear()}
+          onClose={() => setDialog(null)}
+        />
+      )}
     </div>
   );
 }

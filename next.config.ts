@@ -42,16 +42,6 @@ const csp = [
   ...(isDev ? [] : ['upgrade-insecure-requests']),
 ].join('; ');
 
-/**
- * Çizim tahtası (draw.biyik.dev) için CSP: kütüphane indirmek için libraries.excalidraw.com'a
- * bağlanır, çizime gömülen videolar/sayfalar (YouTube, Figma…) için https çerçevelerine izin verir.
- */
-const drawCsp = csp
-  .replace("connect-src 'self'", "connect-src 'self' https://libraries.excalidraw.com")
-  .replace("frame-src 'self'", "frame-src 'self' https:");
-
-const DRAW_HOST = 'draw.biyik.dev';
-
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
@@ -71,15 +61,8 @@ const nextConfig: NextConfig = {
       { source: '/:path*', headers: securityHeaders },
       // Sanity Studio loads its own scripts and talks to the Sanity API, so it stays outside the CSP.
       {
-        source: '/((?!studio(?:/|$)|draw(?:/|$)).*)',
-        missing: [{ type: 'host', value: DRAW_HOST }],
+        source: '/((?!studio(?:/|$)).*)',
         headers: [{ key: 'Content-Security-Policy', value: csp }],
-      },
-      { source: '/draw', headers: [{ key: 'Content-Security-Policy', value: drawCsp }] },
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: DRAW_HOST }],
-        headers: [{ key: 'Content-Security-Policy', value: drawCsp }],
       },
     ];
   },

@@ -158,6 +158,27 @@ async function shoot(browser, lang) {
   await p.keyboard.press('Escape');
   await wait(150);
 
+  // Paylaşma: pencere ve bağlantıyı açan kişinin gördüğü salt okunur görünüm
+  await blank();
+  await p.click('.sk-top-right .sk-btn.is-primary');
+  await wait(1200);
+  await snap('share');
+  const link = await p.$eval('.sk-share-input', (el) => el.value);
+  await p.keyboard.press('Escape');
+  await wait(150);
+  await p.evaluate((hash) => {
+    location.hash = hash;
+  }, link.slice(link.indexOf('#') + 1));
+  await wait(1200);
+  await snap('view');
+  for (const btn of await p.$$('.sk-viewbar .sk-btn')) {
+    if (!(await btn.evaluate((e) => e.classList.contains('is-primary')))) {
+      await btn.click();
+      break;
+    }
+  }
+  await wait(400);
+
   // Koyu tema
   await p.click('.sk-top-left .sk-icon-btn');
   await wait(250);

@@ -57,6 +57,21 @@ export function getProjectPresentation(project: PortfolioProject): ProjectPresen
       images: bizimKoyScreenshots,
     };
   }
+  if (project.slug === 'draw') {
+    return {
+      actions: [
+        { label: 'Tahtayı aç', url: project.url, kind: 'visit', external: true },
+        { label: 'Nasıl kullanılır?', url: `${project.url}/docs`, kind: 'visit', external: true },
+        { label: 'GitHub’da görüntüle', url: 'https://github.com/metinfarukbiyik/biyik-draw', kind: 'source', external: true },
+      ],
+      note: 'Üyelik ve indirme yok · Masaüstü ve mobil tarayıcı · Çevrimdışı çalışır · MIT lisansı',
+      images: [
+        { src: '/draw-docs/tr-flowchart.webp', alt: 'draw.biyik.dev ile çizilmiş akış şeması', caption: 'El çizimi akış şeması' },
+        { src: '/draw-docs/tr-share.webp', alt: 'Çizimi bağlantıyla paylaşma penceresi', caption: 'Bağlantıyla paylaşma' },
+        { src: '/draw-docs/tr-layers.webp', alt: 'Katmanlar paneli ve gruplar', caption: 'Katmanlar ve gruplar' },
+      ],
+    };
+  }
   if (project.slug === 'geocam') {
     return {
       actions: [{ label: 'App Store’dan indir', url: project.url, kind: 'download', external: true }],

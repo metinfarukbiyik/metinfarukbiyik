@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { House } from 'lucide-react';
 import { Draw, Wordmark, type Lang } from '@/lib/sketch-react';
 import type { Theme } from '@/lib/sketch';
@@ -20,8 +20,34 @@ function applySiteTheme(theme: Theme) {
   }
 }
 
+/**
+ * Çevrimdışı çalışma: service worker'ı kaydeder ve sayfanın yüklediği dosyaları önbelleğe
+ * aldırır. Yalnızca draw.biyik.dev'de (yerelde ?sw ile denenebilir).
+ */
+function useOfflineSupport() {
+  useEffect(() => {
+    if (!('serviceWorker' in navigator)) return;
+    if (location.host !== 'draw.biyik.dev' && !new URLSearchParams(location.search).has('sw')) return;
+    navigator.serviceWorker
+      .register('/draw-sw.js')
+      .then(() => navigator.serviceWorker.ready)
+      .then((reg) => {
+        const urls = [
+          location.pathname,
+          ...performance
+            .getEntriesByType('resource')
+            .map((e) => e.name)
+            .filter((u) => u.startsWith(location.origin)),
+        ];
+        reg.active?.postMessage({ type: 'cache', urls });
+      })
+      .catch(() => undefined);
+  }, []);
+}
+
 /** draw.biyik.dev: genel çizim bileşeninin siteye özgü ayarları. */
 export default function SiteDraw({ handFont }: { handFont: string }) {
+  useOfflineSupport();
   // Alt alan adında /docs, ana sitede (yerel geliştirme) /draw/docs
   const [docsBase] = useState(() => (location.host === 'draw.biyik.dev' ? '/docs' : '/draw/docs'));
   const [lang, setLang] = useState<Lang>(() => {

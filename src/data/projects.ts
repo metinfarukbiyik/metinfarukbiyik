@@ -10,7 +10,7 @@ export interface PortfolioProject {
   seoTitle: string;
   seoDescription: string;
   keywords: string[];
-  icon: 'Music2' | 'Camera' | 'Barcode' | 'Globe' | 'GraduationCap' | 'Building2' | 'Workflow' | 'RadioTower' | 'House';
+  icon: 'Music2' | 'Camera' | 'Barcode' | 'Globe' | 'GraduationCap' | 'Building2' | 'Workflow' | 'RadioTower' | 'House' | 'PenTool';
   iconImage?: string;
   image?: string;
   url: string;
@@ -57,6 +57,42 @@ export const portfolioProjects: PortfolioProject[] = [
     ],
     operatingSystem: 'Web tarayıcısı',
     applicationCategory: 'GameApplication',
+  },
+  {
+    slug: 'draw',
+    name: 'draw.biyik.dev',
+    category: 'Uygulama',
+    platform: 'Tarayıcı · Web · Mobil · Açık kaynak',
+    platforms: ['Tarayıcı', 'Mobil', 'Açık kaynak'],
+    description:
+      'El çizimi görünümlü, tarayıcıda çalışan çevrimiçi beyaz tahta. Diyagram, akış şeması ve eskiz çiz; bağlantıyla paylaş.',
+    detail:
+      'Çizim motorunu ve arayüzünü sıfırdan yazdığım, harici bir çizim kütüphanesine dayanmayan beyaz tahta. Şekiller el çizimi gibi görünür; oklar şekillere bağlanır ve şekil taşınınca onu izler. Katmanlar paneli, gruplar, hizalama, PNG/SVG dışa aktarma, koyu tema ve Türkçe/İngilizce arayüz var. Çizimler yalnızca tarayıcıda saklanır; paylaşım bağlantısı çizimin kendisini taşıdığı için hiçbir sunucuya yüklenmez. Uygulama internet olmadan da açılır, çizim tek bir HTML dosyası olarak çevrimdışı gönderilebilir. Kod MIT lisansıyla açık; React projelerine paket olarak eklenebilir.',
+    seoTitle: 'draw.biyik.dev — Ücretsiz Çevrimiçi Beyaz Tahta ve Diyagram Çizme',
+    seoDescription:
+      'draw.biyik.dev: el çizimi görünümlü ücretsiz çevrimiçi beyaz tahta. Akış şeması, diyagram ve eskiz çiz; bağlantıyla paylaş, PNG/SVG indir. Üyelik yok, açık kaynak, çevrimdışı çalışır.',
+    keywords: [
+      'draw.biyik.dev',
+      'online beyaz tahta',
+      'çevrimiçi çizim tahtası',
+      'akış şeması çizme',
+      'diyagram çizme programı',
+      'el çizimi diyagram',
+      'ücretsiz whiteboard',
+      'açık kaynak çizim tahtası',
+      'React whiteboard',
+    ],
+    icon: 'PenTool',
+    image: '/draw-docs/tr-flowchart.webp',
+    url: 'https://draw.biyik.dev',
+    href: '/projeler/draw',
+    features: [
+      'El çizimi şekiller, bağlı oklar, katmanlar ve gruplar',
+      'Bağlantıyla paylaşma, sunucusuz ve çevrimdışı çalışma',
+      'PNG / SVG dışa aktarma, Türkçe ve İngilizce arayüz',
+    ],
+    operatingSystem: 'Web tarayıcısı',
+    applicationCategory: 'DesignApplication',
   },
   {
     slug: 'byk-music',

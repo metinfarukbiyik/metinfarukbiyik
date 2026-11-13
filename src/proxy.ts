@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 const DRAW_HOST = 'draw.biyik.dev';
-const DRAW_PASSTHROUGH = /^\/(draw(\/|$)|draw-docs\/|icon|apple-icon|favicon|manifest|robots\.txt|sitemap\.xml)/;
+const DRAW_PASSTHROUGH = /^\/(draw(\/|$)|draw-docs\/|draw-sw\.js|icon|apple-icon|favicon|manifest|robots\.txt|sitemap\.xml)/;
 const MAIN_HOSTS = new Set(['biyik.dev', 'www.biyik.dev']);
 
 /**

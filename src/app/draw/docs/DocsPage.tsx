@@ -91,6 +91,7 @@ const T = {
       layers: 'Katmanlar ve gruplar',
       files: 'Menü ve dosyalar',
       export: 'Dışa aktarma',
+      share: 'Paylaş ve çevrimdışı',
       theme: 'Koyu tema ve mobil',
       keys: 'Kısayollar',
       dev: 'Kendi projene ekle',
@@ -113,6 +114,7 @@ const T = {
       layers: 'Layers and groups',
       files: 'Menu and files',
       export: 'Export',
+      share: 'Share and offline',
       theme: 'Dark theme and mobile',
       keys: 'Shortcuts',
       dev: 'Add it to your project',
@@ -343,7 +345,60 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
             <Shot lang={lang} name="export" alt={tr ? 'Dışa aktarma penceresi' : 'Export dialog'} />
           </Step>
 
-          <Step id="theme" n={9} title={t.s.theme}>
+          <Step id="share" n={9} title={t.s.share}>
+            {tr ? (
+              <>
+                <p>
+                  Sağ üstteki <strong>Paylaş</strong> düğmesi bir bağlantı üretir. Bağlantı çizimin kendisini (sıkıştırılmış
+                  olarak) içerir; adresin <code>#</code> kısmı tarayıcıdan sunucuya hiç gönderilmediği için çizimin hiçbir
+                  sunucuya yüklenmez ve hesap gerekmez.
+                </p>
+                <ul>
+                  <li>
+                    Bağlantıyı açan kişi çizimi <strong>salt okunur</strong> görür; kaydırıp yakınlaştırabilir, isterse{' '}
+                    <strong>Tahtama ekle</strong> ile kendi tahtasına kopyalar. Kendi çizimleri silinmez.
+                  </li>
+                  <li>
+                    <strong>Çevrimdışı paylaşım:</strong> “HTML dosyası” internet olmadan her tarayıcıda açılan tek bir
+                    dosyadır (yazı tipleri içinde). E-posta, mesaj ya da USB ile gönderebilirsin; menüdeki “Aç” ile yeniden
+                    düzenlenebilir.
+                  </li>
+                  <li>
+                    draw.biyik.dev bir kez açıldıktan sonra <strong>internet olmadan da</strong> çalışır; paylaşım
+                    bağlantıları da çevrimdışıyken açılır.
+                  </li>
+                </ul>
+              </>
+            ) : (
+              <>
+                <p>
+                  The <strong>Share</strong> button at the top right creates a link. The link contains the drawing itself
+                  (compressed); the <code>#</code> part of a URL is never sent to a server, so your drawing is not
+                  uploaded anywhere and no account is needed.
+                </p>
+                <ul>
+                  <li>
+                    Whoever opens the link sees the drawing <strong>read-only</strong>; they can pan and zoom, and copy it
+                    into their own board with <strong>Add to my board</strong>. Their own drawings are kept.
+                  </li>
+                  <li>
+                    <strong>Offline sharing:</strong> the “HTML file” is a single file that opens in any browser without
+                    internet (fonts included). Send it by email, chat or USB; reopen it for editing with “Open”.
+                  </li>
+                  <li>
+                    After the first visit draw.biyik.dev <strong>works without internet</strong>, and share links open
+                    offline too.
+                  </li>
+                </ul>
+              </>
+            )}
+            <div className="dx-pair is-even">
+              <Shot lang={lang} name="share" alt={tr ? 'Paylaş penceresi' : 'Share dialog'} />
+              <Shot lang={lang} name="view" alt={tr ? 'Paylaşılan çizimin salt okunur görünümü' : 'Read-only view of a shared drawing'} />
+            </div>
+          </Step>
+
+          <Step id="theme" n={10} title={t.s.theme}>
             {tr ? (
               <p>
                 Koyu temada renkler otomatik uyarlanır. Telefonda araç çubuğu alta iner; iki parmakla yakınlaştırıp
@@ -361,7 +416,7 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
             </div>
           </Step>
 
-          <Step id="keys" n={10} title={t.s.keys}>
+          <Step id="keys" n={11} title={t.s.keys}>
             <div className="dx-keys">
               {(tr
                 ? [
@@ -400,7 +455,7 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
             <p className="dx-note">{tr ? 'Windows ve Linux’ta ⌘ yerine Ctrl kullan.' : 'On Windows and Linux use Ctrl instead of ⌘.'}</p>
           </Step>
 
-          <Step id="dev" n={11} title={t.s.dev}>
+          <Step id="dev" n={12} title={t.s.dev}>
             {tr ? (
               <p>
                 Tahta açık kaynaktır ve hiçbir harici çizim kütüphanesine dayanmaz. Kaynak kodu{' '}
@@ -460,7 +515,7 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
             </p>
           </Step>
 
-          <Step id="license" n={12} title={t.s.license}>
+          <Step id="license" n={13} title={t.s.license}>
             {tr ? (
               <p>
                 Çizimler ve görseller yalnızca tarayıcında (IndexedDB) saklanır; sunucuya hiçbir şey gönderilmez. Kod MIT

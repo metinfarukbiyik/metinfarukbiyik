@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import { Barcode, Building2, Camera, Globe, GraduationCap, House, Music2, RadioTower, Workflow } from 'lucide-react';
+import { Barcode, Building2, Camera, Globe, GraduationCap, House, Music2, PenTool, RadioTower, Workflow } from 'lucide-react';
 import type { PortfolioProject } from '@/data/projects';
 import { cx } from '@/components/ui';
 
-export const projectIcons = { Barcode, Building2, Camera, Globe, GraduationCap, House, Music2, RadioTower, Workflow };
+export const projectIcons = { Barcode, Building2, Camera, Globe, GraduationCap, House, Music2, PenTool, RadioTower, Workflow };
 
 export default function ProjectIcon({
   project,

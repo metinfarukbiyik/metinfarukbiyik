@@ -67,7 +67,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       'El çizimi görünümlü, tarayıcıda çalışan çevrimiçi beyaz tahta. Diyagram, akış şeması ve eskiz çiz; bağlantıyla paylaş.',
     detail:
-      'Çizim motorunu ve arayüzünü sıfırdan yazdığım, harici bir çizim kütüphanesine dayanmayan beyaz tahta. Şekiller el çizimi gibi görünür; oklar şekillere bağlanır ve şekil taşınınca onu izler. Katmanlar paneli, gruplar, hizalama, PNG/SVG dışa aktarma, koyu tema ve Türkçe/İngilizce arayüz var. Çizimler yalnızca tarayıcıda saklanır; paylaşım bağlantısı çizimin kendisini taşıdığı için hiçbir sunucuya yüklenmez. Uygulama internet olmadan da açılır, çizim tek bir HTML dosyası olarak çevrimdışı gönderilebilir. Kod MIT lisansıyla açık; React projelerine paket olarak eklenebilir.',
+      'Çizim motorunu ve arayüzünü sıfırdan yazdığım, harici bir çizim kütüphanesine dayanmayan beyaz tahta. Şekiller el çizimi gibi görünür; oklar şekillere bağlanır ve şekil taşınınca onu izler. Katmanlar paneli, gruplar, hizalama, PNG/SVG dışa aktarma, koyu tema ve Türkçe/İngilizce arayüz var. Çizimler yalnızca tarayıcıda saklanır; paylaşım bağlantısı çizimin kendisini taşıdığı için hiçbir sunucuya yüklenmez. Uygulama internet olmadan da açılır, çizim tek bir HTML dosyası olarak çevrimdışı gönderilebilir. Tabletten ders anlatan öğretmenler için ders modu, kılavuz çizgili (güzel yazı) ve çizgili defter desenleri, fosforlu kalem, lazer işaretçi, kalem basıncı ve avuç içi koruması var. Kod MIT lisansıyla açık; React projelerine paket olarak eklenebilir.',
     seoTitle: 'draw.biyik.dev — Ücretsiz Çevrimiçi Beyaz Tahta ve Diyagram Çizme',
     seoDescription:
       'draw.biyik.dev: el çizimi görünümlü ücretsiz çevrimiçi beyaz tahta. Akış şeması, diyagram ve eskiz çiz; bağlantıyla paylaş, PNG/SVG indir. Üyelik yok, açık kaynak, çevrimdışı çalışır.',
@@ -81,6 +81,9 @@ export const portfolioProjects: PortfolioProject[] = [
       'ücretsiz whiteboard',
       'açık kaynak çizim tahtası',
       'React whiteboard',
+      'öğretmen için dijital tahta',
+      'tablet ders anlatma uygulaması',
+      'kılavuz çizgili defter',
     ],
     icon: 'PenTool',
     image: '/draw-docs/tr-flowchart.webp',
@@ -88,6 +91,8 @@ export const portfolioProjects: PortfolioProject[] = [
     href: '/projeler/draw',
     features: [
       'El çizimi şekiller, bağlı oklar, katmanlar ve gruplar',
+      'Öğretmenler için ders modu, kılavuz çizgili kâğıt, fosforlu kalem ve lazer',
+      'Kalem basıncı ve avuç içi koruması (Apple Pencil vb.)',
       'Bağlantıyla paylaşma, sunucusuz ve çevrimdışı çalışma',
       'PNG / SVG dışa aktarma, Türkçe ve İngilizce arayüz',
     ],

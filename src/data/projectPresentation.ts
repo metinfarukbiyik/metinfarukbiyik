@@ -67,6 +67,7 @@ export function getProjectPresentation(project: PortfolioProject): ProjectPresen
       note: 'Üyelik ve indirme yok · Masaüstü ve mobil tarayıcı · Çevrimdışı çalışır · MIT lisansı',
       images: [
         { src: '/draw-docs/tr-flowchart.webp', alt: 'draw.biyik.dev ile çizilmiş akış şeması', caption: 'El çizimi akış şeması' },
+        { src: '/draw-docs/tr-teach.webp', alt: 'Ders modu, kılavuz çizgili kâğıt ve lazer işaretçi', caption: 'Öğretmenler için ders modu' },
         { src: '/draw-docs/tr-share.webp', alt: 'Çizimi bağlantıyla paylaşma penceresi', caption: 'Bağlantıyla paylaşma' },
         { src: '/draw-docs/tr-layers.webp', alt: 'Katmanlar paneli ve gruplar', caption: 'Katmanlar ve gruplar' },
       ],

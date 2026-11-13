@@ -211,10 +211,116 @@ async function shoot(browser, lang) {
   await m.close();
 }
 
+const LESSON = {
+  tr: { line1: 'Ağaç dalında kuşlar ötüyor.', line2: 'Özne: kuşlar   Yüklem: ötüyor' },
+  en: { line1: 'Birds are singing on the branch.', line2: 'Subject: birds   Verb: are singing' },
+};
+
+/** Öğretmen sahnesi: kılavuz çizgili kâğıt, fosforlu kalem, kalem (basınçlı), lazer, ders modu, sağ tık. */
+async function shootTeach(browser, lang) {
+  const L = LESSON[lang];
+  const p = await browser.newPage();
+  await p.setViewport({ width: 1280, height: 800, deviceScaleFactor: 1.5 });
+  await p.evaluateOnNewDocument((l) => {
+    localStorage.setItem('draw-lang', l);
+    localStorage.setItem('theme', 'light');
+  }, lang);
+  await p.goto(URL, { waitUntil: 'networkidle0' });
+  await wait(1000);
+  const snap = (name) => p.screenshot({ path: join(outDir, `${lang}-${name}.webp`), type: 'webp', quality: 82 });
+  // Kalem bildirimi görüntüyü kapatmasın
+  await p.addStyleTag({ content: '.sk-toast{display:none!important}' });
+  const cdp = await p.createCDPSession();
+  const pen = async (pts) => {
+    const send = (type, x, y, force) =>
+      cdp.send('Input.dispatchMouseEvent', {
+        type,
+        x,
+        y,
+        button: 'left',
+        buttons: type === 'mouseReleased' ? 0 : 1,
+        clickCount: 1,
+        pointerType: 'pen',
+        force,
+      });
+    await send('mousePressed', pts[0][0], pts[0][1], pts[0][2]);
+    for (const [x, y, f] of pts.slice(1)) await send('mouseMoved', x, y, f);
+    await send('mouseReleased', pts[pts.length - 1][0], pts[pts.length - 1][1], 0);
+    await wait(120);
+  };
+
+  // Kılavuz çizgili kâğıt
+  await p.click('.sk-top-left .sk-icon-btn');
+  await wait(200);
+  const papers = await p.$$('.sk-menu .sk-menu-section .sk-seg button');
+  await papers[4].click();
+  await p.keyboard.press('Escape');
+  await wait(200);
+
+  // İki satır metin (L boyutu)
+  await p.keyboard.press('t');
+  await p.mouse.click(380, 236);
+  await wait(200);
+  for (const b of await p.$$('.sk-panel .sk-seg button')) {
+    if ((await b.evaluate((e) => e.textContent)) === 'L') await b.click();
+  }
+  await p.keyboard.type(L.line1);
+  await p.keyboard.press('Escape');
+  await p.keyboard.press('t');
+  await p.mouse.click(380, 388);
+  await wait(200);
+  await p.keyboard.type(L.line2);
+  await p.keyboard.press('Escape');
+  await wait(200);
+
+  // Ders modu: fosforlu kalem + kırmızı kalemle yuvarlak + lazer
+  await p.keyboard.down('Alt');
+  await p.keyboard.press('KeyP');
+  await p.keyboard.up('Alt');
+  await wait(400);
+  await p.click('.sk-present-btn[aria-label]:nth-child(2)');
+  await wait(100);
+  await p.mouse.move(378, 388);
+  await p.mouse.down();
+  for (let i = 0; i <= 20; i++) await p.mouse.move(378 + i * 7, 388);
+  await p.mouse.up();
+  await wait(100);
+  await p.click('.sk-present-btn[aria-label]:nth-child(1)');
+  const colors = await p.$$('.sk-present-color');
+  await colors[1].click();
+  const ring = [];
+  for (let i = 0; i <= 48; i++) {
+    const a = -Math.PI / 2 + (i / 44) * Math.PI * 2;
+    ring.push([lang === 'tr' ? 562 : 575, 240 + Math.sin(a) * 24, 0.35 + 0.5 * Math.abs(Math.sin(a))]);
+    ring[ring.length - 1][0] += Math.cos(a) * 54;
+  }
+  await pen(ring);
+  await p.click('.sk-present-btn[aria-label]:nth-child(3)');
+  await p.mouse.move(520, 520);
+  await p.mouse.down();
+  for (let i = 0; i <= 22; i++) await p.mouse.move(520 + i * 12, 520 - Math.sin(i / 3.5) * 40);
+  await wait(30);
+  await snap('teach');
+  await p.mouse.up();
+  await p.click('.sk-present-btn.is-exit');
+  await wait(400);
+
+  // Sağ tık menüsü (metin üzerinde)
+  await p.keyboard.press('v');
+  await p.mouse.click(1200, 700);
+  await p.mouse.click(400, 238, { button: 'right' });
+  await wait(300);
+  await snap('context');
+  await p.close();
+}
+
 for (const lang of ['tr', 'en']) {
   // Her dil temiz bir profille başlar
   const browser = await puppeteer.launch({ executablePath: CHROME, headless: true });
   await shoot(browser, lang);
   await browser.close();
+  const teach = await puppeteer.launch({ executablePath: CHROME, headless: true });
+  await shootTeach(teach, lang);
+  await teach.close();
   console.log('ok', lang);
 }

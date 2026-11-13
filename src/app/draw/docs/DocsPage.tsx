@@ -92,6 +92,7 @@ const T = {
       files: 'Menü ve dosyalar',
       export: 'Dışa aktarma',
       share: 'Paylaş ve çevrimdışı',
+      teach: 'Öğretmenler ve tablet için',
       theme: 'Koyu tema ve mobil',
       keys: 'Kısayollar',
       dev: 'Kendi projene ekle',
@@ -115,6 +116,7 @@ const T = {
       files: 'Menu and files',
       export: 'Export',
       share: 'Share and offline',
+      teach: 'For teachers and tablets',
       theme: 'Dark theme and mobile',
       keys: 'Shortcuts',
       dev: 'Add it to your project',
@@ -398,7 +400,91 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
             </div>
           </Step>
 
-          <Step id="theme" n={10} title={t.s.theme}>
+          <Step id="teach" n={10} title={t.s.teach}>
+            {tr ? (
+              <>
+                <p>
+                  Tabletten ders anlatan öğretmenler için: tahtayı projeksiyona ya da akıllı tahtaya yansıtıp kalemle
+                  anlatabilirsin.
+                </p>
+                <ul>
+                  <li>
+                    <strong>Ders modu</strong> (<K>⌥P</K> ya da menü): tam ekran, sade görünüm. Alttaki büyük düğmelerle
+                    kalem, fosforlu kalem, lazer, silgi, beş renk, üç kalınlık, kâğıt deseni, geri al ve{' '}
+                    <strong>yeni sayfa</strong> tek dokunuşla.
+                  </li>
+                  <li>
+                    <strong>Kâğıt desenleri</strong>: kareli, noktalı, çizgili defter ve{' '}
+                    <strong>kılavuz çizgili</strong> (dört çizgili güzel yazı defteri). Desen yakınlaştırınca tahtayla
+                    birlikte büyür; dışa aktarmaya da eklenebilir.
+                  </li>
+                  <li>
+                    <strong>Fosforlu kalem</strong> (<K>M</K>): yazının üstünü boyar ama örtmez; özneyi, yüklemi ya da
+                    yeni kelimeleri işaretlemek için.
+                  </li>
+                  <li>
+                    <strong>Lazer işaretçi</strong> (<K>K</K>): tahtaya bir şey eklemeden gösterir; iz bir saniyede söner.
+                  </li>
+                  <li>
+                    <strong>Kalem basıncı</strong>: Apple Pencil ve benzeri kalemlerde bastırdıkça çizgi kalınlaşır,
+                    yazı doğal görünür.
+                  </li>
+                  <li>
+                    <strong>Avuç içi koruması</strong>: kalem algılanınca parmak ve avuç içi çizmez, yalnızca kaydırır ve
+                    yakınlaştırır. Menüdeki “Yalnızca kalemle çiz” ile kapatılabilir.
+                  </li>
+                  <li>
+                    <strong>Sağ tık menüsü</strong>: masaüstünde sağ tık, tablette <strong>basılı tut</strong>. Kes,
+                    kopyala, panoya PNG/SVG/metin, stil kopyala, metni şekle bağla, metni kutu içine al, çerçeveye al,
+                    katman sırası, çevir, kilitle.
+                  </li>
+                </ul>
+              </>
+            ) : (
+              <>
+                <p>
+                  For teachers who teach from a tablet: mirror the board to a projector or smart board and explain with
+                  the pen.
+                </p>
+                <ul>
+                  <li>
+                    <strong>Teaching mode</strong> (<K>⌥P</K> or the menu): full screen, distraction-free. Big buttons
+                    at the bottom for pen, highlighter, laser, eraser, five colors, three widths, paper pattern, undo and{' '}
+                    <strong>new page</strong>.
+                  </li>
+                  <li>
+                    <strong>Paper patterns</strong>: grid, dotted, lined and <strong>handwriting</strong> paper (the
+                    four-line guide used to teach handwriting). The pattern scales with the board and can be included in
+                    exports.
+                  </li>
+                  <li>
+                    <strong>Highlighter</strong> (<K>M</K>): marks text without covering it, for subjects, verbs or new
+                    words.
+                  </li>
+                  <li>
+                    <strong>Laser pointer</strong> (<K>K</K>): point without drawing; the trail fades in a second.
+                  </li>
+                  <li>
+                    <strong>Pen pressure</strong>: with Apple Pencil and similar pens the stroke gets thicker as you
+                    press, so handwriting looks natural.
+                  </li>
+                  <li>
+                    <strong>Palm rejection</strong>: once a pen is detected, fingers and palms pan and zoom instead of
+                    drawing. Turn it off with “Draw with pen only” in the menu.
+                  </li>
+                  <li>
+                    <strong>Context menu</strong>: right-click on desktop, <strong>press and hold</strong> on a tablet.
+                    Cut, copy, copy as PNG/SVG/text, copy style, bind text to a shape, wrap text in a box, wrap in a
+                    frame, layer order, flip, lock.
+                  </li>
+                </ul>
+              </>
+            )}
+            <Shot lang={lang} name="teach" alt={tr ? 'Ders modu, kılavuz çizgili kâğıt ve lazer işaretçi' : 'Teaching mode with handwriting paper and laser pointer'} />
+            <Shot lang={lang} name="context" alt={tr ? 'Sağ tık menüsü' : 'Context menu'} />
+          </Step>
+
+          <Step id="theme" n={11} title={t.s.theme}>
             {tr ? (
               <p>
                 Koyu temada renkler otomatik uyarlanır. Telefonda araç çubuğu alta iner; iki parmakla yakınlaştırıp
@@ -416,7 +502,7 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
             </div>
           </Step>
 
-          <Step id="keys" n={11} title={t.s.keys}>
+          <Step id="keys" n={12} title={t.s.keys}>
             <div className="dx-keys">
               {(tr
                 ? [
@@ -428,6 +514,9 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
                     ['Stil kopyala / yapıştır', '⌘⌥C / ⌘⌥V'],
                     ['Kilitle', '⌘⇧L'],
                     ['Tümünü sığdır', '⇧1'],
+                    ['Ders modu', '⌥P'],
+                    ['Fosforlu kalem / lazer', 'M / K'],
+                    ['Panoya PNG', '⇧⌥C'],
                     ['Kaydır', 'Boşluk + sürükle'],
                     ['Yakınlaştır', '⌘ + tekerlek'],
                     ['Tüm kısayollar', '?'],
@@ -441,6 +530,9 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
                     ['Copy / paste style', '⌘⌥C / ⌘⌥V'],
                     ['Lock', '⌘⇧L'],
                     ['Zoom to fit', '⇧1'],
+                    ['Teaching mode', '⌥P'],
+                    ['Highlighter / laser', 'M / K'],
+                    ['Copy as PNG', '⇧⌥C'],
                     ['Pan', 'Space + drag'],
                     ['Zoom', '⌘ + wheel'],
                     ['All shortcuts', '?'],
@@ -455,7 +547,7 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
             <p className="dx-note">{tr ? 'Windows ve Linux’ta ⌘ yerine Ctrl kullan.' : 'On Windows and Linux use Ctrl instead of ⌘.'}</p>
           </Step>
 
-          <Step id="dev" n={12} title={t.s.dev}>
+          <Step id="dev" n={13} title={t.s.dev}>
             {tr ? (
               <p>
                 Tahta açık kaynaktır ve hiçbir harici çizim kütüphanesine dayanmaz. Kaynak kodu{' '}
@@ -515,7 +607,7 @@ export default function DocsPage({ lang }: { lang: DocsLang }) {
             </p>
           </Step>
 
-          <Step id="license" n={13} title={t.s.license}>
+          <Step id="license" n={14} title={t.s.license}>
             {tr ? (
               <p>
                 Çizimler ve görseller yalnızca tarayıcında (IndexedDB) saklanır; sunucuya hiçbir şey gönderilmez. Kod MIT

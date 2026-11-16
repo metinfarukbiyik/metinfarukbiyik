@@ -1,41 +1,47 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { Fragment, useMemo, useRef, useState } from 'react';
 import { Search, X } from 'lucide-react';
 import type { Editor } from '../sketch';
-import { useI18n, type MessageKey } from './i18n';
+import { useI18n, type Lang, type MessageKey } from './i18n';
 import {
   ICON_CATEGORIES,
   ICON_DRAG_TYPE,
   ICONS,
   IconSvg,
   iconFileId,
+  isWide,
   normalizeSearch,
   svgToDataUrl,
   type IconCategory,
   type IconDef,
 } from './icons';
 
-/** Tuvalde ikonun varsayılan boyutu (dünya birimi). */
+/** Tuvalde 64 birimlik ikonun boyutu (dünya birimi); geniş görseller orantılı büyür. */
 export const ICON_SIZE = 72;
 
 export interface IconDrop {
   id: string;
   name: string;
   url: string;
+  /** SVG görünüm kutusu (64 = bir ikon boyu). */
+  w: number;
+  h: number;
 }
 
-function iconData(icon: IconDef, button: HTMLElement, lang: 'tr' | 'en'): IconDrop | null {
+function iconData(icon: IconDef, button: HTMLElement, lang: Lang): IconDrop | null {
   const svg = button.querySelector('svg');
   if (!svg) return null;
-  return { id: icon.id, name: icon[lang], url: svgToDataUrl(svg) };
+  const box = svg.viewBox.baseVal;
+  return { id: icon.id, name: icon[lang], url: svgToDataUrl(svg), w: box.width || 64, h: box.height || 64 };
 }
 
-/** Sürükle-bırakla gelen ikonu tuvale ekler. */
+/** İkonu tuvale ekler (dokunma ya da sürükle-bırak). */
 export function insertIcon(editor: Editor, data: IconDrop, at?: [number, number] | null) {
+  const scale = ICON_SIZE / 64;
   editor.insertImageUrl(data.url, {
-    width: ICON_SIZE,
-    height: ICON_SIZE,
+    width: (data.w || 64) * scale,
+    height: (data.h || 64) * scale,
     fileId: iconFileId(data.id, data.url),
     name: data.name,
     at,
@@ -60,18 +66,30 @@ export default function IconsPanel({ editor, onClose }: { editor: Editor; onClos
     });
   }, [query, category]);
 
+  // "Tümü" görünümünde kategori başlıklarıyla gösterilir
+  const showHeadings = category === 'all';
+
   const add = (icon: IconDef, button: HTMLElement) => {
     const data = iconData(icon, button, lang);
     if (!data) return;
-    // Ekranın ortasından başlayarak en çok 6'lı satırlar halinde dizilir
+    // Ekranın ortasından başlayarak en çok 6 yuvalık satırlar halinde dizilir;
+    // geniş öğeler (etiket, şerit) birden fazla yuva kaplar, üst üste binmez.
     const { width, height } = editor.state.viewport;
     const { zoom } = editor.state.view;
     const gap = (ICON_SIZE + 24) * zoom;
     // Dar ekranda (telefon) satır ekrana sığacak kadar kısa tutulur
     const cols = Math.max(1, Math.min(6, Math.floor((width - 24) / gap)));
-    const k = cascade.current++ % (cols * 4);
-    const x = width / 2 + ((k % cols) - (cols - 1) / 2) * gap;
-    const y = height / 2 + (Math.floor(k / cols) - 1.5) * gap;
+    const itemWidth = ((data.w || 64) / 64) * ICON_SIZE * zoom;
+    const span = Math.min(cols, Math.max(1, Math.ceil((itemWidth + 24 * zoom) / gap)));
+    let n = cascade.current;
+    if ((n % cols) + span > cols) n = (Math.floor(n / cols) + 1) * cols; // satıra sığmıyor: alt satır
+    cascade.current = n + span;
+    // 4 satır dolunca baştan başlanır; her tur çaprazlama kayar, öncekilerin üstüne binmez
+    const round = Math.floor(n / (cols * 4)) % 4;
+    const k = n % (cols * 4);
+    const shift = round * gap * 0.3;
+    const x = width / 2 + shift + ((k % cols) + (span - 1) / 2 - (cols - 1) / 2) * gap;
+    const y = height / 2 + shift + (Math.floor(k / cols) - 1.5) * gap;
     insertIcon(editor, data, editor.toWorld(x, y));
   };
 
@@ -108,9 +126,10 @@ export default function IconsPanel({ editor, onClose }: { editor: Editor; onClos
             role="tab"
             aria-selected={category === cat}
             className="sk-icons-cat"
-            onClick={() => {
+            onClick={(e) => {
               setCategory(cat);
               gridRef.current?.scrollTo({ top: 0 });
+              e.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
             }}
           >
             {t(`icons.cat.${cat}` as MessageKey)}
@@ -120,26 +139,38 @@ export default function IconsPanel({ editor, onClose }: { editor: Editor; onClos
 
       {visible.length ? (
         <ul ref={gridRef} className="sk-icons-grid" role="list">
-          {visible.map((icon) => (
-            <li key={icon.id}>
-              <button
-                type="button"
-                className="sk-icon-item"
-                title={icon[lang]}
-                draggable
-                onDragStart={(e) => {
-                  const data = iconData(icon, e.currentTarget, lang);
-                  if (!data) return;
-                  e.dataTransfer.setData(ICON_DRAG_TYPE, JSON.stringify(data));
-                  e.dataTransfer.effectAllowed = 'copy';
-                }}
-                onClick={(e) => add(icon, e.currentTarget)}
-              >
-                <IconSvg icon={icon} />
-                <span>{icon[lang]}</span>
-              </button>
-            </li>
-          ))}
+          {visible.map((icon, i) => {
+            const drawn = icon.draw(lang);
+            const heading = showHeadings && visible[i - 1]?.category !== icon.category;
+            return (
+              <Fragment key={icon.id}>
+                {heading && (
+                  <li className="sk-icons-heading" aria-hidden>
+                    {t(`icons.cat.${icon.category}` as MessageKey)}
+                  </li>
+                )}
+                <li className={isWide(drawn) ? 'is-wide' : undefined}>
+                  <button
+                    type="button"
+                    className="sk-icon-item"
+                    title={icon[lang]}
+                    draggable
+                    onDragStart={(e) => {
+                      const data = iconData(icon, e.currentTarget, lang);
+                      if (!data) return;
+                      e.dataTransfer.setData(ICON_DRAG_TYPE, JSON.stringify(data));
+                      e.dataTransfer.effectAllowed = 'copy';
+                    }}
+                    onClick={(e) => add(icon, e.currentTarget)}
+                  >
+                    <IconSvg drawn={drawn} />
+                    {/* Etiketin adı zaten üzerinde yazılı */}
+                    {icon.category !== 'labels' && <span>{icon[lang]}</span>}
+                  </button>
+                </li>
+              </Fragment>
+            );
+          })}
         </ul>
       ) : (
         <p className="sk-layers-empty">{t('icons.empty')}</p>

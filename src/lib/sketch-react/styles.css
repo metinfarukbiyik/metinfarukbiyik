@@ -860,12 +860,19 @@
 }
 .sk-icons-cats {
   display: flex;
-  flex-wrap: wrap;
   gap: 4px;
   padding: 8px;
+  overflow-x: auto;
   border-bottom: 1px solid var(--sk-line);
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, #000 85%, transparent);
+}
+.sk-icons-cats::-webkit-scrollbar {
+  display: none;
 }
 .sk-icons-cat {
+  flex: none;
+  white-space: nowrap;
   padding: 3px 9px;
   border: 1px solid var(--sk-line);
   border-radius: 999px;
@@ -919,9 +926,26 @@
   transform: scale(0.94);
 }
 .sk-icon-item svg {
-  width: 40px;
+  width: 100%;
+  max-width: 40px;
   height: 40px;
   pointer-events: none;
+}
+.sk-icons-grid .is-wide {
+  grid-column: span 2;
+}
+.sk-icons-grid .is-wide svg {
+  max-width: 112px;
+}
+.sk-icons-heading {
+  grid-column: 1 / -1;
+  padding: 10px 6px 2px;
+  color: var(--sk-subtle);
+  font-size: 11px;
+  font-weight: 600;
+}
+.sk-icons-heading:first-child {
+  padding-top: 2px;
 }
 .sk-icon-item span {
   max-width: 100%;

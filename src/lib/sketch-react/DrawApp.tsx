@@ -24,6 +24,7 @@ import {
   Redo2,
   Save,
   Share2,
+  Shapes,
   SlidersHorizontal,
   Sun,
   Trash2,
@@ -48,6 +49,7 @@ import Board from "./Board";
 import Toolbar from "./Toolbar";
 import StylePanel from "./StylePanel";
 import LayersPanel from "./LayersPanel";
+import IconsPanel, { insertIcon, type IconDrop } from "./IconsPanel";
 import {
   AboutDialog,
   ConfirmDialog,
@@ -197,7 +199,23 @@ export default function DrawApp({
   const state = useEditor(editor);
   const [ready, setReady] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [layersOpen, setLayersOpen] = useState(false);
+  const [layersOpen, setLayersOpenState] = useState(false);
+  const [iconsOpen, setIconsOpenState] = useState(false);
+  // Katmanlar ve ikonlar aynı yerde açılır: biri açılınca diğeri kapanır
+  const setLayersOpen = useCallback((v: boolean | ((prev: boolean) => boolean)) => {
+    setLayersOpenState((prev) => {
+      const next = typeof v === "function" ? v(prev) : v;
+      if (next) setIconsOpenState(false);
+      return next;
+    });
+  }, []);
+  const setIconsOpen = useCallback((v: boolean | ((prev: boolean) => boolean)) => {
+    setIconsOpenState((prev) => {
+      const next = typeof v === "function" ? v(prev) : v;
+      if (next) setLayersOpenState(false);
+      return next;
+    });
+  }, []);
   const [dialog, setDialog] = useState<
     "export" | "help" | "clear" | "about" | "share" | null
   >(null);
@@ -470,12 +488,13 @@ export default function DrawApp({
   const enterPresent = useCallback(() => {
     setMenuOpen(false);
     setLayersOpen(false);
+    setIconsOpen(false);
     setPresenting(true);
     eventCallback.current?.("teaching_mode");
     if (!["freedraw", "highlighter", "laser"].includes(editor.state.tool))
       editor.setTool("freedraw");
     document.documentElement.requestFullscreen?.().catch(() => undefined);
-  }, [editor]);
+  }, [editor, setLayersOpen, setIconsOpen]);
   const exitPresent = useCallback(() => {
     setPresenting(false);
     if (document.fullscreenElement) document.exitFullscreen().catch(() => undefined);
@@ -577,6 +596,11 @@ export default function DrawApp({
         setLayersOpen((v) => !v);
         return;
       }
+      if (e.altKey && e.code === "KeyI" && !mod) {
+        e.preventDefault();
+        setIconsOpen((v) => !v);
+        return;
+      }
       if (e.key === "?") {
         setDialog("help");
         return;
@@ -625,7 +649,7 @@ export default function DrawApp({
       document.removeEventListener("cut", onCut);
       document.removeEventListener("paste", onPaste);
     };
-  }, [editor, dialog, menuOpen, saveFile, presenting, enterPresent, exitPresent, showToast, t]);
+  }, [editor, dialog, menuOpen, saveFile, presenting, enterPresent, exitPresent, showToast, t, setLayersOpen, setIconsOpen]);
 
   /* ── Menü dışına tıklayınca kapan ── */
   useEffect(() => {
@@ -652,11 +676,18 @@ export default function DrawApp({
   return (
     <I18nContext.Provider value={{ lang, t }}>
       <div
-        className={`sk-app${state.theme === "dark" ? " is-dark" : ""}${layersOpen ? " has-layers" : ""}${presenting ? " is-presenting" : ""}`}
+        className={`sk-app${state.theme === "dark" ? " is-dark" : ""}${layersOpen || iconsOpen ? " has-layers" : ""}${presenting ? " is-presenting" : ""}`}
       >
         <Board
           editor={editor}
           onDropFile={(file, at) => handleFile(file, at)}
+          onDropIcon={(json, at) => {
+            try {
+              insertIcon(editor, JSON.parse(json) as IconDrop, at);
+            } catch {
+              /* bozuk sürükleme verisi */
+            }
+          }}
           onContextMenu={(x, y) => {
             setMenuOpen(false);
             setCtxMenu({ x, y });
@@ -758,6 +789,14 @@ export default function DrawApp({
                   onClick={closeMenuThen(() => setLayersOpen((v) => !v))}
                 >
                   <Layers size={16} /> {t("menu.layers")} <kbd>⌥L</kbd>
+                </button>
+                <button
+                  type="button"
+                  role="menuitemcheckbox"
+                  aria-checked={iconsOpen}
+                  onClick={closeMenuThen(() => setIconsOpen((v) => !v))}
+                >
+                  <Shapes size={16} /> {t("menu.icons")} <kbd>⌥I</kbd>
                 </button>
                 <button
                   type="button"
@@ -903,6 +942,18 @@ export default function DrawApp({
           )}
 
           <div className="sk-top-right">
+            {!readOnly && (
+              <button
+                type="button"
+                className="sk-icon-btn sk-glass"
+                aria-label={t("menu.icons")}
+                aria-pressed={iconsOpen}
+                title={`${t("menu.icons")} (⌥I)`}
+                onClick={() => setIconsOpen((v) => !v)}
+              >
+                <Shapes size={17} />
+              </button>
+            )}
             <button
               type="button"
               className="sk-icon-btn sk-glass"
@@ -953,6 +1004,12 @@ export default function DrawApp({
         {layersOpen && !readOnly && !presenting && (
           <div className="sk-layers-wrap">
             <LayersPanel editor={editor} onClose={() => setLayersOpen(false)} />
+          </div>
+        )}
+
+        {iconsOpen && !readOnly && !presenting && (
+          <div className="sk-layers-wrap">
+            <IconsPanel editor={editor} onClose={() => setIconsOpen(false)} />
           </div>
         )}
 

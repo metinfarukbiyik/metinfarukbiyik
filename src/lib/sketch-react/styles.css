@@ -822,6 +822,114 @@
   }
 }
 
+/* ── İkon kütüphanesi ── */
+
+.sk-icons {
+  width: 296px;
+}
+.sk-icons-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 8px 0;
+  padding: 0 10px;
+  height: 34px;
+  border: 1px solid var(--sk-line);
+  border-radius: 9px;
+  background: var(--sk-surface);
+  color: var(--sk-muted);
+}
+.sk-icons-search:focus-within {
+  border-color: var(--sk-accent);
+}
+.sk-icons-search input:focus,
+.sk-icons-search input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.sk-icons-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--sk-ink);
+  font: inherit;
+  font-size: 13px;
+}
+.sk-icons-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+  border-bottom: 1px solid var(--sk-line);
+}
+.sk-icons-cat {
+  padding: 3px 9px;
+  border: 1px solid var(--sk-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--sk-muted);
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.sk-icons-cat:hover {
+  color: var(--sk-ink);
+}
+.sk-icons-cat[aria-selected='true'] {
+  border-color: var(--sk-ink);
+  background: var(--sk-ink);
+  color: var(--sk-on-ink);
+}
+.sk-icons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+  min-height: 0;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  list-style: none;
+  scrollbar-width: thin;
+}
+.sk-icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 8px 2px 6px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--sk-muted);
+  font-size: 10.5px;
+  line-height: 1.2;
+  cursor: grab;
+  touch-action: manipulation;
+}
+.sk-icon-item:hover,
+.sk-icon-item:focus-visible {
+  background: var(--sk-sunken);
+  color: var(--sk-ink);
+}
+.sk-icon-item:active {
+  transform: scale(0.94);
+}
+.sk-icon-item svg {
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+}
+.sk-icon-item span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* ── Alt köşeler ── */
 
 .sk-bottom-left,

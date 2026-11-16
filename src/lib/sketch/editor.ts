@@ -896,6 +896,29 @@ export class Editor {
     this.setState({ selectedIds: [el.id], tool: 'select' });
   }
 
+  /**
+   * Hazır bir görseli (ör. ikon kütüphanesindeki SVG) ekler. Aynı `fileId` tekrar
+   * kullanılırsa dosya bir kez saklanır; paylaşım bağlantısı şişmez.
+   */
+  insertImageUrl(
+    url: string,
+    opts: { width: number; height: number; fileId?: string; name?: string; at?: Point | null },
+  ) {
+    if (this.state.readOnly) return;
+    const fileId = opts.fileId ?? randomId();
+    this.files[fileId] = url;
+    const { width: w, height: h } = opts;
+    const c = opts.at ?? this.viewportCenterWorld();
+    const el = this.newElement('image', [c[0] - w / 2, c[1] - h / 2], {
+      width: w,
+      height: h,
+      fileId,
+      ...(opts.name ? { name: opts.name } : {}),
+    });
+    this.commit([...this.elements, el]);
+    this.setState({ selectedIds: [el.id], tool: 'select' });
+  }
+
   /* ───────────── Metin düzenleme ───────────── */
 
   private fitText(el: SketchElement, text: string) {

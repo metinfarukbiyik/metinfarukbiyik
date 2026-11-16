@@ -16,6 +16,7 @@ import {
   wrapText,
 } from '../sketch';
 import { useEditor } from './useEditor';
+import { ICON_DRAG_TYPE } from './icons';
 import { useI18n } from './i18n';
 
 const toInput = (e: PointerEvent | ReactPointerEvent, rect: DOMRect): PointerInput => ({
@@ -37,10 +38,13 @@ const LONG_PRESS_SLOP = 8;
 export default function Board({
   editor,
   onDropFile,
+  onDropIcon,
   onContextMenu,
 }: {
   editor: Editor;
   onDropFile: (file: File, at: [number, number]) => void;
+  /** İkon kütüphanesinden sürüklenen ikon (JSON). */
+  onDropIcon?: (data: string, at: [number, number]) => void;
   /** Sağ tık ya da uzun basma: ekran (client) koordinatı. */
   onContextMenu?: (x: number, y: number) => void;
 }) {
@@ -100,7 +104,14 @@ export default function Board({
       });
     });
   });
-  useEffect(() => () => cancelAnimationFrame(frame.current), []);
+  useEffect(
+    () => () => {
+      cancelAnimationFrame(frame.current);
+      // StrictMode yeniden bağladığında çizim döngüsü kilitli kalmasın
+      frame.current = 0;
+    },
+    [],
+  );
 
   // Tekerlek: yakınlaştırma (Ctrl/⌘ ya da iki parmak) ve kaydırma
   useEffect(() => {
@@ -142,10 +153,15 @@ export default function Board({
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         e.preventDefault();
-        const file = e.dataTransfer.files[0];
-        if (!file) return;
         const r = rect();
-        onDropFile(file, editor.toWorld(e.clientX - r.left, e.clientY - r.top));
+        const at = editor.toWorld(e.clientX - r.left, e.clientY - r.top);
+        const icon = e.dataTransfer.getData(ICON_DRAG_TYPE);
+        if (icon) {
+          onDropIcon?.(icon, at);
+          return;
+        }
+        const file = e.dataTransfer.files[0];
+        if (file) onDropFile(file, at);
       }}
     >
       <canvas

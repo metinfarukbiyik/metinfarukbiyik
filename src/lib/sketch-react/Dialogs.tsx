@@ -253,6 +253,7 @@ const shortcuts = (t: T): [string, [string, string][]][] => [
       [t('help.fitSel'), '⇧ 2'],
       [t('menu.grid'), `${mod} '`],
       [t('menu.layers'), '⌥ L'],
+      [t('menu.icons'), '⌥ I'],
       [t('menu.present'), '⌥ P'],
       [t('ctx.copyPng'), '⇧ ⌥ C'],
       [t('help.saveOpen'), `${mod} S / ${mod} O`],

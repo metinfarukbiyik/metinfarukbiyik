@@ -1,7 +1,29 @@
 'use client';
 
 import { Fragment, useMemo, useRef, useState } from 'react';
-import { Search, X } from 'lucide-react';
+import {
+  Apple,
+  AtSign,
+  Briefcase,
+  CircleCheck,
+  FileText,
+  Gamepad2,
+  GraduationCap,
+  Hash,
+  HeartPulse,
+  LayoutGrid,
+  Leaf,
+  MessageSquare,
+  Monitor,
+  Plane,
+  Search,
+  Smile,
+  Sticker,
+  Tag,
+  Users,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
 import type { Editor } from '../sketch';
 import { useI18n, type Lang, type MessageKey } from './i18n';
 import {
@@ -13,9 +35,36 @@ import {
   isWide,
   normalizeSearch,
   svgToDataUrl,
+  type Drawn,
   type IconCategory,
   type IconDef,
 } from './icons';
+
+type CategoryTab = IconCategory | 'all';
+
+/** Kategori şeridindeki simgeler. */
+const CATEGORY_ICONS: Record<CategoryTab, LucideIcon> = {
+  all: LayoutGrid,
+  files: FileText,
+  social: AtSign,
+  communication: MessageSquare,
+  people: Users,
+  business: Briefcase,
+  tech: Monitor,
+  education: GraduationCap,
+  numbers: Hash,
+  labels: Tag,
+  stickers: Sticker,
+  emoji: Smile,
+  nature: Leaf,
+  food: Apple,
+  travel: Plane,
+  health: HeartPulse,
+  hobby: Gamepad2,
+  status: CircleCheck,
+};
+
+const TABS: CategoryTab[] = ['all', ...ICON_CATEGORIES];
 
 /** Tuvalde 64 birimlik ikonun boyutu (dünya birimi); geniş görseller orantılı büyür. */
 export const ICON_SIZE = 72;
@@ -27,13 +76,24 @@ export interface IconDrop {
   /** SVG görünüm kutusu (64 = bir ikon boyu). */
   w: number;
   h: number;
+  /** Tuvalde değiştirilebilen renkler (bkz. Drawn). */
+  primary?: string;
+  secondary?: string;
 }
 
-function iconData(icon: IconDef, button: HTMLElement, lang: Lang): IconDrop | null {
+function iconData(icon: IconDef, drawn: Drawn, button: HTMLElement, lang: Lang): IconDrop | null {
   const svg = button.querySelector('svg');
   if (!svg) return null;
   const box = svg.viewBox.baseVal;
-  return { id: icon.id, name: icon[lang], url: svgToDataUrl(svg), w: box.width || 64, h: box.height || 64 };
+  return {
+    id: icon.id,
+    name: icon[lang],
+    url: svgToDataUrl(svg),
+    w: box.width || 64,
+    h: box.height || 64,
+    primary: drawn.primary,
+    secondary: drawn.secondary,
+  };
 }
 
 /** İkonu tuvale ekler (dokunma ya da sürükle-bırak). */
@@ -45,33 +105,48 @@ export function insertIcon(editor: Editor, data: IconDrop, at?: [number, number]
     fileId: iconFileId(data.id, data.url),
     name: data.name,
     at,
+    paint: { primary: data.primary, secondary: data.secondary },
   });
 }
 
 export default function IconsPanel({ editor, onClose }: { editor: Editor; onClose: () => void }) {
   const { t, lang } = useI18n();
   const [query, setQuery] = useState('');
-  const [category, setCategory] = useState<IconCategory | 'all'>('all');
+  const [category, setCategory] = useState<CategoryTab>('all');
   // Art arda eklenen ikonlar üst üste binmesin: panel açıkken sayılır
   const cascade = useRef(0);
   const gridRef = useRef<HTMLUListElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const visible = useMemo(() => {
-    const q = normalizeSearch(query);
-    return ICONS.filter((icon) => {
-      if (category !== 'all' && icon.category !== category) return false;
-      if (!q) return true;
-      const hay = normalizeSearch(`${icon.tr} ${icon.en} ${icon.keywords}`);
-      return q.split(' ').every((word) => hay.includes(word));
-    });
-  }, [query, category]);
+  const q = normalizeSearch(query);
+  // Arama her zaman tüm kategorilerde yapılır
+  const active: CategoryTab = q ? 'all' : category;
 
-  // "Tümü" görünümünde kategori başlıklarıyla gösterilir
-  const showHeadings = category === 'all';
+  const visible = useMemo(
+    () =>
+      ICONS.filter((icon) => {
+        if (q) {
+          const hay = normalizeSearch(`${icon.tr} ${icon.en} ${icon.keywords}`);
+          return q.split(' ').every((word) => hay.includes(word));
+        }
+        return category === 'all' || icon.category === category;
+      }),
+    [q, category],
+  );
 
-  const add = (icon: IconDef, button: HTMLElement) => {
-    const data = iconData(icon, button, lang);
-    if (!data) return;
+  const counts = useMemo(() => {
+    const out: Partial<Record<CategoryTab, number>> = { all: ICONS.length };
+    for (const icon of ICONS) out[icon.category] = (out[icon.category] ?? 0) + 1;
+    return out;
+  }, []);
+
+  const pick = (cat: CategoryTab) => {
+    setCategory(cat);
+    setQuery('');
+    gridRef.current?.scrollTo({ top: 0 });
+  };
+
+  const add = (data: IconDrop) => {
     // Ekranın ortasından başlayarak en çok 6 yuvalık satırlar halinde dizilir;
     // geniş öğeler (etiket, şerit) birden fazla yuva kaplar, üst üste binmez.
     const { width, height } = editor.state.viewport;
@@ -94,7 +169,7 @@ export default function IconsPanel({ editor, onClose }: { editor: Editor; onClos
   };
 
   return (
-    <aside className="sk-layers sk-icons sk-glass" aria-label={t('icons.title')}>
+    <aside className="sk-layers sk-iconlib sk-glass" aria-label={t('icons.title')}>
       <header className="sk-layers-head">
         <span>
           {t('icons.title')} <span className="sk-layers-count">{ICONS.length}</span>
@@ -107,74 +182,104 @@ export default function IconsPanel({ editor, onClose }: { editor: Editor; onClos
       </header>
 
       <div className="sk-icons-search">
-        <Search size={14} aria-hidden />
+        <Search size={15} aria-hidden />
         <input
+          ref={searchRef}
           type="search"
           value={query}
           placeholder={t('icons.search')}
           aria-label={t('icons.search')}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => e.stopPropagation()}
+          onKeyDown={(e) => {
+            e.stopPropagation();
+            if (e.key === 'Escape' && query) {
+              e.preventDefault();
+              setQuery('');
+            }
+          }}
         />
-      </div>
-
-      <div className="sk-icons-cats" role="tablist" aria-label={t('icons.categories')}>
-        {(['all', ...ICON_CATEGORIES] as const).map((cat) => (
+        {query && (
           <button
-            key={cat}
             type="button"
-            role="tab"
-            aria-selected={category === cat}
-            className="sk-icons-cat"
-            onClick={(e) => {
-              setCategory(cat);
-              gridRef.current?.scrollTo({ top: 0 });
-              e.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+            className="sk-icons-clear"
+            aria-label={t('icons.clear')}
+            title={t('icons.clear')}
+            onClick={() => {
+              setQuery('');
+              searchRef.current?.focus();
             }}
           >
-            {t(`icons.cat.${cat}` as MessageKey)}
+            <X size={14} />
           </button>
-        ))}
+        )}
       </div>
 
-      {visible.length ? (
-        <ul ref={gridRef} className="sk-icons-grid" role="list">
-          {visible.map((icon, i) => {
-            const drawn = icon.draw(lang);
-            const heading = showHeadings && visible[i - 1]?.category !== icon.category;
+      <div className="sk-icons-body">
+        <nav className="sk-icons-rail" role="tablist" aria-orientation="vertical" aria-label={t('icons.categories')}>
+          {TABS.map((cat) => {
+            const Icon = CATEGORY_ICONS[cat];
+            const label = t(`icons.cat.${cat}` as MessageKey);
             return (
-              <Fragment key={icon.id}>
-                {heading && (
-                  <li className="sk-icons-heading" aria-hidden>
-                    {t(`icons.cat.${icon.category}` as MessageKey)}
-                  </li>
-                )}
-                <li className={isWide(drawn) ? 'is-wide' : undefined}>
-                  <button
-                    type="button"
-                    className="sk-icon-item"
-                    title={icon[lang]}
-                    draggable
-                    onDragStart={(e) => {
-                      const data = iconData(icon, e.currentTarget, lang);
-                      if (!data) return;
-                      e.dataTransfer.setData(ICON_DRAG_TYPE, JSON.stringify(data));
-                      e.dataTransfer.effectAllowed = 'copy';
-                    }}
-                    onClick={(e) => add(icon, e.currentTarget)}
-                  >
-                    <IconSvg drawn={drawn} />
-                    {/* Etiketin adı zaten üzerinde yazılı */}
-                    {icon.category !== 'labels' && <span>{icon[lang]}</span>}
-                  </button>
-                </li>
-              </Fragment>
+              <button
+                key={cat}
+                type="button"
+                role="tab"
+                data-cat={cat}
+                aria-selected={active === cat}
+                className="sk-icons-tab"
+                title={`${label} (${counts[cat] ?? 0})`}
+                onClick={() => pick(cat)}
+              >
+                <Icon size={18} strokeWidth={1.8} aria-hidden />
+                <span>{label}</span>
+              </button>
             );
           })}
-        </ul>
-      ) : (
-        <p className="sk-layers-empty">{t('icons.empty')}</p>
-      )}
+        </nav>
+
+        {visible.length ? (
+          <ul ref={gridRef} className="sk-icons-grid" role="list" aria-label={t(`icons.cat.${active}` as MessageKey)}>
+            {visible.map((icon, i) => {
+              const drawn = icon.draw(lang);
+              // "Tümü" görünümünde ve aramada kategori başlıkları gösterilir
+              const heading = active === 'all' && visible[i - 1]?.category !== icon.category;
+              return (
+                <Fragment key={icon.id}>
+                  {heading && (
+                    <li className="sk-icons-heading" aria-hidden>
+                      {t(`icons.cat.${icon.category}` as MessageKey)}
+                    </li>
+                  )}
+                  <li className={isWide(drawn) ? 'is-wide' : undefined}>
+                    <button
+                      type="button"
+                      className="sk-icon-item"
+                      title={icon[lang]}
+                      draggable
+                      onDragStart={(e) => {
+                        const data = iconData(icon, drawn, e.currentTarget, lang);
+                        if (!data) return;
+                        e.dataTransfer.setData(ICON_DRAG_TYPE, JSON.stringify(data));
+                        e.dataTransfer.effectAllowed = 'copy';
+                      }}
+                      onClick={(e) => {
+                        const data = iconData(icon, drawn, e.currentTarget, lang);
+                        if (data) add(data);
+                      }}
+                    >
+                      <IconSvg drawn={drawn} />
+                      {/* Etiketin adı zaten üzerinde yazılı */}
+                      {icon.category !== 'labels' && <span>{icon[lang]}</span>}
+                    </button>
+                  </li>
+                </Fragment>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="sk-layers-empty">{t('icons.empty')}</p>
+        )}
+      </div>
 
       <p className="sk-layers-foot">{t('icons.foot')}</p>
     </aside>

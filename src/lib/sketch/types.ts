@@ -98,6 +98,20 @@ export interface SketchElement extends StyleProps {
   pressures?: number[];
   /** Serbest çizim: fosforlu kalem (yarı saydam, alttaki yazıyı örtmez). */
   highlight?: boolean;
+  /** İkon kütüphanesinden eklenen görsel: renkleri stil panelinden değiştirilebilir. */
+  icon?: IconPaint;
+}
+
+/** Renklendirilebilir ikonun boyası. */
+export interface IconPaint {
+  /** Orijinal SVG'nin dosya kimliği (`Scene.files`). */
+  base: string;
+  /** Orijinal SVG'deki ana renk ve simge rengi (yoksa o renk değiştirilemez). */
+  primary?: string;
+  secondary?: string;
+  /** Seçilen ana renk ve simge rengi. */
+  color?: string;
+  fg?: string;
 }
 
 export type Files = Record<string, string>;

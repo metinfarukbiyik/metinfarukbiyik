@@ -436,6 +436,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.sk-field-reset {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--sk-accent);
+  font: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+.sk-field-reset:hover {
+  text-decoration: underline;
+}
 .sk-field-value {
   overflow: hidden;
   color: var(--sk-subtle);
@@ -824,16 +836,21 @@
 
 /* ── İkon kütüphanesi ── */
 
-.sk-icons {
-  width: 296px;
+.sk-layers-wrap.is-icons {
+  height: min(680px, calc(100% - 134px));
+}
+.sk-iconlib {
+  width: 372px;
+  height: 100%;
 }
 .sk-icons-search {
   display: flex;
+  flex: none;
   align-items: center;
   gap: 8px;
-  margin: 8px 8px 0;
+  margin: 8px;
   padding: 0 10px;
-  height: 34px;
+  height: 36px;
   border: 1px solid var(--sk-line);
   border-radius: 9px;
   background: var(--sk-surface);
@@ -858,48 +875,118 @@
   font: inherit;
   font-size: 13px;
 }
-.sk-icons-cats {
-  display: flex;
-  gap: 4px;
-  padding: 8px;
-  overflow-x: auto;
-  border-bottom: 1px solid var(--sk-line);
-  scrollbar-width: none;
-  mask-image: linear-gradient(90deg, #000 85%, transparent);
-}
-.sk-icons-cats::-webkit-scrollbar {
-  display: none;
-}
-.sk-icons-cat {
-  flex: none;
-  white-space: nowrap;
-  padding: 3px 9px;
-  border: 1px solid var(--sk-line);
-  border-radius: 999px;
+.sk-icons-clear {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
   background: transparent;
   color: var(--sk-muted);
-  font-size: 12px;
-  line-height: 1.4;
   cursor: pointer;
 }
-.sk-icons-cat:hover {
+.sk-icons-clear:hover {
+  background: var(--sk-sunken);
   color: var(--sk-ink);
 }
-.sk-icons-cat[aria-selected='true'] {
-  border-color: var(--sk-ink);
-  background: var(--sk-ink);
-  color: var(--sk-on-ink);
+/* Arama kutusunun tarayıcı "temizle" düğmesi yerine kendi düğmemiz */
+.sk-icons-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* Gövde: solda kategori şeridi, sağda ikonlar */
+.sk-icons-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid var(--sk-line);
+}
+.sk-icons-rail {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 2px;
+  width: 80px;
+  padding: 6px 4px;
+  overflow-y: auto;
+  border-right: 1px solid var(--sk-line);
+  scrollbar-width: none;
+}
+.sk-icons-rail::-webkit-scrollbar {
+  display: none;
+}
+.sk-icons-tab {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  padding: 7px 2px 6px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--sk-muted);
+  font: inherit;
+  font-size: 10px;
+  line-height: 1.15;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 120ms var(--sk-ease), color 120ms var(--sk-ease);
+}
+.sk-icons-tab span {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.sk-icons-tab:hover {
+  background: var(--sk-sunken);
+  color: var(--sk-ink);
+}
+.sk-icons-tab:focus-visible {
+  outline: 2px solid var(--sk-accent);
+  outline-offset: -2px;
+}
+.sk-icons-tab[aria-selected='true'] {
+  background: color-mix(in srgb, var(--sk-accent) 14%, transparent);
+  color: var(--sk-ink);
+  font-weight: 600;
+}
+.sk-icons-tab[aria-selected='true']::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: -4px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--sk-accent);
+}
+.sk-icons-tab[aria-selected='true'] svg {
+  color: var(--sk-accent);
 }
 .sk-icons-grid {
   display: grid;
+  flex: 1;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-content: start;
   gap: 2px;
+  min-width: 0;
   min-height: 0;
   margin: 0;
   padding: 6px;
   overflow-y: auto;
   list-style: none;
   scrollbar-width: thin;
+}
+.sk-icons-body > .sk-layers-empty {
+  flex: 1;
 }
 .sk-icon-item {
   display: flex;
@@ -936,6 +1023,15 @@
 }
 .sk-icons-grid .is-wide svg {
   max-width: 112px;
+}
+/* Genel ".sk-app button { font: inherit }" kuralını geçmek için panel önekiyle */
+.sk-iconlib .sk-icons-tab {
+  font-size: 10.5px;
+  line-height: 1.2;
+}
+.sk-iconlib .sk-icon-item {
+  font-size: 11px;
+  line-height: 1.2;
 }
 .sk-icons-heading {
   grid-column: 1 / -1;
@@ -1620,6 +1716,13 @@
   }
   .sk-layers {
     width: 100%;
+  }
+  .sk-layers-wrap.is-icons {
+    height: 58dvh;
+    max-height: none;
+  }
+  .sk-icons-rail {
+    width: 68px;
   }
   .sk-export,
   .sk-help {

@@ -1,5 +1,5 @@
 /** Panoya kopyalama yardımcıları (PNG, SVG, metin, paylaşım bağlantısı) ve panodan yapıştırma. */
-import { exportToCanvas, exportToSvg, fontFamilyCss, type Editor, type FontFamily } from '../sketch';
+import { exportToCanvas, exportToSvg, fontFamilyCss, pickFiles, type Editor, type FontFamily } from '../sketch';
 import { inlineFontCss } from './offline';
 import { encodeShare, shareUrl } from './share';
 
@@ -55,8 +55,7 @@ export async function copySvg(editor: Editor) {
 export async function copyShareLink(editor: Editor) {
   const els = targets(editor);
   if (!els.length) return false;
-  const files: Record<string, string> = {};
-  for (const el of els) if (el.fileId && editor.files[el.fileId]) files[el.fileId] = editor.files[el.fileId];
+  const files = pickFiles(els, editor.files);
   const fragment = await encodeShare({
     elements: els,
     files,

@@ -66,6 +66,16 @@ export class ImageCache {
     const img = this.ensure(fileId, files);
     return img && img.complete && img.naturalWidth ? img : null;
   }
+  /** Öğenin son çizilen görseli: dosyası değişince (ör. ikon rengi) yenisi yüklenene dek gösterilir. */
+  private last = new Map<string, HTMLImageElement>();
+  forElement(elementId: string, fileId: string, files: Files): HTMLImageElement | null {
+    const img = this.get(fileId, files);
+    if (img) {
+      this.last.set(elementId, img);
+      return img;
+    }
+    return this.last.get(elementId) ?? null;
+  }
   /** Verilen görsellerin hepsi yüklenince (ya da hata verince) çözülür. */
   preload(fileIds: string[], files: Files): Promise<void> {
     return Promise.all(
@@ -151,7 +161,7 @@ export function drawElement(
     ctx.fillStyle = stroke;
     drawTextLines(ctx, (el.text ?? '').split('\n'), el, fontString(el.fontSize, el.fontFamily), el.width, 0);
   } else if (el.type === 'image') {
-    const img = el.fileId ? images?.get(el.fileId, files) : null;
+    const img = el.fileId ? images?.forElement(el.id, el.fileId, files) : null;
     if (img) ctx.drawImage(img, 0, 0, el.width, el.height);
     else {
       ctx.fillStyle = theme === 'dark' ? '#27272a' : '#f4f4f5';

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { BookOpen, Check, ClipboardCopy, Copy, Download, FileCode2, Github, Send, X } from 'lucide-react';
-import { exportToCanvas, exportToSvg, fontFamilyCss, type Editor, type FontFamily } from '../sketch';
+import { exportToCanvas, exportToSvg, fontFamilyCss, pickFiles, type Editor, type FontFamily } from '../sketch';
 import { encodeShare, shareUrl } from './share';
 import { buildOfflineHtml, inlineFontCss } from './offline';
 import { useI18n, type T } from './i18n';
@@ -399,8 +399,7 @@ export function ShareDialog({ editor, onClose }: { editor: Editor; onClose: () =
   const elements = onlySelected && hasSelection ? editor.selectedElements() : editor.visibleElements();
 
   const scene = () => {
-    const files: Record<string, string> = {};
-    for (const el of elements) if (el.fileId && editor.files[el.fileId]) files[el.fileId] = editor.files[el.fileId];
+    const files = pickFiles(elements, editor.files);
     return { elements, files, background: editor.state.background, paper: editor.state.paper };
   };
 

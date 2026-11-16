@@ -54,6 +54,19 @@ const TOOL_TYPE: Partial<Record<Tool, ElementType>> = {
 
 const SHAPES: ElementType[] = ['rectangle', 'diamond', 'triangle', 'ellipse'];
 
+/** İkon renkleri: canlı tonlar ve siyah. */
+const ICON_COLORS = ['#2563eb', '#dc2626', '#16a34a', '#d97706', '#7c3aed', '#db2777', '#18181b'];
+/** Simge rengi: koyu zemin için beyaz, açık zemin için koyu tonlar. */
+const ICON_FG_COLORS = ['#ffffff', '#18181b', '#fde047', '#2563eb', '#dc2626', '#16a34a'];
+
+/** "#FFF" ve "#ffffff" gibi yazımları paletle karşılaştırılabilir hale getirir. */
+function normColor(c?: string) {
+  if (!c) return '';
+  let h = c.trim().toLowerCase();
+  if (/^#[0-9a-f]{3}$/.test(h)) h = `#${[...h.slice(1)].map((x) => x + x).join('')}`;
+  return h;
+}
+
 /* ── Küçük çizim ikonları ── */
 
 const Glyph = ({ children }: { children: ReactNode }) => (
@@ -211,6 +224,13 @@ export default function StylePanel({ editor }: { editor: Editor }) {
   const set = (patch: Partial<StyleProps>) => editor.setStyle(patch);
   const has = (...t: ElementType[]) => t.some((x) => types.has(x));
   const onlyImages = types.size === 1 && types.has('image');
+  // Kütüphaneden eklenen ikonlar: renkleri buradan değiştirilir
+  const iconTargets = targets.filter((el) => el.icon);
+  const firstIcon = iconTargets.find((el) => el.icon?.primary)?.icon;
+  const firstFg = iconTargets.find((el) => el.icon?.secondary)?.icon;
+  const iconsChanged = iconTargets.some(
+    (el) => normColor(el.icon?.color) !== normColor(el.icon?.primary) || normColor(el.icon?.fg) !== normColor(el.icon?.secondary),
+  );
 
   const hasShape = has(...SHAPES);
   const hasLines = has(...SHAPES, 'line', 'arrow', 'freedraw');
@@ -228,6 +248,41 @@ export default function StylePanel({ editor }: { editor: Editor }) {
         if (editing && !(e.target instanceof HTMLInputElement)) e.preventDefault();
       }}
     >
+      {iconTargets.length > 0 && (
+        <Section>
+          {iconTargets.some((el) => el.icon?.primary) && (
+            <Field
+              label={t('style.iconColor')}
+              value={(firstIcon?.color ?? firstIcon?.primary ?? '').toUpperCase()}
+              aside={
+                iconsChanged ? (
+                  <button type="button" className="sk-field-reset" onClick={() => editor.setIconColors({ reset: true })}>
+                    {t('style.iconReset')}
+                  </button>
+                ) : undefined
+              }
+            >
+              <Swatches
+                colors={ICON_COLORS}
+                value={normColor(firstIcon?.color ?? firstIcon?.primary)}
+                onChange={(c) => editor.setIconColors({ color: c })}
+                label={t('style.iconColor')}
+              />
+            </Field>
+          )}
+          {iconTargets.some((el) => el.icon?.secondary) && (
+            <Field label={t('style.iconFg')} value={(firstFg?.fg ?? firstFg?.secondary ?? '').toUpperCase()}>
+              <Swatches
+                colors={ICON_FG_COLORS}
+                value={normColor(firstFg?.fg ?? firstFg?.secondary)}
+                onChange={(c) => editor.setIconColors({ fg: c })}
+                label={t('style.iconFg')}
+              />
+            </Field>
+          )}
+        </Section>
+      )}
+
       {!onlyImages && (
         <Section>
           <Field label={t('style.stroke')} value={v.strokeColor.toUpperCase()}>

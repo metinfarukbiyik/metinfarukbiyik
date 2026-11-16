@@ -14,6 +14,7 @@ import type {
   View,
 } from './types';
 import { randomId, randomSeed } from './random';
+import { paintIcon, paintedFileId, pickFiles } from './icon-paint';
 import {
   boundsContain,
   center,
@@ -421,9 +422,7 @@ export class Editor {
   }
 
   toSceneFile(): SceneFile {
-    const used = new Set(this.elements.flatMap((el) => (el.fileId ? [el.fileId] : [])));
-    const files: Files = {};
-    for (const id of used) if (this.files[id]) files[id] = this.files[id];
+    const files = pickFiles(this.elements, this.files);
     return {
       type: 'biyik-draw',
       version: 1,
@@ -824,9 +823,7 @@ export class Editor {
   copySelection(): string | null {
     const sel = this.selectedElements();
     if (!sel.length) return null;
-    const files: Files = {};
-    for (const el of sel) if (el.fileId && this.files[el.fileId]) files[el.fileId] = this.files[el.fileId];
-    return JSON.stringify({ type: CLIPBOARD_TYPE, elements: sel, files });
+    return JSON.stringify({ type: CLIPBOARD_TYPE, elements: sel, files: pickFiles(sel, this.files) });
   }
 
   cutSelection(): string | null {
@@ -902,21 +899,59 @@ export class Editor {
    */
   insertImageUrl(
     url: string,
-    opts: { width: number; height: number; fileId?: string; name?: string; at?: Point | null },
+    opts: {
+      width: number;
+      height: number;
+      fileId?: string;
+      name?: string;
+      at?: Point | null;
+      /** Renklendirilebilir ikon: orijinal SVG'deki ana renk ve simge rengi. */
+      paint?: { primary?: string; secondary?: string };
+    },
   ) {
     if (this.state.readOnly) return;
     const fileId = opts.fileId ?? randomId();
     this.files[fileId] = url;
     const { width: w, height: h } = opts;
     const c = opts.at ?? this.viewportCenterWorld();
+    const paint = opts.paint;
     const el = this.newElement('image', [c[0] - w / 2, c[1] - h / 2], {
       width: w,
       height: h,
       fileId,
       ...(opts.name ? { name: opts.name } : {}),
+      ...(paint && (paint.primary || paint.secondary)
+        ? { icon: { base: fileId, ...paint, color: paint.primary, fg: paint.secondary } }
+        : {}),
     });
     this.commit([...this.elements, el]);
     this.setState({ selectedIds: [el.id], tool: 'select' });
+  }
+
+  /** Seçili ikonların ana rengini ve/veya simge rengini değiştirir (orijinalden yeniden boyar). */
+  setIconColors(patch: { color?: string; fg?: string; reset?: boolean }) {
+    if (this.state.readOnly) return;
+    const ids = new Set(this.state.selectedIds);
+    let changed = false;
+    const next = this.elements.map((el) => {
+      if (!ids.has(el.id) || !el.icon || el.locked) return el;
+      const base = this.files[el.icon.base];
+      if (!base) return el;
+      const icon = patch.reset
+        ? { ...el.icon, color: el.icon.primary, fg: el.icon.secondary }
+        : {
+            ...el.icon,
+            ...(patch.color && el.icon.primary ? { color: patch.color } : {}),
+            ...(patch.fg && el.icon.secondary ? { fg: patch.fg } : {}),
+          };
+      const url = paintIcon(base, icon);
+      const fileId = url === base ? icon.base : paintedFileId(icon, url);
+      this.files[fileId] = url;
+      changed = true;
+      return bump(el, { icon, fileId });
+    });
+    // Renk seçicide sürüklerken tek geri alma adımı olsun
+    if (changed) this.commit(next, `icon:${Object.keys(patch).join(',')}`);
   }
 
   /* ───────────── Metin düzenleme ───────────── */

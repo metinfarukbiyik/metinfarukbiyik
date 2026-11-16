@@ -7,7 +7,7 @@
  * Simple Icons'tan (CC0) alınmıştır, bkz. ./brand-icons.ts. Dosya ikonları marka logosu
  * değildir; türün bilinen rengini ve uzantısını taşır.
  */
-import type { ReactNode } from 'react';
+import { isValidElement, type ReactNode } from 'react';
 import {
   Activity,
   Ambulance,
@@ -252,6 +252,12 @@ export interface Drawn {
   body: ReactNode;
   w?: number;
   h?: number;
+  /**
+   * Tuvalde değiştirilebilen renkler: SVG'de öznitelik değeri olarak geçen ana renk
+   * (zemin/dolgu) ve simge rengi (üstteki simge/yazı/kontur).
+   */
+  primary?: string;
+  secondary?: string;
 }
 
 export interface IconDef {
@@ -296,7 +302,7 @@ function Label({ x, y, size, fill = '#fff', children }: { x: number; y: number; 
 /* ───────────── Çizim yardımcıları ───────────── */
 
 /** Belge sayfası, köşesi kıvrık; altta renkli uzantı etiketi. */
-function file(label: string, color: string, Glyph: LucideIcon | 'lines'): ReactNode {
+function fileBody(label: string, color: string, Glyph: LucideIcon | 'lines'): ReactNode {
   return (
     <>
       <path
@@ -332,7 +338,7 @@ function file(label: string, color: string, Glyph: LucideIcon | 'lines'): ReactN
 }
 
 /** Renkli yuvarlak köşeli kare üzerinde beyaz simge. */
-function tile(color: string, Glyph: LucideIcon): ReactNode {
+function tileBody(color: string, Glyph: LucideIcon): ReactNode {
   return (
     <>
       <rect x="4" y="4" width="56" height="56" rx="14" fill={color} />
@@ -344,7 +350,7 @@ function tile(color: string, Glyph: LucideIcon): ReactNode {
 }
 
 /** Logo: marka renginde kare, üzerinde beyaz (ya da verilen renkte) logo. */
-function brand(key: keyof typeof BRANDS, opts: { fg?: string; bg?: string } = {}): ReactNode {
+function brandBody(key: keyof typeof BRANDS, opts: { fg?: string; bg?: string } = {}): ReactNode {
   const b = BRANDS[key];
   return (
     <>
@@ -354,7 +360,7 @@ function brand(key: keyof typeof BRANDS, opts: { fg?: string; bg?: string } = {}
   );
 }
 
-function instagram(): ReactNode {
+function instagramBody(): ReactNode {
   return (
     <>
       <defs>
@@ -364,13 +370,13 @@ function instagram(): ReactNode {
           <stop offset="1" stopColor="#7638FA" />
         </radialGradient>
       </defs>
-      {brand('instagram', { bg: 'url(#sk-ig-grad)' })}
+      {brandBody('instagram', { bg: 'url(#sk-ig-grad)' })}
     </>
   );
 }
 
 /** Renkli dairede sayı ya da harf. */
-function disc(text: string, color: string): ReactNode {
+function discBody(text: string, color: string): ReactNode {
   return (
     <>
       <circle cx="32" cy="32" r="27" fill={color} />
@@ -382,7 +388,7 @@ function disc(text: string, color: string): ReactNode {
 }
 
 /** Kurdeleli madalya (1., 2., 3.). */
-function medal(n: string, color: string, edge: string): ReactNode {
+function medalBody(n: string, color: string, edge: string): ReactNode {
   return (
     <>
       <path d="M18 2h11l7 20H25z" fill="#2563EB" />
@@ -396,7 +402,7 @@ function medal(n: string, color: string, edge: string): ReactNode {
 }
 
 /** Renkli kare üzerinde matematik sembolü. */
-function symbol(sym: string, color: string, size = 34): ReactNode {
+function symbolBody(sym: string, color: string, size = 34): ReactNode {
   return (
     <>
       <rect x="4" y="4" width="56" height="56" rx="14" fill={color} />
@@ -415,6 +421,8 @@ function pill(text: string, color: string): Drawn {
   return {
     w,
     h,
+    primary: color,
+    secondary: WHITE,
     body: (
       <>
         <rect x="1" y="1" width={w - 2} height={h - 2} rx={(h - 2) / 2} fill={color} />
@@ -440,7 +448,7 @@ function sparkle(cx: number, cy: number, r: number) {
 }
 
 /** Lucide simgesi, dolgulu ve büyük (çıkartmalar için). */
-function filled(Glyph: LucideIcon, fill: string, stroke: string): ReactNode {
+function filledBody(Glyph: LucideIcon, fill: string, stroke: string): ReactNode {
   return (
     <g transform="translate(4 4)">
       <Glyph size={56} fill={fill} color={stroke} strokeWidth={1.5} />
@@ -452,10 +460,10 @@ function filled(Glyph: LucideIcon, fill: string, stroke: string): ReactNode {
 
 const FACE_INK = '#3F2A14';
 
-function face(inner: ReactNode, opts: { fill?: string; edge?: string } = {}): ReactNode {
+function faceBody(inner: ReactNode, opts: { fill?: string; edge?: string } = {}): ReactNode {
   return (
     <>
-      <circle cx="32" cy="32" r="28" fill={opts.fill ?? '#FCD34D'} stroke={opts.edge ?? '#F59E0B'} strokeWidth="2" />
+      <circle cx="32" cy="32" r="28" fill={opts.fill ?? FACE_FILL} stroke={opts.edge ?? FACE_EDGE} strokeWidth="2" />
       <g stroke={FACE_INK} strokeWidth="3.5" strokeLinecap="round" fill="none">
         {inner}
       </g>
@@ -475,9 +483,70 @@ function heartAt(cx: number, cy: number, s: number) {
   return `M${cx} ${cy + s * 0.9}C${cx - s * 1.6} ${cy - s * 0.1} ${cx - s * 0.9} ${cy - s * 1.3} ${cx} ${cy - s * 0.5}C${cx + s * 0.9} ${cy - s * 1.3} ${cx + s * 1.6} ${cy - s * 0.1} ${cx} ${cy + s * 0.9}Z`;
 }
 
+/* ── Renklendirilebilir sürümler: hangi rengin değiştirilebileceğini bildirir ── */
+
+const WHITE = '#fff';
+const file = (label: string, color: string, Glyph: LucideIcon | 'lines'): Drawn => ({
+  body: fileBody(label, color, Glyph),
+  primary: color,
+});
+const tile = (color: string, Glyph: LucideIcon): Drawn => ({ body: tileBody(color, Glyph), primary: color, secondary: WHITE });
+const brand = (key: keyof typeof BRANDS, opts: { fg?: string; bg?: string } = {}): Drawn => ({
+  body: brandBody(key, opts),
+  primary: opts.bg ?? BRANDS[key].hex,
+  secondary: opts.fg ?? WHITE,
+});
+const instagram = (): Drawn => ({ body: instagramBody(), secondary: WHITE });
+const disc = (text: string, color: string): Drawn => ({ body: discBody(text, color), primary: color, secondary: WHITE });
+const medal = (n: string, color: string, edge: string): Drawn => ({ body: medalBody(n, color, edge), primary: color, secondary: edge });
+const symbol = (sym: string, color: string, size?: number): Drawn => ({
+  body: symbolBody(sym, color, size),
+  primary: color,
+  secondary: WHITE,
+});
+const filled = (Glyph: LucideIcon, fill: string, stroke: string): Drawn => ({
+  body: filledBody(Glyph, fill, stroke),
+  primary: fill,
+  secondary: stroke,
+});
+const FACE_FILL = '#FCD34D';
+const FACE_EDGE = '#F59E0B';
+const face = (inner: ReactNode, opts: { fill?: string; edge?: string } = {}): Drawn => ({
+  body: faceBody(inner, opts),
+  primary: opts.fill ?? FACE_FILL,
+  secondary: opts.edge ?? FACE_EDGE,
+});
+
+/** Elle çizilmiş çıkartmaların değiştirilebilir renkleri: [ana renk, simge/kontur rengi]. */
+const STICKER_PAINT: Record<string, [string, string?]> = {
+  bubble: ['#fff', C.ink],
+  'bubble-blue': ['#DBEAFE', C.blue],
+  thought: ['#fff', C.ink],
+  'note-yellow': ['#FDE68A', '#F59E0B'],
+  'note-pink': ['#FBCFE8', '#EC4899'],
+  'note-blue': ['#BFDBFE', '#3B82F6'],
+  banner: [C.red],
+  burst: ['#FACC15', '#EAB308'],
+  'burst-new': [C.red, '#fff'],
+  rosette: [C.blue],
+  'price-tag': [C.orange, '#C2410C'],
+  'arrow-curve': [C.blue],
+  'arrow-loop': [C.orange],
+  'arrow-sketch': [C.red],
+  'circle-mark': [C.red],
+  underline: ['#F59E0B'],
+  sparkles: ['#FACC15', '#EAB308'],
+  'stamp-ok': [C.green],
+  'stamp-x': [C.red],
+  hundred: ['#EF4444'],
+};
+
 /* ───────────── İkon listesi ───────────── */
 
-type Art = ReactNode | ((lang: Lang) => Drawn);
+type Art = ReactNode | Drawn | ((lang: Lang) => Drawn);
+
+const isDrawn = (a: Art): a is Drawn =>
+  typeof a === 'object' && a !== null && !isValidElement(a) && 'body' in (a as object);
 type Row = [id: string, tr: string, en: string, keywords: string, art: Art];
 
 /** Dile göre yazısı değişen etiket satırı. */
@@ -1205,6 +1274,14 @@ const rows: Record<IconCategory, Row[]> = {
   ],
 };
 
+function drawerFor(id: string, art: Art): (lang: Lang) => Drawn {
+  const paint = STICKER_PAINT[id];
+  const withPaint = (d: Drawn): Drawn => (paint && !d.primary ? { ...d, primary: paint[0], secondary: paint[1] } : d);
+  if (typeof art === 'function') return (lang) => withPaint(art(lang));
+  const drawn = withPaint(isDrawn(art) ? art : { body: art as ReactNode });
+  return () => drawn;
+}
+
 export const ICONS: IconDef[] = ICON_CATEGORIES.flatMap((category) =>
   rows[category].map(([id, tr, en, keywords, art]): IconDef => ({
     id,
@@ -1212,7 +1289,7 @@ export const ICONS: IconDef[] = ICON_CATEGORIES.flatMap((category) =>
     tr,
     en,
     keywords,
-    draw: typeof art === 'function' ? art : () => ({ body: art }),
+    draw: drawerFor(id, art),
   })),
 );
 

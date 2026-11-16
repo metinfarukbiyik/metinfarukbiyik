@@ -9,3 +9,4 @@ export { configureFonts, fontString, fontFamilyCss, LINE_HEIGHT, wrapText } from
 export { STROKE_COLORS, BACKGROUND_COLORS, CANVAS_COLORS, HIGHLIGHT_COLORS, themed } from './colors';
 export { drawPaper, paperSvg, GUIDE_SPACING, GUIDE_GAP } from './paper';
 export { isShape, isLinear, isPolygon, hasPoints } from './shapes';
+export { fileIdsOf, pickFiles, paintIcon } from './icon-paint';

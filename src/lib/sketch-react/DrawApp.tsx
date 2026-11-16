@@ -37,6 +37,7 @@ import {
   CANVAS_COLORS,
   configureFonts,
   DEFAULT_STYLE,
+  pickFiles,
   Editor,
   type SceneFile,
   type SketchElement,
@@ -379,11 +380,7 @@ export default function DrawApp({
     const saveScene = () => {
       // Paylaşılan çizim görüntülenirken kendi kaydının üzerine yazma
       if (editor.state.readOnly) return;
-      const used = new Set(
-        editor.elements.flatMap((el) => (el.fileId ? [el.fileId] : [])),
-      );
-      const files: Record<string, string> = {};
-      for (const id of used) if (editor.files[id]) files[id] = editor.files[id];
+      const files = pickFiles(editor.elements, editor.files);
       void setItem(sceneKey, { elements: editor.elements, files });
     };
     const savePrefs = () => {
@@ -1008,7 +1005,7 @@ export default function DrawApp({
         )}
 
         {iconsOpen && !readOnly && !presenting && (
-          <div className="sk-layers-wrap">
+          <div className="sk-layers-wrap is-icons">
             <IconsPanel editor={editor} onClose={() => setIconsOpen(false)} />
           </div>
         )}
